@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="extensions" method="upgrade">
+<views>
+	<view>
+		<caption>Login</caption>
+		<extView>default</extView>
+		<extTask>login</extTask>
+		<remoteTask>Login</remoteTask>
+		<requiredField>0</requiredField>
+	</view>
+	<view>
+		<caption>Registration</caption>
+		<extView>default</extView>
+		<extTask>registration</extTask>
+		<remoteTask>Registration</remoteTask>
+		<requiredField>0</requiredField>
+	</view>
+	<view>
+		<caption>Home</caption>
+		<extView>default</extView>
+		<extTask>home</extTask>
+		<remoteTask>Home</remoteTask>
+		<requiredField>0</requiredField>
+	</view>
+	<view>
+		<caption>WebLink</caption>
+		<extView>default</extView>
+		<extTask>web</extTask>
+		<remoteTask>Web</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>Custom</caption>
+		<extView>default</extView>
+		<extTask>custom</extTask>
+		<remoteTask>custom</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>Facebook Check-in</caption>
+		<extView>default</extView>
+		<extTask>PluginsFacebookNearByVenues</extTask>
+		<remoteTask>PluginsFacebookNearByVenues</remoteTask>
+		<requiredField>0</requiredField>
+	</view>
+	<view>
+		<caption>Youtube Playlist</caption>
+		<extView>default</extView>
+		<extTask>youtubePlaylist</extTask>
+		<remoteTask>PluginsYoutubePlaylist</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>List All Contact Categories</caption>
+		<extView>default</extView>
+		<extTask>contactCategories</extTask>
+		<remoteTask>PluginsContactUs</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>List Contacts in a Category</caption>
+		<extView>default</extView>
+		<extTask>categoryContacts</extTask>
+		<remoteTask>PluginsContactUs</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>Single Contact</caption>
+		<extView>default</extView>
+		<extTask>contactUs</extTask>
+		<remoteTask>PluginsContactUs</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
+		<caption>Featured Contacts</caption>
+		<extView>default</extView>
+		<extTask>FeaturedContact</extTask>
+		<remoteTask>PluginsContactUs</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+</views>
+</install>
+
+        
+        
+        
+        
+

@@ -1,0 +1,82 @@
+/* ijoomeradv.css */
+
+/**
+ * Home page css
+ */
+.icon-48-ijoomer_48 {
+    background-image: url("../images/ijoomeradv_logo_48.png");
+    padding-left: 153px !important;
+}
+
+.frontmenu{
+	margin: 20px;
+}
+
+.frontmenu div.menucontainer{
+	width:100%;
+	float: left;
+}
+
+div#frontmenuitem{
+	text-align: center;
+	padding: 10px;
+	float: left;
+	width:100px;
+}
+
+div#frontmenuitem img{
+	height:90px;
+	width:90px;
+}
+
+div#frontmenuitem img.disabled{
+	height:90px;
+	width:90px;
+	border: 1px solid fuchsia;
+}
+
+
+.icon-48-extensions_48 {
+    background-image: url("../images/extensions_48.png");
+}
+
+.icon-48-extensionmanager_48 {
+    background-image: url("../images/extensionmanager_48.png");
+}
+
+.icon-48-config_48 {
+    background-image: url("../images/configuration_48.png");
+}
+
+.icon-48-menumanager_48 {
+    background-image: url("../images/menumanager_48.png");
+}
+
+.icon-48-pushnotification_48 {
+    background-image: url("../images/pushnotification_48.png");
+}
+
+.icon-32-home_32 {
+    background-image: url("../images/home_32.png");
+}
+
+/* hack for joomla 1.6 radion button label */
+
+fieldset label, fieldset span.faux-label {
+	/*clear: none !important;*/
+	margin: 5px 10px 0 0 !important;
+}
+
+.component td {
+	background-color: #f9e9e9 !important;
+}
+
+.extensionInstallButton {
+	margin-top: 7px;
+	font-weight: bold;
+	border:1px solid #000;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	box-shadow:0px 0px 3px #000;
+}

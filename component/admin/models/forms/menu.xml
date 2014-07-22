@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field
+			id="id"
+			name="id"
+			type="hidden"
+			default="0"
+			filter="int"
+			readonly="true"/>
+
+		<field
+			id="menutype"
+			name="menutype"
+			type="text"
+			label="COM_IJOOMERADV_MENU_MENUTYPE_LABEL"
+			description="COM_IJOOMERADV_MENU_MENUTYPE_DESC"
+			class="inputbox"
+			size="30"
+			maxlength="24" />
+
+		<field
+			id="title"
+			name="title"
+			type="text"
+			label="JGLOBAL_TITLE"
+			description="COM_IJOOMERADV_MENU_TITLE_DESC"
+			class="inputbox"
+			size="30"
+			maxlength="48"
+			required="true" />
+
+		<field
+			id="menudescription"
+			name="description"
+			type="text"
+			label="JGLOBAL_DESCRIPTION"
+			description="COM_IJOOMERADV_MENU_DESCRIPTION_DESC"
+			class="inputbox"
+			size="30"
+			maxlength="255" />
+			
+		<field
+			id="position"
+			name="position"
+			type="list"
+			label="COM_IJOOMERADV_MENU_POSITION"
+			description="COM_IJOOMERADV_POSITION_DESCRIPTION_DESC"
+			class="inputbox"
+			size="1" default="1"
+			 >
+			<option value="1">
+				IJHOME</option>
+			<option value="2">
+				IJSLIDE</option>
+			<option value="3">
+				IJBOTTOM</option>
+		</field>
+		
+		<field
+			id="menudevice"
+			name="menudevice"
+			type="list"
+			label="COM_IJOOMERADV_MENU_DEVICE"
+			description="COM_IJOOMERADV_DEVICE_DESCRIPTION_DESC"
+			class="inputbox"
+			size="1" default="1"
+			 >
+			<option value="1">
+				COM_IJOOMERADV_DEVICE_BOTH</option>
+			<option value="2">
+				COM_IJOOMERADV_DEVICE_ANDROID</option>
+			<option value="3">
+				COM_IJOOMERADV_DEVICE_IPHOEN</option>
+		</field>			
+
+		<field
+			id="screen"
+			name="screen"
+			type="menutypeselect"
+			label="COM_IJOOMERADV_MENU_SCREEN"
+			description="COM_IJOOMERADV_SCREEN_DESCRIPTION_DESC"
+			class="inputbox"
+			size="30"
+			maxlength="255" />
+			
+		<field
+			id="menuitem"
+			name="menuitem"
+			type="menutypeitems"
+			label="COM_IJOOMERADV_MENU_MENUITEM"
+			description="COM_IJOOMERADV_MENUITEM_DESCRIPTION_DESC"
+			class="inputbox"
+			size="30"
+			maxlength="255" />	
+	</fieldset>
+</form>

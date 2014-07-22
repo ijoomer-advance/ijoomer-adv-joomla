@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="extensions" method="upgrade">
+	<name>JBOLO</name>
+	<version>1.5</version>
+	<extension_classname>jbolo</extension_classname>
+	<extension_option>com_jbolo</extension_option>
+	
+	<files>
+		<folder extensions="jbolo">theme</folder>
+		<folder extensions="jbolo">tmpl</folder>
+		<folder extensions="jbolo">language</folder>
+		<filename extensions="jbolo">jbolo.php</filename>
+		<filename extensions="jbolo">ichatmain.php</filename>
+		<image extensions="jbolo">jbolo.png</image>
+		<image extensions="jbolo">jbolo_48.png</image>
+	</files>
+
+	<config>
+		<cfg 
+			caption="COM_IJOOMERADV_JBOLO_CHATHISTORY_PAGE_LIMIT"
+			value="1"
+			description="COM_IJOOMERADV_JBOLO_CHATHISTORY_PAGE_LIMIT_EXPLAIN"
+			options=""
+			type="text"
+			group="general"
+			server="0">CHATHISTORY_PAGE_LIMIT
+		</cfg>
+	</config>
+	
+	<views>
+		<view>
+			<caption>Chat</caption>
+			<extView>ichatmain</extView>
+			<extTask>polling</extTask>
+			<remoteTask>Jbolochat</remoteTask>
+			<requiredField>0</requiredField>
+		</view>
+	</views>
+</extension>
