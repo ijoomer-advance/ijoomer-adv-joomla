@@ -386,6 +386,30 @@ class event {
 		$category	=& JTable::getInstance( 'EventCategory' , 'CTable' );
 		$category->load( $event->catid ); // load categories from categoryid
 
+        $this->jsonarray['event']['id'] = $event->id;
+        $this->jsonarray['event']['title'] = $event->title;
+        $this->jsonarray['event']['location'] = $event->location;
+        $this->jsonarray['event']['groupid'] = $event->contentid;
+        $format	= ($this->config->get('eventshowampm')) ?  JText::_('COM_COMMUNITY_DATE_FORMAT_LC2_12H') : JText::_('COM_COMMUNITY_DATE_FORMAT_LC2_24H');
+        $this->jsonarray['event']['startdate'] = CTimeHelper::getFormattedTime($event->startdate, $format);
+        $this->jsonarray['event']['enddate'] = CTimeHelper::getFormattedTime($event->enddate, $format);
+        $this->jsonarray['event']['date'] = strtoupper(CEventHelper::formatStartDate($event, $this->config->get('eventdateformat')));
+
+        if($this->config->get('user_avatar_storage') == 'file'){
+            $p_url	= JURI::base();
+        }else{
+            $s3BucketPath	= $this->config->get('storages3bucket');
+            if(!empty($s3BucketPath))
+                $p_url	= 'http://'.$s3BucketPath.'.s3.amazonaws.com/';
+            else
+                $p_url	= JURI::base();
+        }
+
+        $this->jsonarray['event']['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+        $this->jsonarray['event']['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
+        $this->jsonarray['event']['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
+        $this->jsonarray['event']['confirmed']=$event->confirmedcount;
+
 		$this->jsonarray['event']['category'] = $category->name;
 		$this->jsonarray['event']['summary'] = strip_tags($event->summary);
 		$this->jsonarray['event']['description'] = strip_tags($event->description);
