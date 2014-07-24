@@ -106,13 +106,13 @@ class event {
 		foreach ( $categories as $key=>$value ){
 			$query='SELECT count(*) 
 					FROM #__community_events_category 
-					WHERE parent='.$id;
+					WHERE parent='.$value->parent;
 			$this->db->setQuery ( $query );
 			$subcategories = $this->db->loadResult ();
 			
 			$query="SELECT count(ce.id) as count 
 					FROM #__community_events as ce 
-					WHERE ce.catid={$id} 
+					WHERE ce.catid={$value->parent}
 					AND ce.published=1 
 					AND ce.enddate>='{$now->toSql()}'";
 			$this->db->setQuery ($query);
@@ -124,7 +124,7 @@ class event {
 			$jsonarray[$key]['description'] = $value->description;
 			$jsonarray[$key]['categories'] = $subcategories;
 			$jsonarray[$key]['events'] = $events;
-			if ($parent != 0){
+			if ($value->parent != 0){
 				$res = $this->subCategories ($value->id);
 				$jsonarray[$key]['subcategory'] = $res;
 			}
@@ -333,6 +333,8 @@ class event {
 				$this->jsonarray["fields"][$i]["field"]["name"] = $key;
 				$this->jsonarray["fields"][$i]["field"]["type"] = $value[0];
 				$this->jsonarray["fields"][$i]["field"]["caption"] = $value[1];
+                //@todo $kt is not defined at this point and Im not sure what it should be, im making $kt temporarily the $key to fix the error until it can be corrected
+                $kt = $key;
 				$this->jsonarray["fields"][$i]["field"]["options"][$kt]["value"]= 5;
 				$this->jsonarray["fields"][$i]["field"]["options"][$kt]["name"]= '5';
 				$this->jsonarray["fields"][$i]["field"]["options"][$kt]["value"]= 10;
@@ -1059,7 +1061,7 @@ class event {
 					$p_url	= JURI::base();			
 			}
 			
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -1178,7 +1180,7 @@ class event {
 					$p_url	= JURI::base();			
 			}
 			
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -2226,7 +2228,10 @@ class event {
 			$pushOptions['detail']['content_data']			= $eventdata;
 			$pushOptions['detail']['content_data']['type']		= 'event';
 			$pushOptions = gzcompress(json_encode($pushOptions));
-			
+
+            $group			=& JTable::getInstance( 'Group' , 'CTable' );
+            $group->load( $groupId );
+
 			$search 	= array('{event}','{group}');
 			$replace 	= array($event->title,$group->name);
 			$message 	= str_replace($search,$replace,JText::sprintf('COM_COMMUNITY_GROUP_NEW_EVENT_NOTIFICATION'));
@@ -2571,7 +2576,7 @@ class event {
 	function invite(){
 		$uniqueID	= IJReq::getTaskData('uniqueID', 0, 'int');
 		$userID		= IJReq::getTaskData('userID');
-		$message	= IJReq::getTaskData('message');
+        $inviteMessage	= IJReq::getTaskData('message');
 		
 		CFactory::load('controllers','events');
 		CFactory::load('helpers','owner');
@@ -2660,7 +2665,7 @@ class event {
 					$p_url	= JURI::base();			
 			}
 			
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -3405,7 +3410,8 @@ class event {
 			$act->cid			= $event->catid;
 			$act->groupid		= 0;
 			$act->eventid		= $uniqueID;
-			$act->access		= $privacy;
+			//@todo cant find the following used anywhere else in jomsocial. since $privacy was not defined I gave my best guess for now, commented out until it can be confirmed
+			//$act->access		= $privacyParams->get('privacyProfileView');
 			$act->comment_id	= CActivities::COMMENT_SELF;
 			$act->comment_type	= 'events.wall';
 			$act->like_id		= CActivities::LIKE_SELF;
