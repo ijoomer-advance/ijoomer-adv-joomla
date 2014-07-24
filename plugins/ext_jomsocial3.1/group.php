@@ -129,7 +129,7 @@ class group{
      * 
      */
 	function groups(){
-		$categoryID	= IJReq::getTaskData('categoryID', NULL, 'int');
+        $catID	= IJReq::getTaskData('categoryID', NULL, 'int');
 		$sort	= IJReq::getTaskData('sort', 'latest');
 		$query	= IJReq::getTaskData('query', null);
 		$pageNO	= IJReq::getTaskData('pageNO', 0, 'int');
@@ -444,7 +444,7 @@ class group{
 					$act->cid		= $group->id;
 			
 					$params = new CParameter('');
-					$params->set('group_url' , 'index.php?option=com_community&view=groups&task=viewgroup&groupid=' . $groupId );
+					$params->set('group_url' , 'index.php?option=com_community&view=groups&task=viewgroup&groupid=' . $group->id );
 			
 					// Add activity logging
 					CFactory::load ( 'libraries', 'activities' );
@@ -816,9 +816,11 @@ class group{
 		}
 		
 			
-		$this->jsonarray['group']['avatar']	= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
-		
-		
+		$this->jsonarray['group']['avatar']	        = ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+        $this->jsonarray['group']['thumb']	        = ($group->getThumbAvatar()=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $group->getThumbAvatar();
+        $this->jsonarray['group']['title']			= $group->name;
+        $this->jsonarray['group']['description']	= $group->description;
+
 		$isMember			= $group->isMember( $this->my->id )?1:0;
 		$isBanned			= $group->isBanned( $this->my->id )?1:0;
 		$waitingApproval	= $groupModel->isWaitingAuthorization( $this->my->id , $group->id );
@@ -874,7 +876,7 @@ class group{
 			$frids=$friendsModel->getFriendIds($this->IJUserID);
 			$frdcount=0;
 			foreach ($members as $member){
-				if(in_array($member->id, $frids) && $member->id!=$this->IJUserID && $member->id!=$creator){
+				if(in_array($member->id, $frids) && $member->id!=$this->IJUserID && $member->id!=$invitor->id){
 					$frdcount++;
 				}
 			}
@@ -1108,9 +1110,6 @@ class group{
 	public function approveMember(){
 		$uniqueID	= IJReq::getTaskData('uniqueID', 0, 'int');
 		$memberID	= IJReq::getTaskData('memberID', 0, 'int');
-        $filter = JFilterInput::getInstance();
-        $groupId = $filter->clean($groupId, 'int');
-        $memberId = $filter->clean($memberId, 'int');
         
         if(!$uniqueID || !$memberID){
         	IJReq::setResponse(400);
@@ -1935,7 +1934,7 @@ class group{
         	if(!$group->id){
 				$group->load($value->groupid);
         	}
-			$this->jsonarray['files'][$key]['deleteAllowed'] = intval($this->IJUserID==$val->cretor OR $group->isAdmin($this->IJUserID) OR COwnerHelper::isCommunityAdmin($this->IJUserID));
+			$this->jsonarray['files'][$key]['deleteAllowed'] = intval($this->IJUserID==$value->cretor OR $group->isAdmin($this->IJUserID) OR COwnerHelper::isCommunityAdmin($this->IJUserID));
         }
         return $this->jsonarray;
 	}
@@ -1988,6 +1987,7 @@ class group{
 
 		foreach($files as $_file){
 			$ext = pathinfo($_file['name']);
+            $file = new stdClass();
 			$file->creator      =	$this->IJUserID;
 			$file->filesize     =	sprintf("%u",$_file['size']);
 			$file->name         =	JString::substr($_file['name'], 0 , JString::strlen($_file['name']) - (JString::strlen($ext['extension'])+1));
@@ -2096,14 +2096,14 @@ class group{
 							AND `discussionid`={$discussion->id}";
 					$this->db->setQuery($query);
 					$discussionsdata['files']=$this->db->loadResult();
-					
+                    $usr=$this->jomHelper->getUserDetail($this->IJUserID);
+
 					//send pushnotification data
 					$search = array('{actor}','{filename}','{discussion}');
 					$replace = array($usr->name, $_file['name'], $discussion->title);
 					$message = str_replace($search,$replace,JText::sprintf('COM_COMMUNITY_GROUP_DISCUSSION_NEW_FILE_SUBJECT'));
 					
 					foreach ($puserlist as $puser){
-						$usr=$this->jomHelper->getUserDetail($this->IJUserID);
 						if($puser->userid == $discussion->creator){
 							$discussionsdata['user_id'] 		= 0;
 						}else{
@@ -2274,7 +2274,47 @@ class group{
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
 		}
-		
+
+//Start Added by Greg Keys
+        $foundDiscussion = false;
+        $discussModel	=& CFactory::getModel( 'discussions' );
+        $discussions	= $discussModel->getDiscussionTopics($groupID);
+        foreach($discussions as $key=>$value){
+            if($value->id == $uniqueID){
+                $this->jsonarray['id']				= $value->id;
+                $this->jsonarray['title']			= $value->title;
+                $this->jsonarray['message']			= strip_tags($value->message);
+                $usr = $this->jomHelper->getUserDetail($value->creator);
+                $this->jsonarray['user_id'] 		= $usr->id;
+                $this->jsonarray['user_name'] 		= $usr->name;
+                $this->jsonarray['user_avatar'] 	= $usr->avatar;
+                $this->jsonarray['user_profile'] 	= $usr->profile;
+
+                $format = "%A, %d %B %Y";
+                $this->jsonarray['date'] = CTimeHelper::getFormattedTime($value->lastreplied, $format);
+                $this->jsonarray['isLocked']=$value->lock;
+                $wallModel   =& CFactory::getModel( 'wall' );
+                $wallContents = $wallModel ->getPost('discussions' ,$value->id,9999999,0);
+                $this->jsonarray['topics']=count($wallContents);
+                $params = new CParameter($value->params);
+                $this->jsonarray['filePermission'] = $params->get('filepermission-member');
+                if(SHARE_GROUP_DISCUSSION==1){
+                    $this->jsonarray['shareLink']=JURI::base()."index.php?option=com_community&view=groups&task=viewdiscussion&groupid={$uniqueID}2&topicid={$value->id}";
+                }
+                $query="SELECT count(id)
+						FROM #__community_files
+						WHERE `groupid`={$uniqueID}
+						AND `discussionid`={$value->id}";
+                $this->db->setQuery($query);
+                $this->jsonarray['files']=$this->db->loadResult();
+                $foundDiscussion = true;
+                break;
+            }
+        }
+        //End Greg Keys Added
+
+
+
 		if($this->config->get('user_avatar_storage') == 'file'){
 			$p_url	= JURI::base();
 		}else{
@@ -2388,7 +2428,7 @@ class group{
 		CFactory::load( 'helpers' , 'owner' );
 		$creator	    = CFactory::getUser( $discussion->creator );
 		
-		if( $this->my->id!=$creator->id && !empty( $discussion->creator ) && !$groupsModel->isAdmin( $this->my->id, $discussion->groupid ) && !COwnerHelper::isCommunityAdmin() ){
+		if( $this->my->id!=$creator->id && !empty( $discussion->creator ) && !$groupModel->isAdmin( $this->my->id, $discussion->groupid ) && !COwnerHelper::isCommunityAdmin() ){
 			IJReq::setResponse(706);
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
@@ -2594,7 +2634,7 @@ class group{
 				
 				$this->jsonarray['pushNotificationData']['id'] 		= 0;
 				$this->jsonarray['pushNotificationData']['to'] 		= $membersArray;
-				$this->jsonarray['pushNotificationData']['message'] = $message;
+				$this->jsonarray['pushNotificationData']['message'] = $discussionsdata['message'];
 				$this->jsonarray['pushNotificationData']['type'] 	= 'group';
 				$this->jsonarray['pushNotificationData']['configtype'] 	= 'pushnotif_groups_create_discussion';
 			}
@@ -2910,7 +2950,10 @@ class group{
 				
 				$table =& JTable::getInstance('Wall', 'CTable');
 				$table->load($wallID);
-				
+
+                $discussion		=& JTable::getInstance( 'Discussion' , 'CTable' );
+                $discussion->load( $discussionID );
+
 				$isGroupAdmin	= $groupsModel->isAdmin( $this->my->id , $group->id );
 		
 				if( $this->my->id == $discussion->creator || $this->my->id == $table->post_by || $isGroupAdmin || COwnerHelper::isCommunityAdmin() ){
@@ -3022,7 +3065,7 @@ class group{
 		}
 		
 		$data		= new stdClass();
-		$data->id	= $groupid;
+		$data->id	= $uniqueID;
 
 		$groupsModel	=& CFactory::getModel( 'groups' );
 		$group			=& JTable::getInstance( 'Group' , 'CTable' );
@@ -3087,14 +3130,14 @@ class group{
 					
 					// Generate full image
 					if(!CImageHelper::resizeProportional( $file['tmp_name'] , $storageImage , $file['type'] , $imageMaxWidth ) ){
-						IJReq::setResponse(500,JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $destPath));
+						IJReq::setResponse(500,JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $image));
 						IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 						return false;
 					}
 					
 					// Generate thumbnail
 					if(!CImageHelper::createThumb( $file['tmp_name'] , $storageThumbnail , $file['type'] )){
-						IJReq::setResponse(500,JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $destPath));
+						IJReq::setResponse(500,JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $thumbnail));
 						IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 						return false;
 					}
@@ -3746,7 +3789,7 @@ class group{
 	function invite(){
 		$uniqueID	=   IJReq::getTaskData('uniqueID', 0, 'int');
 		$friends	=   IJReq::getTaskData('friends');
-		$message	=   IJReq::getTaskData('message', '');
+        $inviteMessage	=   IJReq::getTaskData('message', '');
 		$friends=explode(",",$friends);
 		
 		if(empty($friends)){
