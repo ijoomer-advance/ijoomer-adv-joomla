@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <extension type="component" version="3.0"  method="upgrade">
 	<name>ijoomeradv</name>
 	<creationDate>22-Apr-2013</creationDate>   
