@@ -237,12 +237,16 @@ class IJPushNotif{
 		// Construct the notification payload
 		$body = array();
 		$body['aps']= $options['aps'];
+        $body['aps']['alert']=(isset($options['aps']['message']) && !empty($options['aps']['message'])) ? $options['aps']['message'] : '';
 		$body['aps']['badge']=(isset($options['aps']['badge']) && !empty($options['aps']['badge'])) ? $options['aps']['badge'] : 1;
 		$body['aps']['sound']=(isset($options['aps']['sound']) && !empty($options['aps']['sound'])) ? $options['aps']['sound'] : 'default';
 		$payload = json_encode($body);
 		
 		$ctx = stream_context_create();
 		stream_context_set_option($ctx, 'ssl', 'local_cert', $keyCertFilePath);
+        if($options['key_pass'] != ''){
+            stream_context_set_option($ctx, 'ssl', 'passphrase', $options['key_pass']);
+        }
 		$fp = stream_socket_client($server, $error, $errorString, 60, STREAM_CLIENT_CONNECT, $ctx);
 		
 		if (!$fp){
@@ -272,7 +276,7 @@ class IJPushNotif{
 		$fields['data']=$options['data'];
 		
 		$headers = array(
-            'Authorization: key='.IJOOMER_PUSH_API_KEY_ANDROID ,
+            'Authorization: key='.$options['api_key'] ,
             'Content-Type: application/json'
         );
         // Open connection
