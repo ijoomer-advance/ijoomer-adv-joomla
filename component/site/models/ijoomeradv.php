@@ -1405,9 +1405,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	
 	function _sendConfirmationMail($email, $token){
 		$config		= &JFactory::getConfig();
-		
+        //$appurl  = IJReq::getTaskData('appurl', false);
+
 		if(IJ_JOOMLA_VERSION===1.5){	
-			$url		= JRoute::_('index.php?option=com_user&view=reset&layout=confirm',true,-1);
+			$url		= JRoute::_('index.php?option=com_user&view=reset&layout=confirm&token='.$token,true,-1);
+            /*if($appurl){
+                $url .= '<br/>Mobile URL: <a href="'. $appurl.$token .'">'.$appurl.$token.'</a>';
+            }*/
+
 			$sitename	= $config->getValue('sitename');
 
 			// Set the e-mail parameters
@@ -1433,12 +1438,16 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
 			$itemid = UsersHelperRoute::getLoginRoute();
 			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$link = 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
+			$link = 'index.php?option=com_users&view=reset&layout=confirm&token='.$token.$itemid;
 			
 			$fromname	= $config->get('fromname');
 			$mailfrom	= $config->get('mailfrom');
 			$sitename	= $config->get('sitename');
 			$link_text	= JRoute::_($link, false, $mode);
+
+            /*if($appurl){
+                $link_text .= '<br/>Mobile URL: <a href="'. $appurl.$token .'">'.$appurl.$token.'</a>';
+            }*/
 
 			$subject = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT',$sitename);
 			$body = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_BODY',$sitename,$token,$link_text);
