@@ -349,14 +349,14 @@ class IJPushNotif{
                 }
 
                 if($iJoomerConfig['IJOOMER_PUSH_ENABLE_ANDROID'] == 1 && $puser->device_type=='android'){
-                    $dtoken[]=$puser->device_token;//@todo this is a bad hack and should be expanded to include all ids to send all in a single request
+                    $dtoken[]=$puser->device_token;
                 }
             }
 
             if($iJoomerConfig['IJOOMER_PUSH_ENABLE_ANDROID'] == 1 && count($dtoken) > 0){
                 $options=array();
                 $options['registration_ids']	= $dtoken;//according to the api this needs to be an array
-                $options['api_key']             = $iJoomerConfig['IJOOMER_PUSH_API_KEY_ANDROID'];//@todo I know this isnt the best solution there seems to be an issue with the API constant int he helper
+                $options['api_key']             = $iJoomerConfig['IJOOMER_PUSH_API_KEY_ANDROID'];
                 $options['data']['message']		= strip_tags($message);
                 $options['data']['type']		= $type;
                 $options['data']['id']			= $objId;
