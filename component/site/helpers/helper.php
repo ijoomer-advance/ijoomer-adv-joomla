@@ -298,6 +298,76 @@ class IJPushNotif{
         // Close connection
         curl_close($ch);
 	}
+
+
+	/*
+	 * To send push notifications to both ios and android devices
+	 *
+	 * 	@param      string  message	text message to be sent in notification
+	 * 	@param      array   membersArray of userids
+	 *  @param      string type  Notification Type
+	 *  @param      int objId of object stored in notification table
+	 *
+	 * @return void
+	 */
+	public static function sendPushNotification($message, $membersArray, $type, $objId)
+    {
+        $db = JFactory::getDbo();
+
+        $memberslist = implode(',',$membersArray);
+        $db->setQuery(
+            $db->getQuery(true)
+                ->select('*')
+                ->from($db->qn('#__ijoomeradv_users').' AS u')
+                ->where('userid IN ('.$memberslist.')')
+        );
+        $puserlist=$db->loadObjectList();
+
+        if(count($puserlist) > 0) {
+            $db->setQuery(
+                $db->getQuery(true)
+                    ->select('name, value')
+                    ->from($db->qn('#__ijoomeradv_config'))
+                    ->where('name IN ("IJOOMER_PUSH_ENABLE_IPHONE","IJOOMER_PUSH_DEPLOYMENT_IPHONE","IJOOMER_PUSH_ENABLE_ANDROID","IJOOMER_PUSH_API_KEY_ANDROID", "IJOOMER_PUSH_KEY_PASSWORD_IPHONE")')
+            );
+
+            $iJoomerConfig=$db->loadAssocList('name', 'value');
+
+            $dtoken=array();
+
+            foreach($puserlist as $puser) {
+                if($iJoomerConfig['IJOOMER_PUSH_ENABLE_IPHONE'] == 1 && $puser->device_type=='iphone')
+                {
+                    $options=array();
+                    $options['device_token']	= $puser->device_token;
+                    $options['live']			= intval($iJoomerConfig['IJOOMER_PUSH_DEPLOYMENT_IPHONE']);
+                    $options['key_pass']        = $iJoomerConfig['IJOOMER_PUSH_KEY_PASSWORD_IPHONE'];//@todo I know this isnt the best solution its here as a temp hack
+                    $options['aps']['message']	= strip_tags($message);
+                    $options['aps']['type']		= $type;
+                    $options['aps']['id']		= $objId;
+                    IJPushNotif::sendIphonePushNotification($options);
+                }
+
+                if($iJoomerConfig['IJOOMER_PUSH_ENABLE_ANDROID'] == 1 && $puser->device_type=='android'){
+                    $dtoken[]=$puser->device_token;//@todo this is a bad hack and should be expanded to include all ids to send all in a single request
+                }
+            }
+
+            if($iJoomerConfig['IJOOMER_PUSH_ENABLE_ANDROID'] == 1 && count($dtoken) > 0){
+                $options=array();
+                $options['registration_ids']	= $dtoken;//according to the api this needs to be an array
+                $options['api_key']             = $iJoomerConfig['IJOOMER_PUSH_API_KEY_ANDROID'];//@todo I know this isnt the best solution there seems to be an issue with the API constant int he helper
+                $options['data']['message']		= strip_tags($message);
+                $options['data']['type']		= $type;
+                $options['data']['id']			= $objId;
+                IJPushNotif::sendAndroidPushNotification($options);
+            }
+
+        }
+
+	}
+
+
 }
 
 
