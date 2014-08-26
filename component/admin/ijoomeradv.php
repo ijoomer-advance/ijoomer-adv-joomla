@@ -12,7 +12,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 defined ( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR );
-define('IJADV_VERSION',1.3);
+define('IJADV_VERSION',1.5);
 
 jimport ( 'joomla.version' );
 $version = new JVersion ( );

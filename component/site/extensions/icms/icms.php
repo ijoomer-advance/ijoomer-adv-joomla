@@ -62,9 +62,10 @@ class icms_menu {
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
 			
-				$class = new CategoriesModelCategories();
-				$query = $class->getListQuery();
+				//$class = new CategoriesModelCategories();
+				//$query = $class->getListQuery();
 				
+				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$items = $db->loadObjectList();
@@ -95,9 +96,10 @@ class icms_menu {
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
 			
-				$class = new CategoriesModelCategories();
-				$query = $class->getListQuery();
+				//$class = new CategoriesModelCategories();
+				//$query = $class->getListQuery();
 				
+				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$items = $db->loadObjectList();

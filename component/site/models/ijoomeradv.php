@@ -721,7 +721,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 							$field->type = "multipleselect";
 						}
 						
-						if($field->type == 'singleselect' || $field->type == 'radio' || $field->type == 'country'){
+						if($field->type == 'singleselect' || $field->type == 'radio' || $field->type == 'country' || $field->type == 'gender'){
 							$field->type = 'select';
 						}
 						
@@ -737,7 +737,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 						if(isset($field->options) and !empty($field->options)){
 							$option = explode("\n",$field->options);
 							foreach($option as $i=>$val){
-								$jsonarray['fields']['group'][$inc]['field'][$incj]['options'][$i]['value']=$val;
+								$jsonarray['fields']['group'][$inc]['field'][$incj]['options'][$i]['value']=JText::_($val);
 							}
 						}
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['privacy']['value']= 0;
