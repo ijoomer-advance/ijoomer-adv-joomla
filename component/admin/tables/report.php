@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
+defined('_JEXEC') or die;
 jimport('joomla.database.tablenested');
 
 class IjoomeradvTableReport extends JTable{

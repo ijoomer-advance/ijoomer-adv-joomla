@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -30,27 +30,31 @@ JHtml::_('behavior.formvalidation');
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-<div class="width-100 span12">
+<div class="width-100">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_IJOOMERADV_MENU_DETAILS');?></legend>
-			<table class="table table-striped">
-				<tr>
-					<td><?php echo $this->form->getLabel('title'); ?></td>
-					<td><?php echo $this->form->getInput('title'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('description'); ?></td>
-					<td><?php echo $this->form->getInput('description'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('position'); ?></td>
-					<td><?php echo $this->form->getInput('position'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('screen'); ?></td>
-					<td><?php echo $this->form->getInput('screen'); ?></td>
-				</tr>
-			</table>
+			<ul class="adminformlist">
+				<li><?php echo $this->form->getLabel('title'); ?>
+				<?php echo $this->form->getInput('title'); ?></li>
+
+				<li><?php /* echo $this->form->getLabel('menutype'); ?>
+				<?php echo $this->form->getInput('menutype'); */ ?></li>
+
+				<li><?php echo $this->form->getLabel('description'); ?>
+				<?php echo $this->form->getInput('description'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('position'); ?>
+				<?php echo $this->form->getInput('position'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('menudevice'); ?>
+				<?php echo $this->form->getInput('menudevice'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('screen'); ?>
+				<?php echo $this->form->getInput('screen'); ?></li>
+				
+				<li><!--<?php echo $this->form->getLabel('menuitem'); ?>
+				<?php echo $this->form->getInput('menuitem'); ?>--></li>
+			</ul>
 	</fieldset>
 
 	<input type="hidden" name="task" value="" />

@@ -1,6 +1,6 @@
 <?php
 /*--------------------------------------------------------------------------------
-# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 3.0)
+# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 2.5)
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
 # copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
@@ -61,7 +61,6 @@ class icms_menu {
 			case 'categoryBlog':
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
-			
 				//$class = new CategoriesModelCategories();
 				//$query = $class->getListQuery();
 				
@@ -127,12 +126,13 @@ class icms_menu {
 				break;
 				
 			case 'singleArticle':
-				$selvalue = (isset($menuoptions['remoteUse']['id']))?$menuoptions['remoteUse']['id']:0;
+				$selvalue = $menuoptions['remoteUse']['id'];
 				$db = &JFactory::getDBO();
-				$sql = "SELECT title FROM #__content
-						WHERE id=".$selvalue;
+				$sql = 'SELECT title FROM #__content
+						WHERE id='.$selvalue;
 				$db->setQuery($sql);
 				$result = $db->loadResult();
+				
 				if($result){
 					$title = $result; 
 				}else{
@@ -156,13 +156,15 @@ class icms_menu {
 				$link	= 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_jform_request_id';
 		
 				// The current user display field.
-				$html[] = '<div class="controls">';
-				$html[] = '<span class="input-append">';
-				$html[] = '<input class="input-medium" type="text" id="jform_request_id_name" value="'.JText::_($title).'" disabled="disabled" size="35" />';
+				$html[] = '<div class="fltlft">';
+				$html[] = '  <input type="text" id="jform_request_id_name" value="'.JText::_($title).'" disabled="disabled" size="35" />';
+				$html[] = '</div>';
 		
 				// The user select button.
-				$html[] = '<a class="modal btn" title="'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE_BUTTON').'</a>';
-				$html[] = '</span>';
+				$html[] = '<div class="button2-left">';
+				$html[] = '  <div class="blank">';
+				$html[] = '	<a class="modal" title="'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE_BUTTON').'</a>';
+				$html[] = '  </div>';
 				$html[] = '</div>';
 		
 				$html[] = '<input type="hidden" id="jform_request_id_id" name="jform[request][id]" value="" />';

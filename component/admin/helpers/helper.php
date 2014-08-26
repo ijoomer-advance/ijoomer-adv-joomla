@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -15,16 +15,22 @@ class ijoomeradvAdminHelper{
 	protected $db;
 	
 	function __construct(){
-		$this->db =JFactory::getDBO();
+		$this->db =& JFactory::getDBO();
 	}
 	
 	function getComponent($option){
 		$version = new JVersion();
 		
-		$query="SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled 
-				FROM #__extensions as e
-				WHERE e.type='component' 
-				AND e.element = '{$option}'";
+		if(IJ_JOOMLA_VERSION===1.5){
+			$query="SELECT c.* 
+					FROM #__components as c 
+					WHERE c.option='{$option}'";
+		}else{
+			$query="SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled 
+					FROM #__extensions as e
+					WHERE e.type='component' 
+					AND e.element = '{$option}'";
+		}
 		$this->db->setQuery($query);
 		$components = $this->db->loadObject();
 		
@@ -93,6 +99,7 @@ class ijoomeradvAdminHelper{
 						$input.='<option value="'.$option[0].'" '.$selected.'>'.$option[1].'</option>';
 					}
 					$input.='</select>';
+					$config[$key]->html=$input;
 					break;
 					
 				case 'text':
@@ -102,29 +109,13 @@ class ijoomeradvAdminHelper{
 					}else{
 						$input.='<input type="'.$value->type.'" name="'.$value->name.'" id="'.$value->name.'" value="'.$value->value.'"/>';
 					}
-					 
+					$config[$key]->html=$input; 
 					break;
 					
-				case 'jom_field':
-					$query="SELECT * 
-							FROM #__community_fields 
-							WHERE type!='group'";
-					$this->db->setQuery($query);
-					$fields=$this->db->loadObjectList();
-					
-					$input.='<select name="'.$value->name.'" id="'.$value->name.'">';
-					$input.='<option value="">Select Field...</option>';
-					if($fields){
-						foreach($fields as $field){
-							$selected=($field->id===$value->value)?'selected="selected"':'';
-							$input.='<option value="'.$field->id.'" '.$selected.'>'.$field->name.'</option>';
-						}
-					}
-					$input.='</select>';
-					break;	
-					
+				default:
+					$config[$key]->html=$input;
+					break;
 			}
-			$config[$key]->html=$input;
 		}
 	}
 }

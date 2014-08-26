@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
-class ijoomeradvModelijoomeradv extends JModelLegacy{
+class ijoomeradvModelijoomeradv extends JModel{
 	
 	private $db;
 	private $mainframe;
@@ -103,7 +103,24 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			}
 		}
 		$groups	= implode(',', $user->getAuthorisedViewLevels());
-		
+		//
+		/*JLoader::register('LanguagesModelInstalled', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_languages'.DS.'models'.DS.'installed.php');
+		$lang = new LanguagesModelInstalled();
+		$current_languages = $lang ->getData();
+		echo "<pre>";print_r($current_languages);
+		echo "<pre>";print_r($_REQUEST);echo "<pre>";print_r($_SERVER);EXIT;*/
+		$lang = $_REQUEST['lang'];
+		if($lang){
+			$query = 'SELECT lang_code 
+					  FROM #__languages
+					  WHERE sef="'.$lang.'"';
+			$this->db->setQuery($query);
+			$langCode = $this->db->loadResult();
+		}else{
+			$lang1 =& JFactory::getLanguage();
+			$langCode = $lang1->gettag();
+		}
+		//
 		$query = 'SELECT * 
 				  FROM #__ijoomeradv_menu_types';
 		
@@ -144,10 +161,10 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 							WHERE menutype=$value->id
 							AND published=1
 							AND access IN ($groups)
-							/*AND (IF((menudevice=1),($value->menudevice=$menudevice),(menudevice=$menudevice)) OR menudevice=4
-								OR IF((menudevice=1 AND $value->menudevice=1),true,false)) */
+							AND (IF((menudevice=1),($value->menudevice=$menudevice),(menudevice=$menudevice)) OR menudevice=4
+								OR IF((menudevice=1 AND $value->menudevice=1),true,false)) 
+							AND (language='$langCode' or  language='*')
 							ORDER BY ordering";
-							
 					$this->db->setQuery($query);
 					$menuitems = $this->db->loadObjectList();
 	
@@ -158,11 +175,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 							$viewname = explode('.',$value1->views);	
 							
 							$remotedata = json_decode($value1->menuoptions);
-							if($remotedata){
-								$remotedata=$remotedata->remoteUse;
-							}else{
-								$remotedata='';
-							}
+							$remotedata = ($remotedata) ? $remotedata->remoteUse : '';
 							
 							$menuArray[$i]["menuitem"][$k]=array(	"itemid"		=> $value1->id,
 																	"itemcaption"	=> $value1->title,
@@ -176,7 +189,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 								$menuArray[$i]["menuitem"][$k]["tab"]	= JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.'custom'.DS.$device.DS.$device_type.DS.$value1->itemimage.'_tab.png';
 								$menuArray[$i]["menuitem"][$k]["tab_active"]	= JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.'custom'.DS.$device.DS.$device_type.DS.$value1->itemimage.'_tab_active.png';
 							}
-							
 							$k++;
 						}
 					}
@@ -267,6 +279,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		if(!$option){
 			IJReq::setResponseCode(404);
 			return false;
+		}else if($option=='default'){
+			return true;
 		}else{
 			$IJHelperObj= new ijoomeradvHelper(); // create hepler object
 			if(!$IJHelperObj->getComponent($option)){
@@ -294,6 +308,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				WHERE `userid`='{$my->id}'";
 		$this->db->setQuery($query);
 		$user=$this->db->loadResult();
+		
+		$query="UPDATE `#__ijoomeradv_users` SET device_token='' 
+				WHERE device_token='".$data['device_token']."'";
+		$this->db->setQuery($query);
+		$this->db->query();
 		
 		if($user){
 			$query="UPDATE `#__ijoomeradv_users` 
@@ -525,7 +544,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					}else{
 						return false;
 					}
-					
 				}else{	
 					IJReq::setResponseCode(401);
 					IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_UNABLE_TO_AUTHENTICATE'));
@@ -608,7 +626,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				}
 				$this->db->setQuery($query);
 				$this->db->Query();
-				
 			}
 		}
 		
@@ -709,30 +726,37 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 						}
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['id'] = $field->id;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['caption'] = $field->name;
-						//$jsonarray['fields']['group'][$inc]['field'][$incj]['fieldcode'] = $field->fieldcode;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['required'] = $field->required;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['value'] = '';
 						
-						if($field->type == 'birthdate'){
-							$field->type = "date";
+						switch($field->type){
+							case 'birthdate':
+								$field->type = "date";
+								break;
+							
+							case 'checkbox':
+							case 'list':
+								$field->type = "multipleselect";
+								break;
+								
+							case 'singleselect':
+							case 'gender':
+							case 'radio':
+							case 'country':
+								$field->type = 'select';
+								break;
+							
+							case 'email':
+							case 'url':
+								$field->type = 'text';
+								break;	
+								
+							case 'FIELD_CITY':
+							case 'FIELD_STATE':
+								$field->type = 'map';
+								break;
 						}
-						
-						if($field->type == 'checkbox' || $field->type == 'list'){
-							$field->type = "multipleselect";
-						}
-						
-						if($field->type == 'singleselect' || $field->type == 'radio' || $field->type == 'country' || $field->type == 'gender'){
-							$field->type = 'select';
-						}
-						
-						if($field->type == 'email' || $field->type == 'url'){
-							$field->type = 'text';
-						}
-						
-						if($field->fieldcode == 'FIELD_CITY' || $field->fieldcode == 'FIELD_STATE'){
-							$field->type = 'map';
-						}
-						
+							
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['type'] = $field->type;
 						if(isset($field->options) and !empty($field->options)){
 							$option = explode("\n",$field->options);
@@ -759,11 +783,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$sendpassword = $params->get('sendpassword', 1);
 		
 		$user = new JUser; // Initialise the table with JUser.
-		$post['name'] = trim(str_replace("\n","",$post['relname']));
-		$post['username'] = trim(str_replace("\n","",$post['username']));
-		$post['password'] = $post['password1'] = $post['password2'] = trim(str_replace("\n","",$post['password']));
-		$post['email'] = $post['email1'] = $post['email2'] = trim(str_replace("\n","",$post['email']));
-		$post['groups'][0]=$system;
+		$post['name'] 		= trim(str_replace("\n","",$post['relname']));
+		$post['username'] 	= trim(str_replace("\n","",$post['username']));
+		$post['password'] 	= $post['password1'] = $post['password2'] = trim(str_replace("\n","",$post['password']));
+		$post['email'] 		= $post['email1'] = $post['email2'] = trim(str_replace("\n","",$post['email']));
+		$post['groups'][0]	= $system;
 		// Check if the user needs to activate their account.
 		if (($useractivation == 1) || ($useractivation == 2)) {
 			$post['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
@@ -942,209 +966,125 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			jimport('joomla.utilities.utility');
 			CFactory::load( 'helpers' , 'image' );
 				
-			$my			= CFactory::getUser($aclval);
-			$userid		= $my->id;
+			$my				= CFactory::getUser($aclval);
+			$userid			= $my->id;
 			$config			= CFactory::getConfig();
 			$uploadLimit	= (double) $config->get('maxuploadsize');
 			$uploadLimit	= ( $uploadLimit * 1024 * 1024 );
 		
 			$file = JRequest::getVar('image','','FILES','array');
 		
-			if(IJ_JOMSOCIAL_VERSION == 1.6 || IJ_JOMSOCIAL_VERSION == 1.8){
-				// @rule: Limit image size based on the maximum upload allowed.
-				if( filesize( $file['tmp_name'] ) > $uploadLimit && $uploadLimit != 0 ){
-					IJReq::setResponseCode(416);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
+			// @rule: Limit image size based on the maximum upload allowed.
+			if( filesize( $file['tmp_name'] ) > $uploadLimit && $uploadLimit != 0 ){
+				IJReq::setResponseCode(416);
+				IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
+				return false;
+			}
+			
+			if( !CImageHelper::isValidType( $file['type'] ) ){
+				IJReq::setResponseCode(416);
+				IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+				return false;
+           	}
+           	
+           	if( !CImageHelper::isValid($file['tmp_name'] ) ){
+				IJReq::setResponseCode(416);
+				IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+				return false;
+			}else{
+				$config				= CFactory::getConfig();
+				$imageMaxWidth		= 160;
+				$profileType		= isset($post['type']) ? $post['type'] : 0;
+				$fileName			= JUtility::getHash( $file['tmp_name'] . time() );
+				$hashFileName		= JString::substr( $fileName , 0 , 24 );
+				$multiprofile		= & JTable::getInstance( 'MultiProfile' , 'CTable' );
+				$multiprofile->load( $profileType );
+				$useWatermark		= $profileType != COMMUNITY_DEFAULT_PROFILE && $config->get('profile_multiprofile') && !empty( $multiprofile->watermark ) ? true : false;
+				$storage			= JPATH_ROOT . DS . $config->getString('imagefolder') . DS . 'avatar';
+				$storageImage		= $storage . DS . $hashFileName . CImageHelper::getExtension( $file['type'] );
+				$storageThumbnail	= $storage . DS . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] ); 
+				$image				= $config->getString('imagefolder') . '/avatar/' . $hashFileName . CImageHelper::getExtension( $file['type'] );
+				$thumbnail			= $config->getString('imagefolder') . '/avatar/' . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
+				$userModel			= CFactory::getModel( 'user' );
+				
+				// Only resize when the width exceeds the max.
+				if( !CImageHelper::resizeProportional( $file['tmp_name'] , $storageImage , $file['type'] , $imageMaxWidth ) ){
+					IJReq::setResponseCode(500);
+					IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $storageImage)); 
 					return false;
 				}
-				//if( !CImageHelper::isValidType( $file['type'] ) )
-				if( !cValidImageType( $file['type'] ) ){
-					IJReq::setResponseCode(415);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+				
+				// Generate thumbnail
+				if(!CImageHelper::createThumb( $file['tmp_name'] , $storageThumbnail , $file['type'] )){
+					IJReq::setResponseCode(500);
+					IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $storageImage)); 
 					return false;
-	           	}
-	           	
-				//if( !CImageHelper::isValid($file['tmp_name'] ) )
-				if( !cValidImage($file['tmp_name'] ) ){
-					IJReq::setResponseCode(415);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
-					return false;
-				}else{
-					// @todo: configurable width?
-					$imageMaxWidth	= 160;
-					
-					$lang =& JFactory::getLanguage();
-					$lang->load('com_community');
-					
-					$profileType = isset($post['type']) ? $post['type'] : 0;
-					
-					$fileName		= JApplication::getHash( $file['tmp_name'] . time() );
-					$hashFileName	= JString::substr( $fileName , 0 , 24 );
-					
-					$storage = JPATH_ROOT . DS . 'images' . DS . 'avatar';
-					$storageImage	= $storage . DS . $hashFileName . cImageTypeToExt( $file['type'] );
-					$storageThumbnail = $storage . DS . 'thumb_' . $hashFileName . cImageTypeToExt( $file['type'] );
-					$image	= 'images/avatar/' . $hashFileName . cImageTypeToExt( $file['type'] );
-					$thumbnail = 'images/avatar/' . 'thumb_' . $hashFileName . cImageTypeToExt( $file['type'] );
-					
-					$userModel = CFactory::getModel( 'user' );
-					
-					// Generate full image
-					if(!cImageResizePropotional( $file['tmp_name'] , $storageImage , $file['type'] , $imageMaxWidth ) ){
+				}
+							
+				if( $useWatermark ){
+					// @rule: Before adding the watermark, we should copy the user's original image so that when the admin tries to reset the avatar,
+					// it will be able to grab the original picture.
+					JFile::copy( $storageImage , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_avatar' ) . CImageHelper::getExtension( $file['type'] ) );
+					JFile::copy( $storageThumbnail , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_thumb' ) . CImageHelper::getExtension( $file['type'] ) );
+				
+					$watermarkPath	= JPATH_ROOT . DS . JString::str_ireplace('/' , DS , $multiprofile->watermark);
+				
+					list( $watermarkWidth , $watermarkHeight )	= getimagesize( $watermarkPath );
+					list( $avatarWidth , $avatarHeight ) 		= getimagesize( $storageImage );
+					list( $thumbWidth , $thumbHeight ) 			= getimagesize( $storageThumbnail );
+
+					$watermarkImage		= $storageImage;
+					$watermarkThumbnail	= $storageThumbnail;						
+				
+					// Avatar Properties
+					$avatarPosition	= CImageHelper::getPositions( $multiprofile->watermark_location , $avatarWidth , $avatarHeight , $watermarkWidth , $watermarkHeight );
+
+					// The original image file will be removed from the system once it generates a new watermark image.
+					CImageHelper::addWatermark( $storageImage , $watermarkImage , 'image/jpg' , $watermarkPath , $avatarPosition->x , $avatarPosition->y );
+
+					//Thumbnail Properties
+					$thumbPosition	= CImageHelper::getPositions( $multiprofile->watermark_location , $thumbWidth , $thumbHeight , $watermarkWidth , $watermarkHeight );
+				
+					// The original thumbnail file will be removed from the system once it generates a new watermark image.
+					CImageHelper::addWatermark( $storageThumbnail , $watermarkThumbnail , 'image/jpg' , $watermarkPath , $thumbPosition->x , $thumbPosition->y );
+
+					$my->set( '_watermark_hash' , $multiprofile->watermark_hash );
+					if(!$my->save()){
 						IJReq::setResponseCode(500);
 						return false;
 					}
-					
-					// Generate thumbnail
-					if(!cImageCreateThumb( $file['tmp_name'] , $storageThumbnail , $file['type'] )){
-						IJReq::setResponseCode(500);
-						return false;
-					}	
-										
-					$userModel->setImage( $userid , $image , 'avatar' );
-					$userModel->setImage( $userid , $thumbnail , 'thumb' );
-					
-					// Update the user object so that the profile picture gets updated.
-					$my->set( '_avatar' , $image );
-					$my->set( '_thumb'	, $thumbnail );
-				}	
-				
-				if(isset($post['type']) && ($post['type']) > 0) {	
-					$query="SELECT cf.fieldcode,cfd.field_id AS id 
-							FROM #__community_profiles_fields as cfd 
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id 
-					     	WHERE cf.type != 'group' 
-					     	AND cfd.parent=".$post['type'];
-				}else{
-					$query="SELECT fieldcode,id 
-							FROM `#__community_fields` 
-							WHERE published=1 
-							AND registration=1";
 				}
+				$userModel->setImage( $userid , $image , 'avatar' );
+				$userModel->setImage( $userid , $thumbnail , 'thumb' );
+				
+				// Update the user object so that the profile picture gets updated.
+				$my->set( '_avatar' , $image );
+				$my->set( '_thumb'	, $thumbnail );
+			}
+			
+			if(isset($post['type']) && ($post['type']) > 0){	
+				$query="SELECT cf.fieldcode,cfd.field_id AS id 
+						FROM #__community_profiles_fields as cfd 
+						LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id 
+				     	WHERE cf.type != 'group' 
+				     	AND cfd.parent=".$post['type'];
+			}else{
+				$query="SELECT fieldcode,id 
+						FROM `#__community_fields` 
+						WHERE published=1 
+						AND registration=1";
+			}
+			$this->db->setQuery($query);
+			$fields = $this->db->loadObjectList();
+			
+			foreach($fields as $field){
+				$fid=$field->id;
+				$fvalue=IJReq::getTaskData('f'.$fid,'');
+				$query="INSERT INTO #__community_fields_values 
+						SET user_id='{$userid}', field_id='{$fid}', value='".addslashes($fvalue[0])."', access='{$fvalue[1]}'";
 				$this->db->setQuery($query);
-				$fields = $this->db->loadObjectList();
-				
-				foreach($fields as $field){
-					$fid=$field->id;
-					$fvalue=IJReq::getTaskData('f'.$fid,'');
-					$query="INSERT INTO #__community_fields_values 
-							SET user_id='{$userid}', field_id='{$fid}', value='".addslashes($fvalue)."'";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}else{ 	
-				// @rule: Limit image size based on the maximum upload allowed.
-				if( filesize( $file['tmp_name'] ) > $uploadLimit && $uploadLimit != 0 ){
-					IJReq::setResponseCode(416);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
-					return false;
-				}
-				
-				if( !CImageHelper::isValidType( $file['type'] ) ){
-					IJReq::setResponseCode(416);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
-					return false;
-	           	}
-	           	
-	           	if( !CImageHelper::isValid($file['tmp_name'] ) ){
-					IJReq::setResponseCode(416);
-					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
-					return false;
-				}else{
-					$config				= CFactory::getConfig();
-					$imageMaxWidth		= 160;
-					$profileType		= isset($post['type']) ? $post['type'] : 0;
-					$fileName			= JApplication::getHash( $file['tmp_name'] . time() );
-					$hashFileName		= JString::substr( $fileName , 0 , 24 );
-					$multiprofile		= & JTable::getInstance( 'MultiProfile' , 'CTable' );
-					$multiprofile->load( $profileType );
-					$useWatermark		= $profileType != COMMUNITY_DEFAULT_PROFILE && $config->get('profile_multiprofile') && !empty( $multiprofile->watermark ) ? true : false;
-					$storage			= JPATH_ROOT . DS . $config->getString('imagefolder') . DS . 'avatar';
-					$storageImage		= $storage . DS . $hashFileName . CImageHelper::getExtension( $file['type'] );
-					$storageThumbnail	= $storage . DS . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] ); 
-					$image				= $config->getString('imagefolder') . '/avatar/' . $hashFileName . CImageHelper::getExtension( $file['type'] );
-					$thumbnail			= $config->getString('imagefolder') . '/avatar/' . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
-					$userModel			= CFactory::getModel( 'user' );
-					
-					// Only resize when the width exceeds the max.
-					if( !CImageHelper::resizeProportional( $file['tmp_name'] , $storageImage , $file['type'] , $imageMaxWidth ) ){
-						IJReq::setResponseCode(500);
-						IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $storageImage)); 
-						return false;
-					}
-					
-					// Generate thumbnail
-					if(!CImageHelper::createThumb( $file['tmp_name'] , $storageThumbnail , $file['type'] )){
-						IJReq::setResponseCode(500);
-						IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $storageImage)); 
-						return false;
-					}
-								
-					if( $useWatermark ){
-						// @rule: Before adding the watermark, we should copy the user's original image so that when the admin tries to reset the avatar,
-						// it will be able to grab the original picture.
-						JFile::copy( $storageImage , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_avatar' ) . CImageHelper::getExtension( $file['type'] ) );
-						JFile::copy( $storageThumbnail , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_thumb' ) . CImageHelper::getExtension( $file['type'] ) );
-					
-						$watermarkPath	= JPATH_ROOT . DS . JString::str_ireplace('/' , DS , $multiprofile->watermark);
-					
-						list( $watermarkWidth , $watermarkHeight )	= getimagesize( $watermarkPath );
-						list( $avatarWidth , $avatarHeight ) 		= getimagesize( $storageImage );
-						list( $thumbWidth , $thumbHeight ) 			= getimagesize( $storageThumbnail );
-
-						$watermarkImage		= $storageImage;
-						$watermarkThumbnail	= $storageThumbnail;						
-					
-						// Avatar Properties
-						$avatarPosition	= CImageHelper::getPositions( $multiprofile->watermark_location , $avatarWidth , $avatarHeight , $watermarkWidth , $watermarkHeight );
-
-						// The original image file will be removed from the system once it generates a new watermark image.
-						CImageHelper::addWatermark( $storageImage , $watermarkImage , 'image/jpg' , $watermarkPath , $avatarPosition->x , $avatarPosition->y );
-
-						//Thumbnail Properties
-						$thumbPosition	= CImageHelper::getPositions( $multiprofile->watermark_location , $thumbWidth , $thumbHeight , $watermarkWidth , $watermarkHeight );
-					
-						// The original thumbnail file will be removed from the system once it generates a new watermark image.
-						CImageHelper::addWatermark( $storageThumbnail , $watermarkThumbnail , 'image/jpg' , $watermarkPath , $thumbPosition->x , $thumbPosition->y );
-
-						$my->set( '_watermark_hash' , $multiprofile->watermark_hash );
-						if(!$my->save()){
-							IJReq::setResponseCode(500);
-							return false;
-						}
-					}
-					$userModel->setImage( $userid , $image , 'avatar' );
-					$userModel->setImage( $userid , $thumbnail , 'thumb' );
-					
-					// Update the user object so that the profile picture gets updated.
-					$my->set( '_avatar' , $image );
-					$my->set( '_thumb'	, $thumbnail );
-				}
-				
-				if(isset($post['type']) && ($post['type']) > 0){	
-					$query="SELECT cf.fieldcode,cfd.field_id AS id 
-							FROM #__community_profiles_fields as cfd 
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id 
-					     	WHERE cf.type != 'group' 
-					     	AND cfd.parent=".$post['type'];
-				}else{
-					$query="SELECT fieldcode,id 
-							FROM `#__community_fields` 
-							WHERE published=1 
-							AND registration=1";
-				}
-				$this->db->setQuery($query);
-				$fields = $this->db->loadObjectList();
-				
-				foreach($fields as $field){
-					$fid=$field->id;
-					$fvalue=IJReq::getTaskData('f'.$fid,'');
-					$query="INSERT INTO #__community_fields_values 
-							SET user_id='{$userid}', field_id='{$fid}', value='".addslashes($fvalue[0])."', access='{$fvalue[1]}'";
-					$this->db->setQuery($query);
-					$this->db->query();
-				}
-			}		
+				$this->db->query();
+			}
 		}
 		
 		// store kunena profile in kunena table...
@@ -1176,7 +1116,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			$this->db->setQuery($query);
 			$this->db->query();	
 		}
-		
 		$jsonarray['code'] = 200;
 		return $jsonarray;
 	}
@@ -1206,16 +1145,10 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			IJReq::setResponseCode(401);
 			return false;
 		}
-
-		if(IJ_JOOMLA_VERSION===1.5){
-			$token = JApplication::getHash(JUserHelper::genRandomPassword()); // Generate a new token
-			$salt = JUserHelper::getSalt('crypt-md5');
-			$hashedToken = md5($token.$salt).':'.$salt;
-		}else{
-			$token = JApplication::getHash(JUserHelper::genRandomPassword()); // Set the confirmation token.
-			$salt = JUserHelper::getSalt('crypt-md5');
-			$hashedToken = md5($token.$salt).':'.$salt;	
-		}
+		
+		$token = JApplication::getHash(JUserHelper::genRandomPassword()); // Set the confirmation token.
+		$salt = JUserHelper::getSalt('crypt-md5');
+		$hashedToken = md5($token.$salt).':'.$salt;	
 		
 		$query="UPDATE #__users 
 				SET activation={$this->db->Quote($hashedToken)} 
@@ -1328,18 +1261,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$user->activation		= '';
 		$user->password_clear	= $password1;
 
-		if(IJ_JOOMLA_VERSION===1.5){
-			$dispatcher->trigger('onAfterStoreUser', array($user->getProperties(), false, $result,'')); // Fire the onAfterStoreUser trigger
-		}else{
-			$app	= JFactory::getApplication();
-			if(!$user->save(true)){
-				IJReq::setResponseCode(500);
-				return false;	
-			}
-			// Flush the user data from the session.
-			$app->setUserState('com_users.reset.token', null);
-			$app->setUserState('com_users.reset.user', null);
+		$app	= JFactory::getApplication();
+		if(!$user->save(true)){
+			IJReq::setResponseCode(500);
+			return false;	
 		}
+		// Flush the user data from the session.
+		$app->setUserState('com_users.reset.token', null);
+		$app->setUserState('com_users.reset.user', null);
 		
 		$jsonarray['code'] = 200;
 		return $jsonarray;
@@ -1387,7 +1316,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$mailfrom	= $config->get('mailfrom');
 		$sitename	= $config->get('sitename');
 		$link_text	= JRoute::_($link, false, $mode);
-		//$link_html	= JRoute::_($link, true, $mode);
 		$username = $data['username'];
 		$subject = JText::sprintf('COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT',$sitename);
 		$body = JText::sprintf('COM_USERS_EMAIL_USERNAME_REMINDER_BODY',$sitename,$username,$link_text);
@@ -1406,48 +1334,29 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	function _sendConfirmationMail($email, $token){
 		$config		= &JFactory::getConfig();
 		
-		if(IJ_JOOMLA_VERSION===1.5){	
-			$url		= JRoute::_('index.php?option=com_user&view=reset&layout=confirm',true,-1);
-			$sitename	= $config->getValue('sitename');
+		// Set the e-mail parameters
+		$lang =& JFactory::getLanguage();
+		$lang->load('com_users');
+		include_once(JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php');
+		
+		
+		$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
+		$itemid = UsersHelperRoute::getLoginRoute();
+		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
+		$link = 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
+		
+		$fromname	= $config->get('fromname');
+		$mailfrom	= $config->get('mailfrom');
+		$sitename	= $config->get('sitename');
+		$link_text	= JRoute::_($link, false, $mode);
 
-			// Set the e-mail parameters
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_user');
-			
-			$from		= $config->getValue('mailfrom');
-			$fromname	= $config->getValue('fromname');
-			$subject	= sprintf(JText::_('PASSWORD_RESET_CONFIRMATION_EMAIL_TITLE'), $sitename);
-			$body		= sprintf(JText::_( 'PASSWORD_RESET_CONFIRMATION_EMAIL_TEXT'), $sitename, $token, $url);
-	
-			// Send the e-mail
-			if (!JUtility::sendMail($from, $fromname, $email, $subject, $body)){
-				return false;
-			}
-		}else{
-			// Set the e-mail parameters
-			$lang =& JFactory::getLanguage();
-			$lang->load('com_users');
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php');
-			
-			
-			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
-			$itemid = UsersHelperRoute::getLoginRoute();
-			$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
-			$link = 'index.php?option=com_users&view=reset&layout=confirm'.$itemid;
-			
-			$fromname	= $config->get('fromname');
-			$mailfrom	= $config->get('mailfrom');
-			$sitename	= $config->get('sitename');
-			$link_text	= JRoute::_($link, false, $mode);
+		$subject = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT',$sitename);
+		$body = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_BODY',$sitename,$token,$link_text);
 
-			$subject = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_SUBJECT',$sitename);
-			$body = JText::sprintf('COM_USERS_EMAIL_PASSWORD_RESET_BODY',$sitename,$token,$link_text);
-	
-			// Send the password reset request email.
-			$return = JFactory::getMailer()->sendMail($mailfrom, $fromname, $email, $subject, $body); 
-			if (!$return) {
-				return false;
-			}
+		// Send the password reset request email.
+		$return = JFactory::getMailer()->sendMail($mailfrom, $fromname, $email, $subject, $body); 
+		if (!$return) {
+			return false;
 		}
 		return true;
 	}

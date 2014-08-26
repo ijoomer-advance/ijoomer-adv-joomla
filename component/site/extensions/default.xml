@@ -51,6 +51,13 @@
 		<requiredField>1</requiredField>
 	</view>
 	<view>
+		<caption>Vimeo</caption>
+		<extView>default</extView>
+		<extTask>VimeoPlaylist</extTask>
+		<remoteTask>PluginsVimeoPlaylist</remoteTask>
+		<requiredField>1</requiredField>
+	</view>
+	<view>
 		<caption>List All Contact Categories</caption>
 		<extView>default</extView>
 		<extTask>contactCategories</extTask>

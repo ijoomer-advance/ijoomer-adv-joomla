@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -40,7 +40,7 @@ class IjoomeradvModelItems extends JModelList
 				'published', 'a.published',
 				'ordering','a.ordering'
 			);
-			if (JFactory::getApplication()->input->get('menu_associations', 0)) {
+			if (JFactory::getApplication()->get('menu_associations', 0)) {
 				$config['filter_fields'][] = 'association';
 			}
 		}

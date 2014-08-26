@@ -12,21 +12,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JHTML::_('behavior.tooltip');
-
-//jimport ( 'joomla.html.pane' );
-//$pane = JPane::getInstance ('tabs');
-$options = array(
-	'onActive' => 'function(title, description){
-		description.setStyle("display", "block");
-		title.addClass("open").removeClass("closed");
-	}',
-	'onBackground' => 'function(title, description){
-		description.setStyle("display", "none");
-		title.addClass("closed").removeClass("open");
-	}',
-	'startOffset' => 0, // 0 starts on the first tab, 1 starts the second, etc...
-	'useCookie' => true, // this must not be a string. Don't use quotes.
-);
+jimport ( 'joomla.html.pane' );
+$pane = JPane::getInstance ('tabs');
 ?>
 <script type="text/javascript">
  		function randomString() {
@@ -56,99 +43,84 @@ $options = array(
 	});
 </script>
 <form action="<?php echo JRoute::_ ( $this->request_url )?>" method="post" name="adminForm" id="adminForm">
-	<div class="span12">
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#page-GLOBAL" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_GLOBAL_CONFIG');?></a></li>
-			<li><a href="#page-THEME" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_THEME_CONFIG');?></a></li>
-			<li><a href="#page-PUSH" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_PUSH_CONFIG');?></a></li>
-			<li><a href="#page-ENCRYPTION" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_ENCRYPTION');?></a></li>
-		</ul>
+	<div class="editcell width-100">
+		<?php 
+		echo $pane->startPane('globalConfig');
+		//Global Config
+		echo $pane->startPanel(JText::_('COM_IJOOMERADV_GLOBAL_CONFIG'),'COM_IJOOMERADV_GLOBAL_CONFIG'); ?>
+			<table class="paramlist admintable" width="50%">
+				<?php foreach($this->globalConfig as $key=>$value):?>
+					<tr>
+						<td class="paramlist_key" width="40%">
+							<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+								<?php echo $value->caption; ?>
+							</span>
+						</td>
+						<td><?php echo $value->html; ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php echo $pane->endPanel(); ?>
 		
-		<div id="config-document" class="tab-content">
-			<div id="page-GLOBAL" class="tab-pane active">
-				<div class="row-fluid">
-					<div class="span12">
-						<table class="paramlist admintable" width="50%">
-							<?php foreach($this->globalConfig as $key=>$value):?>
-								<tr>
-									<td class="paramlist_key" width="40%">
-										<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
-											<?php echo $value->caption; ?>
-										</span>
-									</td>
-									<td><?php echo $value->html; ?></td>
-								</tr>
-							<?php endforeach; ?>
-						</table>
-					</div>
-				</div>
-			</div>
+		<?php 
+		// Theme Config
+		echo $pane->startPanel(JText::_('COM_IJOOMERADV_THEME_CONFIG'),'COM_IJOOMERADV_THEME_CONFIG'); ?>
+			<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
+				<?php foreach($this->themeConfig as $key=>$value):?>
+					<tr>
+						<td class="paramlist_key" width="40%">
+							<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+								<?php echo $value->caption; ?>
+							</span>
+						</td>
+						<td><?php echo $value->html; ?></td>
+					</tr>
+				<?php endforeach; ?>
+			</table>
+		<?php echo $pane->endPanel(); ?>
+		
+		<?php 
+		// Push Notification
+		echo $pane->startPanel(JText::_('COM_IJOOMERADV_PUSH_CONFIG'),'COM_IJOOMERADV_PUSH_CONFIG'); ?>
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE');?></legend>
+				<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
+					<?php 
+						foreach($this->pushConfigIphone as $key=>$value):
+					?>
+							<tr>
+								<td class="paramlist_key" width="40%">
+									<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+										<?php echo $value->caption; ?>
+									</span>
+								</td>
+								<td><?php echo $value->html; ?></td>
+							</tr>
+					<?php endforeach; ?>
+				</table>
+			</fieldset>
 			
-			<div id="page-THEME" class="tab-pane">
-				<div class="row-fluid">
-					<div class="span12">
-						<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-							<?php foreach($this->themeConfig as $key=>$value):?>
-								<tr>
-									<td class="paramlist_key" width="40%">
-										<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
-											<?php echo $value->caption; ?>
-										</span>
-									</td>
-									<td><?php echo $value->html; ?></td>
-								</tr>
-							<?php endforeach; ?>
-						</table>
-					</div>
-				</div>
-			</div>
-			
-			<div id="page-PUSH" class="tab-pane">
-				<div class="row-fluid">
-					<div class="span12">
-						<fieldset class="adminform">
-							<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE');?></legend>
-							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-								<?php 
-									foreach($this->pushConfigIphone as $key=>$value):
-								?>
-										<tr>
-											<td class="paramlist_key" width="40%">
-												<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
-													<?php echo $value->caption; ?>
-												</span>
-											</td>
-											<td><?php echo $value->html; ?></td>
-										</tr>
-								<?php endforeach; ?>
-							</table>
-						</fieldset>
-						<br/>
-						<fieldset class="adminform">
-							<legend><?php echo JText::_('COM_IJOOMERADV_ANDROID');?></legend>
-							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-								<?php 
-									foreach($this->pushConfigAndroid as $key=>$value):
-								?>
-										<tr>
-											<td class="paramlist_key" width="40%">
-												<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
-													<?php echo $value->caption; ?>
-												</span>
-											</td>
-											<td><?php echo $value->html; ?></td>
-										</tr>
-								<?php endforeach; ?>
-							</table>
-						</fieldset>
-					</div>
-				</div>
-			</div>
-			
-			<div id="page-ENCRYPTION" class="tab-pane">
-				<div class="row-fluid">
-					<div class="span12">
-						<table class="paramlist admintable" width="50%">
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_IJOOMERADV_ANDROID');?></legend>
+				<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
+					<?php 
+						foreach($this->pushConfigAndroid as $key=>$value):
+					?>
+							<tr>
+								<td class="paramlist_key" width="40%">
+									<span class="hasTip" title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+										<?php echo $value->caption; ?>
+									</span>
+								</td>
+								<td><?php echo $value->html; ?></td>
+							</tr>
+					<?php endforeach; ?>
+				</table>
+			</fieldset>
+		<?php echo $pane->endPanel();
+		//encryption 
+		echo $pane->startPanel(JText::_('COM_IJOOMERADV_ENCRYPTION'),'COM_IJOOMERADV_ENCRYPTION'); ?>
+			<table class="paramlist admintable" width="50%">
 				<?php
 				foreach($this->encryption as $key=>$value):?>
 					<tr>
@@ -165,9 +137,9 @@ $options = array(
 				<?php if($keyval == ''){?>
 				<td>
 				<?php 
-					//$md5_hash = md5(rand(0,999)); 
+					/*$md5_hash = md5(rand(0,999)); 
 					//We don't need a 32 character long string so we trim it down to 5 
-					//$security_code = substr($md5_hash, 15, 5);
+					$security_code = substr($md5_hash, 15, 5);*/
 						?>
 							<form>
 			    				<label for="length" style="display:none;">Length: </label>
@@ -177,20 +149,17 @@ $options = array(
 							    <label for="gencode" style="display:none;"> Generated Code: </label>
 							    <!-- input type="text" id="IJOOMER_ENC_KEY" name="IJOOMER_ENC_KEY" style="display:none;"-->
 							   	<label style="display:none;"> Generate Key: </label>
-							   	<button class="btn btn-small" type="button" id="generate" style="margin-top:-10px;">Generate&nbsp;Key</button>
+							   	<button type="button" id="generate" style=" float: left; height: 20px; margin-right: -8px;">Generate Key</button>
 							</form>
 				</td>
 				<?php }?>
 				</tr>			
 				</table>
-					</div>
-				</div>
-			</div>
-		</div>
+		<?php echo $pane->endPanel(); 
+		
+				echo $pane->endPane();?>
 	</div>
 	<div class="clr"></div>
-	
-	
 
 	<input type="hidden" name="option" value="com_ijoomeradv" />
 	<input type="hidden" name="view" value="config" />

@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -27,7 +27,7 @@ class IjoomeradvControllerItems extends JControllerAdmin{
 	}
 
 	public function display($cachable = false, $urlparams = false){
-		JControllerLegacy::display();
+		JController::display();
 	}
 	
 	public function home(){

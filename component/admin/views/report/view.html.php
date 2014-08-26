@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+  /*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -8,12 +8,11 @@
 # Websites: http://www.ijoomer.com
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
-
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
-class ijoomeradvViewReport extends JViewLegacy 
+class ijoomeradvViewReport extends JView 
 {
 	function display($tpl = null) 
 	{
@@ -26,7 +25,7 @@ class ijoomeradvViewReport extends JViewLegacy
 		JToolBarHelper::title(JText::_( 'COM_IJOOMERADV_REPORT_TITLE' ), 'report_48');
 		
 		if(JRequest::getVar('layout')!='detail'){
-			JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);
+			JToolBarHelper::customX('home','home_32','', JText::_('COM_IJOOMERADV_HOME'), false, false);
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('', 'delete');
 		}else{

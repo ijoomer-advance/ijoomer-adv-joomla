@@ -1,10 +1,10 @@
 <?php
-  /*--------------------------------------------------------------------------------
+ /*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
 # copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+# license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Websites: http://www.ijoomer.com
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
@@ -24,7 +24,8 @@ class JInstallerExtensions extends JObject {
 		$db =& $this->parent->getDBO();
 
 		// Get the extension manifest object
-		$this->manifest =& $this->parent->getManifest();
+		$manifest =& $this->parent->getManifest();
+		$this->manifest =& $manifest->document;
 		
 		$query="SELECT `manifest_cache` 
 				FROM #__extensions 
@@ -32,9 +33,9 @@ class JInstallerExtensions extends JObject {
 				AND `element`='com_ijoomeradv'";
 		$db->setQuery($query);
 		$extension=json_decode($db->loadResult($query));
-		
+
 		// check version
-		if(floatval($this->manifest->version) != intval($extension->version)){
+		if(floatval($this->manifest->getElementByPath('version')->data()) != floatval($extension->version)){
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSIONS').' '.JText::_('COM_IJOOMERADV_INSTALL').': '.JText::_('COM_IJOOMERADV_VERSION_NOT_SUPPORTED'));
 		}
 		
@@ -44,42 +45,69 @@ class JInstallerExtensions extends JObject {
 		 * ---------------------------------------------------------------------------------------------
 		 */
 		// Set the extensions name
-		$name =$this->manifest->name;
-		$filter =& JFilterInput::getInstance();
-		$name = $filter->clean($name, 'string');	
+		$name =& $this->manifest->getElementByPath('name');
+		if(IJ_JOOMLA_VERSION===1.5) {
+			$name = JFilterInput::clean($name->data(), 'string');
+		}else{
+			$filter =& JFilterInput::getInstance();
+			$name = $filter->clean($name->data(), 'string');	
+		}
 		$this->set('name', $name);
 		
 		// Get the component description
-		$description =(string) $this->manifest->description;
-		$this->parent->set('message', $description);
-		
+		$description = & $this->manifest->getElementByPath('description');
+		if (is_a($description, 'JSimpleXMLElement')) {
+			$this->parent->set('message', $description->data());
+		} else {
+			$this->parent->set('message', '' );
+		}
+
 		/*
 		 * Backward Compatability
 		 * @todo Deprecate in future version
 		 */
-		$type = (string)$this->manifest->attributes()->type;
-		
+		$type = $this->manifest->attributes('type');
 		// Set the installation path
-		$element =& $this->manifest->files;
-		$ename =(string) $element->children()->attributes()->extensions;
+		$ename = "";
+		$element =& $this->manifest->getElementByPath('files');
 		
 		//collect images to $images variable and remove the entry from the files element		
-		if (is_a($element, 'SimpleXMLElement') && count($element->children())) {
+		if (is_a($element, 'JSimpleXMLElement') && count($element->children())) {
+			$files =& $element->children(); 
+			foreach ($files as $file) {
+				if ($file->attributes(strtolower($type))) {
+					$ename = $file->attributes(strtolower($type));
+					break;
+				}
+			}
+			
 			$tm=0;
-			foreach ($element->children()->image as $key=>$value){
-				$images[$tm]=(string)$value;
-				$tm++;
+			foreach ($element->_children as $key=>$value){
+				if($value->_name=="image"){
+					$images[$tm]=$value->_data;
+					$tm++;
+				}
 			}
 		}
 		
 		//set extension name
-		$extension_classname = (string)$this->manifest->extension_classname;
-		$this->set('extension_classname', $extension_classname);
+		$extension_classname = $this->manifest->getElementByPath('extension_classname');
+	 	if (is_a($extension_classname, 'JSimpleXMLElement')) {
+			$this->set('extension_classname', $extension_classname->data());
+			$extension_classname = $extension_classname->data();
+		} else {
+			$this->set('extension_classname', '' );
+		}
 		
 		// set extension option
-		$extension_option = (string)$this->manifest->extension_option;
-		$this->set('extension_option', $extension_option);
-		
+		$extension_option = $this->manifest->getElementByPath('extension_option');
+		if (is_a($extension_option, 'JSimpleXMLElement')) {
+			$this->set('extension_option', $extension_option->data());
+			$extension_option = $extension_option->data();
+		} else {
+			$this->set('extension_option', '' );
+		}
+			
 		if (!empty ($ename) && !empty($extension_classname)) {  
 			$this->parent->setPath('extension_root',IJ_SITE.DS.'extensions');
 		} else {
@@ -87,11 +115,21 @@ class JInstallerExtensions extends JObject {
 			return false;
 		}
 		
-		$registration = (boolean)$this->manifest->registration;
-		$this->set('registration', $registration);
+		$registration = $this->manifest->getElementByPath('registration');
+	 	if (is_a($registration, 'JSimpleXMLElement')) {
+			$this->set('registration', $registration->data());
+			$registration = $registration->data();
+		} else {
+			$this->set('registration', '' );
+		}
 		
-		$default_registration = (boolean)$this->manifest->default_registration;
-		$this->set('default_registration', $default_registration);
+		$default_registration = $this->manifest->getElementByPath('default_registration');
+	 	if (is_a($default_registration, 'JSimpleXMLElement')) {
+			$this->set('default_registration', $default_registration->data());
+			$default_registration = $default_registration->data();
+		} else {
+			$this->set('default_registration', '' );
+		}
 		
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -201,7 +239,7 @@ class JInstallerExtensions extends JObject {
 
 		// Was there a module already installed with the same name?
 		if ($extension_id) {
-			if (!$this->parent->isOverwrite()){
+			if (!$this->parent->getOverwrite()){
 				// Install failed, roll back changes
 				$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION').' '.JText::_('COM_IJOOMERADV_INSTALL').': '.JText::_('COM_IJOOMERADV_EXTENSION').' "'.$ename.'" '.JText::_('COM_IJOOMERADV_ALREADY_EXISTS'));
 				return false;
@@ -223,33 +261,32 @@ class JInstallerExtensions extends JObject {
 			$db->setQuery($query);
 			$db->Query();
 			
-			$pconfig =& $this->manifest->config;
+			$pconfig =& $this->manifest->getElementByPath('config');
 				
-			if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children())) {
+			if (is_a($pconfig, 'JSimpleXMLElement') && count($pconfig->children())) {
 				$cfgs =& $pconfig->children(); 
 				
 				foreach ($cfgs as $cfg) {
-					//if($cfg->_name=="cfg"){
-						$cnfg=trim((string)$cfg);
+					if($cfg->_name=="cfg"){
 						$query="SELECT count(*) 
 								FROM `#__ijoomeradv_{$this->get('extension_classname')}_config` 
-								WHERE `name`='{$cnfg}'";
+								WHERE `name`='{$cfg->_data}'";
 						$db->setQuery($query);
 						if(!$db->loadResult()){
 							$query="INSERT INTO #__ijoomeradv_{$this->get('extension_classname')}_config (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`) 
 									VALUES (NULL,
-									'".trim( (string)$cfg->attributes()->caption )."', 
-									'".trim( (string)$cfg->attributes()->description )."', 
-									'".trim( (string)$cfg)."', 
-									'".trim( (string)$cfg->attributes()->value )."', 
-									'".trim( (string)$cfg->attributes()->options )."', 
-									'".trim( (string)$cfg->attributes()->type )."', 
-									'".trim( (string)$cfg->attributes()->group )."', 
-									'".trim( (string)$cfg->attributes()->server )."')";
+									'".trim($cfg->attributes("caption"))."', 
+									'".trim($cfg->attributes("description"))."', 
+									'".trim($cfg->_data)."', 
+									'".trim($cfg->attributes("value"))."', 
+									'".trim($cfg->attributes("options"))."', 
+									'".trim($cfg->attributes("type"))."', 
+									'".trim($cfg->attributes("group"))."', 
+									'".trim($cfg->attributes("server"))."')";
 							$db->setQuery($query);
 							$db->query();		
 						}
-					//}
+					}
 				}
 			}
 			
@@ -285,25 +322,25 @@ class JInstallerExtensions extends JObject {
 				$this->setError($db->getErrorMsg());
 				return false;
 			}else{
-				$pconfig =& $this->manifest->config;
-				
-				if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children())) {
-					$cfgs =& $pconfig->children();
+				$pconfig =& $this->manifest->getElementByPath('config');
+
+				if (is_a($pconfig, 'JSimpleXMLElement') && count($pconfig->children())) {
+					$cfgs =& $pconfig->children(); 
 					foreach ($cfgs as $cfg) {
-						//if($cfg->_name=="cfg"){
+						if($cfg->_name=="cfg"){
 							$query="INSERT INTO #__ijoomeradv_{$this->get('extension_classname')}_config (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`) 
 									VALUES (NULL,
-									'".trim( (string)$cfg->attributes()->caption )."', 
-									'".trim( (string)$cfg->attributes()->description )."', 
-									'".trim( (string)$cfg )."', 
-									'".trim( (string)$cfg->attributes()->value )."', 
-									'".trim( (string)$cfg->attributes()->options )."', 
-									'".trim( (string)$cfg->attributes()->type )."', 
-									'".trim( (string)$cfg->attributes()->group )."', 
-									'".trim( (string)$cfg->attributes()->server )."')";
+									'".trim($cfg->attributes("caption"))."', 
+									'".trim($cfg->attributes("description"))."', 
+									'".trim($cfg->_data)."', 
+									'".trim($cfg->attributes("value"))."', 
+									'".trim($cfg->attributes("options"))."', 
+									'".trim($cfg->attributes("type"))."', 
+									'".trim($cfg->attributes("group"))."', 
+									'".trim($cfg->attributes("server"))."')";
 							$db->setQuery($query);
 							$db->query();		
-						//}
+						}
 					}
 				}
 			} 

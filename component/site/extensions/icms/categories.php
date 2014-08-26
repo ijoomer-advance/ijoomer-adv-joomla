@@ -1,6 +1,6 @@
 <?php 
 /*--------------------------------------------------------------------------------
-# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 3.0)
+# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 2.5)
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
 # copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.

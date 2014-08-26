@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
 
-class ijoomeradvControllerconfig extends JControllerLegacy 
+class ijoomeradvControllerconfig extends JController 
 {
 
 	function __construct( $default = array()) 

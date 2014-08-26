@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
 
-class ijoomeradvControllerijoomeradv extends JControllerLegacy{
+class ijoomeradvControllerijoomeradv extends JController{
 	function __construct($default = array()){
 		parent::__construct($default);
 	}

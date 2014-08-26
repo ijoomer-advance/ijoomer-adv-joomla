@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS `#__ijoomeradv_menu` (
   `menudevice` int(1) NOT NULL DEFAULT '1' COMMENT 'Default:1,Android:2,Iphone:3,Both:4',
   `published` tinyint(4) NOT NULL DEFAULT '0' COMMENT 'The published state of the menu link.',
   `access` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The access level required to view the menu item.',
+  `language` char(7) NOT NULL DEFAULT '*' COMMENT 'The language level to view the menu item.',
   `views` varchar(255) NOT NULL,
   `home` tinyint(3) NOT NULL,
   `ordering` int(11) NOT NULL,

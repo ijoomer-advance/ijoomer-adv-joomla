@@ -8,9 +8,7 @@
 # Websites: http://www.ijoomer.com
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
-
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));

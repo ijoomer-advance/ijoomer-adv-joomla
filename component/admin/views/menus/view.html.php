@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -61,7 +61,7 @@ class IjoomeradvViewMenus extends JViewLegacy
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_ITEMS'),'index.php?option=com_ijoomeradv&view=items',JRequest::getVar('view') == 'items');
 
 		JToolBarHelper::title(   JText::_( 'COM_IJOOMERADV_MENUS' )	, 'menumanager_48' );
-		JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);
+		JToolBarHelper::customX('home','home_32','', JText::_('COM_IJOOMERADV_HOME'), false, false);
 		JToolBarHelper::divider();
 		JToolBarHelper::addNew('add');
 		JToolBarHelper::editList('edit');

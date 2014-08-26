@@ -1,6 +1,6 @@
 <?php
 /*--------------------------------------------------------------------------------
-# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 3.0)
+# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 2.5)
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
 # copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
@@ -12,6 +12,10 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JHTML::_('behavior.tooltip');
+
+require_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.'icms'.DS.'helper.php';
+$icms_helper = new icms_helper();
+$categories = $icms_helper->getCategoryList();
 
 ?>
 <form action="<?php echo JRoute::_ ( $this->request_url )?>" method="post" name="adminForm" id="adminForm">

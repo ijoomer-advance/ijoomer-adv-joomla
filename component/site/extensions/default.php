@@ -58,11 +58,21 @@ class default_menu {
 								<span class="star">&nbsp;*</span>
 							</label>';
 				
-				$html .= '<input type="text" name="jform[request][youtubeuser]" id="jform_request_youtubeuser" value="'.$menuoptions['remoteUse']['username'].'">';
+				$html .= '<input type="text" class="required" name="jform[request][youtubeuser]" id="jform_request_youtubeuser" value="'.$menuoptions['remoteUse']['username'].'">';
+				break;
+				
+			case 'VimeoPlaylist':
+				$html = '<label title="" for="jform_request_vimeouser" id="jform_request_vimeouser-lbl" aria-invalid="false">'.JText::_('COM_IJOOMERADV_VIMEO_USERNAME').'
+								<span class="star">&nbsp;*</span>
+							</label>';
+				
+				$html .= '<input type="text" class="required" name="jform[request][vimeouser]" id="jform_request_vimeouser" value="'.$menuoptions['remoteUse']['username'].'">';
 				break;
 				
 			case 'contactUs':
-				$ID = (isset($menuoptions['remoteUse']['id']))? $menuoptions['remoteUse']['id'] : 0;
+				//echo "<pre>";print_r($menuoptions);exit;
+				$ID = $menuoptions['remoteUse']['id'];
+				//$subjectLine = $menuoptions['remoteUse']['subjectLine'];
 				$db =JFactory::getDbo();
 				$sql = "SELECT c.name 
     					FROM #__contact_details as c 
@@ -79,6 +89,7 @@ class default_menu {
 		
 				// Add the script to the document head.
 				JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+				//echo "<pre>";print_r($menuoptions);exit;
 				$html='
 				<fieldset class="panelform">
 					<legend>Recommonded Options</legend>
@@ -289,38 +300,46 @@ class default_menu {
 				$options = '{"serverUse":"","remoteUse":'.$params.'}';
 				break;
 				
-				case 'youtubePlaylist':
-					$params = $menuoptions['youtubeuser'];
-					$options = '{"serverUse":"","remoteUse":{"username":"'.$params.'"}}';
+			case 'youtubePlaylist':
+				$params = $menuoptions['youtubeuser'];
+				$options = '{"serverUse":"","remoteUse":{"username":"'.$params.'"}}';
+			break;
+			
+			case 'VimeoPlaylist':
+				$params = $menuoptions['vimeouser'];
+				$options = '{"serverUse":"","remoteUse":{"username":"'.$params.'"}}';
+			break;
+			
+			case 'contactUs':
+				//echo "<pre>";print_r($menuoptions);exit;
+				$id =  $menuoptions['id'];
+				$subjectLine =  $menuoptions['subjectLine'];
+				$showName = $menuoptions['showName'];
+				$showPosition =  $menuoptions['showPosition'];
+				$showEmail =  $menuoptions['showEmail'];
+				$showStreet =  $menuoptions['showStreet'];
+				$showCity =  $menuoptions['showCity'];
+				$showState =  $menuoptions['showState'];
+				$showPostalCode =  $menuoptions['showPostalCode'];
+				$showCountry =  $menuoptions['showCountry'];
+				$showTelephone =  $menuoptions['showTelephone'];
+				$showMobile =  $menuoptions['showMobile'];
+				$showFax =  $menuoptions['showFax'];
+				$showWebpage =  $menuoptions['showWebpage'];
+				$showMiscInfo =  $menuoptions['showMiscInfo'];
+				$showMiscImage =  $menuoptions['showMiscImage'];
+				$showLinks =  $menuoptions['showLinks'];
+				$linkALable =  $menuoptions['linkALable'];
+				$linkBLable =  $menuoptions['linkBLable'];
+				$linkCLable =  $menuoptions['linkCLable'];
+				$linkDLable =  $menuoptions['linkDLable'];
+				$linkELable =  $menuoptions['linkELable'];
+				$showContactForm =  $menuoptions['showContactForm'];
+				$sendCopy = $menuoptions['sendCopy'];
+				$thankYouText =  $menuoptions['thankYouText'];
+				$options = '{"serverUse":{"showName":"'.$showName.'","showPosition":"'.$showPosition.'","showEmail":"'.$showEmail.'","showStreet":"'.$showStreet.'","showCity":"'.$showCity.'","showState":"'.$showState.'","showPostalCode":"'.$showPostalCode.'","showCountry":"'.$showCountry.'","showTelephone":"'.$showTelephone.'","showMobile":"'.$showMobile.'","showFax":"'.$showFax.'","showWebpage":"'.$showWebpage.'","showMiscInfo":"'.$showMiscInfo.'","showMiscImage":"'.$showMiscImage.'","showLinks":"'.$showLinks.'","linkALable":"'.$linkALable.'","linkBLable":"'.$linkBLable.'","linkCLable":"'.$linkCLable.'","linkDLable":"'.$linkDLable.'","linkELable":"'.$linkELable.'","sendCopy":"'.$sendCopy.'","thankYouText":"'.$thankYouText.'"},"remoteUse":{"id":"'.$id.'","subjectLine":"'.$subjectLine.'","showContactForm":"'.$showContactForm.'"}}';
+				//echo "<pre>";print_r($options);exit;
 				break;
-				case 'contactUs':
-					$id =  $menuoptions['id'];
-					$subjectLine =  $menuoptions['subjectLine'];
-					$showName = $menuoptions['showName'];
-					$showPosition =  $menuoptions['showPosition'];
-					$showEmail =  $menuoptions['showEmail'];
-					$showStreet =  $menuoptions['showStreet'];
-					$showCity =  $menuoptions['showCity'];
-					$showState =  $menuoptions['showState'];
-					$showPostalCode =  $menuoptions['showPostalCode'];
-					$showCountry =  $menuoptions['showCountry'];
-					$showTelephone =  $menuoptions['showTelephone'];
-					$showMobile =  $menuoptions['showMobile'];
-					$showFax =  $menuoptions['showFax'];
-					$showWebpage =  $menuoptions['showWebpage'];
-					$showMiscInfo =  $menuoptions['showMiscInfo'];
-					$showMiscImage =  $menuoptions['showMiscImage'];
-					$showLinks =  $menuoptions['showLinks'];
-					$linkALable =  $menuoptions['linkALable'];
-					$linkBLable =  $menuoptions['linkBLable'];
-					$linkCLable =  $menuoptions['linkCLable'];
-					$linkDLable =  $menuoptions['linkDLable'];
-					$linkELable =  $menuoptions['linkELable'];
-					$showContactForm =  $menuoptions['showContactForm'];
-					$sendCopy = $menuoptions['sendCopy'];
-					$thankYouText =  $menuoptions['thankYouText'];
-					$options = '{"serverUse":{"showName":"'.$showName.'","showPosition":"'.$showPosition.'","showEmail":"'.$showEmail.'","showStreet":"'.$showStreet.'","showCity":"'.$showCity.'","showState":"'.$showState.'","showPostalCode":"'.$showPostalCode.'","showCountry":"'.$showCountry.'","showTelephone":"'.$showTelephone.'","showMobile":"'.$showMobile.'","showFax":"'.$showFax.'","showWebpage":"'.$showWebpage.'","showMiscInfo":"'.$showMiscInfo.'","showMiscImage":"'.$showMiscImage.'","showLinks":"'.$showLinks.'","linkALable":"'.$linkALable.'","linkBLable":"'.$linkBLable.'","linkCLable":"'.$linkCLable.'","linkDLable":"'.$linkDLable.'","linkELable":"'.$linkELable.'","sendCopy":"'.$sendCopy.'","thankYouText":"'.$thankYouText.'"},"remoteUse":{"id":"'.$id.'","subjectLine":"'.$subjectLine.'","showContactForm":"'.$showContactForm.'"}}';
-					break;
 		}
 		
 		if($options){
@@ -328,6 +347,7 @@ class default_menu {
 					SET menuoptions = '".$options."' 
 					WHERE views = '".$extension.".".$extView.".".$extTask.".".$remoteTask."'
 					AND id='".$data['id']."'";
+			
 			$db->setQuery($sql);
 			$db->query();
 		}

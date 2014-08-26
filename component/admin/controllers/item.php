@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -23,7 +23,7 @@ jimport('joomla.application.component.controllerform');
 class IjoomeradvControllerItem extends JControllerForm{
 	
 	public function display($cachable = false, $urlparams = false){
-		JControllerLegacy::display();
+		JController::display();
 	}
 	
 	
@@ -187,6 +187,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 				foreach ($devicetypearray as $dkey=>$dvalue){
 					$imageResized = imagecreatetruecolor($dvalue, $dvalue);
 					
+					
 					if (function_exists ( "imageAntiAlias" )){
 						imageAntiAlias ( $imageResized, true );
 					}
@@ -195,7 +196,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 						imagesavealpha ( $imageResized, true );
 					}
 					if (function_exists ( "imagecolorallocatealpha" )){
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+						$transparent = imagecolorallocatealpha ( $imageResized, 0, 0, 0, 127 );
 					}
 					
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue, $dvalue, imagesx($image), imagesy($image));
@@ -231,6 +232,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 										
 				foreach ($devicetypearray as $dkey=>$dvalue){
 					$imageResized = imagecreatetruecolor($dvalue['width'], $dvalue['height']);
+					imagesavealpha($imageResized, true);
 					
 					if (function_exists ( "imageAntiAlias" )){
 						imageAntiAlias ( $imageResized, true );
@@ -240,7 +242,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 						imagesavealpha ( $imageResized, true );
 					}
 					if (function_exists ( "imagecolorallocatealpha" )){
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+						$transparent = imagecolorallocatealpha ( $imageResized, 0, 0, 0, 127 );
 					}
 					
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
@@ -285,7 +287,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 						imagesavealpha ( $imageResized, true );
 					}
 					if (function_exists ( "imagecolorallocatealpha" )){
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+						$transparent = imagecolorallocatealpha ( $imageResized, 0, 0, 0, 127 );
 					}
 					
 					imagecopyresampled($imageResized, $image1, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image1), imagesy($image1));
@@ -323,16 +325,14 @@ class IjoomeradvControllerItem extends JControllerForm{
 
 		// Validate the posted data.
 		// This post is made up of two forms, one for the item and one for params.
-
 		$form = $model->getForm($data);
-		
 		if (!$form){
 			JError::raiseError(500, $model->getError());
 
 			return false;
 		}
 		
-		$menuoptions = (isset($data['request'])) ? $data['request'] : Null;
+		$menuoptions = $data['request'];
 		$data = $model->validate($form, $data);
 		
 		//changes for custom menu type
@@ -354,8 +354,7 @@ class IjoomeradvControllerItem extends JControllerForm{
 			$data['link'] = 'index.php?' . urldecode(http_build_query($args, '', '&'));
 			unset($data['request']);
 		}
-		//saurin
-		//echo '<pre>';print_r($data);exit;
+
 		// Check for validation errors.
 		if ($data === false){
 			// Get the validation messages.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
-<extension type="component" version="3.0"  method="upgrade">
+<extension type="component" version="2.5.0"  method="upgrade">
 	<name>ijoomeradv</name>
 	<creationDate>22-Apr-2013</creationDate>   
 	<author>Tailored Solutions</author>
@@ -13,7 +13,8 @@
 	iJoomerAdv component has been successfully installed.
 	</description>
 	
-	<scriptfile>script.ijoomeradv.php</scriptfile>
+	<installfile>install.ijoomeradv.php</installfile>
+	<uninstallfile>uninstall.ijoomeradv.php</uninstallfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">install.mysql.utf8.sql</file>

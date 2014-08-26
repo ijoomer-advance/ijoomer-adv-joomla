@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -10,6 +10,9 @@
 ----------------------------------------------------------------------------------*/
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+JHTML::_ ( 'behavior.tooltip' );
+jimport ( 'joomla.html.pane' );
+$pane = @JPane::getInstance ( 'sliders' );
 ?>
 
 <table class="frontmenu">
@@ -53,14 +56,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<tr>
 					<td>
 	 					<?php
-    						echo JHtml::_('tabs.start', 'tab_group_id');
-							echo JHtml::_('tabs.panel', JText::_('COM_IJOOMERADV_GENERAL_NOTE'), 'panel_1_id');
+							$title = JText::_ ( 'COM_IJOOMERADV_GENERAL_NOTE' );
+							echo $pane->startPane ( 'start-pane' );
+							echo $pane->startPanel ( $title, 'COM_IJOOMERADV_GENERAL_NOTE' );
 						?>
 						<br/>
 						<fieldset>
 							<legend>Creating Menu Items.</legend>
 							<ul>
-								<li>From the Joomla Admin Panel, iJoomer Advance will allow you to manage the menu items specific to the Mobile Application from the Joomla Admin panel. You can add a New Menu to any of the three pre-defined positions i.e. "Bottom Tab Bar", "Home Screen Menu" and "Slide-Out Menu". To do so, simply add a new menu from the admin panel, and assign it to any of the above three positions. Now, select the screen(s) where you want this menu to be display (remember the position, it will display on that position).<br/><img src="./components/com_ijoomeradv/assets/images/menuitmes_img.jpg" style="width:100%" /></li>
+								<li>From the Joomla Admin Panel, iJoomer Advance will allow you to manage the menu items specific to the Mobile Application from the Joomla Admin panel. You can add a New Menu to any of the three pre-defined positions i.e. "Bottom Tab Bar", "Home Screen Menu" and "Slide-Out Menu". To do so, simply add a new menu from the admin panel, and assign it to any of the above three positions. Now, select the screen(s) where you want this menu to be display (remember the position, it will display on that position).</li>
+								<li><img src="./components/com_ijoomeradv/assets/images/menuitmes_img.jpg" style="width:100%" /></li>
 								<li>items (similar to Joomla). 'Select Menu Type' will list up all the menu types available in the iJoomer app. Once you select the menu type, param in accordance with the menu type selected will be displayed. For example, Single Article menu type will allow you to select that particular article. Keep adding menu items as you like.</li>
 							</ul>
 						</fieldset>
@@ -109,7 +114,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 							</ul>
 						</fieldset>
 						<?php
-							echo JHtml::_('tabs.end');
+							echo $pane->endPanel ();
+							echo $pane->endPane ();
 						?>
 					</td>
 				</tr>

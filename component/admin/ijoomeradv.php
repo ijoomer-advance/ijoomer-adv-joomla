@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -11,7 +11,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-defined ( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR );
 define('IJADV_VERSION',1.5);
 
 jimport ( 'joomla.version' );

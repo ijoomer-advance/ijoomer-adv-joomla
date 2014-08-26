@@ -131,6 +131,15 @@
 		</field>
 		
 		<field
+			name="language"
+			type="contentlanguage"
+			label="COM_IJOOMERADV_ITEM_FIELD_LANGUAGE_LABEL"
+			description="COM_IJOOMERADV_ITEM_FIELD_LANGUAGE_DESC"
+			class="inputbox">
+			<option value="*">JALL</option>
+		</field>
+		
+		<field
 			name="requiredField"
 			type="hidden"
 			label="COM_IJOOMERADV_ITEM_FIELD_REQUIRED_LABEL"

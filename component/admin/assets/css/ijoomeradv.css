@@ -56,6 +56,10 @@ div#frontmenuitem img.disabled{
     background-image: url("../images/pushnotification_48.png");
 }
 
+.icon-48-report_48 {
+    background-image: url("../images/report_48.png");
+}
+
 .icon-32-home_32 {
     background-image: url("../images/home_32.png");
 }

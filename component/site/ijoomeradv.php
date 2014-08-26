@@ -11,8 +11,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-define('IJADV_VERSION',1.4);
-defined ( 'DS' ) or define ( 'DS', DIRECTORY_SEPARATOR);
+define('IJADV_VERSION',1.5);
 
 $document = JFactory::getDocument (); // get document object
 $document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.DS.'ijoomeradv.css' ); // add ijoomeradv default style to document stack
@@ -37,7 +36,7 @@ set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom er
 $IJHelperObj= new ijoomeradvHelper(); // create hepler object
 $IJHelperObj->getRequestedObject(); // get requested json object 
 
-//defined ( 'IJ_JOMSOCIAL_VERSION' ) or define ( 'IJ_JOMSOCIAL_VERSION', $IJHelperObj->getJomSocialVersion() ); // define jomsocial version
+defined ( 'IJ_JOMSOCIAL_VERSION' ) or define ( 'IJ_JOMSOCIAL_VERSION', $IJHelperObj->getJomSocialVersion() ); // define jomsocial version
 
 $controller = IJReq::getView(); // get the view
 $path = IJ_CONTROLLER . DS . $controller . '.php';

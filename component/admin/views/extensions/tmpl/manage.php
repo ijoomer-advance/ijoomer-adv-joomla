@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -12,9 +12,9 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm">
 	<div id="editcell">
-    	<table class="adminlist table table-striped">
+    	<table class="adminlist">
     		<thead>
         		<tr>
             		<th width="10px">
@@ -50,7 +50,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			                <?php echo $key+1; ?>
 			            </td>
 			            <td align="center" width="10px">
-			            	<?php echo JHtml::_('grid.id', $key, $value->id); ?>
+			                <input type="checkbox" id="cb<?php echo $key;?>" name="cid[]" value="<?php echo $value->id; ?>" onclick="isChecked(this.checked);" />
 			            </td>
 			            <td align="center" width="50px">
 			                <img src="<?php echo JURI::base().'components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'images'.DS.$value->classname.'_48.png'; ?>" alt="<?php echo $value->name; ?>"/>

@@ -19,7 +19,8 @@ class TablePushnotif extends JTable{
 	var $to_user		= null;
 	var $to_all			= null;
 	var $message		= null;
-	var $time			= null;		
+	var $time			= null;
+	var $link			= null;		
 	
 	function TablePushnotif(& $db) {
 		$this->_table_prefix = '#__ijoomeradv_';

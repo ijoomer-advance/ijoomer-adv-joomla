@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -86,11 +86,11 @@ if(JRequest::getVar('ajax')){
 	 			if(position==1 || position==2){
 	 				document.getElementById('imagetab').style.display = 'none';
 	 				document.getElementById('imagetabactive').style.display = 'none';
-	 				document.getElementById('imageicon').style.display = 'table-row';
+	 				document.getElementById('imageicon').style.display = 'inline';
 	 			}else{
 	 				document.getElementById('imageicon').style.display = 'none';
-	 				document.getElementById('imagetab').style.display = 'table-row';
-	 				document.getElementById('imagetabactive').style.display = 'table-row';
+	 				document.getElementById('imagetab').style.display = 'inline';
+	 				document.getElementById('imagetabactive').style.display = 'inline';
 			 	}
 		    }
 		}
@@ -102,136 +102,115 @@ if(JRequest::getVar('ajax')){
 
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=item&layout=edit&id='.(int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="item-form" class="form-validate">
 
-<div class="fltlft span12">
+<div class="width-60 fltlft">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_IJOOMERADV_ITEM_DETAILS');?></legend>
-			<table class="table table-striped">
-				<tr>
-					<td>
-						<table class="table table-striped">
-							<tr>
-								<td><?php echo $this->form->getLabel('type'); ?></td>
-								<td><?php echo $this->form->getInput('type'); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo $this->form->getLabel('title'); ?></td>
-								<td><?php echo $this->form->getInput('title'); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo $this->form->getLabel('menutype'); ?></td>
-								<td><select size="1" class="inputbox" name="jform[menutype]" id="jform_menutype" aria-invalid="false" onchange="changeimage()">
-								<?php 
-									foreach ($this->menutypes as $key=>$value){
-										$selected = ($value->checked)?'selected="selected"':'';
-										echo '<option '.$selected.' value="'.$value->id.'">'.$value->title.'</option>';
-									}
-								?></select>
-								</td>
-							</tr>
-					
-							<?php if ($this->item->type =='url'): ?>
-								<?php $this->form->setFieldAttribute('link', 'readonly', 'false');?>
-								<tr>
-									<td><?php echo $this->form->getLabel('link'); ?></td>
-									<td><?php echo $this->form->getInput('link'); ?></td>
-								</tr>
-							<?php endif; ?>
-							
-							<tr>
-								<td><?php echo $this->form->getLabel('menudevice'); ?></td>
-								<td><?php echo $this->form->getInput('menudevice'); ?></td>
-							<tr>
-							
-							<tr>
-								<td><?php echo $this->form->getLabel('note'); ?></td>
-								<td><?php echo $this->form->getInput('note'); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo $this->form->getLabel('published'); ?></td>
-								<td><?php echo $this->form->getInput('published'); ?></td>
-							</tr>
-							<tr>
-								<td><?php echo $this->form->getLabel('access'); ?></td>
-								<td><?php echo $this->form->getInput('access'); ?></td>
-							</tr>
-							<tr>	
-								<td><?php echo $this->form->getLabel('home'); ?></td>
-								<td><?php echo $this->form->getInput('home'); ?></td>
-							</tr>
-							<tr>	
-								<td><?php echo $this->form->getLabel('requiredField'); ?></td>
-								<td><?php echo $this->form->getInput('requiredField'); ?></td>
-							</tr >
-							<?php echo $this->form->getLabel('views'); ?>
-							<?php echo $this->form->getInput('views'); ?>
-							<tr id="imageicon">
-								<td><label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl" aria-invalid="false">Icon Image</label></td>				
-								<td><input type="file" value="" id="jform_image_icon" name="jform[imageicon]" class="" aria-invalid="false"></td>
-							</tr>
-							<tr id="imagetab">
-								<td><label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl" aria-invalid="false">Tab Image</label></td>				
-								<td><input type="file" value="" id="jform_image_tab" name="jform[imagetab]" class="" aria-invalid="false"></td>
-							</tr>
-							
-							<tr id="imagetabactive">
-								<td><label title="" class="hasTip" for="jform_image_tab_active" id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label></td>				
-								<td><input type="file" value="" id="jform_image_tab_active" name="jform[imagetabactive]" class="" aria-invalid="false"></td>
-							</tr>
-							
-							<tr>
-								<td>&nbsp;</td>
-								<td id="imagedescnote"><span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">114x114 px</font></td>
-							</tr>
-						</table>
-					</td>
-					<td width="300px">
-						<?php if($this->form->getValue('requiredField') == 1){ ?>
-							<div class="">
-								<?php echo JHtml::_('sliders.start', 'menu-sliders-'.$this->item->id); ?>
-			
-									<div class="clr"></div>
-			
-						<?php echo JHtml::_('sliders.panel', JText::_('COM_IJOOMERADV_ITEM_EXTRA_PARAMS_ASSIGNMENT'), 'module-options'); ?>
-						<fieldset>
-							<?php 
-								if($this->form->getValue('views')){
-									$view = explode('.',$this->form->getValue('views'));
-									$extension	 = $view[0];
-									$extView	 = $view[2];
-									$menuoptions = $this->form->getValue('menuoptions');
-									if($extView == 'custom'){
-										$menuoptions = json_decode($menuoptions,true);
-										if($this->form->getValue('id')){
-											$menuoptions['remotetask'] = $view[3];
-										}
-										$menuoptions = json_encode($menuoptions);
-									}
-									
-									if($extension != 'default'){
-										require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.DS.$extension.'.php');
-									}else{
-										require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.'.php');
-									}
-									
-									$extClass	= $extension.'_menu';
-									$extClass 	= new $extClass();
-									echo $extClass->getRequiredInput($extension,$extView,$menuoptions);
-								}
-							?>
-						</fieldset>
-			
-				<?php echo JHtml::_('sliders.end'); ?>
-			
-			</div>
-			<?php }?>
-		</td>
-		</tr>
-		</table>
-		
-		
+			<ul class="adminformlist">
+
+				<li><?php echo $this->form->getLabel('type'); ?>
+				<?php echo $this->form->getInput('type'); ?></li>
+
+				<li><?php echo $this->form->getLabel('title'); ?>
+				<?php echo $this->form->getInput('title'); ?></li>
+
+				<li><?php echo $this->form->getLabel('menutype'); ?>
+				<select size="1" class="inputbox" name="jform[menutype]" id="jform_menutype" aria-invalid="false" onchange="changeimage()">
+				<?php 
+					foreach ($this->menutypes as $key=>$value){
+						$selected = ($value->checked)?'selected="selected"':'';
+						echo '<option '.$selected.' value="'.$value->id.'">'.$value->title.'</option>';
+					}
+				?></select>
+				</li>
+				
+				<?php if ($this->item->type =='url'): ?>
+					<?php $this->form->setFieldAttribute('link', 'readonly', 'false');?>
+					<li><?php echo $this->form->getLabel('link'); ?>
+					<?php echo $this->form->getInput('link'); ?></li>
+				<?php endif; ?>
+				
+				<li><?php echo $this->form->getLabel('menudevice'); ?>
+				<?php echo $this->form->getInput('menudevice'); ?></li>
+
+				<li><?php echo $this->form->getLabel('note'); ?>
+				<?php echo $this->form->getInput('note'); ?></li>
+
+				<li><?php echo $this->form->getLabel('published'); ?>
+				<?php echo $this->form->getInput('published'); ?></li>
+
+				<li><?php echo $this->form->getLabel('access'); ?>
+				<?php echo $this->form->getInput('access'); ?></li>
+
+				<li><?php echo $this->form->getLabel('views'); ?>
+				<?php echo $this->form->getInput('views'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('home'); ?>
+				<?php echo $this->form->getInput('home'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('requiredField'); ?>
+				<?php echo $this->form->getInput('requiredField'); ?></li>
+				
+				<div id="imageicon">
+					<li><label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl" aria-invalid="false">Icon Image</label>				
+					<input type="file" value="" id="jform_image_icon" name="jform[imageicon]" class="" aria-invalid="false"></li>
+				</div>
+				
+				<div id="imagetab">
+					<li><label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl" aria-invalid="false">Tab Image</label>				
+					<input type="file" value="" id="jform_image_tab" name="jform[imagetab]" class="" aria-invalid="false"></li>
+				</div>
+				
+				<div id="imagetabactive">
+					<li><label title="" class="hasTip" for="jform_image_tab_active" id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label>				
+					<input type="file" value="" id="jform_image_tab_active" name="jform[imagetabactive]" class="" aria-invalid="false"></li>
+				</div>
+				
+				<div style="clear:both;float:left;padding-left:25%;" id="imagedescnote">
+					<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">114x114 px</font>
+				</div>
+		</ul>
 
 	</fieldset>
 </div>
+<?php if($this->form->getValue('requiredField') == 1){ ?>
+<div class="width-40 fltrt">
+	<?php echo JHtml::_('sliders.start', 'menu-sliders-'.$this->item->id); ?>
+
+		<div class="clr"></div>
+
+			<?php echo JHtml::_('sliders.panel', JText::_('COM_IJOOMERADV_ITEM_EXTRA_PARAMS_ASSIGNMENT'), 'module-options'); ?>
+			<fieldset>
+				<?php 
+					if($this->form->getValue('views')){
+						$view = explode('.',$this->form->getValue('views'));
+						$extension	 = $view[0];
+						$extView	 = $view[2];
+						$menuoptions = $this->form->getValue('menuoptions');
+						if($extView == 'custom'){
+							$menuoptions = json_decode($menuoptions,true);
+							if($this->form->getValue('id')){
+								$menuoptions['remotetask'] = $view[3];
+							}
+							$menuoptions = json_encode($menuoptions);
+						}
+						
+						if($extension != 'default'){
+							require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.DS.$extension.'.php');
+						}else{
+							require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.'.php');
+						}
+						
+						$extClass	= $extension.'_menu';
+						$extClass 	= new $extClass();
+						echo $extClass->getRequiredInput($extension,$extView,$menuoptions);
+					}
+				?>
+			</fieldset>
+
+	<?php echo JHtml::_('sliders.end'); ?>
+
+</div>
+<?php }?>
 <div class="width-40 fltrt">
 	<input type="hidden" name="task" value="" />
 	<?php echo $this->form->getInput('component_id'); ?>

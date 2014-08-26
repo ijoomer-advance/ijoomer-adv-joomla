@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -10,7 +10,6 @@
 ----------------------------------------------------------------------------------*/
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 ?>
 <script type="text/javascript">
 	setmenutype = function()
@@ -26,7 +25,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		var strLen = selectedMenu.length;
 		selectedMenu = selectedMenu.slice(0,strLen-1);
 		
-		window.parent.document.forms[0].elements['jform[menuitem]'].value=selectedMenu;
+		//window.parent.document.forms[0].elements['jform[menuitem]'].value=selectedMenu;
+		window.parent.document.forms.namedItem('item-form').elements['jform[menuitem]'].value=selectedMenu;
 		window.parent.SqueezeBox.close();
 	}
 </script>

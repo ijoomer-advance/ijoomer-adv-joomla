@@ -1,6 +1,6 @@
 <?php
 /*--------------------------------------------------------------------------------
-# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 3.0)
+# Ijoomeradv Extension : ICMS_1.5 (compatible with joomla 2.5)
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
 # copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
@@ -62,8 +62,8 @@ class articles {
 	function featured(){
 		$pageNO	= IJReq::getTaskData('pageNO',1,'int');
 		
-		JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');
-		$model =& JModelLegacy::getInstance('Featured', 'ContentModel', array('ignore_request'=>true));
+		JModel::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');
+		$model =& JModel::getInstance('Featured', 'ContentModel', array('ignore_request'=>true));
 		
 		$appParams = JComponentHelper::getParams('com_content');
 		$model->setState('params', $appParams);

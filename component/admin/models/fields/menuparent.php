@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -8,8 +8,8 @@
 # Websites: http://www.ijoomer.com
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
-
 defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('JPATH_BASE') or die;
 
 JFormHelper::loadFieldClass('list');
 

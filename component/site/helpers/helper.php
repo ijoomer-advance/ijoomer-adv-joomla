@@ -53,6 +53,7 @@ class ijoomeradvHelper {
 		}
 	}
 	
+	
 	public function getComponent($option){
 		$query="SELECT `extension_id` AS `id`, `element` AS `option`, `params`, `enabled` 
 				FROM #__extensions 
@@ -184,7 +185,7 @@ class IJReq{
 	 */
 	public static function setResponseCode($default=NULL){
 		$mainframe = & JFactory::getApplication();
-		$mainframe->IJObject->response->code			= intval($default);
+		$mainframe->IJObject->response->code = intval($default);
 	}
 	
 	/**
@@ -247,7 +248,8 @@ class IJPushNotif{
 		
 		if (!$fp){
 			//global mainframe;
-			print "Failed to connect ".$error." ".$errorString;
+			//print "Failed to connect ".$error." ".$errorString;
+			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return;
 		}
 		 
@@ -289,7 +291,9 @@ class IJPushNotif{
         // Execute post
         $result = curl_exec($ch);
         if ($result === FALSE) {
-        	die('Curl failed: ' . curl_error($ch));
+        	//die('Curl failed: ' . curl_error($ch));
+        	IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
+        	return;
         }
         // Close connection
         curl_close($ch);
@@ -577,6 +581,7 @@ class img_opt{
 		} 			
 	}
 }
+
 class ijoomeradvError{
 	function ijErrorHandler($errno, $errstr, $errfile, $errline )
 	{

@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -548,10 +548,10 @@ class IjoomeradvModelItem extends JModelAdmin
 			$this->setState('item.link', JArrayHelper::getValue($data, 'link'));
 			$this->setState('item.type', JArrayHelper::getValue($data, 'type'));
 		}
+
 		// Get the form.
 		$form = $this->loadForm('com_ijoomeradv.item', 'item', array('control' => 'jform', 'load_data' => $loadData), true);
-		//saurin
-		//echo '<pre>';print_r($form);exit;
+		
 		if (empty($form)) {
 			return false;
 		}
@@ -580,7 +580,6 @@ class IjoomeradvModelItem extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		
 		return array_merge((array)$this->getItem(), (array)JFactory::getApplication()->getUserState('com_ijoomeradv.edit.item.data', array()));
 	}
 
@@ -607,24 +606,26 @@ class IjoomeradvModelItem extends JModelAdmin
 	{
 		// Initialise variables.
 		$pk = JRequest::getInt('id',0);
-		
+
 		// Get a level row instance.
 		$table = $this->getTable();
 
 		// Attempt to load the row.
 		$table->load($pk);
-		
+
 		// Check for a table object error.
 		if ($error = $table->getError()) {
 			$this->setError($error);
-			return false;
+			$false = false;
+			return $false;
 		}
 
 		// Prime required properties.
-		
+
 		if ($type = $this->getState('item.type')) {
 			$table->type = $type;
 		}
+
 		if (empty($table->id)) {
 			$table->parent_id	= $this->getState('item.parent_id');
 			$table->menutype	= $this->getState('item.menutype');
@@ -640,9 +641,8 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		// Convert to the JObject before adding the params.
 		$properties = $table->getProperties(1);
-		//echo '<pre>';print_r($table);exit;
-		$result = JArrayHelper::toObject($properties,'JObject');
-		
+		$result = JArrayHelper::toObject($properties, 'JObject');
+
 		// Convert the params field to an array.
 		$registry = new JRegistry;
 		//$registry->loadString($table->params);
@@ -670,21 +670,16 @@ class IjoomeradvModelItem extends JModelAdmin
 		}
 
 		// Load associated menu items
-		$app = JFactory::getApplication();
-		//echo '<pre>';print_r($app);exit;
-		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
-		/*if ($assoc)
-		{
-			if ($pk != null)
-			{
-				$result->associations = IjoomeradvHelper::getAssociations($pk);
+		if (JFactory::getApplication()->get('menu_associations', 0)) {
+			if ($pk != null) {
+				$result->associations = IjoomerHelper::getAssociations($pk);
 			}
-			else
-			{
+			else {
 				$result->associations = array();
 			}
-		}*/
+		}
 		$result->menuordering = $pk;
+
 		return $result;
 	}
 
@@ -965,24 +960,20 @@ class IjoomeradvModelItem extends JModelAdmin
 			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 		}*/
 
-	// Association menu items
-		$app = JFactory::getApplication();
-		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
-		if ($assoc)
-		{
+		// Association menu items
+		if (JFactory::getApplication()->get('menu_associations', 0)) {
 			$languages = JLanguageHelper::getLanguages('lang_code');
 
-			$addform = new SimpleXMLElement('<form />');
+			$addform = new JXMLElement('<form />');
 			$fields = $addform->addChild('fields');
 			$fields->addAttribute('name', 'associations');
 			$fieldset = $fields->addChild('fieldset');
 			$fieldset->addAttribute('name', 'item_associations');
-			$fieldset->addAttribute('description', 'COM_MENUS_ITEM_ASSOCIATIONS_FIELDSET_DESC');
+			$fieldset->addAttribute('description', 'COM_IJOOMERADV_ITEM_ASSOCIATIONS_FIELDSET_DESC');
 			$add = false;
 			foreach ($languages as $tag => $language)
 			{
-				if ($tag != $data['language'])
-				{
+				if ($tag != $data['language']) {
 					$add = true;
 					$field = $fieldset->addChild('field');
 					$field->addAttribute('name', $tag);
@@ -990,12 +981,11 @@ class IjoomeradvModelItem extends JModelAdmin
 					$field->addAttribute('language', $tag);
 					$field->addAttribute('label', $language->title);
 					$field->addAttribute('translate_label', 'false');
-					$option = $field->addChild('option', 'COM_MENUS_ITEM_FIELD_ASSOCIATION_NO_VALUE');
+					$option = $field->addChild('option', 'COM_IJOOMERADV_ITEM_FIELD_ASSOCIATION_NO_VALUE');
 					$option->addAttribute('value', '');
 				}
 			}
-			if ($add)
-			{
+			if ($add) {
 				$form->load($addform, false);
 			}
 		}
@@ -1066,6 +1056,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	public function reorder($ids, $inc){
 		$menutype = JRequest::getVar('menutype');
 		$table =& $this->getTable();
+		
 		$table->load($ids[0]);
 		$table->move( $inc,'menutype='.$menutype);
 	}
@@ -1191,9 +1182,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		$this->setState('item.menutype', $table->menutype);
 
 		// Load associated menu items
-		$app = JFactory::getApplication();
-		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
-		if ($assoc){
+		if (JFactory::getApplication()->get('menu_associations', 0)) {
 			// Adding self to the association
 			$associations = $data['associations'];
 			foreach ($associations as $tag=>$id) {

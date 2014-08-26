@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -10,7 +10,6 @@
 ----------------------------------------------------------------------------------*/
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 JHTML::_('behavior.tooltip');
 ?>
 <script type="text/javascript" src="<?php echo JURI::root()?>administrator/components/com_ijoomeradv/assets/js/jquery.js"></script>
@@ -71,12 +70,23 @@ $().ready(function() {
 		}
 		document.adminForm.send_to_username.value = "";
 	}
+
+
+	/*function submitbutton(pressbutton){ 
+		var form = document.adminForm;
+		
+		if (pressbutton=='add' || pressbutton=='edit' || pressbutton=='publish' || pressbutton=='unpublish' || pressbutton=='remove' || pressbutton=='save'){
+					form.view.value="app_push_notification_detail";
+		}	
+		submitform( pressbutton );
+	
+	}*/
 </script>	
 	
 
 <form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<div class="editcell">
-		<table  class ="adminlist table table-striped" width="100%">
+		<table  class ="adminlist" width="100%">
 			<tbody>
 				<tr>
 					<td width="300px" valign="top">
@@ -84,9 +94,9 @@ $().ready(function() {
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE');?></td>
 								<td> 
-									<!-- <input type='Radio' Name='device_type' value='iphone' /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_IPHONE'); ?>  -->
+									<input type='Radio' Name='device_type' value='iphone' /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_IPHONE'); ?>
 									<input type= 'Radio' Name='device_type' value='android'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_ENDROID'); ?>
-									<!-- <input type='Radio' Name ='device_type' value='both'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_BOTH'); ?>  -->
+									<input type='Radio' Name ='device_type' value='both'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_BOTH'); ?>
 								</td>
 							</tr>
 						
@@ -106,7 +116,7 @@ $().ready(function() {
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT');?></td>
 								<td>
-									 <textarea rows="9" cols="30" name="message" id="message"></textarea>
+									 <textarea rows="5" cols="30" name="message" id="message"></textarea>
 								</td>
 							</tr>
 							
@@ -120,7 +130,7 @@ $().ready(function() {
 					</td>
 					
 					<td valign="top">
-						<table class ="adminlist table table-striped" width="100%">
+						<table class ="adminlist" width="100%">
 							<thead>
 								<tr>
 									<th width="20px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_ID')?></th>
@@ -128,7 +138,7 @@ $().ready(function() {
 									<th width="60px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS')?></th>
 									<th width="90px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TO_USER')?></th>
 									<th><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT')?></th>
-									<th width="90px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME')?></th>
+									<th width="120px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME')?></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -149,7 +159,7 @@ $().ready(function() {
 										}
 										$k=1-$k;
 									}else{
-										echo '<tr><td colspan="6" align="center">There is no data to show.</td></tr>';
+										echo '<tr><td colspan="6" align="center">'.JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_NO_DATA').'</td></tr>';
 									}
 								?>
 							</tbody>

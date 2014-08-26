@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -34,7 +34,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 	}
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=menus');?>" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist table table-striped">
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th width="1%" rowspan="2">

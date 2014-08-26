@@ -8,9 +8,7 @@
 # Websites: http://www.ijoomer.com
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
-
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
+defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.tooltip');
 ?>
 <form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">

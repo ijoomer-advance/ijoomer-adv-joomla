@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -10,7 +10,6 @@
 ----------------------------------------------------------------------------------*/
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 ?>
 <script type="text/javascript">
 	setmenutype = function()
@@ -27,7 +26,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		selectedMenu = selectedMenu.slice(0,strLen-1);
 		selectedMenu+='}]}';
 
-		window.parent.document.forms[0].elements['jform[screen]'].value=selectedMenu;
+		//window.parent.document.forms[0].elements['jform[screen]'].value=selectedMenu;
+		window.parent.document.forms.namedItem('item-form').elements['jform[screen]'].value=selectedMenu;
 		window.parent.Joomla.submitbutton('setType');
 		window.parent.SqueezeBox.close();
 	}
@@ -38,26 +38,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('IJCANCEL') ?></button>
 </div>
 
-<?php echo JHtml::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'slide1')); ?>
 <h2 class="modal-title"><?php echo JText::_('COM_IJOOMERADV_TYPE_CHOOSE'); ?></h2>
-	
-	<?php 
-		$i=0;
-		foreach ($this->types as $name => $list): ?>
-			<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'collapse' . $i++); ?>
-				<ul class="nav nav-tabs nav-stacked">
+<ul class="menu_types">
+	<?php foreach ($this->types as $name => $list): ?>
+	<li><dl class="menu_type">
+			<dt><?php echo JText::_($name) ;?></dt>
+			<dd><ul>
 					<?php foreach ($list as $item): ?>
-						<li>
-							<input type="checkbox" <?php if($item->checked){echo 'checked="checked"';}?> 
-								id="<?php echo $name.'.'.$item->view; ?>" value="<?php echo $name.'.'.$item->view.'.'.$item->task.'.'.$item->remoteTask; ?>" 
-								name="screen[]" class="chkbox chk-menulink-2">&nbsp;-&nbsp;<?php echo $item->caption; ?>
+						<li class="menu-link">
+							<input type="checkbox" <?php if($item->checked){echo 'checked="checked"';}?> id="<?php echo $name.'.'.$item->view; ?>" value="<?php echo $name.'.'.$item->view.'.'.$item->task.'.'.$item->remoteTask; ?>" name="screen[]" class="chkbox chk-menulink-2">
+							<label for="<?php echo $name.'.'.$item->view; ?>">- <?php echo $item->caption; ?></label>
 					 	</li>
 					<?php endforeach; ?>
 				</ul>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
+			</dd>
+		</dl>
+	</li>
 	<?php endforeach; ?>
-<!-- </ul> -->
-<?php echo JHtml::_('bootstrap.endAccordion'); ?>
+</ul>
 <input type="hidden" name="option" value="com_ijoomeradv" />
 <input type="hidden" name="view" value="menu" />
 <input type="hidden" name="task" value="setType" />

@@ -13,7 +13,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.controller' );
  
-class ijoomeradvControllerijoomeradv extends JControllerLegacy{
+class ijoomeradvControllerijoomeradv extends JController{
 
 	private $mainframe;
 	private $session_pass=0;
@@ -64,8 +64,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		$encryption = $IJHelperObj->getencryption_config();
 		if($encryption == 1){
 			$json = json_encode($jsonarray);// output the JSON encoded string
-			// add  code for replace back slases to forward slases.
-			$json = str_replace('\\\\','/',$json);
 			require_once (IJ_SITE.'/encryption/MCrypt.php');
 			$RSA = new MCrypt();
 			$encoded =  $RSA->encrypt($json);
@@ -76,43 +74,39 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 				$db = JFactory::getDBO();
 			
 				$memberlist = $jsonarray['pushNotificationData']['to'];
-				if($memberlist)
-				{
-					$query="SELECT userid,`jomsocial_params`,`device_token`,`device_type`
-							FROM #__ijoomeradv_users 
-							WHERE `userid` IN ({$memberlist})";
-					$db->setQuery($query);
-					$puserlist=$db->loadObjectList();
+				$query="SELECT userid,`jomsocial_params`,`device_token`,`device_type`
+						FROM #__ijoomeradv_users 
+						WHERE `userid` IN ({$memberlist})";
+				$db->setQuery($query);
+				$puserlist=$db->loadObjectList();
+				foreach ($puserlist as $puser){
+				
+					//check config allow for jomsocial
+					if(!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype']!=''){
+						$ijparams = json_decode($puser->jomsocial_params);
+						$configallow = $jsonarray['pushNotificationData']['configtype'];
+					}else{
+						$configallow = 1;
+					}
 					
-					foreach ($puserlist as $puser){
-						//check config allow for jomsocial
-						if(!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype']!=''){
-							$ijparams = json_decode($puser->jomsocial_params);
-							$configallow = $jsonarray['pushNotificationData']['configtype'];
-						}else{
-							$configallow = 1;
+					if($configallow && $puser->userid!=$this->IJUserID && !empty($puser)){
+						if(IJOOMER_PUSH_ENABLE_IPHONE==1 && $puser->device_type=='iphone'){
+							$options=array();
+							$options['device_token']	= $puser->device_token;
+							$options['live']			= intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
+							$options['aps']['alert']	= strip_tags($jsonarray['pushNotificationData']['message']);
+							$options['aps']['type']		= $jsonarray['pushNotificationData']['type'];
+							$options['aps']['id']		= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+							IJPushNotif::sendIphonePushNotification($options);
 						}
 						
-						if($configallow && $puser->userid!=$this->IJUserID && !empty($puser)){
-							if(IJOOMER_PUSH_ENABLE_IPHONE==1 && $puser->device_type=='iphone'){
-								
-								$options=array();
-								$options['device_token']	= $puser->device_token;
-								$options['live']			= intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
-								$options['aps']['alert']	= strip_tags($jsonarray['pushNotificationData']['message']);
-								$options['aps']['type']		= $jsonarray['pushNotificationData']['type'];
-								$options['aps']['id']		= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
-								IJPushNotif::sendIphonePushNotification($options);
-							}
-							
-							if(IJOOMER_PUSH_ENABLE_ANDROID==1 && $puser->device_type=='android'){
-								$options=array();
-								$options['registration_ids']	= array($puser->device_token); 
-								$options['data']['message']		= strip_tags($jsonarray['pushNotificationData']['message']);
-								$options['data']['type']		= $jsonarray['pushNotificationData']['type'];
-								$options['data']['id']			= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
-								IJPushNotif::sendAndroidPushNotification($options);
-							}
+						if(IJOOMER_PUSH_ENABLE_ANDROID==1 && $puser->device_type=='android'){
+							$options=array();
+							$options['registration_ids']	= array($puser->device_token); 
+							$options['data']['message']		= strip_tags($jsonarray['pushNotificationData']['message']);
+							$options['data']['type']		= $jsonarray['pushNotificationData']['type'];
+							$options['data']['id']			= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+							IJPushNotif::sendAndroidPushNotification($options);
 						}
 					}
 				}
@@ -239,7 +233,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 	 * 
 	 */
 	function display(){
-		$model = $this->getModel('ijoomeradv'); // get ijoomeradv model object
+		$model 	= $this->getModel('ijoomeradv'); // get ijoomeradv model object
+		$db 	= JFactory::getDBO();
 		
 		$menuid=IJReq::getTaskData('menuId',''); // get requested extension task (function inside view file)
 		//Set request variable from manu
@@ -297,6 +292,49 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 			// edd exception to log file
 			IJException::addLog();
 		}
+		
+		/*if(!empty($jsonarray['pushNotificationData'])){
+			$memberlist = $jsonarray['pushNotificationData']['to'];
+			$query="SELECT userid,`jomsocial_params`,`device_token`,`device_type`
+					FROM #__ijoomeradv_users 
+					WHERE `userid` IN ({$memberlist})";
+			$db->setQuery($query);
+			$puserlist=$db->loadObjectList();
+			
+			foreach ($puserlist as $puser){
+			
+				//check config allow for jomsocial
+				if(!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype']!=''){
+					$ijparams = json_decode($puser->jomsocial_params);
+					$configallow = $jsonarray['pushNotificationData']['configtype'];
+				}else{
+					$configallow = 1;
+				}
+				if($configallow && $puser->userid!=$this->IJUserID && !empty($puser)){
+					$videodata['deleteAllowed'] = intval ( ($puser->userid == $video->creator or COwnerHelper::isCommunityAdmin ( $puser->userid )) );
+					if(IJOOMER_PUSH_ENABLE_IPHONE==1 && $puser->device_type=='iphone'){
+						$options=array();
+						$options['device_token']	= $puser->device_token;
+						$options['live']			= intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
+						$options['aps']['alert']	= strip_tags($jsonarray['pushNotificationData']['message']);
+						$options['aps']['type']		= $jsonarray['pushNotificationData']['type'];
+						$options['aps']['id']		= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+						IJPushNotif::sendIphonePushNotification($options);
+					}
+					
+					if(IJOOMER_PUSH_ENABLE_ANDROID==1 && $puser->device_type=='android'){
+						$options=array();
+						$options['registration_ids']	= array($puser->device_token); 
+						$options['data']['message']		= strip_tags($jsonarray['pushNotificationData']['message']);
+						$options['data']['type']		= $jsonarray['pushNotificationData']['type'];
+						$options['data']['id']			= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+						IJPushNotif::sendAndroidPushNotification($options);
+					}
+				}
+			}
+			unset($jsonarray['pushNotificationData']);	
+		}*/
+		
 		$this->outputJSON($jsonarray); // send data array to create jason string and output
 	}
 	
@@ -323,19 +361,23 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 				if($value->name=='IJOOMER_GC_REGISTRATION'){
 					switch($value->value){
 						case 'jomsocial':
-							require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
-							require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
-							$jomHelper	=	new jomHelper(); 
-							$jomsocial_version = $jomHelper->getjomsocialversion();
-			
-							if($jomsocial_version >= 3)
-							{
-								$jsonarray['configuration']['globalconfig']['defaultAvatar']=JURI::base().'components/com_community/assets/user-Male.png';
-								$jsonarray['configuration']['globalconfig']['defaultAvatarFemale']=JURI::base().'components/com_community/assets/user-Female.png';
-							}
-							else {
-								$jsonarray['configuration']['globalconfig']['defaultAvatar']=JURI::base().'components/com_community/assets/user.png';
-							}
+							$jomsocialFile = JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php';
+							if(file_exists ($jomsocialFile))
+							{	
+								require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
+								require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
+								$jomHelper	=	new jomHelper(); 
+								$jomsocial_version = $jomHelper->getjomsocialversion();
+				
+								if($jomsocial_version >= 3)
+								{
+									$jsonarray['configuration']['globalconfig']['defaultAvatar']=JURI::base().'components/com_community/assets/user-Male.png';
+									$jsonarray['configuration']['globalconfig']['defaultAvatarFemale']=JURI::base().'components/com_community/assets/user-Female.png';
+								}
+								else {
+									$jsonarray['configuration']['globalconfig']['defaultAvatar']=JURI::base().'components/com_community/assets/user.png';
+								}
+							}	
 							break;
 					}
 				}
@@ -378,18 +420,15 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		}
 		
 		// application get extension version info
-		
 		if(file_exists(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php") && file_exists(JPATH_SITE.DS.'components'.DS.'com_community'.DS."community.php")){
 			require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
 			$jomHelper	=	new jomHelper(); 
 			$jomsocial_version = $jomHelper->getjomsocialversion();
 			$jsonarray['configuration']['versioninfo']["jomsocial"]	= $jomsocial_version;
 		}
-		//$jsonarray['configuration']['versioninfo']["jomsocial"]	= "3.0";
-		
 		
 		// application theme list
-		$jsonarray['configuration']['theme']			= $this->statictheme();
+		$jsonarray['configuration']['theme']			= $this->theme();
 		
 		// application menu list
 		$jsonarray['configuration']['menus']			= $model->getMenus();
@@ -399,7 +438,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 	
 	
 	// calls from applicationConfig() 
-	private function statictheme(){
+	private function theme(){
 		$device = IJReq::getTaskData('device');
 		$theme 	= IJOOMER_THM_SELECTED_THEME;
 		$model 	= $this->getModel('ijoomeradv');
@@ -407,74 +446,96 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		
 		if($device == 'android'){
 			$device_type = IJReq::getTaskData('type','hdpi');
-			
 		}elseif ($device == 'iphone'){
 			$device_type = IJReq::getTaskData('type','3');
 		}
+		
+		$iconPath = JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS;
+		$tabPath = JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS;
+		$tabActivePath = JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS;
+		
+		$statictheme=array(
+			array(
+				'Home',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'Home_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'Home_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'Home_tab_active.png'
+			),
+			array(
+				'Registration',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'Registration_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'Registration_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'Registration_tab_active.png'
+			),
+			array(
+				'Web',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'Web_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'Web_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'Web_tab_active.png'
+			),
+			array(
+				'Login',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'Login_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'Login_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'Login_tab_active.png'
+			),
+			array(
+				'Logout',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'Logout_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'Logout_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'Logout_tab_active.png'
+			),
+			array(
+				'PluginsContactUs',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_tab_active.png'
+			),
+			array(
+				'PluginsFacebookNearByVenues',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_tab_active.png'
+			),
+			array(
+				'PluginsYoutubePlaylist',
+				$iconPath.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_icon.png',
+				$tabPath.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_tab.png',
+				$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_tab_active.png'
+			)	
+		);
+		
+		
 		
 		$i=0;
 		foreach ($viewnames as $key=>$value){
 			foreach ($value as $ky=>$val){
 				$themearray['theme'][$i]['viewname']=$val;
-				$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.$key.DS.$device.DS.$device_type.DS.$val.'_icon.png';
-				$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.$key.DS.$device.DS.$device_type.DS.$val.'_tab.png';
-				$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.$key.DS.$device.DS.$device_type.DS.$val.'_tab_active.png';
+				$themearray['theme'][$i]['icon']=$iconPath.$key.DS.$device.DS.$device_type.DS.$val.'_icon.png';
+				$themearray['theme'][$i]['tab']=$tabPath.$key.DS.$device.DS.$device_type.DS.$val.'_tab.png';
+				$themearray['theme'][$i]['tab_active']=$tabActivePath.$key.DS.$device.DS.$device_type.DS.$val.'_tab_active.png';
 				$i++;
 			}	
 		}
 		
-		$themearray['theme'][$i]['viewname']='Home';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Home_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Home_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Home_tab_active.png';
-		$i++;
-		
 		$themearray['theme'][$i]['viewname']='More';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'More_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'More_tab_active.png';
+		$themearray['theme'][$i]['tab']=$tabPath.'default'.DS.$device.DS.$device_type.DS.'More_tab.png';
+		$themearray['theme'][$i]['tab_active']=$tabActivePath.'default'.DS.$device.DS.$device_type.DS.'More_tab_active.png';
 		$i++;
 		
-		$themearray['theme'][$i]['viewname']='Registration';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Registration_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Registration_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Registration_tab_active.png';
-		$i++;
+		foreach($statictheme as $stheme){
+			$themearray['theme'][$i]['viewname']=$stheme[0];
+			$themearray['theme'][$i]['icon']=$stheme[1];
+			$themearray['theme'][$i]['tab']=$stheme[2];
+			$themearray['theme'][$i]['tab_active']=$stheme[3];
+			$i++;
+		}
 		
-		$themearray['theme'][$i]['viewname']='Web';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Web_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Web_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Web_tab_active.png';
-		$i++;
-		
-		$themearray['theme'][$i]['viewname']='Login';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Login_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Login_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Login_tab_active.png';
-		$i++;
-		
-		$themearray['theme'][$i]['viewname']='Logout';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Logout_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Logout_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'Logout_tab_active.png';
-		$i++;
-		
-		$themearray['theme'][$i]['viewname']='PluginsContactUs';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsContactUs_tab_active.png';
-		$i++;
-		
-		$themearray['theme'][$i]['viewname']='PluginsFacebookNearByVenues';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsFacebookNearByVenues_tab_active.png';
-		$i++;
-		
-		$themearray['theme'][$i]['viewname']='PluginsYoutubePlaylist';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsYoutubePlaylist_tab_active.png';
-		$i++;
+		/*$themearray['theme'][$i]['viewname']='PluginsVimeoPlaylist';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsVimeoPlaylist_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsVimeoPlaylist_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.$theme.DS.'default'.DS.$device.DS.$device_type.DS.'PluginsVimeoPlaylist_tab_active.png';
+		$i++;*/
 		
 		$customView = $model->getCustomView();
 		foreach ($customView as $key=>$value){
@@ -542,7 +603,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		}
 		
 		if($this->mainframe->logout($my->id)){
-			ob_end_clean();
 			$jsonarray['code']=200; // logout success
 			$jsonarray['message']=NULL;
 		}else{
