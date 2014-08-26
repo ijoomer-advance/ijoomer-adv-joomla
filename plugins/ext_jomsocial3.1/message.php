@@ -69,7 +69,7 @@ class message{
 				AND cmr.`msg_id`=cmr.`msg_parent`
 				AND cmr.`deleted`=0 
 				AND cm.`deleted`=0 
-				ORDER BY cmr.`msg_id`,cm.`posted_on` DESC, cmr.`is_read` ASC
+				ORDER BY cmr.`msg_id` DESC,cm.`posted_on` DESC, cmr.`is_read` ASC
 				LIMIT {$startFrom}, {$limit}";
 		$this->db->setQuery($query);
 		$results=$this->db->loadObjectList();
@@ -81,7 +81,7 @@ class message{
 				AND cmr.`msg_id`=cmr.`msg_parent`
 				AND cmr.`deleted`=0 
 				AND cm.`deleted`=0 
-				ORDER BY cmr.`msg_id`,cm.`posted_on` DESC, cmr.`is_read` ASC";
+				ORDER BY cmr.`msg_id` DESC,cm.`posted_on` DESC, cmr.`is_read` ASC";
 		$this->db->setQuery($query);
 		$total=$this->db->loadResult();
 		
