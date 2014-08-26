@@ -1,4 +1,4 @@
-iJoomer Advance Joomla! Component
+iJoomer Advance Joomla! Component for 2.5.x
 =============================
 
 iJoomer Joomla! component. http://www.iJoomer.com
