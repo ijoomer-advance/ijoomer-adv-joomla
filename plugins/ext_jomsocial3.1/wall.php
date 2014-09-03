@@ -83,10 +83,100 @@ class wall{
 				$frids			= $friendsModel->getFriendIds($this->IJUserID);
 
 				if($actconfig=='all'){
-					$htmldata = $act->getFEED('', '', null, MAXIMUM_ACTIVITY+1 , '');
-				}else{
-					$htmldata = $act->getFEED($userID, $frids, null, MAXIMUM_ACTIVITY+1 , '');
-				}
+                    $htmldata = $this->_getData(
+                        array('actor' => '',
+                            'target' => '',
+                            'app' => array(
+                                'users.featured',
+                                'profile.avatar.upload',
+                                'profile',
+                                'albums.comment',
+                                'albums',
+                                'albums.featured',
+                                'photos.comment',
+                                'photos',
+                                'videos.featured',
+                                'videos',
+                                /*'friends.connect',*/
+                                'groups.featured',
+                                'groups.wall',
+                                /*'groups.join',*/
+                                'groups.bulletin',
+                                'groups.discussion',
+                                'groups.discussion.reply',
+                                'groups.update',
+                                'groups',
+                                'events.featured',
+                                'events.wall',
+                                /*'events.attend',*/
+                                'events',
+                                'system.message',
+                                'system.videos.popular',
+                                'system.photos.popular',
+                                'system.members.popular',
+                                'system.photos.total',
+                                'system.groups.popular',
+                                'system.members.registered',
+                                'app.install',
+                                'profile.like',
+                                'groups.like',
+                                'events.like',
+                                'photo.like',
+                                'videos.like',
+                                'album.like',
+                                /*'cover.upload'*/
+                            ),
+                            'date' => null,
+                            'maxList' => MAXIMUM_ACTIVITY+1,
+                            'type' => ''));
+                }else{
+                    $htmldata = $this->_getData(
+                        array('actor' => $userID,
+                            'target' => $frids,
+                            'app' => array(
+                                'users.featured',
+                                'profile.avatar.upload',
+                                'profile',
+                                'albums.comment',
+                                'albums',
+                                'albums.featured',
+                                'photos.comment',
+                                'photos',
+                                'videos.featured',
+                                'videos',
+                                /*'friends.connect',*/
+                                'groups.featured',
+                                'groups.wall',
+                                /*'groups.join',*/
+                                'groups.bulletin',
+                                'groups.discussion',
+                                'groups.discussion.reply',
+                                'groups.update',
+                                'groups',
+                                'events.featured',
+                                'events.wall',
+                                /*'events.attend',*/
+                                'events',
+                                'system.message',
+                                'system.videos.popular',
+                                'system.photos.popular',
+                                'system.members.popular',
+                                'system.photos.total',
+                                'system.groups.popular',
+                                'system.members.registered',
+                                'app.install',
+                                'profile.like',
+                                'groups.like',
+                                'events.like',
+                                'photo.like',
+                                'videos.like',
+                                'album.like',
+                                /*'cover.upload'*/
+                            ),
+                            'date' => null,
+                            'maxList' => MAXIMUM_ACTIVITY+1,
+                            'type' => ''));
+                }
 				break;
 
 			case 'event':
