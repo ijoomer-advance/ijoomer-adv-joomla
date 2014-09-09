@@ -77,14 +77,22 @@ class wall{
 		$act			= new CActivities();
 
 		switch($type){
-			case 'activity';
+			case 'newactivities':
+				//we need to pass last id here
+				$lastInsertID = IJReq::getTaskData('lastInsertID','','int');
+				if(!$lastInsertID) {
+					IJReq::setResponse(704);
+					IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
+					return false;
+				}
+				//convert into negetive to check activities after that id
+				$lastInsertID = -$lastInsertID;
 				$actconfig 		= $this->config->get('frontpageactivitydefault');
 				$friendsModel 	= & CFactory::getModel('friends');
 				$frids			= $friendsModel->getFriendIds($this->IJUserID);
 
 				if($actconfig=='all'){
-                    $htmldata = $this->_getData(
-                        array('actor' => '',
+					$params = array('actor' => '',
                             'target' => '',
                             'app' => array(
                                 'users.featured',
@@ -128,10 +136,11 @@ class wall{
                             ),
                             'date' => null,
                             'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => ''));
+                            'type' => '',
+ 							'exclusions' => $lastInsertID);
+					$htmldata  = $this->_getData($params);
                 }else{
-                    $htmldata = $this->_getData(
-                        array('actor' => $userID,
+                    $params = array('actor' => $userID,
                             'target' => $frids,
                             'app' => array(
                                 'users.featured',
@@ -175,7 +184,116 @@ class wall{
                             ),
                             'date' => null,
                             'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => ''));
+                            'type' => '',
+ 							'exclusions' => $lastInsertID);
+					$htmldata  = $this->_getData($params);
+                }
+				break:
+
+			case 'activity':
+				$actconfig 		= $this->config->get('frontpageactivitydefault');
+				$friendsModel 	= & CFactory::getModel('friends');
+				$frids			= $friendsModel->getFriendIds($this->IJUserID);
+
+				if($actconfig=='all'){
+					$cache = & JFactory::getCache();
+					$cache->setCaching( 1 );
+					$params = array('actor' => '',
+                            'target' => '',
+                            'app' => array(
+                                'users.featured',
+                                'profile.avatar.upload',
+                                'profile',
+                                'albums.comment',
+                                'albums',
+                                'albums.featured',
+                                'photos.comment',
+                                'photos',
+                                'videos.featured',
+                                'videos',
+                                /*'friends.connect',*/
+                                'groups.featured',
+                                'groups.wall',
+                                /*'groups.join',*/
+                                'groups.bulletin',
+                                'groups.discussion',
+                                'groups.discussion.reply',
+                                'groups.update',
+                                'groups',
+                                'events.featured',
+                                'events.wall',
+                                /*'events.attend',*/
+                                'events',
+                                'system.message',
+                                'system.videos.popular',
+                                'system.photos.popular',
+                                'system.members.popular',
+                                'system.photos.total',
+                                'system.groups.popular',
+                                'system.members.registered',
+                                'app.install',
+                                'profile.like',
+                                'groups.like',
+                                'events.like',
+                                'photo.like',
+                                'videos.like',
+                                'album.like',
+                                /*'cover.upload'*/
+                            ),
+                            'date' => null,
+                            'maxList' => MAXIMUM_ACTIVITY+1,
+                            'type' => '');
+					//$htmldata  = $this->_getData($params);
+					$htmldata  = $cache->call( array($this,'_getData'), $params );
+
+                }else{
+                    $params = array('actor' => $userID,
+                            'target' => $frids,
+                            'app' => array(
+                                'users.featured',
+                                'profile.avatar.upload',
+                                'profile',
+                                'albums.comment',
+                                'albums',
+                                'albums.featured',
+                                'photos.comment',
+                                'photos',
+                                'videos.featured',
+                                'videos',
+                                /*'friends.connect',*/
+                                'groups.featured',
+                                'groups.wall',
+                                /*'groups.join',*/
+                                'groups.bulletin',
+                                'groups.discussion',
+                                'groups.discussion.reply',
+                                'groups.update',
+                                'groups',
+                                'events.featured',
+                                'events.wall',
+                                /*'events.attend',*/
+                                'events',
+                                'system.message',
+                                'system.videos.popular',
+                                'system.photos.popular',
+                                'system.members.popular',
+                                'system.photos.total',
+                                'system.groups.popular',
+                                'system.members.registered',
+                                'app.install',
+                                'profile.like',
+                                'groups.like',
+                                'events.like',
+                                'photo.like',
+                                'videos.like',
+                                'album.like',
+                                /*'cover.upload'*/
+                            ),
+                            'date' => null,
+                            'maxList' => MAXIMUM_ACTIVITY+1,
+                            'type' => '');
+					//$htmldata  = $this->_getData($params);
+					$htmldata  = $cache->call( array($this,'_getData'), $params );
                 }
 				break;
 
@@ -2532,5 +2650,10 @@ class wall{
 			}
 		}
 		return $this->jsonarray;
+	}
+
+	function clearCache(){
+		$cache = & JFactory::getCache();
+		$cache->clean();
 	}
 }
