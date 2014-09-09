@@ -64,49 +64,55 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		$encryption = $IJHelperObj->getencryption_config();
 		if($encryption == 1){
 			$json = json_encode($jsonarray);// output the JSON encoded string
+			// add  code for replace back slases to forward slases.
+			$json = str_replace('\\\\','/',$json);
 			require_once (IJ_SITE.'/encryption/MCrypt.php');
 			$RSA = new MCrypt();
 			$encoded =  $RSA->encrypt($json);
 			echo $encoded; exit;
 		}else{
-			echo json_encode($jsonarray);
+			echo json_encode(str_replace("\\\\","/",$jsonarray));
 			if(!empty($jsonarray['pushNotificationData'])){
 				$db = JFactory::getDBO();
 			
 				$memberlist = $jsonarray['pushNotificationData']['to'];
-				$query="SELECT userid,`jomsocial_params`,`device_token`,`device_type`
-						FROM #__ijoomeradv_users 
-						WHERE `userid` IN ('{$memberlist}')";
-				$db->setQuery($query);
-				$puserlist=$db->loadObjectList();
-				foreach ($puserlist as $puser){
-				
-					//check config allow for jomsocial
-					if(!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype']!=''){
-						$ijparams = json_decode($puser->jomsocial_params);
-						$configallow = $jsonarray['pushNotificationData']['configtype'];
-					}else{
-						$configallow = 1;
-					}
+				if($memberlist)
+				{
+					$query="SELECT userid,`jomsocial_params`,`device_token`,`device_type`
+							FROM #__ijoomeradv_users 
+							WHERE `userid` IN ({$memberlist})";
+					$db->setQuery($query);
+					$puserlist=$db->loadObjectList();
 					
-					if($configallow && $puser->userid!=$this->IJUserID && !empty($puser)){
-						if(IJOOMER_PUSH_ENABLE_IPHONE==1 && $puser->device_type=='iphone'){
-							$options=array();
-							$options['device_token']	= $puser->device_token;
-							$options['live']			= intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
-							$options['aps']['alert']	= strip_tags($jsonarray['pushNotificationData']['message']);
-							$options['aps']['type']		= $jsonarray['pushNotificationData']['type'];
-							$options['aps']['id']		= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
-							IJPushNotif::sendIphonePushNotification($options);
+					foreach ($puserlist as $puser){
+						//check config allow for jomsocial
+						if(!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype']!=''){
+							$ijparams = json_decode($puser->jomsocial_params);
+							$configallow = $jsonarray['pushNotificationData']['configtype'];
+						}else{
+							$configallow = 1;
 						}
 						
-						if(IJOOMER_PUSH_ENABLE_ANDROID==1 && $puser->device_type=='android'){
-							$options=array();
-							$options['registration_ids']	= array($puser->device_token); 
-							$options['data']['message']		= strip_tags($jsonarray['pushNotificationData']['message']);
-							$options['data']['type']		= $jsonarray['pushNotificationData']['type'];
-							$options['data']['id']			= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
-							IJPushNotif::sendAndroidPushNotification($options);
+						if($configallow && $puser->userid!=$this->IJUserID && !empty($puser)){
+							if(IJOOMER_PUSH_ENABLE_IPHONE==1 && $puser->device_type=='iphone'){
+								
+								$options=array();
+								$options['device_token']	= $puser->device_token;
+								$options['live']			= intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
+								$options['aps']['alert']	= strip_tags($jsonarray['pushNotificationData']['message']);
+								$options['aps']['type']		= $jsonarray['pushNotificationData']['type'];
+								$options['aps']['id']		= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+								IJPushNotif::sendIphonePushNotification($options);
+							}
+							
+							if(IJOOMER_PUSH_ENABLE_ANDROID==1 && $puser->device_type=='android'){
+								$options=array();
+								$options['registration_ids']	= array($puser->device_token); 
+								$options['data']['message']		= strip_tags($jsonarray['pushNotificationData']['message']);
+								$options['data']['type']		= $jsonarray['pushNotificationData']['type'];
+								$options['data']['id']			= ($jsonarray['pushNotificationData']['id']!=0)?$jsonarray['pushNotificationData']['id']:$jsonarray['pushNotificationData']['multiid'][$puser->userid];
+								IJPushNotif::sendAndroidPushNotification($options);
+							}
 						}
 					}
 				}
