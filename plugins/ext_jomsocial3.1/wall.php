@@ -52,12 +52,8 @@ class wall{
 	 * 	}
      *
      */
-	function wall(){
-		if(!$this->IJUserID){
-			IJReq::setResponse(704);
-			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
-			return false;
-		}
+	function wall()
+	{
 		CFactory::load( 'libraries' , 'activities' );
 		CFactory::load( 'libraries' , 'comment' );
 		CFactory::load('helpers','owner');
@@ -77,224 +73,100 @@ class wall{
 		$act			= new CActivities();
 
 		switch($type){
-			case 'newactivities':
-				//we need to pass last id here
-				$lastInsertID = IJReq::getTaskData('lastInsertID','','int');
-				if(!$lastInsertID) {
-					IJReq::setResponse(704);
-					IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
-					return false;
-				}
-				//convert into negetive to check activities after that id
-				$lastInsertID = -$lastInsertID;
-				$actconfig 		= $this->config->get('frontpageactivitydefault');
-				$friendsModel 	= & CFactory::getModel('friends');
-				$frids			= $friendsModel->getFriendIds($this->IJUserID);
-
-				if($actconfig=='all'){
-					$params = array('actor' => '',
-                            'target' => '',
-                            'app' => array(
-                                'users.featured',
-                                'profile.avatar.upload',
-                                'profile',
-                                'albums.comment',
-                                'albums',
-                                'albums.featured',
-                                'photos.comment',
-                                'photos',
-                                'videos.featured',
-                                'videos',
-                                /*'friends.connect',*/
-                                'groups.featured',
-                                'groups.wall',
-                                /*'groups.join',*/
-                                'groups.bulletin',
-                                'groups.discussion',
-                                'groups.discussion.reply',
-                                'groups.update',
-                                'groups',
-                                'events.featured',
-                                'events.wall',
-                                /*'events.attend',*/
-                                'events',
-                                'system.message',
-                                'system.videos.popular',
-                                'system.photos.popular',
-                                'system.members.popular',
-                                'system.photos.total',
-                                'system.groups.popular',
-                                'system.members.registered',
-                                'app.install',
-                                'profile.like',
-                                'groups.like',
-                                'events.like',
-                                'photo.like',
-                                'videos.like',
-                                'album.like',
-                                /*'cover.upload'*/
-                            ),
-                            'date' => null,
-                            'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => '',
- 							'exclusions' => $lastInsertID);
-					$htmldata  = $this->_getData($params);
-                }else{
-                    $params = array('actor' => $userID,
-                            'target' => $frids,
-                            'app' => array(
-                                'users.featured',
-                                'profile.avatar.upload',
-                                'profile',
-                                'albums.comment',
-                                'albums',
-                                'albums.featured',
-                                'photos.comment',
-                                'photos',
-                                'videos.featured',
-                                'videos',
-                                /*'friends.connect',*/
-                                'groups.featured',
-                                'groups.wall',
-                                /*'groups.join',*/
-                                'groups.bulletin',
-                                'groups.discussion',
-                                'groups.discussion.reply',
-                                'groups.update',
-                                'groups',
-                                'events.featured',
-                                'events.wall',
-                                /*'events.attend',*/
-                                'events',
-                                'system.message',
-                                'system.videos.popular',
-                                'system.photos.popular',
-                                'system.members.popular',
-                                'system.photos.total',
-                                'system.groups.popular',
-                                'system.members.registered',
-                                'app.install',
-                                'profile.like',
-                                'groups.like',
-                                'events.like',
-                                'photo.like',
-                                'videos.like',
-                                'album.like',
-                                /*'cover.upload'*/
-                            ),
-                            'date' => null,
-                            'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => '',
- 							'exclusions' => $lastInsertID);
-					$htmldata  = $this->_getData($params);
-                }
-				break:
 
 			case 'activity':
 				$actconfig 		= $this->config->get('frontpageactivitydefault');
 				$friendsModel 	= & CFactory::getModel('friends');
 				$frids			= $friendsModel->getFriendIds($this->IJUserID);
 
-				if($actconfig=='all'){
-					$cache = & JFactory::getCache();
-					$cache->setCaching( 1 );
-					$params = array('actor' => '',
-                            'target' => '',
-                            'app' => array(
-                                'users.featured',
-                                'profile.avatar.upload',
-                                'profile',
-                                'albums.comment',
-                                'albums',
-                                'albums.featured',
-                                'photos.comment',
-                                'photos',
-                                'videos.featured',
-                                'videos',
-                                /*'friends.connect',*/
-                                'groups.featured',
-                                'groups.wall',
-                                /*'groups.join',*/
-                                'groups.bulletin',
-                                'groups.discussion',
-                                'groups.discussion.reply',
-                                'groups.update',
-                                'groups',
-                                'events.featured',
-                                'events.wall',
-                                /*'events.attend',*/
-                                'events',
-                                'system.message',
-                                'system.videos.popular',
-                                'system.photos.popular',
-                                'system.members.popular',
-                                'system.photos.total',
-                                'system.groups.popular',
-                                'system.members.registered',
-                                'app.install',
-                                'profile.like',
-                                'groups.like',
-                                'events.like',
-                                'photo.like',
-                                'videos.like',
-                                'album.like',
-                                /*'cover.upload'*/
-                            ),
-                            'date' => null,
-                            'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => '');
-					//$htmldata  = $this->_getData($params);
-					$htmldata  = $cache->call( array($this,'_getData'), $params );
+				if($actconfig=='all')
+				{
+					$params=array('actor'=>'','target'=>'','app'=>array('users.featured',
+					'profile.avatar.upload',
+					'profile',
+					'albums.comment',
+					'albums',
+					'albums.featured',
+					'photos.comment',
+					'photos',
+					'videos.featured',
+					'videos',
+					'groups.featured',
+					'groups.wall',
+					'groups.bulletin',
+					'groups.discussion',
+					'groups.discussion.reply',
+					'groups.update',
+					'groups',
+					'events.featured',
+					'events.wall',
+					'events',
+					'system.message',
+					'system.videos.popular',
+					'system.photos.popular',
+					'system.members.popular',
+					'system.photos.total',
+					'system.groups.popular',
+					'system.members.registered',
+					'app.install',
+					'profile.like',
+					'groups.like',
+					'events.like',
+					'photo.like',
+					'videos.like',
+					'album.like'
+					),
+					'date'=>null,
+					'maxList'=>MAXIMUM_ACTIVITY+1,
+					'type'=>'');
 
-                }else{
-                    $params = array('actor' => $userID,
-                            'target' => $frids,
-                            'app' => array(
-                                'users.featured',
-                                'profile.avatar.upload',
-                                'profile',
-                                'albums.comment',
-                                'albums',
-                                'albums.featured',
-                                'photos.comment',
-                                'photos',
-                                'videos.featured',
-                                'videos',
-                                /*'friends.connect',*/
-                                'groups.featured',
-                                'groups.wall',
-                                /*'groups.join',*/
-                                'groups.bulletin',
-                                'groups.discussion',
-                                'groups.discussion.reply',
-                                'groups.update',
-                                'groups',
-                                'events.featured',
-                                'events.wall',
-                                /*'events.attend',*/
-                                'events',
-                                'system.message',
-                                'system.videos.popular',
-                                'system.photos.popular',
-                                'system.members.popular',
-                                'system.photos.total',
-                                'system.groups.popular',
-                                'system.members.registered',
-                                'app.install',
-                                'profile.like',
-                                'groups.like',
-                                'events.like',
-                                'photo.like',
-                                'videos.like',
-                                'album.like',
-                                /*'cover.upload'*/
-                            ),
-                            'date' => null,
-                            'maxList' => MAXIMUM_ACTIVITY+1,
-                            'type' => '');
-					//$htmldata  = $this->_getData($params);
-					$htmldata  = $cache->call( array($this,'_getData'), $params );
-                }
+					$htmldata  = $this->_getData($params);
+
+				}else{
+					$params=array('actor'=>$userID,
+					'target'=>$frids,
+					'app'=>array(
+					'users.featured',
+					'profile.avatar.upload',
+					'profile',
+					'albums.comment',
+					'albums',
+					'albums.featured',
+					'photos.comment',
+					'photos',
+					'videos.featured',
+					'videos',
+					'groups.featured',
+					'groups.wall',
+					'groups.bulletin',
+					'groups.discussion',
+					'groups.discussion.reply',
+					'groups.update',
+					'groups',
+					'events.featured',
+					'events.wall',
+					'events',
+					'system.message',
+					'system.videos.popular',
+					'system.photos.popular',
+					'system.members.popular',
+					'system.photos.total',
+					'system.groups.popular',
+					'system.members.registered',
+					'app.install',
+					'profile.like',
+					'groups.like',
+					'events.like',
+					'photo.like',
+					'videos.like',
+					'album.like'
+					),
+					'date'=>null,
+					'maxList'=>MAXIMUM_ACTIVITY+1,
+					'type'=>'');
+					$htmldata  = $this->_getData($params);
+ 				}
+
 				break;
 
 			case 'event':
@@ -341,6 +213,7 @@ class wall{
 		}
 
 		$inc = 0;
+
 		foreach($htmldata as $data){
 			$data->title = $this->jomHelper->addAudioFile($data->title);
 			$titletag = isset($data->title) ? $data->title : '';
@@ -364,13 +237,13 @@ class wall{
 			return false;
 		}
 
+		$isCommunityAdmin	= intval(COwnerHelper::isCommunityAdmin($this->IJUserID));
 		foreach ($htmldata as $key=>$html){
 			$titletag 		= isset($html->title) ? $html->title : "";
 			//change titletag for all activities for version > 2.8
 			$titletag 		= $this->jomHelper->getTitleTag($html);
 			$likeAllowed 	= $html->likeAllowed=="" ? 0 : 1;
 			$commentAllowed = $html->commentAllowed=="" ? 0 : 1;
-			$isCommunityAdmin	= intval(COwnerHelper::isCommunityAdmin($this->IJUserID));
 
 			if($type=='activity' or $type=='wall'){
 				$createdate = JFactory::getDate($html->created);
@@ -385,7 +258,8 @@ class wall{
 				$this->jsonarray['update'][$inc]['id'] = $html->id;
 
 				// add user detail
-				$usr = $this->jomHelper->getUserDetail($html->actor);
+				$usr = $this->jomHelper->getUserDetailMini($html->actor);
+
 				$this->jsonarray['update'][$inc]['user_detail']['user_id'] 		= $usr->id;
 				$this->jsonarray['update'][$inc]['user_detail']['user_name'] 	= $usr->name;
 				$this->jsonarray['update'][$inc]['user_detail']['user_avatar'] 	= $usr->avatar;
@@ -410,17 +284,11 @@ class wall{
 				$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked==1) ? 1 : 0 ;
 				$this->jsonarray['update'][$inc]['commentAllowed']	= $commentAllowed;
 				$this->jsonarray['update'][$inc]['commentCount'] 	= intval($html->commentCount);
+				$this->jsonarray['update'][$inc]['liketype'] 		= $html->like_type;
+				$this->jsonarray['update'][$inc]['commenttype'] 	= $html->comment_type;
 
-				$query="SELECT comment_type,like_type
-						FROM #__community_activities
-						WHERE id={$html->id}";
-				$this->db->setQuery($query);
-				$extra=$this->db->loadObject();
-
-				$this->jsonarray['update'][$inc]['liketype'] 		= $extra->like_type;
-				$this->jsonarray['update'][$inc]['commenttype'] 	= $extra->comment_type;
-
-				switch($html->app){
+				switch($html->app)
+				{
 					case 'friends':
 						$this->jsonarray['update'][$inc]['type'] = 'friends';
 						$actor = CFactory::getUser($html->actor);
@@ -428,7 +296,7 @@ class wall{
 						$rplc = array($actor->getDisplayName(),"►","\"");
 						$this->jsonarray['update'][$inc]['titletag'] = str_replace($srch,$rplc,strip_tags($titletag));
 
-						$usrtar = $this->jomHelper->getUserDetail($html->target);
+						$usrtar = $this->jomHelper->getUserDetailMini($html->target);
 						$this->jsonarray['update'][$inc]['content_data']['user_id'] 		= $usrtar->id;
 						$this->jsonarray['update'][$inc]['content_data']['user_name'] 		= $usrtar->name;
 						$this->jsonarray['update'][$inc]['content_data']['user_avatar'] 	= $usrtar->avatar;
@@ -841,7 +709,7 @@ class wall{
 						}else{
 							$this->jsonarray['update'][$inc]['deleteAllowed'] = intval($this->my->authorise('community.delete','activities.'.$html->id));
 						}
-						break;
+					break;
 
 					case 'groups.bulletin':
 						$this->jsonarray['update'][$inc]['type'] = 'announcement';
@@ -853,7 +721,7 @@ class wall{
 							$this->jsonarray['update'][$inc]['content_data']['id']				= $bulletin->id;
 							$this->jsonarray['update'][$inc]['content_data']['title']			= $bulletin->title;
 							$this->jsonarray['update'][$inc]['content_data']['message']			= strip_tags($bulletin->message);
-							$usr = $this->jomHelper->getUserDetail($bulletin->created_by);
+							$usr = $this->jomHelper->getUserDetailMini($bulletin->created_by);
 							$this->jsonarray['update'][$inc]['content_data']['user_id']			= $usr->id;
 							$this->jsonarray['update'][$inc]['content_data']['user_name']		= $usr->name;
 							$this->jsonarray['update'][$inc]['content_data']['user_avatar']		= $usr->avatar;
@@ -863,7 +731,7 @@ class wall{
 							$params = new CParameter($bulletin->params);
 							$this->jsonarray['update'][$inc]['content_data']['filePermission']	= $params->get('filepermission-member');
 							if(SHARE_GROUP_BULLETIN==1){
-								$this->jsonarray['update'][$inc]['content_data']['shareLink']	= JURI::base()."index.php?option=com_community&view=groups&task=viewbulletin&groupid={$result->groupid}&bulletinid={$result->id}";
+								$this->jsonarray['update'][$inc]['content_data']['shareLink']	= JURI::base()."index.php?option=com_community&view=groups&task=viewbulletin&groupid={$bulletin->groupid}&bulletinid={$bulletin->id}";
 							}
 							if($type=='group'){
 								$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked>=0) ? 0 : 1 ;
@@ -899,7 +767,7 @@ class wall{
 							$this->jsonarray['update'][$inc]['content_data']['id']				= $discussion->id;
 							$this->jsonarray['update'][$inc]['content_data']['title']			= $discussion->title;
 							$this->jsonarray['update'][$inc]['content_data']['message'] 		= strip_tags($discussion->message);
-							$usr = $this->jomHelper->getUserDetail($discussion->creator);
+							$usr = $this->jomHelper->getUserDetailMini($discussion->creator);
 							$this->jsonarray['update'][$inc]['content_data']['user_id'] 		= $usr->id;
 							$this->jsonarray['update'][$inc]['content_data']['user_name'] 		= $usr->name;
 							$this->jsonarray['update'][$inc]['content_data']['user_avatar'] 	= $usr->avatar;
@@ -909,7 +777,7 @@ class wall{
 							$this->jsonarray['update'][$inc]['content_data']['date'] 			= CTimeHelper::getFormattedTime($discussion->lastreplied, $format);
 							$this->jsonarray['update'][$inc]['content_data']['isLocked']		= $discussion->lock;
 
-							if($type=='group'){//echo '<pre>';print_r($html);exit;
+							if($type=='group'){
 								$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked>=0) ? 0 : 1 ;
 							}
 
@@ -967,6 +835,34 @@ class wall{
 						$this->jsonarray['update'][$inc]['titletag'] = $usr->name." ► ".$this->jsonarray['update'][$inc]['group_data']['title']."\n".str_replace("&#9658;","►",str_replace("&quot;","\"",(strip_tags($titletag))));
 						$this->jsonarray['update'][$inc]['deleteAllowed'] = intval($this->my->authorise('community.delete','activities.'.$html->id, $group));
 						break;
+
+					case 'groups.update':
+						$this->jsonarray['update'][$inc]['type']			= 'groups.update';
+						$srch = array("&#9658;","&quot;");
+						$rplc = array("►","\"");
+						$this->jsonarray['update'][$inc]['titletag'] 		= str_replace($srch,$rplc,strip_tags($titletag));
+						$this->jsonarray['update'][$inc]['id'] 				= $html->id;
+						$this->jsonarray['update'][$inc]['date'] 			= $createdTime;
+						$this->jsonarray['update'][$inc]['likeAllowed'] 	= $likeAllowed;
+						$this->jsonarray['update'][$inc]['commentAllowed'] 	= $commentAllowed;
+						$this->jsonarray['update'][$inc]['likeCount'] 		= intval($html->likeCount);
+						$this->jsonarray['update'][$inc]['commentCount'] 	= intval($html->commentCount);
+						if($type=='group'){
+							$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked>=0) ? 0 : 1 ;
+						}else{
+							$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked==1) ? 1 : 0 ;
+						}
+						$group =& JTable::getInstance( 'Group' , 'CTable' );
+						$group->load($html->groupid);
+						$this->jsonarray['update'][$inc]['deleteAllowed'] 	= intval($this->IJUserID==$html->actor OR COwnerHelper::isCommunityAdmin($this->IJUserID ) OR $group->isAdmin($this->IJUserID	));
+						$this->jsonarray['update'][$inc]['liketype'] 		= 'groups.update';
+						$this->jsonarray['update'][$inc]['commenttype'] 	= 'groups.update';
+
+						// event data
+						$this->getGroupData($group->id,$this->jsonarray['update'][$inc]['group_data']);
+						$this->jsonarray['update'][$inc]['titletag'] = $usr->name." ► ".$this->jsonarray['update'][$inc]['group_data']['title']."\n".str_replace("&#9658;","►",str_replace("&quot;","\"",(strip_tags($titletag))));
+						$this->jsonarray['update'][$inc]['deleteAllowed'] = intval($this->my->authorise('community.delete','activities.'.$html->id, $group));
+					break;
 
 					case 'events':
 						$srch = array("&#9658;","&quot;");
@@ -1061,22 +957,23 @@ class wall{
 							// group data
 							$this->getGroupData($html->groupid,$this->jsonarray['update'][$inc]['group_data']);
 						}
-						break;
+					break;
 
 					default:
 //						$srch = array("&#9658;","&quot;");
 //						$rplc = array("►","\"");
+
 						$actor = CFactory::getUser($html->actor);
 						$srch = array('{actor}',"&#9658;","&quot;");
 						$rplc = array($actor->getDisplayName(),"►","\"");
 						$this->jsonarray['update'][$inc]['titletag'] = str_replace($srch,$rplc,strip_tags($titletag));
 						$this->jsonarray['update'][$inc]['type'] = '';
-						break;
+					break;
 				}
 			}
-			$i++;
 			$inc++;
 		}
+
 		return $this->jsonarray;
 	}
 
@@ -1472,7 +1369,7 @@ class wall{
 				$createdTime = (!empty($createdTime))?$createdTime:'';
 
 				$act->created 			= $createdTime;
-				$act->createdDate 		= (C_JOOMLA_15==1)?$date->toFormat(JText::_('DATE_FORMAT_LC2')):$date->Format(JText::_('DATE_FORMAT_LC2'));
+				$act->createdDate 		= (defined('C_JOOMLA_15') && C_JOOMLA_15==1)?$date->toFormat(JText::_('DATE_FORMAT_LC2')):$date->Format(JText::_('DATE_FORMAT_LC2'));
 				$act->app 				= $oRow->app;
 				$act->eventid			= $oRow->eventid;
 				$act->groupid			= $oRow->groupid;
@@ -1488,8 +1385,11 @@ class wall{
 				$act->isFriend			= $this->my->isFriendWith( $act->actor );
 				$act->isMyGroup			= $this->my->isInGroup($oRow->groupid);
 				$act->isMyEvent			= $this->my->isInEvent($oRow->eventid);
-				$act->userLiked			= $oRow->userLiked($my->id);
+				$act->userLiked			= $oRow->userLiked($this->my->id);
 
+				$act->cid				= $oRow->cid;
+				$act->comment_type		= $oRow->comment_type;
+				$act->like_type			= $oRow->like_type;
 
 				$htmlData[] = $act;
 			}
@@ -2650,10 +2550,5 @@ class wall{
 			}
 		}
 		return $this->jsonarray;
-	}
-
-	function clearCache(){
-		$cache = & JFactory::getCache();
-		$cache->clean();
 	}
 }
