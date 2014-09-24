@@ -9,47 +9,57 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport ( 'joomla.application.component.controller' );
+jimport ('joomla.application.component.controller');
 
-class ijoomeradvControllerReport extends JControllerLegacy 
+class ijoomeradvControllerReport extends JControllerLegacy
 {
-	function __construct($default = array()) 
+	function __construct($default = array())
 	{
-		parent::__construct ( $default );
+		parent::__construct($default);
 	}
-	
-	function display($cachable = false, $urlparams = false) 
+
+	function display($cachable = false, $urlparams = false)
 	{
-		parent::display ();
+		parent::display();
 	}
-	
+
 	public function home()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv',null);
+		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv'), null);
 	}
-	
+
 	function delete()
 	{
 		$model = $this->getModel('report');
-		if(!$model->delete()) {
-	        $msg = JText::_( 'COM_IJOOMERADV_REPORT_DELETE_ERROR' );
-	    } else {
+
+		if (!$model->delete())
+		{
+	        $msg = JText::_('COM_IJOOMERADV_REPORT_DELETE_ERROR');
+	    }
+	    else
+	    {
 	        $msg = JText::_('COM_IJOOMERADV_REPORT_DELETE');
 	    }
-		$this->setRedirect ( 'index.php?option=com_ijoomeradv&view=report', $msg );
+
+		$this->setRedirect (JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg );
 	}
-	
+
 	function action()
 	{
-		$action = JRequest::getVar('action','');
+		$action = JFactory::getApplication()->input->getString('action', ''); //JRequest::getVar('action','');
 		$model = $this->getModel('report');
-		if($model->{$action}()){
-			$msg = ($action=='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE');
-		}else{
-			$msg = ($action=='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE_ERROR'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE_ERROR');
+
+		if ($model->{$action}())
+		{
+			$msg = ($action =='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE');
 		}
-		$this->setRedirect ( 'index.php?option=com_ijoomeradv&view=report', $msg );
+		else
+		{
+			$msg = ($action =='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE_ERROR'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE_ERROR');
+		}
+
+		$this->setRedirect (JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg);
 	}
 }

@@ -9,9 +9,9 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controllerform' );
+jimport('joomla.application.component.controllerform');
 
 /**
  * The Menu Type Controller
@@ -20,7 +20,8 @@ jimport( 'joomla.application.component.controllerform' );
  * @subpackage	com_ijoomer
  * @since		1.6
  */
-class IjoomeradvControllerMenu extends JControllerForm{
+class IjoomeradvControllerMenu extends JControllerForm
+{
 	/**
 	 * Dummy method to redirect back to standard controller
 	 *
@@ -30,12 +31,8 @@ class IjoomeradvControllerMenu extends JControllerForm{
 	 * @return	JController		This object to support chaining.
 	 * @since	1.5
 	 */
-	/*public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = false)
 	{
-		$this->setRedirect(JRoute::_('index.php?option=com_ijoomer&view=menus', false));
-	}*/
-	
-	public function display($cachable = false, $urlparams = false){
 		JControllerLegacy::display();
 	}
 
@@ -44,20 +41,23 @@ class IjoomeradvControllerMenu extends JControllerForm{
 	 *
 	 * @return	void
 	 */
-	public function save($key = null, $urlVar = null){
+	public function save($key = null, $urlVar = null)
+	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app		= JFactory::getApplication();
-		$data		= JRequest::getVar('jform', array(), 'post', 'array');		
+		$post       = $app->input->getArray('post', array());
+		$data       = $post['jform']; //JRequest::getVar('jform', array(), 'post', 'array');
 		$context	= 'com_ijoomeradv.edit.menu';
 		$task		= $this->getTask();
-		$recordId	= JRequest::getInt('id');
+		$recordId	= $app->input->getInt('id', 0); //JRequest::getInt('id');
 
 		// Make sure we are not trying to modify an administrator menu.
-		if (isset($data['client_id']) && $data['client_id'] == 1){
-			JError::raiseNotice(0, JText::_('COM_IJOOMERADV_MENU_TYPE_NOT_ALLOWED'));
+		if (isset($data['client_id']) && $data['client_id'] == 1)
+		{
+			throw new RuntimeException(JText::_('COM_IJOOMERADV_MENU_TYPE_NOT_ALLOWED'), 0);
 
 			// Redirect back to the edit screen.
 			$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit', false));
@@ -71,8 +71,10 @@ class IjoomeradvControllerMenu extends JControllerForm{
 		// Get the model and attempt to validate the posted data.
 		$model	= $this->getModel('Menu');
 		$form	= $model->getForm();
-		if (!$form) {
-			JError::raiseError(500, $model->getError());
+
+		if (!$form)
+		{
+			throw new RuntimeException($model->getError(), 500);
 
 			return false;
 		}
@@ -80,17 +82,20 @@ class IjoomeradvControllerMenu extends JControllerForm{
 		$data	= $model->validate($form, $data);
 
 		// Check for validation errors.
-		if ($data === false) {
+		if ($data === false)
+		{
 			// Get the validation messages.
 			$errors	= $model->getErrors();
 
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				if ($errors[$i] instanceof Exception) {
+				if ($errors[$i] instanceof Exception)
+				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
 				}
-				else {
+				else
+				{
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}
@@ -104,7 +109,8 @@ class IjoomeradvControllerMenu extends JControllerForm{
 		}
 
 		// Attempt to save the data.
-		if (!$model->save($data)) {
+		if (!$model->save($data))
+		{
 			// Save the data in the session.
 			$app->setUserState('com_ijoomeradv.edit.menu.data', $data);
 
@@ -148,33 +154,39 @@ class IjoomeradvControllerMenu extends JControllerForm{
 				break;
 		}
 	}
-	
+
 	function setType()
 	{
 		// Initialise variables.
-		$app 	= JFactory::getApplication();
-		$id		=  JRequest::getVar('id',0);
+		$app = JFactory::getApplication();
+		$id  = $app->input->getInt('id', 0); //JRequest::getVar('id',0);
+
 		// Get the posted values from the request.
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
+		$post  = $app->input->getArray('post', array());
+		$data  = $post['jform']; // JRequest::getVar('jform', array(), 'post', 'array');
 		$reqid = '';
-		if($id){
+
+		if($id)
+		{
 			$data['id'] = $id;
 			$reqid = '&id='.$id;
-		} 
-		$data['screen']=json_decode($data['screen'])->result[0];
-		
-		foreach ($data['screen'] as $key=>$value){
+		}
+
+		$data['screen'] = json_decode($data['screen'])->result[0];
+
+		foreach ($data['screen'] as $key=>$value)
+		{
 			$views = explode('.',$value);
 			$view[$views[0]][] = $views[1].'.'.$views[2].'.'.$views[3];
 		}
-		
+
 		$data['screen'] = json_encode($view);
 		$app->setUserState('com_ijoomeradv.edit.menu.data', $data);
 
 		$this->type = $type;
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit'.$reqid, false));
 	}
-	
+
 	public function cancel($key = null)
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));

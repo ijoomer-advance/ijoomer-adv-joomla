@@ -9,122 +9,170 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport ( 'joomla.application.component.controller' );
+jimport ('joomla.application.component.controller');
 
-class ijoomeradvControllerExtensions extends JControllerLegacy 
+class ijoomeradvControllerExtensions extends JControllerLegacy
 {
-	function __construct($default = array()) 
+	/**
+	 * $app  application context object
+	 *
+	 * @var  object
+	 */
+	public $app;
+
+	function __construct($default = array())
 	{
-		parent::__construct ( $default );
+		$this->app = JFactory::getApplication();
+
+		parent::__construct ($default);
 	}
-	
-	function display($cachable = false, $urlparams = false) 
+
+	function display($cachable = false, $urlparams = false)
 	{
 		parent::display ();
 	}
-	
+
 	public function home()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv',null);
 	}
-	
-	function add() 
+
+	function add()
 	{
-		JRequest::setVar ( 'layout', 'install' );
-		parent::display ();
+		$this->app->input->set('layout', 'install');
+		//JRequest::setVar('layout', 'install');
+
+		parent::display();
 	}
-	
-	function detail() 
+
+	function detail()
 	{
-		JRequest::setVar ( 'layout', 'detail' );
-		JRequest::setVar ( 'hidemainmenu', 1 );
-		parent::display ();
+		$this->app->input->set('layout', 'detail');
+		$this->app->input->set('hidemainmenu', 1);
+
+		/*JRequest::setVar('layout', 'detail');
+		JRequest::setVar('hidemainmenu', 1);*/
+
+		parent::display();
 	}
-	
+
 	function save()
 	{
-		$post = JRequest::get ( 'post' );
-		$task = JRequest::getVar ( 'task');
-		$model = $this->getModel ( 'extensions' );
-			 	
-		if ($model->setExtConfig($post)) {
+		$post = $this->app->input->get('post');
+		//$post = JRequest::get('post');
+
+		$task =	$this->app->input->get('task');
+		//$task = JRequest::getVar ('task');
+
+		$model = $this->getModel('extensions');
+
+		if ($model->setExtConfig($post))
+		{
 			$msg = JText::_('COM_IJOOMERADV_CONFIG_SAVED');
-		} else {
+		}
+		else
+		{
 			$msg = JText::_('COM_IJOOMERADV_ERROR_SAVING_CONFIG');
 		}
-		
+
 		$this->setRedirect ('index.php?option=com_ijoomeradv&view=extensions', $msg);
 	}
-	
+
 	function apply()
 	{
-		$post = JRequest::get ( 'post' );
-		$task = JRequest::getVar ( 'task');
-		$model = $this->getModel ( 'extensions' );
-			 	
-		if ($model->setExtConfig($post)) {
+		$post = $this->app->input->get('post');
+		//$post = JRequest::get('post');
+
+		$task =	$this->app->input->get('task');
+		//$task = JRequest::getVar('task');
+
+		$model = $this->getModel('extensions');
+
+		if ($model->setExtConfig($post))
+		{
 			$msg = JText::_('COM_IJOOMERADV_CONFIG_SAVED');
-		} else {
+		}
+		else
+		{
 			$msg = JText::_('COM_IJOOMERADV_ERROR_SAVING_CONFIG');
 		}
-		
+
 		$this->setRedirect ('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]='.$post['extid'], $msg);
 	}
-	
-	function install() 
+
+	function install()
 	{
-		$model = $this->getModel ( 'extensions' );
-		$model->install ();
-		
-		JRequest::setVar ( 'view', 'extensions' );
-		JRequest::setVar ( 'layout', 'default' );
-		JRequest::setVar ( 'hidemainmenu', 0 );
-		parent::display ();
+		$model = $this->getModel('extensions');
+		$model->install();
+
+		$this->app->input->set('view', 'extensions');
+		$this->app->input->set('layout', 'default');
+		$this->app->input->set('hidemainmenu', 0 );
+
+		/*JRequest::setVar( 'view', 'extensions' );
+		JRequest::setVar( 'layout', 'default' );
+		JRequest::setVar( 'hidemainmenu', 0 );*/
+
+		parent::display();
 	}
-	
+
 	function uninstall()
 	{
-		
+
 	}
-	
+
 	function extensionmanage()
 	{
-		JRequest::setVar ( 'layout', 'manage' );
+		$this->app->input->set('layout', 'manage');
+		//JRequest::setVar ( 'layout', 'manage' );
 		parent::display ();
 	}
-	
+
 	function publish()
 	{
-		$cid = JRequest::getVar ( 'cid', array (0 ), 'post', 'array' );
-		
-		if (! is_array ( $cid ) || count ( $cid ) < 1 || $cid[0]===0) {
-			JError::raiseError ( 500, JText::_ ( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_PUBLISH' ) );
+		$post = $this->app->input->getArray('post',array());
+		$cid  = $post['cid']; //JRequest::getVar ( 'cid', array (0 ), 'post', 'array' );
+
+		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
+		{
+			throw new RuntimeException(JText::_( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_PUBLISH'), 500);
 		}
-		
-		$model = $this->getModel ( 'extensions' );
-		if (! $model->publish ( $cid, 1 )) {
+
+		$model = $this->getModel( 'extensions' );
+
+		if (!$model->publish ( $cid, 1 ))
+		{
 			echo "<script>alert('" . $model->getError ( true ) . "');</script>\n";
 		}
-		
-		JRequest::setVar ( 'layout', 'manage' );
+
+		$this->app->input->set('layout', 'manage');
+		//JRequest::setVar ( 'layout', 'manage' );
+
 		parent::display ();
 	}
-	
+
 	function unpublish()
 	{
-		$cid = JRequest::getVar ( 'cid', array (0), 'post', 'array' );
-		
-		if (! is_array ( $cid ) || count ( $cid ) < 1 || $cid[0]===0) {
-			JError::raiseError ( 500, JText::_ ( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_UNPUBLISH' ) );
+		$post = $this->app->input->getArray('post',array());
+		$cid  = $post['cid']; //JRequest::getVar ( 'cid', array (0), 'post', 'array' );
+
+		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
+		{
+			throw new RuntimeException(JText::_( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_UNPUBLISH'), 500);
 		}
+
 		$model = $this->getModel ( 'extensions' );
-		if (! $model->publish ( $cid, 0 )) {
+
+		if (!$model->publish ($cid, 0))
+		{
 			echo "<script>alert('" . $model->getError ( true ) . "');</script>\n";
 		}
-		
-		JRequest::setVar ( 'layout', 'manage' );
+
+		$this->app->input->set('layout', 'manage');
+		//JRequest::setVar ( 'layout', 'manage' );
+
 		parent::display ();
 	}
 }
