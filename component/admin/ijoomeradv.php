@@ -9,13 +9,13 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-defined ( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR );
-define('IJADV_VERSION',1.5);
+defined ('DS') or define('DS', DIRECTORY_SEPARATOR);
+define('IJADV_VERSION', 1.5);
 
-jimport ( 'joomla.version' );
-$version = new JVersion ( );
+jimport ('joomla.version');
+$version = new JVersion ();
 
 //define joomla version
 defined ( 'IJ_JOOMLA_VERSION' ) or define ( 'IJ_JOOMLA_VERSION', floatval ( $version->RELEASE ) );
@@ -29,16 +29,21 @@ defined ( 'IJ_MODEL' )			or define ( 'IJ_MODEL', IJ_ADMIN . DS . 'models' );
 defined ( 'IJ_TABLE' )			or define ( 'IJ_TABLE', IJ_ADMIN . DS . 'tables' );
 defined ( 'IJ_VIEW' )			or define ( 'IJ_VIEW', IJ_ADMIN . DS . 'views' );
 
-require_once (IJ_HELPER.DS.'helper.php');
+require_once (IJ_HELPER . DS . 'helper.php');
 
 $document = JFactory::getDocument ();
-$document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.DS.'ijoomeradv.css' );
+$document->addStyleSheet('components'. DS . 'com_ijoomeradv' . DS . 'assets' . DS . 'css' . DS . 'ijoomeradv.css');
 
-$controller = JRequest::getVar ('view','ijoomeradv');
+$controller = JFactory::getApplication()->input->get('view', 'ijoomeradv', 'string');
+//$controller = JRequest::getVar ('view','ijoomeradv');
 $path = IJ_CONTROLLER . DS . $controller . '.php';
-if (file_exists ( $path )) {
+
+if (file_exists ($path))
+{
 	require_once ($path);
-} else {
+}
+else
+{
 	$classname = '';
 }
 
@@ -46,7 +51,8 @@ $classname = 'ijoomeradvController' . $controller;
 $controller = new $classname();
 
 // Perform the Request task
-$task=JRequest::getVar('task');
+$task =  JFactory::getApplication()->input->get('task', '', 'string');
+//$task = JRequest::getVar('task');
 $controller->execute ($task);
 
 // Redirect if set by the controller

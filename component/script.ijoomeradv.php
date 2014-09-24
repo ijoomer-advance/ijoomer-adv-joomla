@@ -13,7 +13,7 @@
  * along with ijoomer; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 class com_ijoomeradvInstallerScript
 {
@@ -24,9 +24,9 @@ class com_ijoomeradvInstallerScript
      */
 	public function __constructor(JAdapterInstance $adapter)
 	{
-		
+
 	}
-	
+
 	/**
      * Called after any type of action
      *
@@ -37,7 +37,7 @@ class com_ijoomeradvInstallerScript
      */
     public function postflight($route, JAdapterInstance $adapter)
     {
-    	
+
     }
 
     /**
@@ -49,17 +49,21 @@ class com_ijoomeradvInstallerScript
      */
     public function install(JAdapterInstance $adapter)
     {
-    	
-    	$db= & JFactory::getDBO();
-	
-		// set default menu items if no menu present
-		$query="SELECT count(*) 
-				FROM #__ijoomeradv_menu";
+    	// Initialiase variables.
+    	$db    = JFactory::getDbo();
+    	$query = $db->getQuery(true);
+
+    	// set default menu items if no menu present
+    	$query->select('count(*)')
+    		->from($db->qn('#__ijoomeradv_menu'));
+
 		$db->setQuery($query);
-		$result=$db->loadResult();
-		
-		if($result<=0){
-			$query="INSERT INTO `#__ijoomeradv_menu` (`id`, `title`, `menutype`, `note`, `type`, `published`, `access`, `views`, `home`, `ordering`, `requiredField`, `menuoptions` , `itemimage`) VALUES
+
+		$result = $db->loadResult();
+
+		if ($result<=0)
+		{
+			$query = "INSERT INTO `#__ijoomeradv_menu` (`id`, `title`, `menutype`, `note`, `type`, `published`, `access`, `views`, `home`, `ordering`, `requiredField`, `menuoptions` , `itemimage`) VALUES
 					(1, 'Home', 1, 'This will lead user to home screen', 'Home', 1, 1, 'default.default.home.Home', 0, 1, 0, '', ''),
 					(2, 'Featured', 1, 'This will list the featured Articles', 'Featured article', 1, 1, 'icms.articles.featured.IcmsFeaturedArticles', 1, 2, 0, '', ''),
 					(3, 'Categories', 1, 'This will list all the categories of icms', 'All category', 1, 1, 'icms.categories.allCategories.IcmsAllCategory', 0, 3, 0, '', ''),
@@ -70,25 +74,36 @@ class com_ijoomeradvInstallerScript
 					(8, 'Saved', 2, 'This will list all the articles which are made favourite', 'Favourite articl', 1, 1, 'icms.articles.favourite.IcmsFavouriteArticles', 0, 4, 0, '', ''),
 					(9, 'External URL', 3, '', 'WebLink', 1, 1, 'default.default.web.Web', 0, 1, 1, '', ''),
 					(10, 'Login', 3, 'This will lead user to login screen', 'Login', 1, 1, 'default.default.login.Login', 0, 2, 0, '', '')";
+
 			$db->setQuery($query);
 			$db->Query();
 		}
-	
+
 		// set default menu types if not installed
-		$query="SELECT count(*) 
-				FROM #__ijoomeradv_menu_types";
+
+		$query = $db->getQuery(true);
+
+    	// set default menu items if no menu present
+    	$query->select('count(*)')
+    		->from($db->qn('#__ijoomeradv_menu_types'));
+
+		/*$query="SELECT count(*)
+				FROM #__ijoomeradv_menu_types";*/
+
 		$db->setQuery($query);
-		$result=$db->loadResult();
-		
-		if($result<=0){
-			$query='INSERT INTO `#__ijoomeradv_menu_types` (`id`, `menutype`, `title`, `description`, `position`, `screen`, `menuitem`) VALUES
+		$result = $db->loadResult();
+
+		if ($result<=0)
+		{
+			$query ='INSERT INTO `#__ijoomeradv_menu_types` (`id`, `menutype`, `title`, `description`, `position`, `screen`, `menuitem`) VALUES
 					(1, \'\', \'Bottom Tab Bar Menu (iCMS)\', \'Bottom Tab Bar Menu of iCMS\', 3, \'{"icms":["categories.allCategories.IcmsAllCategory","categories.categoryBlog.IcmsCategoryBlog","categories.singleCategory.IcmsSingleCategory","articles.featured.IcmsFeaturedArticles","articles.archive.IcmsArchivedArticles","articles.singleArticle.IcmsSingleArticle","articles.favourite.IcmsFavouriteArticles"]}\', \'\'),
 					(2, \'\', \'Home icon menu\', \'This will manage Home screen\', 1, \'\', \'\'),
 					(3, \'\', \'Side Bar Slide Out Menu(iCMS)\', \'This is for side bar in all screens of iCMS\', 2, \'{"icms":["categories.allCategories.IcmsAllCategory","categories.categoryBlog.IcmsCategoryBlog","categories.singleCategory.IcmsSingleCategory","articles.featured.IcmsFeaturedArticles","articles.archive.IcmsArchivedArticles","articles.singleArticle.IcmsSingleArticle","articles.favourite.IcmsFavouriteArticles"]}\', \'\')';
+
 			$db->setQuery($query);
 			$db->Query();
 		}
-		
+
 		ob_start();
 		?>
 		<style type="text/css">
@@ -108,7 +123,7 @@ class com_ijoomeradvInstallerScript
 				padding-top:9px;
 				text-shadow:1px 1px 1px #AAAAAA;
 				box-shadow: 0px 0px 9px #000000;
-				
+
 				background: rgb(73,72,75); /* Old browsers */
 				background: -moz-linear-gradient(top,  rgba(73,72,75,1) 0%, rgba(55,55,57,1) 26%, rgba(0,0,0,1) 27%, rgba(255,152,51,1) 28%, rgba(255,118,2,1) 100%); /* FF3.6+ */
 				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(73,72,75,1)), color-stop(26%,rgba(55,55,57,1)), color-stop(27%,rgba(0,0,0,1)), color-stop(28%,rgba(255,152,51,1)), color-stop(100%,rgba(255,118,2,1))); /* Chrome,Safari4+ */
@@ -118,7 +133,7 @@ class com_ijoomeradvInstallerScript
 				background: linear-gradient(to bottom,  rgba(73,72,75,1) 0%,rgba(55,55,57,1) 26%,rgba(0,0,0,1) 27%,rgba(255,152,51,1) 28%,rgba(255,118,2,1) 100%); /* W3C */
 				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#49484b', endColorstr='#ff7602',GradientType=0 ); /* IE6-9 */
 			}
-			
+
 			.column{
 				border-top: 0px;
 				border-right: 1px solid #CCCCCC;
@@ -129,9 +144,9 @@ class com_ijoomeradvInstallerScript
 				width:50%;
 				padding:20px;
 			}
-			
+
 		</style>
-	
+
 		<table width="81%" border="0" align="center" cellspacing="0px" cellpadding="10px">
 			<tr>
 				<td colspan="2">
@@ -146,7 +161,7 @@ class com_ijoomeradvInstallerScript
 				<td colspan="2">
 					<div style="text-align:center;">
 						<p>iJoomeradv is a mobile platform which provides native applications for iPhone, Android and BlackBerry and works in real-time sync with Joomla.</p>
-						<p>iJoomer Advance provides Android SDK(iPhone SDK is in pipeline) for Joomla CMS. You can manage your mobile screens directly from the Administrative Panel of Joomla like you have used Joomla Menu Manager. You can customize mobile app by your own as source code of Mobile App is provided. Joomla Articles Component is FREE to use now. Visit iJoomer.com for more details.</p> 
+						<p>iJoomer Advance provides Android SDK(iPhone SDK is in pipeline) for Joomla CMS. You can manage your mobile screens directly from the Administrative Panel of Joomla like you have used Joomla Menu Manager. You can customize mobile app by your own as source code of Mobile App is provided. Joomla Articles Component is FREE to use now. Visit iJoomer.com for more details.</p>
 					</div>
 				</td>
 			</tr>
@@ -157,7 +172,7 @@ class com_ijoomeradvInstallerScript
 					<b>STEP 2:</b> Enter your URL in the app.<br/>
 					<b>STEP 3:</b> There is no third step.
 				</td>
-				
+
 				<td class="column">
 					<p><b>How to customize my App?</b></p>
 					- Are you Android developer? Download Android Source Code here.<br/>
@@ -172,17 +187,17 @@ class com_ijoomeradvInstallerScript
 					<div style="text-align:center;">
 						To know more about iJoomeradv, Please visit<br/><br/>
 						<input type="button" class="button-next" onclick="window.location = 'http://www.ijoomer.com/'" value="<?php echo JText::_('www.ijoomer.com');?>" />
-					</div> 
+					</div>
 				</td>
 				<td class="column">
-					<div style="text-align:center;">				
+					<div style="text-align:center;">
 						Click the below button to continue with iJoomeradv settings.<br/><br/>
 						<input type="button" class="button-next" onclick="window.location = 'index.php?option=com_ijoomeradv&view=config'" value="<?php echo JText::_('Configuration Settings');?>"/>
 					</div>
 				</td>
 			</tr>
 		</table>
-	
+
 		<?php
 		$html = ob_get_contents();
 		@ob_end_clean();
@@ -198,7 +213,7 @@ class com_ijoomeradvInstallerScript
      */
     public function update(JAdapterInstance $adapter)
     {
-    	
+
     }
 
     /**
@@ -208,16 +223,22 @@ class com_ijoomeradvInstallerScript
      */
     public function uninstall(JAdapterInstance $adapter)
     {
-    	$db = JFactory::getDBO();
+    	$db    = JFactory::getDbo();
+    	$query = $db->getQuery(true);
 
-		//Delete plugin config	
-		$query="SELECT * 
-				FROM #__ijoomeradv_extensions";
+    	//Delete plugin config
+    	$query->select('*')
+    		->from($db->qn('#__ijoomeradv_extensions'));
+
+		/*$query="SELECT *
+				FROM #__ijoomeradv_extensions";*/
+
 		$db->setQuery($query);
-		$rows=$db->loadObjectlist();
-			
-		for($i=0,$cnt=count($rows);$i<$cnt;$i++){
-			$query="DROP TABLE `#__ijoomeradv_{$rows[$i]->classname}_config`";
+		$rows = $db->loadObjectlist();
+
+		for ($i = 0, $cnt = count($rows); $i < $cnt; $i++)
+		{
+			$query = "DROP TABLE `#__ijoomeradv_{$rows[$i]->classname}_config`";
 			$db->setQuery($query);
 			$db->Query();
 		}
