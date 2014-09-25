@@ -9,53 +9,47 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport ( 'joomla.application.component.controller' );
-
-class ijoomeradvControllerPushnotif extends JControllerLegacy 
+class ijoomeradvControllerPushnotif extends JControllerLegacy
 {
-	
-	function __construct($default = array()) 
-	{
-		parent::__construct ( $default );
-	}
-	
-	function display($cachable = false, $urlparams = false) 
-	{
-		parent::display ();
-	}
-	
 	public function home()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv',null);
+		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true), null);
 	}
-	
-	function add() 
+
+	function add()
 	{
-		JRequest::setVar ( 'layout', 'detail' );
-		JRequest::setVar ( 'hidemainmenu', 1 );
+		$app = JFactory::getApplication();
+		$app->input->set('layout', 'detail');
+		$app->input->set('hidemainmenu', 1);
+
 		parent::display ();
 	}
-	
+
 	function apply()
 	{
 		$model = $this->getModel('pushnotif');
-		if ($model->store()){
+
+		if ($model->store())
+		{
 			$msg = JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SAVED');
-		}else{
+		}
+		else
+		{
 			$msg = JText::_('COM_IJOOMERADV_ERROR_SAVING_PUSH_NOTIFICATION');
 		}
+
 		// Check the table in so it can be edited.... we are done with it anyway
-		$link = 'index.php?option=com_ijoomeradv&view=pushnotif';
+		$link = JRoute::_('index.php?option=com_ijoomeradv&view=pushnotif');
 		$this->setRedirect($link, $msg);
 	}
-	
+
 	function sendPushNotification()
 	{
 		$model = $this->getModel('pushnotif');
-		
-		$model->send_push_notification($device_token, $message='',$badge = 1,$type='');
+
+		$model->send_push_notification($device_token, $message = '', $badge = 1, $type = '');
 		parent::display();
 	}
 }

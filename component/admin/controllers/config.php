@@ -9,35 +9,22 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controller' );
-
-class ijoomeradvControllerconfig extends JControllerLegacy 
+class ijoomeradvControllerconfig extends JControllerLegacy
 {
-
-	function __construct( $default = array()) 
-	{
-		parent::__construct( $default );
-	}
-
-	function display($cachable = false, $urlparams = false) 
-	{
-		parent::display();
-	}
-	
 	public function home()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv',null);
 	}
-	
+
 	function save()
 	{
-		$model = $this->getModel('config');		
-		$config=$model->store();
+		$model  = $this->getModel('config');
+		$config = $model->store();
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));
 	}
-	
+
 	function cancel()
 	{
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));

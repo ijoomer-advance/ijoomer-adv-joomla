@@ -9,16 +9,8 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controller' );
-
-class ijoomeradvControllerijoomeradv extends JControllerLegacy{
-	function __construct($default = array()){
-		parent::__construct($default);
-	}
-
-	function display($cachable = false, $urlparams = false){
-		parent::display();
-	}
+class ijoomeradvControllerijoomeradv extends JControllerLegacy
+{
 }
