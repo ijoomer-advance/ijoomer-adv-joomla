@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
  * The Menu List Controller
@@ -20,23 +20,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class IjoomeradvControllerMenus extends JControllerLegacy
 {
-	/**
-	 * Display the view
-	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return	JController		This object to support chaining.
-	 * @since	1.6
-	 */
-	public function display($cachable = false, $urlparams = false)
-	{
-		parent::display();
-	}
-
 	public function home()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv',null);
+		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true), null);
 	}
 
 	/*
@@ -52,10 +38,10 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	 */
 	function edit()
 	{
-		$id=JRequest::getVar('cid',null,'','array');
+		$id = JFactory::getApplication()->input->getArray('cid', array()); //JRequest::getVar('cid',null,'','array');
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit&id='.$id[0],null);
 	}
-	
+
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
@@ -82,11 +68,14 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid	= JRequest::getVar('cid', array(), '', 'array');
+		$cid = JFactory::getApplication()->input->getArray('cid', array()); //JRequest::getVar('cid', array(), '', 'array');
 
-		if (!is_array($cid) || count($cid) < 1) {
-			JError::raiseWarning(500, JText::_('COM_IJOOMERADV_NO_MENUS_SELECTED'));
-		} else {
+		if (!is_array($cid) || count($cid) < 1)
+		{
+			throw new RuntimeException(JText::_('COM_IJOOMERADV_NO_MENUS_SELECTED'), 500);
+		}
+		else
+		{
 			// Get the model.
 			$model = $this->getModel();
 
@@ -95,10 +84,13 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 			JArrayHelper::toInteger($cid);
 
 			// Remove the items.
-			if (!$model->delete($cid)) {
+			if (!$model->delete($cid))
+			{
 				$this->setMessage($model->getError());
-			} else {
-			$this->setMessage(JText::plural('COM_IJOOMERADV_N_MENUS_DELETED', count($cid)));
+			}
+			else
+			{
+				$this->setMessage(JText::plural('COM_IJOOMERADV_N_MENUS_DELETED', count($cid)));
 			}
 		}
 
@@ -119,11 +111,14 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 		// Initialise variables.
 		$model = $this->getModel('Item');
 
-		if ($model->rebuild()) {
+		if ($model->rebuild())
+		{
 			// Reorder succeeded.
 			$this->setMessage(JText::_('JTOOLBAR_REBUILD_SUCCESS'));
 			return true;
-		} else {
+		}
+		else
+		{
 			// Rebuild failed.
 			$this->setMessage(JText::sprintf('JTOOLBAR_REBUILD_FAILED', $model->getMessage()));
 			return false;
@@ -136,61 +131,95 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	public function resync()
 	{
 		// Initialise variables.
-		$db = JFactory::getDbo();
+		$db    = JFactory::getDbo();
 		$parts = null;
 
 		// Load a lookup table of all the component id's.
-		$components = $db->setQuery(
-			'SELECT element, extension_id' .
-			' FROM #__extensions' .
-			' WHERE type = '.$db->quote('component')
-		)->loadAssocList('element', 'extension_id');
 
-		if ($error = $db->getErrorMsg()) {
-			return JError::raiseWarning(500, $error);
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('element, extension_id')
+			->from($db->qn('#__extensions'))
+			->where($db->qn('type') . ' = ' . $db->q('component'));
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+
+		try
+		{
+			$components = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
 		}
 
 		// Load all the component menu links
-		$items = $db->setQuery(
-			'SELECT id, link, component_id' .
-			' FROM #__ijoomeradv_menu' .
-			' WHERE type = '.$db->quote('component')
-		)->loadObjectList();
+		$query = $db->getQuery(true);
 
-		if ($error = $db->getErrorMsg()) {
-			return JError::raiseWarning(500, $error);
+		// Create the base select statement.
+		$query->select('id, link, component_id')
+			->from($db->qn('#__ijoomeradv_menu'))
+			->where($db->qn('type') . ' = ' . $db->q('component'));
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+
+		try
+		{
+			$items = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
 		}
 
-		foreach ($items as $item) {
+		foreach ($items as $item)
+		{
 			// Parse the link.
 			parse_str(parse_url($item->link, PHP_URL_QUERY), $parts);
 
 			// Tease out the option.
-			if (isset($parts['option'])) {
+			if (isset($parts['option']))
+			{
 				$option = $parts['option'];
 
 				// Lookup the component ID
-				if (isset($components[$option])) {
+				if (isset($components[$option]))
+				{
 					$componentId = $components[$option];
-				} else {
+				}
+				else
+				{
 					// Mismatch. Needs human intervention.
 					$componentId = -1;
 				}
 
 				// Check for mis-matched component id's in the menu link.
-				if ($item->component_id != $componentId) {
+				if ($item->component_id != $componentId)
+				{
 					// Update the menu table.
 					$log = "Link $item->id refers to $item->component_id, converting to $componentId ($item->link)";
 					echo "<br/>$log";
 
-					$db->setQuery(
-						'UPDATE #__ijoomeradv_menu' .
-						' SET component_id = '.$componentId.
-						' WHERE id = '.$item->id
-					)->query();
+					$query = $db->getQuery(true);
 
-					if ($error = $db->getErrorMsg()) {
-						return JError::raiseWarning(500, $error);
+					// Create the base update statement.
+					$query->update($db->qn('#__ijoomeradv_menu'))
+						->set($db->qn('component_id') . ' = ' . $db->q($componentId))
+						->where($db->qn('id') . ' = ' . $db->q($item->id));
+
+					// Set the query and execute the update.
+					$db->setQuery($query);
+
+					try
+					{
+						$db->execute();
+					}
+					catch (RuntimeException $e)
+					{
+						throw new RuntimeException($e->getMessage(), $e->getCode());
 					}
 				}
 			}
