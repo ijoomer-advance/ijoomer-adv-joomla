@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport ( 'joomla.application.component.model');
 
@@ -26,45 +26,45 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 
 	function __construct() {
 		parent::__construct();
-		
-		global $context; 
+
+		global $context;
 		$mainframe = JFactory::getApplication();
 		//$context='id';
-	  	$this->_table_prefix = '#__ijoomeradv_';			
+	  	$this->_table_prefix = '#__ijoomeradv_';
 		$limit		= $mainframe->getUserStateFromRequest( $context.'limit', 'limit', $mainframe->getCfg('list_limit'), 0);
 		$limitstart = $mainframe->getUserStateFromRequest( $context.'limitstart', 'limitstart', 0 );
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
-	
+
 	function getUsers(){
 		$db = &JFactory::getDBO();
-		$query="SELECT `username` 
-				FROM `#__users` 
+		$query="SELECT `username`
+				FROM `#__users`
 				WHERE `id` in (SELECT `userid` FROM #__ijoomeradv_users)";
 		$db->setQuery($query);
 		$user = $db->loadResultArray();
 		return $user;
 	}
-	
+
 	function getPushNotifications(){
 		$db = &JFactory::getDBO();
-		$query="SELECT * 
-				FROM `#__ijoomeradv_push_notification` 
+		$query="SELECT *
+				FROM `#__ijoomeradv_push_notification`
 				ORDER BY `id` DESC";
 		$db->setQuery($query);
 		$pushNotifications=$db->loadAssocList();
 		return $pushNotifications;
 	}
-	
+
 	function store(){
 		$row =& $this->getTable();
 		$data = JRequest::get('post');
 		$db=&JFactory::getDBO();
 
-		$query="SELECT `name`, `value` 
-				FROM `#__ijoomeradv_config` 
+		$query="SELECT `name`, `value`
+				FROM `#__ijoomeradv_config`
 				WHERE `name` in ('IJOOMER_PUSH_ENABLE_IPHONE','IJOOMER_PUSH_DEPLOYMENT_IPHONE','IJOOMER_PUSH_ENABLE_SOUND_IPHONE','IJOOMER_PUSH_ENABLE_ANDROID','IJOOMER_PUSH_API_KEY_ANDROID')";
 		$db->setQuery($query);
 		$configvalue = $db->loadAssocList('name');
@@ -73,13 +73,13 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 			switch($data['device_type']){
 				case 'iphone':
 					if(array_key_exists('IJOOMER_PUSH_ENABLE_IPHONE', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_IPHONE']['value'] == 1){
-						$query="SELECT `device_token` 
-								FROM #__ijoomeradv_users 
-								WHERE `device_type`='iphone' 
+						$query="SELECT `device_token`
+								FROM #__ijoomeradv_users
+								WHERE `device_type`='iphone'
 								ORDER BY `userid` ";
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
-						
+
 						foreach($users as $user){
 							$options=array();
 							$options['device_token']=$user->device_token;
@@ -89,21 +89,21 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 						}
 					}
 					break;
-					
+
 				case 'android':
 					if(array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1){
-						$query="SELECT `device_token` 
+						$query="SELECT `device_token`
 								FROM #__ijoomeradv_users
-								WHERE `device_type`='android'  
+								WHERE `device_type`='android'
 								ORDER BY `userid` ";
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
 						if(!empty($users)){
-							$dtoken=array();	
+							$dtoken=array();
 							foreach($users as $user){
 								$dtoken[]=$user->device_token;
 							}
-							
+
 							$options=array();
 							$options['registration_ids']=$dtoken;
 							$options['api_key']=$configvalue['IJOOMER_PUSH_API_KEY_ANDROID']['value'];
@@ -113,11 +113,11 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 						}
 					}
 					break;
-				
+
 				case 'both':
 				default:
-					$query="SELECT `device_token`,`device_type` 
-							FROM #__ijoomeradv_users 
+					$query="SELECT `device_token`,`device_type`
+							FROM #__ijoomeradv_users
 							ORDER BY `userid` ";
 					$this->_db->setQuery($query);
 					$users = $this->_db->loadobjectList();
@@ -131,7 +131,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 							$this->sendIphonePushNotification($options);
 						}elseif($user->device_type=='android' && array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1){
 							$dtoken[]=$user->device_token;
-						}		
+						}
 					}
 					$options=array();
 					$options['registration_ids']=$dtoken;
@@ -140,35 +140,35 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 					$options['data']['type']='backend';//$data['backend'];
 					$this->sendAndroidPushNotification($options);
 					break;
-			}		
+			}
 		}
-		
-		
+
+
 		if($data['to_user']){
 			$users = explode(",",$data['to_user']);
 			$sendtouser = array();
-			
+
 			foreach($users as $user){
 				//fetch userid and store to array to save
-				$query="SELECT `id` 
-						FROM #__users 
+				$query="SELECT `id`
+						FROM #__users
 						WHERE `username`='{$user}'";
 				$db->setQuery($query);
 				$uid = $db->loadResult();
-				if($uid){  
+				if($uid){
 					$sendtouser[] = $uid;
 				}
 			}
-			
+
 			$comma_separated = implode(",", $sendtouser);
-			
+
 			switch($data['device_type']){
 				case 'iphone':
 					if(array_key_exists('IJOOMER_PUSH_ENABLE_IPHONE', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_IPHONE']['value'] == 1){
-						$query="SELECT `device_token` 
-								FROM #__ijoomeradv_users 
+						$query="SELECT `device_token`
+								FROM #__ijoomeradv_users
 								WHERE `device_type`='iphone'
-								AND `userid` IN ({$comma_separated}) 
+								AND `userid` IN ({$comma_separated})
 								ORDER BY `userid` ";
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
@@ -183,13 +183,13 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 						}
 					}
 					break;
-					
+
 				case 'android':
 					if(array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1){
-						$query="SELECT `device_token` 
+						$query="SELECT `device_token`
 								FROM #__ijoomeradv_users
-								WHERE `device_type`='android' 
-								AND `userid` IN ({$comma_separated}) 
+								WHERE `device_type`='android'
+								AND `userid` IN ({$comma_separated})
 								ORDER BY `userid` ";
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
@@ -205,12 +205,12 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 						$this->sendAndroidPushNotification($options);
 					}
 					break;
-				
+
 				case 'both':
 				default:
-					$query="SELECT `device_token`,`device_type` 
-							FROM #__ijoomeradv_users 
-							AND `userid` IN ({$comma_separated}) 
+					$query="SELECT `device_token`,`device_type`
+							FROM #__ijoomeradv_users
+							AND `userid` IN ({$comma_separated})
 							ORDER BY `userid` ";
 					$this->_db->setQuery($query);
 					$users = $this->_db->loadobjectList();
@@ -224,36 +224,36 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 							$this->sendIphonePushNotification($options);
 						}elseif($user->device_type=='android' && array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1){
 							$dtoken[]=$user->device_token;
-						}	
+						}
 						$options=array();
 						$options['registration_ids']=$dtoken;
 						$options['api_key']=$configvalue['IJOOMER_PUSH_API_KEY_ANDROID']['value'];
 						$options['data']['message']=$data['message'];
 						$options['data']['type']='backend';//$data['backend'];
-						$this->sendAndroidPushNotification($options);	
+						$this->sendAndroidPushNotification($options);
 					}
 					break;
 			}
-			
-				
+
+
 		}
-		
+
 		if(isset($comma_separated)){
 			$data['to_user'] = $comma_separated;
 		}
-		
+
 		// Bind the form fields to the hello table
 		if (!$row->bind($data)){
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		
+
 		// Make sure the record is valid
-		if (!$row->check()){ 
+		if (!$row->check()){
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
-		
+
 		// Store the web link table to the database
 		if (!$row->store()){
 			$this->setError( $row->getErrorMsg() );
@@ -261,7 +261,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 		}
 		return true;
 	}
-	
+
 	// iphone push notification
 	function sendIphonePushNotification($options){
 		$server=($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
@@ -272,30 +272,30 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 		$body['aps']['badge']=(isset($options['aps']['badge']) && !empty($options['aps']['badge'])) ? $options['aps']['badge'] : 1;
 		$body['aps']['sound']=(isset($options['aps']['sound']) && !empty($options['aps']['sound'])) ? $options['aps']['sound'] : 'default';
 		$payload = json_encode($body);
-		
+
 		$ctx = stream_context_create();
 		stream_context_set_option($ctx, 'ssl', 'local_cert', $keyCertFilePath);
 		$fp = stream_socket_client($server, $error, $errorString, 60, STREAM_CLIENT_CONNECT, $ctx);
-		
+
 		if (!$fp){
 			//global mainframe;
 			print "Failed to connect ".$error." ".$errorString;
 			return;
 		}
-		 
+
 		$msg = chr(0) . pack("n",32) . pack('H*', str_replace(' ', '', $options['device_token'])) . pack("n",strlen($payload)) . $payload;
 		fwrite($fp, $msg);
 		fclose($fp);
 	}
 
-	
+
 	//android push notification
 	function sendAndroidPushNotification($options){
 		$url = 'https://android.googleapis.com/gcm/send';
 		$options['data']['badge']=(isset($options['data']['badge']) && !empty($options['data']['badge'])) ? $options['data']['badge'] : 1;
 		$fields['registration_ids']=$options['registration_ids'];
 		$fields['data']=$options['data'];
-		
+
 		$headers = array(
             'Authorization: key='.$options['api_key'] ,
             'Content-Type: application/json'

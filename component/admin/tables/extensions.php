@@ -9,17 +9,17 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
- 
+
 class TableExtensions extends JTable{
 	var $id = null;
 	var $name = null;
 	var $classname = null;
 	var $option = null;
-	var $published = null;		
-	
+	var $published = null;
+
 	function TableExtensions(& $db) {
 		$this->_table_prefix = '#__ijoomeradv_';
 		parent::__construct($this->_table_prefix.'extensions', 'id', $db);

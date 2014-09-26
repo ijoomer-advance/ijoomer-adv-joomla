@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 JFormHelper::loadFieldClass('list');
 
@@ -47,14 +47,14 @@ class JFormFieldMenutypeselect extends JFormFieldList
 		// Load the javascript and css
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal');
-		
+
 		$screens = json_decode($this->value,true);
-		
+
 		if($screens){
 			foreach ($screens as $key=>$value){
 				foreach ($value as $k1=>$v1){
 					$sname = explode('.',$v1);
-					$screenname[] = $sname[1]; 
+					$screenname[] = $sname[1];
 				}
 			}
 			$screen_list=implode(',',$screenname);

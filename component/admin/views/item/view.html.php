@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
  * The HTML Menus Menu Item View.
@@ -35,7 +35,7 @@ class IjoomeradvViewItem extends JViewLegacy
 		$this->modules	= $this->get('Modules');
 		$this->state	= $this->get('State');
 		$this->menutypes	= $this->get('Menutypes');
-		
+
 		$extention = explode('.',$this->form->getValue('views'));
 		$extention = $extention[0];
 

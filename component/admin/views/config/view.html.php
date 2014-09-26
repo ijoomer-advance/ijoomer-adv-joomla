@@ -9,24 +9,24 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport( 'joomla.application.component.view' );
 
 class ijoomeradvViewconfig extends JViewLegacy {
 	function display($tpl = null) {
-		
+
 		$document = JFactory::getDocument();
 		$document->setTitle( JText::_('COM_IJOOMERADV_CONFIGURATION') );
 
 		$uri = JFactory::getURI();
-		
+
 		JToolBarHelper::title(   JText::_( 'COM_IJOOMERADV_CONFIGURATION' )	, 'config_48' );
 		JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);
 		JToolBarHelper::divider();
 	 	JToolBarHelper::save();
 		JToolBarHelper::cancel( 'cancel', 'Close' );
-		
+
 		JSubMenuHelper::addEntry( JText::_('COM_IJOOMERADV_EXTENSIONS'), 'index.php?option=com_ijoomeradv&view=extensions', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') != 'manage'));
 		JSubMenuHelper::addEntry( JText::_('COM_IJOOMERADV_EXTENSIONS_MANAGER'), 'index.php?option=com_ijoomeradv&view=extensions&layout=manage', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') == 'manage'));
 		JSubMenuHelper::addEntry( JText::_('COM_IJOOMERADV_GLOBAL_CONFIGURATION'), 'index.php?option=com_ijoomeradv&view=config', JRequest::getVar('view') == 'config' );
@@ -35,22 +35,22 @@ class ijoomeradvViewconfig extends JViewLegacy {
 		JSubMenuHelper::addEntry( JText::_('COM_IJOOMERADV_REPORT'), 'index.php?option=com_ijoomeradv&view=report', JRequest::getVar('view') == 'report' );
 
 		$model = $this->getModel('config');
-		
+
 		$globalConfig=$model->getConfig('global');
 		$this->prepareHTML($globalConfig);
-		
+
 		$themeConfig=$model->getConfig('theme');
 		$this->prepareHTML($themeConfig);
-		
+
 		$pushConfigIphone=$model->getConfig('push>>iphone');
 		$this->prepareHTML($pushConfigIphone);
-		
+
 		$pushConfigAndroid=$model->getConfig('push>>android');
 		$this->prepareHTML($pushConfigAndroid);
-		
+
 		$encryption=$model->getConfig('encryption');
 		$this->prepareHTML($encryption);
-		
+
 
 		$this->assignRef('globalConfig',$globalConfig);
 		$this->assignRef('themeConfig',$themeConfig);
@@ -58,10 +58,10 @@ class ijoomeradvViewconfig extends JViewLegacy {
 		$this->assignRef('pushConfigAndroid',$pushConfigAndroid);
 		$this->assignRef('encryption',$encryption);
 		$this->assignRef('request_url',	$uri->toString());
-		
+
 		parent::display($tpl);
 	}
-	
+
 	function prepareHTML(&$config){
 		foreach($config as $key=>$value){
 			$config[$key]->caption=JText::_($value->caption);
@@ -78,7 +78,7 @@ class ijoomeradvViewconfig extends JViewLegacy {
 					}
 					$input.='</select>';
 					break;
-					
+
 				case 'text':
 					if($value->name == 'IJOOMER_ENC_KEY'){
 						if(empty($value->value)){
@@ -89,11 +89,11 @@ class ijoomeradvViewconfig extends JViewLegacy {
 					}else{
 						$input.='<input type="'.$value->type.'" name="'.$value->name.'" id="'.$value->name.'" value="'.$value->value.'" />';
 					}
-					 
+
 					break;
 			}
 			$config[$key]->html=$input;
 		}
 	}
-	
+
 }

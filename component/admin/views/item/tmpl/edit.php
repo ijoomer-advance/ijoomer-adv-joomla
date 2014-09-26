@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
@@ -27,7 +27,7 @@ if(JRequest::getVar('ajax')){
 	$sql = 'SELECT 	position
 			FROM #__ijoomeradv_menu_types
 			WHERE id='.$menuid;
-	
+
 	$db->setQuery($sql);
 	$position = $db->loadResult();
 	if($position==1 or $position==2){
@@ -95,9 +95,9 @@ if(JRequest::getVar('ajax')){
 		    }
 		}
 		xmlhttp.open("GET","index.php?option=com_ijoomeradv&view=item&layout=edit&ajax=1&menuid="+menuid,true);
-		xmlhttp.send();	
+		xmlhttp.send();
 	}
-	
+
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=item&layout=edit&id='.(int) $this->item->id); ?>" method="post" enctype="multipart/form-data" name="adminForm" id="item-form" class="form-validate">
@@ -120,7 +120,7 @@ if(JRequest::getVar('ajax')){
 							<tr>
 								<td><?php echo $this->form->getLabel('menutype'); ?></td>
 								<td><select size="1" class="inputbox" name="jform[menutype]" id="jform_menutype" aria-invalid="false" onchange="changeimage()">
-								<?php 
+								<?php
 									foreach ($this->menutypes as $key=>$value){
 										$selected = ($value->checked)?'selected="selected"':'';
 										echo '<option '.$selected.' value="'.$value->id.'">'.$value->title.'</option>';
@@ -128,7 +128,7 @@ if(JRequest::getVar('ajax')){
 								?></select>
 								</td>
 							</tr>
-					
+
 							<?php if ($this->item->type =='url'): ?>
 								<?php $this->form->setFieldAttribute('link', 'readonly', 'false');?>
 								<tr>
@@ -136,12 +136,12 @@ if(JRequest::getVar('ajax')){
 									<td><?php echo $this->form->getInput('link'); ?></td>
 								</tr>
 							<?php endif; ?>
-							
+
 							<tr>
 								<td><?php echo $this->form->getLabel('menudevice'); ?></td>
 								<td><?php echo $this->form->getInput('menudevice'); ?></td>
 							<tr>
-							
+
 							<tr>
 								<td><?php echo $this->form->getLabel('note'); ?></td>
 								<td><?php echo $this->form->getInput('note'); ?></td>
@@ -154,30 +154,30 @@ if(JRequest::getVar('ajax')){
 								<td><?php echo $this->form->getLabel('access'); ?></td>
 								<td><?php echo $this->form->getInput('access'); ?></td>
 							</tr>
-							<tr>	
+							<tr>
 								<td><?php echo $this->form->getLabel('home'); ?></td>
 								<td><?php echo $this->form->getInput('home'); ?></td>
 							</tr>
-							<tr>	
+							<tr>
 								<td><?php echo $this->form->getLabel('requiredField'); ?></td>
 								<td><?php echo $this->form->getInput('requiredField'); ?></td>
 							</tr >
 							<?php echo $this->form->getLabel('views'); ?>
 							<?php echo $this->form->getInput('views'); ?>
 							<tr id="imageicon">
-								<td><label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl" aria-invalid="false">Icon Image</label></td>				
+								<td><label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl" aria-invalid="false">Icon Image</label></td>
 								<td><input type="file" value="" id="jform_image_icon" name="jform[imageicon]" class="" aria-invalid="false"></td>
 							</tr>
 							<tr id="imagetab">
-								<td><label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl" aria-invalid="false">Tab Image</label></td>				
+								<td><label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl" aria-invalid="false">Tab Image</label></td>
 								<td><input type="file" value="" id="jform_image_tab" name="jform[imagetab]" class="" aria-invalid="false"></td>
 							</tr>
-							
+
 							<tr id="imagetabactive">
-								<td><label title="" class="hasTip" for="jform_image_tab_active" id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label></td>				
+								<td><label title="" class="hasTip" for="jform_image_tab_active" id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label></td>
 								<td><input type="file" value="" id="jform_image_tab_active" name="jform[imagetabactive]" class="" aria-invalid="false"></td>
 							</tr>
-							
+
 							<tr>
 								<td>&nbsp;</td>
 								<td id="imagedescnote"><span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">114x114 px</font></td>
@@ -188,12 +188,12 @@ if(JRequest::getVar('ajax')){
 						<?php if($this->form->getValue('requiredField') == 1){ ?>
 							<div class="">
 								<?php echo JHtml::_('sliders.start', 'menu-sliders-'.$this->item->id); ?>
-			
+
 									<div class="clr"></div>
-			
+
 						<?php echo JHtml::_('sliders.panel', JText::_('COM_IJOOMERADV_ITEM_EXTRA_PARAMS_ASSIGNMENT'), 'module-options'); ?>
 						<fieldset>
-							<?php 
+							<?php
 								if($this->form->getValue('views')){
 									$view = explode('.',$this->form->getValue('views'));
 									$extension	 = $view[0];
@@ -206,29 +206,29 @@ if(JRequest::getVar('ajax')){
 										}
 										$menuoptions = json_encode($menuoptions);
 									}
-									
+
 									if($extension != 'default'){
 										require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.DS.$extension.'.php');
 									}else{
 										require_once (JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.'.php');
 									}
-									
+
 									$extClass	= $extension.'_menu';
 									$extClass 	= new $extClass();
 									echo $extClass->getRequiredInput($extension,$extView,$menuoptions);
 								}
 							?>
 						</fieldset>
-			
+
 				<?php echo JHtml::_('sliders.end'); ?>
-			
+
 			</div>
 			<?php }?>
 		</td>
 		</tr>
 		</table>
-		
-		
+
+
 
 	</fieldset>
 </div>

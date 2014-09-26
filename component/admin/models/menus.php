@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
@@ -87,23 +87,23 @@ class IjoomeradvModelMenus extends JModelList
 
 		foreach ($items as $key=>$value){
 			$query = 'SELECT count(id) as countPublished
-				  	  FROM #__ijoomeradv_menu 
-				      WHERE published=1 
+				  	  FROM #__ijoomeradv_menu
+				      WHERE published=1
 				      AND menutype IN ('.$value->id.')';
 			$db->setQuery($query);
 			$count = $db->loadObject();
 			$countPublished[$value->id] = $count->countPublished;
-			
+
 			$query = 'SELECT count(id) as countUnpublished
-				  	  FROM #__ijoomeradv_menu 
+				  	  FROM #__ijoomeradv_menu
 				      WHERE published=0
 				      AND menutype IN ('.$value->id.')';
 			$db->setQuery($query);
 			$count = $db->loadObject();
 			$countUnpublished[$value->id] = $count->countUnpublished;
-			
+
 			$query = 'SELECT count(id) as countTrashed
-				  	  FROM #__ijoomeradv_menu 
+				  	  FROM #__ijoomeradv_menu
 				      WHERE published=-2
 				      AND menutype IN ('.$value->id.')';
 			$db->setQuery($query);

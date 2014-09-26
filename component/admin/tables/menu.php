@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 // Import JTableMenu
 //JLoader::register('JTableMenu', JPATH_COMPONENT . '/tables/menu_table.php');
@@ -32,7 +32,7 @@ class IjoomeradvTableMenu extends JTable
 	 * @see     http://docs.joomla.org/JTableNested/delete
 	 * @since   2.5
 	 */
-	
+
 	var $id 		= null;
 	//var $menutype 	= null;
 	var $title 		= null;
@@ -44,25 +44,25 @@ class IjoomeradvTableMenu extends JTable
 	var $requiredField	= 0;
 	var $itemimage	= null;
 
-	function IjoomeradvTableMenu(& $db) 
+	function IjoomeradvTableMenu(& $db)
 	{
 		parent::__construct('#__ijoomeradv_menu', 'id', $db);
 	}
-	
+
 	public function delete($pk = null, $children = false)
 	{
 		return parent::delete($pk, $children);
 	}
-	
+
 	public function getNextOrder(){
-		$sql = 'SELECT max(ordering) 
+		$sql = 'SELECT max(ordering)
 				FROM #__ijoomeradv_menu
 				WHERE menutype='.$this->menutype;
 		$this->_db->setQuery($sql);
 		$maxvalue = $this->_db->loadResult();
-		return $maxvalue+1; 
+		return $maxvalue+1;
 	}
-	
+
 	public function saveorder($idArray, $lft_array){
 		if (is_array($idArray) && is_array($lft_array) && count($idArray) == count($lft_array))
 			{
@@ -74,7 +74,7 @@ class IjoomeradvTableMenu extends JTable
 					$query->where($this->_tbl_key . ' = ' . (int) $idArray[$i]);
 					$query->set('ordering = ' . (int) $lft_array[$i]);
 					$this->_db->setQuery($query);
-	
+
 					// Check for a database error.
 					if (!$this->_db->execute())
 					{

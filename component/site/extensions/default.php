@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 class default_menu {
 	public function getRequiredInput($extension,$extTask,$menuoptions){
@@ -20,63 +20,63 @@ class default_menu {
 							<label title="" class="hasTip required" for="jform_request_url" id="jform_request_url-lbl" aria-invalid="false">URL :
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<input type="text" name="jform[request][url]" id="jform_request_url" value="'.$menuoptions['remoteUse']['url'].'" class="required">';
 				break;
-				
+
 			case 'custom':
 				$str = '';
 				if(isset($menuoptions['remoteUse'])){
 					$str = json_encode($menuoptions['remoteUse']);
-				} 
+				}
 				$customactivityname = JText::_('COM_IJOOMERADV_CUSTOM_ACTIVITY_NAME');
 				$html = '<fieldset class="panelform">
 							<label title="" class="hasTip required" for="jform_request_actname" id="jform_request_actname-lbl" aria-invalid="false">'.$customactivityname.'
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<input type="text" name="jform[request][actname]" id="jform_request_actname" value="'.$menuoptions['remotetask'].'" class="required">';
-				
+
 				$customactivityparam = JText::_('COM_IJOOMERADV_CUSTOM_ACTIVITY_PARAMS');
 				$html .= '<label title="" for="jform_request_actparam" id="jform_request_actparam-lbl" aria-invalid="false">'.$customactivityparam.'
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<input type="text" name="jform[request][actparam]" id="jform_request_actparam" value="'.htmlentities($str).'">';
-				
+
 				$html .= '<div style="float:right">Please enter param in JSON object';
 				$html .= '<div>For EX.</div>';
 				$html .= '<div>
 <pre>{
 	"id":1
 }</pre>					</div></div>';
-				
+
 				break;
-				
+
 			case 'youtubePlaylist':
 				$html = '<label title="" for="jform_request_youtubeuser" id="jform_request_youtubeuser-lbl" aria-invalid="false">'.JText::_('COM_IJOOMERADV_YOUTUBE_USERNAME').'
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<input type="text" name="jform[request][youtubeuser]" id="jform_request_youtubeuser" value="'.$menuoptions['remoteUse']['username'].'">';
 				break;
-				
+
 			case 'contactUs':
 				$ID = (isset($menuoptions['remoteUse']['id']))? $menuoptions['remoteUse']['id'] : 0;
 				$db =JFactory::getDbo();
-				$sql = "SELECT c.name 
-    					FROM #__contact_details as c 
-    					WHERE c.id=".$ID; 
+				$sql = "SELECT c.name
+    					FROM #__contact_details as c
+    					WHERE c.id=".$ID;
 				$db->setQuery($sql);
 				$contactName = $db->loadResult();
 				$script = array();
-				
+
 				$script[] = '	function jSelectChart_jform_request_id(id, name, object) {';
 				$script[] = '		document.id("jform_request_id_id").value = id;';
 				$script[] = '		document.id("jform_request_id_name").value = name;';
 				$script[] = '		SqueezeBox.close();';
 				$script[] = '	}';
-		
+
 				// Add the script to the document head.
 				JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 				$html='
@@ -101,10 +101,10 @@ class default_menu {
 							</label>
 							<textarea name="jform[request][subjectLine]" id="jform_request_contact_subjectLine">'.$menuoptions['remoteUse']['subjectLine'].'</textarea>
 						</li>
-						
+
 					</ul>
 				</fieldset>
-				
+
 				<fieldset class="panelform">
 					<legend>Display Options</legend>
 					<ul class="adminformlist">
@@ -239,9 +239,9 @@ class default_menu {
 							<input type="text" name="jform[request][linkELable]" id="jform_request_contact_LinkELable" value="'.$menuoptions['serverUse']['linkELable'].'">
 						</li>
 					</ul>
-					
+
 				</fieldset>
-				
+
 				<fieldset class="panelform">
 					<legend>Mail Options</legend>
 					<ul class="adminformlist">
@@ -270,17 +270,17 @@ class default_menu {
 		}
 		return $html;
 	}
-	
+
 	public function setRequiredInput($extension,$extView,$extTask,$remoteTask,$menuoptions,$data){
 		$db = &JFactory::getDBO();
 		$options = null;
-		 
+
 		switch ($extTask){
 			case 'web':
 				$url = $menuoptions['url'];
 				$options = '{"serverUse":"","remoteUse":{"url":"'.$url.'"}}';
 				break;
-				
+
 			case 'custom':
 				$params = $menuoptions['actparam'];
 				if(!$params){
@@ -288,7 +288,7 @@ class default_menu {
 				}
 				$options = '{"serverUse":"","remoteUse":'.$params.'}';
 				break;
-				
+
 				case 'youtubePlaylist':
 					$params = $menuoptions['youtubeuser'];
 					$options = '{"serverUse":"","remoteUse":{"username":"'.$params.'"}}';
@@ -322,17 +322,17 @@ class default_menu {
 					$options = '{"serverUse":{"showName":"'.$showName.'","showPosition":"'.$showPosition.'","showEmail":"'.$showEmail.'","showStreet":"'.$showStreet.'","showCity":"'.$showCity.'","showState":"'.$showState.'","showPostalCode":"'.$showPostalCode.'","showCountry":"'.$showCountry.'","showTelephone":"'.$showTelephone.'","showMobile":"'.$showMobile.'","showFax":"'.$showFax.'","showWebpage":"'.$showWebpage.'","showMiscInfo":"'.$showMiscInfo.'","showMiscImage":"'.$showMiscImage.'","showLinks":"'.$showLinks.'","linkALable":"'.$linkALable.'","linkBLable":"'.$linkBLable.'","linkCLable":"'.$linkCLable.'","linkDLable":"'.$linkDLable.'","linkELable":"'.$linkELable.'","sendCopy":"'.$sendCopy.'","thankYouText":"'.$thankYouText.'"},"remoteUse":{"id":"'.$id.'","subjectLine":"'.$subjectLine.'","showContactForm":"'.$showContactForm.'"}}';
 					break;
 		}
-		
+
 		if($options){
-			$sql = "UPDATE #__ijoomeradv_menu 
-					SET menuoptions = '".$options."' 
+			$sql = "UPDATE #__ijoomeradv_menu
+					SET menuoptions = '".$options."'
 					WHERE views = '".$extension.".".$extView.".".$extTask.".".$remoteTask."'
 					AND id='".$data['id']."'";
 			$db->setQuery($sql);
 			$db->query();
 		}
 	}
-	
+
 	function getOptions($selectedValue){
 		if($selectedValue==1){
 			$options='<option value="0">Hide</option><option value="1" selected="selected">Show</option>';

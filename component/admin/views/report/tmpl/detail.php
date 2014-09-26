@@ -1,4 +1,4 @@
-<?php 
+<?php
  /*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -32,7 +32,7 @@ JHTML::_('behavior.tooltip');
 			</tr>
 		</thead>
 		<tbody>
-		<?php 
+		<?php
 			foreach ($this->items as $key=>$value){
 				$params = json_decode($value->params);
 				?>
@@ -44,7 +44,7 @@ JHTML::_('behavior.tooltip');
 						<?php echo $value->message;?>
 					</td>
 					<td class="center">
-						<?php 
+						<?php
 							$user = JFactory::getUser($value->created_by);
 							echo $user->name;
 						?>
@@ -53,12 +53,12 @@ JHTML::_('behavior.tooltip');
 						<?php echo $value->created;?>
 					</td>
 				</tr>
-			<?php 
+			<?php
 			}
 		?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="com_ijoomeradv" />
 	<input type="hidden" name="view" value="report" />
 	<input type="hidden" name="boxchecked" value="0" />

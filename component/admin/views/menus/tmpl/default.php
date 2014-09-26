@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -46,7 +46,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 				<th width="30%" colspan="3">
 					<?php echo JText::_('COM_IJOOMERADV_HEADING_NUMBER_MENU_ITEMS'); ?>
 				</th>
-				
+
 				<th width="1%" class="nowrap" rowspan="2">
 					<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
@@ -75,7 +75,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 			$canCreate	= $user->authorise('core.create',		'com_ijoomeradv');
 			$canEdit	= $user->authorise('core.edit',			'com_ijoomeradv');
 			$canChange	= $user->authorise('core.edit.state',	'com_ijoomeradv');
-			
+
 			if($item->position == 1){
 				$item->menutype = JText::_('IJHOME');
 			}else if($item->position == 2){
@@ -107,7 +107,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 					<a href="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=items&menutype='.$item->id.'&filter_published=-2');?>">
 						<?php echo $item->count_trashed; ?></a>
 				</td>
-				
+
 				<td class="center">
 					<?php echo $item->id; ?>
 				</td>

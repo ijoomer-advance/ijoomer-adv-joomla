@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
  * Menus component helper.
@@ -57,9 +57,12 @@ class IjoomeradvHelper
 		$user	= JFactory::getUser();
 		$result	= new JObject;
 
-		if (empty($parentId)) {
+		if (empty($parentId))
+		{
 			$assetName = 'com_ijoomeradv';
-		} else {
+		}
+		else
+		{
 			$assetName = 'com_ijoomeradv.item.'.(int) $parentId;
 		}
 

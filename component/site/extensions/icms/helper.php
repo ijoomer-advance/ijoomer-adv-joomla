@@ -9,14 +9,14 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 class icms_helper {
-	
+
 	private $db_helper;
-	
+
 	function __construct(){
 		$this->db_helper =& JFactory::getDBO();
 	}
-	
+
 }

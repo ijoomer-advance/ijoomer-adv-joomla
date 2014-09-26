@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -22,21 +22,21 @@ $().ready(function() {
 	$('input[value="customs"]').click(function(){
 		$('#userid').show(1000);
 	});
-	
+
 	$('input[value="1"]').click(function(){
 		$('#userid').hide(100);
 	});
-	
+
 	$('#customs').click(function(){
 		$('#disp_btn').show()
 	});
-	
+
 	var months = [
 				<?php for($i=0;$i<count($this->users);$i++) { ?>
-				'<?php echo $this->users[$i]; ?>', 
+				'<?php echo $this->users[$i]; ?>',
 				<?php } ?>
 		         ];
-    
+
 	$("#send_to_username").autocomplete(months, {
 		minChars: 0,
 		max: 12,
@@ -48,19 +48,19 @@ $().ready(function() {
 			return data[0];
 		}
 	});
-	
+
 });
 </script>
 
 <script language="javascript" type="text/javascript">
 
 	function changeVal(){
-		
+
 		if(document.adminForm.send_to_username.value == ""){
 			alert("Please select User Name");
 		} else {
 			if(document.adminForm.to_user.value == ""){
-				document.adminForm.to_user.value = document.adminForm.send_to_username.value;		
+				document.adminForm.to_user.value = document.adminForm.send_to_username.value;
 			} else {
 				if(document.adminForm.to_user.value.indexOf(document.adminForm.send_to_username.value)!=-1){
 					alert("User already Exists");
@@ -71,8 +71,8 @@ $().ready(function() {
 		}
 		document.adminForm.send_to_username.value = "";
 	}
-</script>	
-	
+</script>
+
 
 <form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<div class="editcell">
@@ -83,33 +83,33 @@ $().ready(function() {
 						<table>
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE');?></td>
-								<td> 
+								<td>
 									<!-- <input type='Radio' Name='device_type' value='iphone' /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_IPHONE'); ?>  -->
 									<input type= 'Radio' Name='device_type' value='android'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_ENDROID'); ?>
 									<!-- <input type='Radio' Name ='device_type' value='both'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_BOTH'); ?>  -->
 								</td>
 							</tr>
-						
+
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO');?></td>
 								<td>
 									<input type='radio' name="to_all" id="to_all" value='1' /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS'); ?>
 									<Input type='radio' name="to_all" value='customs' id="customs"  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_CUSTOMS'); ?>
-									<div style="display:none" id="userid"> 
-								 		<input type="text" name="send_to_username" id="send_to_username" value=""  />&nbsp;&nbsp; 
-								 		<input type="button" name="add_uid"  id="add_uid" value="Add User" onClick="changeVal()" />&nbsp;&nbsp; 
+									<div style="display:none" id="userid">
+								 		<input type="text" name="send_to_username" id="send_to_username" value=""  />&nbsp;&nbsp;
+								 		<input type="button" name="add_uid"  id="add_uid" value="Add User" onClick="changeVal()" />&nbsp;&nbsp;
 								 		<input type="text" name="to_user" id="to_user" value=""  />
 									</div>
 								</td>
 							</tr>
-						
+
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT');?></td>
 								<td>
 									 <textarea rows="9" cols="30" name="message" id="message"></textarea>
 								</td>
 							</tr>
-							
+
 							<tr>
 								<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_LINK');?></td>
 								<td>
@@ -118,7 +118,7 @@ $().ready(function() {
 							</tr>
 						</table>
 					</td>
-					
+
 					<td valign="top">
 						<table class ="adminlist table table-striped" width="100%">
 							<thead>
@@ -132,7 +132,7 @@ $().ready(function() {
 								</tr>
 							</thead>
 							<tbody>
-								<?php 
+								<?php
 									$k=0;
 									if(!empty($this->pushNotifications)){
 										foreach($this->pushNotifications as $key=>$value){
@@ -143,9 +143,9 @@ $().ready(function() {
 												<td><?php echo $value['to_user'];?></td>
 												<td><?php echo $value['to_all'];?></td>
 												<td><?php echo $value['message'];?></td>
-												<td><?php echo $value['time'];?></td>	
+												<td><?php echo $value['time'];?></td>
 											</tr>
-								<?php 	
+								<?php
 										}
 										$k=1-$k;
 									}else{
@@ -160,8 +160,8 @@ $().ready(function() {
 					</td>
 				</tr>
 			</tbody>
-		</table>	
-	</div>	
+		</table>
+	</div>
 <div class="clr"></div>
 <input type="hidden" name="option" value="com_ijoomeradv" />
 <input type="hidden" name="view" value="pushnotif" />

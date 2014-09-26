@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
@@ -122,7 +122,7 @@ $saveOrder 	= ($listOrder == 'a.ordering' && $listDirn == 'asc');
 						<?php echo (int) $item->id; ?></span>
 				</td>
 			</tr>
-			<?php 
+			<?php
 			$inc++;
 			endforeach; ?>
 		</tbody>

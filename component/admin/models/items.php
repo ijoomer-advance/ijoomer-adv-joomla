@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
@@ -48,10 +48,10 @@ class IjoomeradvModelItems extends JModelList
 		parent::__construct($config);
 	}
 
-	
+
 	public function getMenus(){
 		$db = $this->getDbo();
-		$query = 'SELECT a.id, a.title 
+		$query = 'SELECT a.id, a.title
 				FROM #__ijoomeradv_menu_types AS a';
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
@@ -178,7 +178,7 @@ class IjoomeradvModelItems extends JModelList
 		}else{
 			$published = 'IN (0, 1, -2)';
 		}
-		
+
 		//$menutype = $this->getUserStateFromRequest($this->context.'.filter.menutype', 'filter_menutype', 0, 'int');
 		// Select all fields from the table.
 		$menutype = $this->getState('filter.menutype');
@@ -191,17 +191,17 @@ class IjoomeradvModelItems extends JModelList
 			$menutype = $this->getMenus();
 			$menutype = 'AND a.menutype IN ('.$menutype[0]->id.')';
 		}
-		
-		$where = " WHERE a.published $published 
+
+		$where = " WHERE a.published $published
 				   $menutype ";
-				  		   
+
 		if($search = trim($this->getState('filter.search'))){
 			$where .= "AND a.title LIKE '%$search%' ";
 		}
-		
-		$query = 'SELECT a.id, a.title, a.note, a.published as published,a.ordering,ag.title AS access_level 
-				  FROM `#__ijoomeradv_menu` AS a 
-				  LEFT JOIN #__viewlevels AS ag ON ag.id = a.access'. 
+
+		$query = 'SELECT a.id, a.title, a.note, a.published as published,a.ordering,ag.title AS access_level
+				  FROM `#__ijoomeradv_menu` AS a
+				  LEFT JOIN #__viewlevels AS ag ON ag.id = a.access'.
 				  $where.
 				  'ORDER BY '.$this->getState('list.ordering','menutype').' '.$this->getState('list.direction', 'ASC');
 		return $query;

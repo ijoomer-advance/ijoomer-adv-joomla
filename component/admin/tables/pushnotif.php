@@ -9,18 +9,18 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
- 
+
 class TablePushnotif extends JTable{
 	var $id				= null;
 	var $device_type	= null;
 	var $to_user		= null;
 	var $to_all			= null;
 	var $message		= null;
-	var $time			= null;		
-	
+	var $time			= null;
+
 	function TablePushnotif(& $db) {
 		$this->_table_prefix = '#__ijoomeradv_';
 		parent::__construct($this->_table_prefix.'push_notification', 'id', $db);

@@ -9,18 +9,18 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
 class IjoomeradvModelReport extends JModelList
 {
 	var $db;
-	
-	function __construct() 
+
+	function __construct()
 	{
 		$this->db=JFactory::getDBO();
-		
+
 		$config=null;
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
@@ -31,15 +31,15 @@ class IjoomeradvModelReport extends JModelList
 		}
 		parent::__construct($config);
 	}
-	
+
 	function getReports()
 	{
-		$sql = "SELECT * 
+		$sql = "SELECT *
 				FROM #__ijoomeradv_report";
 		$this->db->setQuery($sql);
 		return $this->db->loadObjectList();
 	}
-	
+
 	function getExtensions()
 	{
 		$sql = "SELECT name,classname
@@ -48,23 +48,23 @@ class IjoomeradvModelReport extends JModelList
 		$this->db->setQuery($sql);
 		return $this->db->loadObjectList();
 	}
-	
+
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication('administrator');
-		
+
 		$extension = JRequest::getVar('extensiontype', null);
 		if(!empty($extension)){
 			$app->setUserState($this->context.'.extensiontype', $extension);
 		}
-		
+
 		$extensiontype = $app->getUserState($this->context.'.extensiontype');
 		$this->setState('filter.extensiontype', $extensiontype);
-		
+
 		// List state information.
 		parent::populateState('id', 'asc');
 	}
-	
+
 	function delete()
 	{
 		$cids = JRequest::getVar('cid',array());
@@ -77,7 +77,7 @@ class IjoomeradvModelReport extends JModelList
 	    }
 	    return true;
 	}
-	
+
 	function ignore(){
 		$cid = JRequest::getInt('cid',0);
 		if($cid){
@@ -104,10 +104,10 @@ class IjoomeradvModelReport extends JModelList
 		if($cid){
 			$table = $this->getTable('report','IjoomeradvTable');
 			$table->load($cid);
-			
+
 			$extension	= $table->extension;
 			$params 	= json_decode($table->params);
-			
+
 			if($extension == 'jomsocial'){
 				require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
 				switch($params->type){
@@ -116,29 +116,29 @@ class IjoomeradvModelReport extends JModelList
 						$activity	=& JTable::getInstance( 'Activity' , 'CTable' );
 						$activity->load($params->content->id);
 						$jomparams = json_decode($activity->params);
-						
+
 						switch($activity->app){
 							case 'profile':
 								$profile=& JTable::getInstance( 'Profile' , 'CTable' );
 								$profile->load($activity->actor);
 								$profile->status=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-								
+
 								$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-								
+
 								$result = ($activity->store())?true:false;
 								$result = ($profile->store())?true:false;
 								break;
-								
+
 							case 'albums.comment':
 							case 'albums':
 								$activity->content=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($activity->store())?true:false;
-								
+
 								$wall=& JTable::getInstance( 'Wall' , 'CTable' );
 								$wall->load($jomparams->wallid);
 								$wall->comment=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								break;
-								
+
 							case 'photos':
 								if($jomparams->action=='upload'){
 									$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
@@ -155,18 +155,18 @@ class IjoomeradvModelReport extends JModelList
 								}
 								$result = ($activity->store())?true:false;
 								break;
-								
+
 							case 'events.wall':
 							case 'groups.wall':
 								$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($activity->store())?true:false;
 								break;
-								
+
 							default:
 								//TODO : Default
 								break;
 						}
-						
+
 						break;
 					case 'wall':
 						switch ($params->content->app){
@@ -174,7 +174,7 @@ class IjoomeradvModelReport extends JModelList
 							case 'profile.status':
 							case 'albums':
 							case 'groups.wall':
-							case 'events.wall':	
+							case 'events.wall':
 								$wall=& JTable::getInstance( 'Wall' , 'CTable' );
 								$wall->load($params->content->id);
 								$wall->comment=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
@@ -182,20 +182,20 @@ class IjoomeradvModelReport extends JModelList
 								break;
 						}
 						break;
-						
+
 					case 'photos':
 						$photo=& JTable::getInstance( 'Photo' , 'CTable' );
 						$photo->load($params->content->id);
 						$photo->caption=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 						$result = ($photo->store())?true:false;
 						break;
-						
+
 					default:
 						//TODO : Default
 						break;
 				}
 			}
-			
+
 			//Set status in report table
 			if($result){
 				$table = $this->getTable('report','IjoomeradvTable');
@@ -209,52 +209,52 @@ class IjoomeradvModelReport extends JModelList
 			}else{
 				return false;
 			}
-			
+
 		}
 	}
-	
+
 	/*protected function getListQuery()
 	{
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$where = 'WHERE 1 ';
 		$extensiontype = $this->getState('filter.extensiontype');
 		if(!empty($extensiontype) && $extensiontype!='default'){
 			$where .= "AND extension='$extensiontype' ";
 		}
-		
+
 		$cid = JRequest::getVar('cid',0);
 		if($cid){
 			$where .= 'AND a.id ='.$cid;
 		}
 
-		$query = 'SELECT a.*,count(a.id) as itemcount 
+		$query = 'SELECT a.*,count(a.id) as itemcount
 				  FROM `#__ijoomeradv_report` AS a '.
 				  $where.'
 				  GROUP BY a.params ORDER BY '.$this->getState('list.ordering','id').' '.$this->getState('list.direction', 'ASC');
 
 		return $query;
 	}*/
-	
+
 	protected function getListQuery()
 	{
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
-		
+
 		$select= 'SELECT a.* ';
 		$where = 'WHERE 1 ';
 		$groupby = '';
-		
-		
+
+
 		//filter by extension type
 		$extensiontype = $this->getState('filter.extensiontype');
 		if(!empty($extensiontype) && $extensiontype!='default'){
 			$where .= "AND extension='$extensiontype' ";
 		}
-		
+
 		$cid = JRequest::getVar('cid',0);
 		if($cid){
 			$where .= 'AND a.params=(SELECT params FROM #__ijoomeradv_report WHERE id='.$cid.')';
@@ -263,11 +263,11 @@ class IjoomeradvModelReport extends JModelList
 			$groupby 	.= 'GROUP BY a.params ';
 		}
 
-		$query = $select. 
+		$query = $select.
 				  'FROM `#__ijoomeradv_report` AS a '.
 				  $where.' '.
 				  $groupby.'ORDER BY '.$this->getState('list.ordering','id').' '.$this->getState('list.direction', 'ASC');
-		
+
 		return $query;
 	}
 }

@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 ?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id="adminForm">
@@ -37,7 +37,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		            <th width="50px">
 		                <?php echo JText::_('COM_IJOOMERADV_PUBLISH'); ?>
 		            </th>
-		        </tr>            
+		        </tr>
 		    </thead>
 		    <tbody>
 		    <?php
@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			                <b><?php echo $value->name; ?></b>
 			            </td>
 			           	<td align="center" width="20px">
-			           		<?php 
+			           		<?php
 			    				//get version
 								$mainXML = JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$value->classname.'.xml';
 								if (is_file($mainXML)) {
@@ -69,7 +69,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 										echo $version;
 									}
 								}
-								
+
 			           		?>
 			           	</td>
 			            <td align="center">
@@ -95,7 +95,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</tfoot>
     </table>
 </div>
- 
+
 <input type="hidden" name="option" value="com_ijoomeradv" />
 <input type="hidden" name="view" value="extensions" />
 <input type="hidden" name="boxchecked" value="0" />

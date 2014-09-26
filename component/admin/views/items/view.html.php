@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -53,14 +53,14 @@ class IjoomeradvViewItems extends JViewLegacy
 		foreach ($this->items as $item) {
 			$this->ordering[$item->id][] = $item->id;
 		}
-		
+
 		//menu filter
 		$menuOptionsList	= array();
 		//$menuOptionsList[] = JHtml::_('select.option', '*', JText::_('COM_IJOOMER_MENU_MENUTYPE'));
 		foreach ($this->menus as $menus) {
 			$menuOptionsList[] = JHtml::_('select.option', $menus->id, JText::_($menus->title));
 		}
-		$this->menuOptions = $menuOptionsList; 
+		$this->menuOptions = $menuOptionsList;
 
 		// Levels filter.
 		$options	= array();
@@ -94,7 +94,7 @@ class IjoomeradvViewItems extends JViewLegacy
 
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_MENUS'),'index.php?option=com_ijoomeradv&view=menus',JRequest::getVar('view') == 'menus');
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_ITEMS'),'index.php?option=com_ijoomeradv&view=items',JRequest::getVar('view') == 'items');
-		
+
 		JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);
 		JToolBarHelper::divider();
 		JToolBarHelper::addNew('add');
@@ -104,7 +104,7 @@ class IjoomeradvViewItems extends JViewLegacy
 		JToolBarHelper::unpublish('unpublish', 'JTOOLBAR_UNPUBLISH', true);
 
 		JToolBarHelper::divider();
-		
+
 
 		if ($this->state->get('filter.published') == -2 ) {
 			JToolBarHelper::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');

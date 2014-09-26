@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
  * Menu Item Types Model for Menus.
@@ -62,13 +62,13 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
-		$query = 'SELECT * 
+		$query = 'SELECT *
 				  FROM #__ijoomeradv_extensions
 				  WHERE published=1';
-		
+
 		$db->setQuery($query);
 		$components = $db->loadObjectList();
-		
+
 		if($layout == 'select'){
 			$query = 'SELECT screen
 				  FROM #__ijoomeradv_menu_types
@@ -76,7 +76,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 
 			$db->setQuery($query);
 			$default = json_decode($db->loadResult());
-			
+
 			if($default){
 				foreach ($default as $key=>$value){
 					$keys = $key;
@@ -86,7 +86,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				}
 			}
 		}
-		
+
 		if ($options = $this->getTypeOptionsByComponent('default',$defaults)) {
 			$list['default'] = $options;
 
@@ -115,18 +115,18 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 
 		return $list;
 	}
-	
+
 	public function getMenuitems(){
 		$id = JRequest::getInt('recordId');
 		$db = JFactory::getDbo();
-		
+
 		$query = 'SELECT m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published
 				  FROM #__ijoomeradv_menu as m
 				  WHERE m.published=1';
-		
+
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		
+
 		$query = 'SELECT menuitem
 				  FROM #__ijoomeradv_menu_types
 				  WHERE id='.$id;
@@ -134,25 +134,25 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		$db->setQuery($query);
 		$default = explode(',',$db->loadResult());
 		$result1=array();
-						
+
 		foreach ($result as $key=>$value){
 			if(in_array($value->itemid,$default)){
 				$checked = true;
 			}else{
 				$checked = false;
 			}
-			
+
 			$o = new stdClass();
 			$o->itemid = $value->itemid;
 			$o->itemtitle = $value->itemtitle;
 			$o->itemtype = $value->itemtype;
 			$o->checked = $checked;
-			
+
 			$result1[] = $o;
 		}
 		return $result1;
 	}
-	
+
 	protected function getTypeOptionsByComponent($component,$defaults)
 	{
 		// Initialise variables.
@@ -170,24 +170,24 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 
 		return $options;
 	}
-	
+
 	protected function getTypeOptionsFromXML($file, $component, $defaults)
 	{
 		$options = array();
 
 		if($xml = simplexml_load_file($file)){
 			$views = $menu = $xml->xpath('views');
-			
+
 			if($views){
 				foreach ($views[0]->view as $key=>$value){
-					
+
 					$o = new JObject;
 					$o->caption		= (string) $value->caption;
 					$o->view		= (string) $value->extView;
 					$o->task		= (string) $value->extTask;
 					$o->remoteTask	= (string) $value->remoteTask;
 					$o->requiredField	= (int) $value->requiredField;
-					
+
 					if($defaults){
 						if(in_array($component.'.'.$value->extView.'.'.$value->extTask.'.'.$value->remoteTask,$defaults)){
 							$checked = true;
@@ -202,7 +202,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				}
 			}
 		}
-		
+
 		return $options;
 	}
 

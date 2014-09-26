@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 define('IJADV_VERSION',1.4);
 defined ( 'DS' ) or define ( 'DS', DIRECTORY_SEPARATOR);
@@ -35,7 +35,7 @@ defined ( 'IJ_VIEW' )			or define ( 'IJ_VIEW', 			IJ_SITE . DS . 'views' );
 require_once (IJ_HELPER.DS.'helper.php'); // import ijoomeradv helper file
 set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom error handler
 $IJHelperObj= new ijoomeradvHelper(); // create hepler object
-$IJHelperObj->getRequestedObject(); // get requested json object 
+$IJHelperObj->getRequestedObject(); // get requested json object
 
 //defined ( 'IJ_JOMSOCIAL_VERSION' ) or define ( 'IJ_JOMSOCIAL_VERSION', $IJHelperObj->getJomSocialVersion() ); // define jomsocial version
 

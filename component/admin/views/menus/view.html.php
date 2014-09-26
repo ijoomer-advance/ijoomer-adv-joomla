@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
 /**
  * The HTML Menus Menu Menus View.
@@ -56,7 +56,7 @@ class IjoomeradvViewMenus extends JViewLegacy
 
 		$document = JFactory::getDocument();
 		$document->setTitle( JText::_('COM_IJOOMERADV_MENUS') );
-		
+
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_MENUS'),'index.php?option=com_ijoomeradv&view=menus',JRequest::getVar('view') == 'menus');
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_ITEMS'),'index.php?option=com_ijoomeradv&view=items',JRequest::getVar('view') == 'items');
 
