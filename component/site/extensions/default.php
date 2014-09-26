@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 class default_menu {
 	public function getRequiredInput($extension,$extTask,$menuoptions){
