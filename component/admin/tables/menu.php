@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 // Import JTableMenu
 //JLoader::register('JTableMenu', JPATH_COMPONENT . '/tables/menu_table.php');

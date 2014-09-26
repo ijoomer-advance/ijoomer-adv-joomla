@@ -9,28 +9,28 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
 
 define('IJADV_VERSION',1.4);
-defined ( 'DS' ) or define ( 'DS', DIRECTORY_SEPARATOR);
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 $document = JFactory::getDocument (); // get document object
-$document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.DS.'ijoomeradv.css' ); // add ijoomeradv default style to document stack
+$document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.DS.'ijoomeradv.css'); // add ijoomeradv default style to document stack
 
 jimport ('joomla.version'); // import version file
-$version = new JVersion ( ); // create version object
+$version = new JVersion (); // create version object
 
-defined ( 'IJ_JOOMLA_VERSION' ) or define ( 'IJ_JOOMLA_VERSION', floatval ( $version->RELEASE ) ); // define joomla version
+defined('IJ_JOOMLA_VERSION') or define('IJ_JOOMLA_VERSION', floatval ( $version->RELEASE ) ); // define joomla version
 
-defined ( 'IJ_ADMIN' )			or define ( 'IJ_ADMIN', 		JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_ijoomeradv' );
-defined ( 'IJ_SITE' )			or define ( 'IJ_SITE', 			JPATH_COMPONENT );
-defined ( 'IJ_ASSET' )			or define ( 'IJ_ASSET', 		IJ_SITE . DS . 'assets' );
-defined ( 'IJ_CONTROLLER' ) 	or define ( 'IJ_CONTROLLER',	IJ_SITE . DS . 'controllers' );
-defined ( 'IJ_EXTENSION' ) 		or define ( 'IJ_EXTENSION',		IJ_SITE . DS . 'extensions' );
-defined ( 'IJ_HELPER' )			or define ( 'IJ_HELPER', 		IJ_SITE . DS . 'helpers' );
-defined ( 'IJ_MODEL' )			or define ( 'IJ_MODEL', 		IJ_SITE . DS . 'models' );
-defined ( 'IJ_TABLE' )			or define ( 'IJ_TABLE', 		IJ_SITE . DS . 'tables' );
-defined ( 'IJ_VIEW' )			or define ( 'IJ_VIEW', 			IJ_SITE . DS . 'views' );
+defined('IJ_ADMIN')			or define('IJ_ADMIN', 		JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_ijoomeradv');
+defined('IJ_SITE')			or define('IJ_SITE', 			JPATH_COMPONENT );
+defined('IJ_ASSET')			or define('IJ_ASSET', 		IJ_SITE . DS . 'assets');
+defined('IJ_CONTROLLER') 	or define('IJ_CONTROLLER',	IJ_SITE . DS . 'controllers');
+defined('IJ_EXTENSION') 	or define('IJ_EXTENSION',		IJ_SITE . DS . 'extensions');
+defined('IJ_HELPER')		or define('IJ_HELPER', 		IJ_SITE . DS . 'helpers');
+defined('IJ_MODEL')			or define('IJ_MODEL', 		IJ_SITE . DS . 'models');
+defined('IJ_TABLE')			or define('IJ_TABLE', 		IJ_SITE . DS . 'tables');
+defined('IJ_VIEW')			or define('IJ_VIEW', 			IJ_SITE . DS . 'views');
 
 require_once IJ_HELPER.DS.'helper.php'; // import ijoomeradv helper file
 set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom error handler
