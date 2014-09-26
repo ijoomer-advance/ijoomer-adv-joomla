@@ -36,7 +36,7 @@ class IjoomeradvViewPushnotif extends JViewLegacy {
 		JSubMenuHelper::addEntry( JText::_('COM_IJOOMERADV_REPORT'), 'index.php?option=com_ijoomeradv&view=report', JRequest::getVar('view') == 'report' );
 
 		$users=$this->get('Users');
-		$this->assignRef('users', $users);
+		$this->users = $users;
 
 		$pushNotifications=$this->get('PushNotifications');
 		$this->assignRef('pushNotifications',$pushNotifications);
