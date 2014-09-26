@@ -600,7 +600,7 @@ class jomHelper{
 				$photo->load( $itemId );
 				if($photo->id){
 					CFactory::load ( 'helpers', 'group' );
-					$album = & JTable::getInstance ( 'Album', 'CTable' );
+					$album = JTable::getInstance ( 'Album', 'CTable' );
 					$album->load ( $photo->albumid );
 					$pushcontentdata['albumdetail']['id'] = $album->id;
 					$pushcontentdata['albumdetail']['deleteAllowed'] = intval ( ($photo->creator == $album->creator or COwnerHelper::isCommunityAdmin($photo->creator)));

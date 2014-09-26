@@ -25,7 +25,7 @@ jimport ( 'joomla.html.pane' );
 							<tr>
 							<?php for($j = 0; $j < 7; $j ++) {
 									if (isset ( $this->extensions [$i + $j] )) {
-										$row = & $this->extensions [$i + $j];
+										$row = $this->extensions [$i + $j];
 
 										//get version
 										$mainXML = JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$row->classname.'.xml';
@@ -41,7 +41,7 @@ jimport ( 'joomla.html.pane' );
 										if (file_exists ( "components/com_ijoomeradv/assets/images/" . $row->classname . ".png" )) {
 											$plg_img = "components/com_ijoomeradv/assets/images/" . $row->classname . ".png";
 										} else {
-											$app = & JFactory::getApplication ();
+											$app = JFactory::getApplication ();
 											$template = $app->getTemplate ();
 											$plg_img = JURI::base () . "components" . DS . "com_ijoomeradv" . DS . "assets" . DS . "images" . DS . "default.png";
 										} ?>

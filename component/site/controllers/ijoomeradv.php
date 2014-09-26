@@ -20,7 +20,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 	private $IJUserID=null;
 
 	function __construct( $default = array()){
-		$this->mainframe = & JFactory::getApplication();
+		$this->mainframe = JFactory::getApplication();
 		parent::__construct( $default );
 		$this->defineApplicationConfig();
 	}

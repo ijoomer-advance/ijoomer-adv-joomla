@@ -192,7 +192,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	 *
 	 */
 	function setMenuRequest($menuid){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$query="SELECT *
 				FROM #__ijoomeradv_menu
@@ -284,7 +284,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$data['device_token'] 	= IJReq::getTaskData('devicetoken');
 		$data['device_type']	= IJReq::getTaskData('type');
 
-		$my = & JFactory::getUser(); //get current user
+		$my = JFactory::getUser(); //get current user
 
 		//TODO : extension levels default params
 		$defaultParams='{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_friends_request_connection":"1","pushnotif_friends_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
@@ -401,7 +401,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 			if($this->mainframe->login($credentials) == '1' && $fbid!=""){
 				// connect fb user to site user...
-				$user = & JFactory::getUser();
+				$user = JFactory::getUser();
 				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
 					require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
 					$query="INSERT INTO #__community_connect_users

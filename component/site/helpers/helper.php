@@ -24,7 +24,7 @@ class ijoomeradvHelper {
 
 	function __construct(){
 		$this->db= & JFactory::getDBO();
-		$this->mainframe = & JFactory::getApplication();
+		$this->mainframe = JFactory::getApplication();
 	}
 
 	public function getencryption_config(){
@@ -91,7 +91,7 @@ class IJReq{
 	 *
 	 */
 	public static function getTask($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->task) && $mainframe->IJObject->reqObject->task) ? $mainframe->IJObject->reqObject->task : $default;
 	}
 
@@ -100,7 +100,7 @@ class IJReq{
 	 *
 	 */
 	public static function getView($default='ijoomeradv'){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->view) && $mainframe->IJObject->reqObject->view) ? $mainframe->IJObject->reqObject->view : $default;
 	}
 
@@ -109,7 +109,7 @@ class IJReq{
 	 *
 	 */
 	public static function getExtName($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->extName) && $mainframe->IJObject->reqObject->extName) ? $mainframe->IJObject->reqObject->extName : $default;
 	}
 
@@ -118,7 +118,7 @@ class IJReq{
 	 *
 	 */
 	public static function getExtView($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->extView) && $mainframe->IJObject->reqObject->extView) ? $mainframe->IJObject->reqObject->extView : $default;
 	}
 
@@ -127,7 +127,7 @@ class IJReq{
 	 *
 	 */
 	public static function getExtTask($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->extTask) && $mainframe->IJObject->reqObject->extTask) ? $mainframe->IJObject->reqObject->extTask : $default;
 	}
 
@@ -136,7 +136,7 @@ class IJReq{
 	 *
 	 */
 	public static function getVar($name,$default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->reqObject->$name) && $mainframe->IJObject->reqObject->$name) ? $mainframe->IJObject->reqObject->$name : $default;
 	}
 
@@ -147,7 +147,7 @@ class IJReq{
 	 *
 	 */
 	public static function getTaskData($name,$default=NULL,$dataType='str'){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$data=(isset($mainframe->IJObject->reqObject->taskData->$name) && $mainframe->IJObject->reqObject->taskData->$name) ? $mainframe->IJObject->reqObject->taskData->$name : $default;
 		switch($dataType){
 			case 'int':
@@ -173,7 +173,7 @@ class IJReq{
 	}
 
 	public static function setResponse($code=NULL,$message=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->code	=intval($code);
 		$mainframe->IJObject->response->message	=$message;
 	}
@@ -183,7 +183,7 @@ class IJReq{
 	 *
 	 */
 	public static function setResponseCode($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->code			= intval($default);
 	}
 
@@ -192,7 +192,7 @@ class IJReq{
 	 *
 	 */
 	public static function getResponseCode($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->response->code) && $mainframe->IJObject->response->code) ? $mainframe->IJObject->response->code : $default;
 	}
 
@@ -201,7 +201,7 @@ class IJReq{
 	 *
 	 */
 	public static function setResponseMessage($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->message=$default;
 	}
 
@@ -210,7 +210,7 @@ class IJReq{
 	 *
 	 */
 	public static function getResponseMessage($default=NULL){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		return (isset($mainframe->IJObject->response->message) && $mainframe->IJObject->response->message) ? $mainframe->IJObject->response->message : $default;
 	}
 }
@@ -305,7 +305,7 @@ class IJException{
 	 *
 	 */
 	public static function setErrorInfo($file,$line,$class,$method,$function){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->errClass		= $class;
 		$mainframe->IJObject->response->errFile			= $file;
 		$mainframe->IJObject->response->errFunction		= $function;
@@ -318,7 +318,7 @@ class IJException{
 	 *
 	 */
 	public static function getErrorInfo(){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 
 		$error = new stdClass();
 		$error->class		= ($mainframe->IJObject->response->errClass) ? $mainframe->IJObject->response->errClass : NULL;
@@ -335,7 +335,7 @@ class IJException{
 	 *
 	 */
 	public static function addLog(){
-		$mainframe = & JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$error = self::getErrorInfo();
 		$exception['code']			= IJReq::getResponseCode();
 		$exception['message']		= (IJReq::getResponseMessage()) ? IJReq::getResponseMessage() : '-';

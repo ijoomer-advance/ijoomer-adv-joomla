@@ -87,7 +87,7 @@ class user{
 		$this->jsonarray['isfriend']	 	= intval(CFriendsHelper::isConnected($this->IJUserID, $user->id));//intval($user->isFriendWith($this->IJUserID));
 		$this->jsonarray['isFriendReqBy']	= 0;
 		if($user->getParams()->get('profileVideo')){
-			$video = & JTable::getInstance('Video','CTable');
+			$video = JTable::getInstance('Video','CTable');
 			$video->load($user->getParams()->get('profileVideo'));
 			$this->jsonarray['profile_video']['title']	= $video->title;
 			if($video->type=='file'){
