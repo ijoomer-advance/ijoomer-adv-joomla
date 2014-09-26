@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 ?>
 <script type="text/javascript">
@@ -23,7 +23,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <h2 class="modal-title"><?php echo JText::_('COM_IJOOMERADV_TYPE_CHOOSE'); ?></h2>
 <?php echo JHtml::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'slide1')); ?>
-<?php 
+<?php
 	$i=1;
 	foreach ($this->types as $name => $list): ?>
 		<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'slide' . $i++); ?>

@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 jimport ( 'joomla.application.component.model');
 
@@ -27,61 +27,61 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 
 	function __construct() {
 		parent::__construct();
-		
-		global $context; 
+
+		global $context;
 		$mainframe = JFactory::getApplication();
 		//$context='id';
-	  	$this->_table_prefix = '#__ijoomeradv_';			
+	  	$this->_table_prefix = '#__ijoomeradv_';
 		$limit		= $mainframe->getUserStateFromRequest( $context.'limit', 'limit', $mainframe->getCfg('list_limit'), 0);
 		$limitstart = $mainframe->getUserStateFromRequest( $context.'limitstart', 'limitstart', 0 );
-		
+
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
-	
-	function getData() {		
+
+	function getData() {
 		if (empty($this->_data)) {
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		return $this->_data;
 	}
-	
+
 	function getExtensionData() {
 		$extId = JRequest::getVar('cid',array(0),'','array');
-		$query = "SELECT *	
-				  FROM {$this->_table_prefix}extensions 
+		$query = "SELECT *
+				  FROM {$this->_table_prefix}extensions
 				  WHERE id=$extId[0]";
-				  
+
 		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$this->_data = $db->loadObject();
 		return $this->_data;
 	}
-	
+
 	function getExtGroups(){
 		$db = JFactory :: getDBO();
 		$query="SELECT DISTINCT `group`
 				FROM #__ijoomeradv_".$this->_data->classname."_config";
-				
+
 		$db->setQuery($query);
 		return $db->loadColumn();
 	}
-	
+
 	function getExtConfig($group){
-		$db = JFactory :: getDBO();	
-		$query="SELECT * 
+		$db = JFactory :: getDBO();
+		$query="SELECT *
 				FROM #__ijoomeradv_".$this->_data->classname."_config
 				WHERE `group`='$group'";
-				
+
 		$db->setQuery($query);
 		return $db->loadObjectlist('name');
 	}
-	
+
 	function setExtConfig($data){
 		$row =& $this->getTable();
 		$row->load($data['extid']);
-		
+
         include_once (JPATH_COMPONENT_SITE.DS.'extensions'.DS.$row->classname.DS.$row->classname.'.php');
         $class_obj = new $row->classname;
 
@@ -92,7 +92,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
        	}
 		return true;
 	}
-	
+
 	function getTotal() {
 		if (empty($this->_total)) {
 			$query = $this->_buildQuery();
@@ -101,7 +101,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		}
 		return $this->_total;
 	}
-	
+
 	function getPagination() {
 		if (empty($this->_pagination)) {
 			jimport('joomla.html.pagination');
@@ -109,44 +109,44 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		}
 		return $this->_pagination;
 	}
-  	
+
 	function _buildQuery() {
-		$orderby	= $this->_buildContentOrderBy();		
-		$query="SELECT p.*	
-				FROM {$this->_table_prefix}extensions AS p 
-				WHERE p.classname!='iuser' 
+		$orderby	= $this->_buildContentOrderBy();
+		$query="SELECT p.*
+				FROM {$this->_table_prefix}extensions AS p
+				WHERE p.classname!='iuser'
 				{$orderby}";
 		return $query;
 	}
-	
+
 	function _buildContentOrderBy() {
 		global  $context;
 		$mainframe = JFactory::getApplication();
 		$filter_order     = $mainframe->getUserStateFromRequest( $context.'filter_order',      'filter_order', 	  'id' );
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $context.'filter_order_Dir',  'filter_order_Dir', '' );			
-		$orderby 	= ' ORDER BY p.'.$filter_order.' '.$filter_order_Dir;		
+		$filter_order_Dir = $mainframe->getUserStateFromRequest( $context.'filter_order_Dir',  'filter_order_Dir', '' );
+		$orderby 	= ' ORDER BY p.'.$filter_order.' '.$filter_order_Dir;
 		return $orderby;
 	}
-	
+
 	function install() {
 		$mainframe = JFactory::getApplication();
 		$this->setState('action', 'install');
 	    $package = $this->_getPackageFromUpload();
-	    
-	    if($package['type']!='extensions') {	 
+
+	    if($package['type']!='extensions') {
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('COM_IJOOMERADV_INVALID_PACKAGE'));
 			return false;
 	    }
-		
+
 		$installer =& JInstaller::getInstance();
 		if (!$installer->install($package['dir'])) {
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION_ERROR', JText::_($package['type']), JText::_('COM_IJOOMERADV_ERROR'));
 			$result = false;
-		} else { 
+		} else {
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION', JText::_($package['type']), JText::_('COM_IJOOMERADV_SUCCESS'));
 			$result = true;
 		}
- 		
+
 		$mainframe->enqueueMessage($msg);
 		$this->setState('name', $installer->get('name'));
 		$this->setState('result', $result);
@@ -163,14 +163,14 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 
 		return $result;
 	}
-	
+
 	/**
 	 * @param string The class name for the installer
 	 */
-	function _getPackageFromUpload() {  
+	function _getPackageFromUpload() {
 		// Get the uploaded file information
 		$userfile = JRequest::getVar('install_extension', null, 'files', 'array' );
-		
+
 		// Make sure that file uploads are enabled in php
 		if (!(bool) ini_get('file_uploads')) {
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLFILE'));
@@ -198,9 +198,9 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		// Build the appropriate paths
 		$config =& JFactory::getConfig();
 		$tmp_dest 	= $config->get('tmp_path').DS.$userfile['name'];
-		
+
 		$tmp_src	= $userfile['tmp_name'];
-		
+
 		// Move uploaded file
 		$uploaded = JFile::upload($tmp_src, $tmp_dest);
 
@@ -208,8 +208,8 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		$package = JInstallerHelper::unpack($tmp_dest);
 		return $package;
 	}
-	
-	function publish($cid = array(), $publish = 1){		
+
+	function publish($cid = array(), $publish = 1){
 		if (count( $cid )){
 			$cids = implode( ',', $cid );
 			$query = 'UPDATE '.$this->_table_prefix.'extensions'
@@ -1408,7 +1408,7 @@ class JInstaller extends JAdapter
 		 */
 
 		$folder = (string) $element->children()->attributes()->extensions;
-		
+
 		if ($folder && file_exists($this->getPath('source') . '/' . $folder))
 		{
 			$source = $this->getPath('source') . '/' . $folder;
@@ -1422,7 +1422,7 @@ class JInstaller extends JAdapter
 		if ($oldFiles && ($oldFiles instanceof SimpleXMLElement))
 		{
 			$oldEntries = $oldFiles->children();
-			
+
 			if (count($oldEntries))
 			{
 				$deletions = $this->findDeletedFiles($oldEntries, $element->children());
@@ -1453,7 +1453,7 @@ class JInstaller extends JAdapter
 		// Process each file in the $files array (children of $tagName).
 		foreach ($element->children() as $file)
 		{
-			
+
 			$path['src'] = $source . '/' . $file;
 			$path['dest'] = $destination . '/' . $file;
 

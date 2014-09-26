@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 defined ( 'DS' ) or define( 'DS', DIRECTORY_SEPARATOR );
 define('IJADV_VERSION',1.5);

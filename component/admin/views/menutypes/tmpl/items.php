@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 ?>
 <script type="text/javascript">
@@ -25,7 +25,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		}
 		var strLen = selectedMenu.length;
 		selectedMenu = selectedMenu.slice(0,strLen-1);
-		
+
 		window.parent.document.forms[0].elements['jform[menuitem]'].value=selectedMenu;
 		window.parent.SqueezeBox.close();
 	}

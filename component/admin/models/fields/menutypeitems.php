@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 JFormHelper::loadFieldClass('list');
 
@@ -52,10 +52,10 @@ class JFormFieldMenutypeitems extends JFormFieldList
 		$sql = "SELECT title
 				FROM #__ijoomeradv_menu
 				WHERE id IN ($this->value)";
-					
+
 		$db->setQuery($sql);
 		$menuitem_list=implode(',',$db->loadResultArray());
-		
+
 		$html[] = '<input type="text" value="'.$menuitem_list.'"'.$size.$class.' />';
 		$html[] = '<input type="button" value="'.JText::_('JSELECT').'" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 600, y: 450}, url:\''.JRoute::_('index.php?option=com_ijoomeradv&view=menutypes&layout=items&tmpl=component&recordId='.$recordId).'\'})" />';
 		$html[] = '<input type="hidden" name="'.$this->name.'" value="'.htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8').'" />';

@@ -9,33 +9,33 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 class icms {
 	public $classname = "icms";
 	public $sessionWhiteList=array('articles.archive','articles.featured','articles.singleArticle','articles.articleDetail','categories.allCategories','categories.singleCategory','categories.category','categories.categoryBlog');
-	
+
 	function init(){
 		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'category.php';
 		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'archive.php';
 		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'query.php';
-		
+
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_content');
 		$plugin_path = JPATH_COMPONENT_SITE.DS.'extensions';
 		$lang->load('icms',$plugin_path.DS.'icms', $lang->getTag(), true);
 	}
-	
+
 	function write_configuration(&$d) {
 		$db =JFactory::getDbo();
-		$query = 'SELECT * 
+		$query = 'SELECT *
 				  FROM #__ijoomeradv_icms_config';
 		$db->setQuery($query);
 		$my_config_array = $db->loadObjectList();
 		foreach ($my_config_array as $ke=>$val){
 			if(isset($d[$val->name])){
-				$sql = "UPDATE #__ijoomeradv_icms_config 
-						SET value='{$d[$val->name]}' 
+				$sql = "UPDATE #__ijoomeradv_icms_config
+						SET value='{$d[$val->name]}'
 						WHERE name='{$val->name}'";
 				$db->setQuery($sql);
 				$db->query();
@@ -47,7 +47,7 @@ class icms {
 		$jsonarray=array();
 		return $jsonarray;
 	}
-	
+
 	function prepareHTML(&$Config)
 	{
 		//TODO : Prepare custom html for ICMS
@@ -61,20 +61,20 @@ class icms_menu {
 			case 'categoryBlog':
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
-			
+
 				//$class = new CategoriesModelCategories();
 				//$query = $class->getListQuery();
-				
+
 				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$items = $db->loadObjectList();
-				
+
 				$html = '<fieldset class="panelform">
 							<label title="" class="hasTip required" for="jform_request_id" id="jform_request_id-lbl" aria-invalid="false">'.JText::_('COM_IJOOMERADV_ICMS_SELECT_CATEGORY').'
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<select name="jform[request][id]" id="jform_request_id">';
 				foreach ($items as $key1=>$value1){
 					$selected = '';
@@ -91,24 +91,24 @@ class icms_menu {
 				$html .= '</fieldset>';
 				return $html;
 				break;
-				
+
 			case 'singleCategory':
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
-			
+
 				//$class = new CategoriesModelCategories();
 				//$query = $class->getListQuery();
-				
+
 				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$items = $db->loadObjectList();
-				
+
 				$html = '<fieldset class="panelform">
 							<label title="" class="hasTip required" for="jform_request_id" id="jform_request_id-lbl" aria-invalid="false">'.JText::_('COM_IJOOMERADV_ICMS_SELECT_CATEGORY').'
 								<span class="star">&nbsp;*</span>
 							</label>';
-				
+
 				$html .= '<select name="jform[request][id]" id="jform_request_id">';
 				foreach ($items as $key1=>$value1){
 					$selected = '';
@@ -125,7 +125,7 @@ class icms_menu {
 				$html .= '</fieldset>';
 				return $html;
 				break;
-				
+
 			case 'singleArticle':
 				$selvalue = (isset($menuoptions['remoteUse']['id']))?$menuoptions['remoteUse']['id']:0;
 				$db = &JFactory::getDBO();
@@ -134,13 +134,13 @@ class icms_menu {
 				$db->setQuery($sql);
 				$result = $db->loadResult();
 				if($result){
-					$title = $result; 
+					$title = $result;
 				}else{
 					$title = 'COM_IJOOMERADV_ICMS_CHANGE_ARTICLE';
 				}
 				// Load the modal behavior script.
 				JHtml::_('behavior.modal', 'a.modal');
-		
+
 				// Build the script.
 				$script = array();
 				$script[] = '	function jSelectArticle_jform_request_id(id, title, catid, object) {';
@@ -148,30 +148,30 @@ class icms_menu {
 				$script[] = '		document.id("jform_request_id_name").value = title;';
 				$script[] = '		SqueezeBox.close();';
 				$script[] = '	}';
-		
+
 				// Add the script to the document head.
 				JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 				// Setup variables for display.
 				$html	= array();
 				$link	= 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_jform_request_id';
-		
+
 				// The current user display field.
 				$html[] = '<div class="controls">';
 				$html[] = '<span class="input-append">';
 				$html[] = '<input class="input-medium" type="text" id="jform_request_id_name" value="'.JText::_($title).'" disabled="disabled" size="35" />';
-		
+
 				// The user select button.
 				$html[] = '<a class="modal btn" title="'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE').'"  href="'.$link.'&amp;'.JSession::getFormToken().'=1" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">'.JText::_('COM_IJOOMERADV_ICMS_CHANGE_ARTICLE_BUTTON').'</a>';
 				$html[] = '</span>';
 				$html[] = '</div>';
-		
+
 				$html[] = '<input type="hidden" id="jform_request_id_id" name="jform[request][id]" value="" />';
-		
+
 				return implode("\n", $html);
 				break;
 		}
 	}
-	
+
 	public function setRequiredInput($extension,$extView,$extTask,$remoteTask,$menuoptions,$data){
 		$db = &JFactory::getDBO();
 		$options = null;
@@ -180,24 +180,24 @@ class icms_menu {
 				$categoryid = $menuoptions['id'];
 				$options = '{"serverUse":{},"remoteUse":{"id":'.$categoryid.'}}';
 				break;
-				
+
 			case 'singleCategory':
 				$categoryid = $menuoptions['id'];
 				$options = '{"serverUse":{},"remoteUse":{"id":'.$categoryid.'}}';
 				break;
-				
+
 			case 'singleArticle':
 				$articleid = $menuoptions['id'];
 				$options = '{"serverUse":{},"remoteUse":{"id":'.$articleid.'}}';
 				break;
 		}
-		
+
 		if($options){
-			$sql = "UPDATE #__ijoomeradv_menu 
-					SET menuoptions = '".$options."' 
+			$sql = "UPDATE #__ijoomeradv_menu
+					SET menuoptions = '".$options."'
 					WHERE views = '".$extension.".".$extView.".".$extTask.".".$remoteTask."'
 					AND id='".$data['id']."'";
-			
+
 			$db->setQuery($sql);
 			$db->query();
 		}

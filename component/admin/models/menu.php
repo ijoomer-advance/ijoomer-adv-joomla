@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 jimport('joomla.application.component.modelform');
 
@@ -116,7 +116,7 @@ class IjoomeradvModelMenu extends JModelForm
 
 		// Attempt to load the row.
 		$return = $table->load($itemId);
-		
+
 		// Check for a table object error.
 		if ($return === false && $table->getError()) {
 			$this->setError($table->getError());
@@ -146,7 +146,7 @@ class IjoomeradvModelMenu extends JModelForm
 
 		return $form;
 	}
-	
+
 	public function getMenuitems(){
 		$query = 'SELECT m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published,t.id as menuid,t.title as menutitle
 				  FROM #__ijoomeradv_menu_types as t
@@ -156,7 +156,7 @@ class IjoomeradvModelMenu extends JModelForm
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
 		$result1=array();
-		
+
 		foreach ($result as $key=>$value){
 			$o = new stdClass();
 			$o->menuid = $value->menuid;
@@ -164,13 +164,13 @@ class IjoomeradvModelMenu extends JModelForm
 			$o->itemid = $value->itemid;
 			$o->itemtitle = $value->itemtitle;
 			$o->itemtype = $value->itemtype;
-			
+
 			$result1[$value->menutitle][] = $o;
 		}
-		
+
 		return $result1;
 	}
-	
+
 
 	/**
 	 * Method to get the data that should be injected in the form.

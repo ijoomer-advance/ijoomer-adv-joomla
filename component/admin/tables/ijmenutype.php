@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 jimport('joomla.database.table');
 
@@ -74,7 +74,7 @@ class JTableIjmenuType extends JTable
 		return true;
 	}
 
-	
+
 
 	/**
 	 * Method to delete a row from the database table by primary key value.
@@ -118,7 +118,7 @@ class JTableIjmenuType extends JTable
 			// Update the module items
 			$query = $this->_db->getQuery(true);
 			$query->delete();
-			
+
 			if (!$this->_db->execute())
 			{
 				$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $this->_db->getErrorMsg()));

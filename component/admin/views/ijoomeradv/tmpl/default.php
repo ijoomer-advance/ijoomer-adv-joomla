@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 ?>
 
 <table class="frontmenu">
@@ -64,7 +64,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 								<li>items (similar to Joomla). 'Select Menu Type' will list up all the menu types available in the iJoomer app. Once you select the menu type, param in accordance with the menu type selected will be displayed. For example, Single Article menu type will allow you to select that particular article. Keep adding menu items as you like.</li>
 							</ul>
 						</fieldset>
-						
+
 						<br/>
 						<fieldset>
 							<legend>Testing On Android Device.</legend>
@@ -75,7 +75,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     							<li>Still got any queries, <a href="https://www.ijoomer.com/component/option,com_rsform/Itemid,67/" title="Contact Us">Contact Us</a> else, you can get to <a href="https://www.ijoomer.com/subscription-plans.html" title="Buy iJoomer Advance Now">Buy Now</a> section.</li>
 							</ul>
 						</fieldset>
-						
+
 						<fieldset>
 							<legend>How Do I Get My Own App?</legend>
 							<ul>
@@ -84,7 +84,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 								<li>Still got any queries, <a href="https://www.ijoomer.com/component/option,com_rsform/Itemid,67/" title="Contact Us">Contact Us</a>.</li>
 							</ul>
 						</fieldset>
-						
+
 						<fieldset>
 							<legend>Which other components are supported?</legend>
 							<ul>
@@ -92,7 +92,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 								<li>Downloaded package can be installed via <b>iJoomer Advance component -> Extensions</b>.</li>
 							</ul>
 						</fieldset>
-						
+
 						<fieldset>
 							<legend>Technical Support.</legend>
 							<ul>
@@ -100,7 +100,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 								<li>For any additional support or inquiry, you can drop us an email at <a href="mailto:support@ijoomer.com" title="Mail Us">support@ijoomer.com</a></li>
 							</ul>
 						</fieldset>
-						
+
 						<fieldset>
 							<legend>Getting involved.</legend>
 							<ul>

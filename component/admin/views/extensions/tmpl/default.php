@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 JHTML::_ ( 'behavior.tooltip' );
 jimport ( 'joomla.html.pane' );
@@ -26,7 +26,7 @@ jimport ( 'joomla.html.pane' );
 							<?php for($j = 0; $j < 7; $j ++) {
 									if (isset ( $this->extensions [$i + $j] )) {
 										$row = & $this->extensions [$i + $j];
-										
+
 										//get version
 										$mainXML = JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$row->classname.'.xml';
 										if (is_file($mainXML)) {
@@ -35,7 +35,7 @@ jimport ( 'joomla.html.pane' );
 												$version = (double)$version[0][0];
 											}
 										}
-										
+
 										//get images
 										$link = JRoute::_ ( 'index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $row->id );
 										if (file_exists ( "components/com_ijoomeradv/assets/images/" . $row->classname . ".png" )) {
@@ -53,7 +53,7 @@ jimport ( 'joomla.html.pane' );
 										<span style="font-size: 10px;" title="<?php echo JText::_ ( 'COM_IJOOMERADV_EXTENSION_EDIT' ); ?>::<?php echo $row->name;?>">
 											<a href="<?php echo $link;?>"><?php echo $row->name;?></a>
 										</span>
-									<?php } 
+									<?php }
 									?>
 									<span style="color:#333; font-size:9px; width:60px; margin-left:-3px; padding:3px;display:block; background-color:#DDD">ver - <?php echo $version;?></span>
 								</td>
@@ -66,7 +66,7 @@ jimport ( 'joomla.html.pane' );
 					<?php } ?>
 					</table>
 				</td>
-			
+
 				<td valign="top" width="100%">
 				</td>
 			</tr>

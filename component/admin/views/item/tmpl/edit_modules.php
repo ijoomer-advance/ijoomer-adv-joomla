@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 JHtml::_('behavior.framework', true);
 ?>
@@ -42,7 +42,7 @@ JHtml::_('behavior.framework', true);
 					<tr class="no row<?php echo $i % 2;?>">
 				<?php else : ?>
 			<tr class="row<?php echo $i % 2;?>">
-				<?php endif; ?> 
+				<?php endif; ?>
 			<?php endif; ?>
 				<td>
 					<?php $link = 'index.php?option=com_modules&amp;client_id=0&amp;task=module.edit&amp;id='. $module->id.'&amp;tmpl=component&amp;view=module&amp;layout=modal' ; ?>

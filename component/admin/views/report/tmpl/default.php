@@ -1,4 +1,4 @@
-<?php 
+<?php
  /*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 JHTML::_('behavior.tooltip');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
@@ -23,7 +23,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</select>
 		</div>
 	</fieldset>
-	
+
 	<table  class ="adminlist" width="100%">
 		<thead>
 			<tr>
@@ -51,7 +51,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 			</tr>
 		</thead>
 		<tbody>
-		<?php 
+		<?php
 			foreach ($this->items as $key=>$value){
 				$params = json_decode($value->params);
 				?>
@@ -70,7 +70,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<a href="<?php echo JRoute::_($this->request_url).'&layout=detail&cid='.$value->id;?>">Reports [<?php echo $value->itemcount;?>]</a>
 					</td>
 					<td class="center">
-						<?php 
+						<?php
 						if($value->status==0){
 							echo JText::_('COM_IJOOMERADV_REPORT_PENDING');
 						}else if($value->status==1){
@@ -93,12 +93,12 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo $value->created;?>
 					</td>
 				</tr>
-			<?php 
+			<?php
 			}
 		?>
 		</tbody>
 	</table>
-	
+
 	<input type="hidden" name="option" value="com_ijoomeradv" />
 	<input type="hidden" name="view" value="report" />
 	<input type="hidden" name="boxchecked" value="0" />

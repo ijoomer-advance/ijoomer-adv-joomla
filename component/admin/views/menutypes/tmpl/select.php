@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 ?>
 <script type="text/javascript">
@@ -40,16 +40,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <?php echo JHtml::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'slide1')); ?>
 <h2 class="modal-title"><?php echo JText::_('COM_IJOOMERADV_TYPE_CHOOSE'); ?></h2>
-	
-	<?php 
+
+	<?php
 		$i=0;
 		foreach ($this->types as $name => $list): ?>
 			<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'collapse' . $i++); ?>
 				<ul class="nav nav-tabs nav-stacked">
 					<?php foreach ($list as $item): ?>
 						<li>
-							<input type="checkbox" <?php if($item->checked){echo 'checked="checked"';}?> 
-								id="<?php echo $name.'.'.$item->view; ?>" value="<?php echo $name.'.'.$item->view.'.'.$item->task.'.'.$item->remoteTask; ?>" 
+							<input type="checkbox" <?php if($item->checked){echo 'checked="checked"';}?>
+								id="<?php echo $name.'.'.$item->view; ?>" value="<?php echo $name.'.'.$item->view.'.'.$item->task.'.'.$item->remoteTask; ?>"
 								name="screen[]" class="chkbox chk-menulink-2">&nbsp;-&nbsp;<?php echo $item->caption; ?>
 					 	</li>
 					<?php endforeach; ?>

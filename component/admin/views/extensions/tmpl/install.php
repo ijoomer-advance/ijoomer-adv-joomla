@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 JHTML::_('behavior.tooltip');
 ?>
 
@@ -27,7 +27,7 @@ JHTML::_('behavior.tooltip');
 			<input class="btn btn-primary" type="submit" value="Upload &amp; Install" onclick="Joomla.submitbutton()"></td>
 		</div>
 	</fieldset>
-</div> 
+</div>
 
 <div class="clr"></div>
 

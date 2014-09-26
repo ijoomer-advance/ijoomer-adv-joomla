@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 jimport('joomla.application.component.view');
 
@@ -17,7 +17,7 @@ class ijoomeradvViewijoomeradv extends JViewLegacy {
 	function display($tmpl=null){
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_TITLE'));
-		
+
 		JToolBarHelper::title(JText::_('COM_IJOOMERADV_HOME_TITLE'), 'ijoomer_48');
 		parent::display($tmpl);
 	}

@@ -9,37 +9,37 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); 
+defined( '_JEXEC' ) or die;
 
 class MCrypt
 {
 	private $iv = 'fedcba9876543210'; #Same as in JAVA
 	private $key = '0123456789abcdef'; #Same as in JAVA
-	
-	
+
+
 	function __construct()
 	{
 		$this->_db= & JFactory::getDBO();
 	}
-	
+
 	protected function hex2bin($hexdata) {
 	  $bindata = '';
-	
+
 	  for ($i = 0; $i < strlen($hexdata); $i += 2) {
 	        $bindata .= chr(hexdec(substr($hexdata, $i, 2)));
 	  }
-	
+
 	  return $bindata;
 	}
-            
+
 	// encryption..
 	function encrypt($input)
 	{
-		
+
 		$query="SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
-		
+
 		$size = mcrypt_get_block_size('rijndael-128', 'cbc');
 		$input = $this->pkcs5_pad($input, $size);
 		$iv = '0000000000000000';
@@ -48,25 +48,25 @@ class MCrypt
 		//$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 		mcrypt_generic_init($td, $key, $iv);
 		$data = mcrypt_generic($td, $input);
-		
+
 		mcrypt_generic_deinit($td);
 		mcrypt_module_close($td);
 		$data = base64_encode($data);
-		
+
 		return $data;
 	}
-	
+
 	// decryption..
-	function decrypt($code) 
+	function decrypt($code)
 	{
 		$query="SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
-		
+
 		//$key = $this->hex2bin($key);
 		$code = base64_decode($code);
 		$iv = '0000000000000000';
-		//$key = 'tailoredsolution';	
+		//$key = 'tailoredsolution';
 		$td = mcrypt_module_open('rijndael-128', '', 'cbc', '');
 
 		mcrypt_generic_init($td, $key, $iv);
@@ -83,7 +83,7 @@ class MCrypt
 		$pad = $blocksize - (strlen($text) % $blocksize);
 		return $text . str_repeat(chr($pad), $pad);
 	}
-	
+
 	function pkcs5_unpad($text)
 	{
 		$pad = ord($text{strlen($text)-1});

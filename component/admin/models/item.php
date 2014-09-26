@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 // Include dependencies.
 jimport('joomla.application.component.modeladmin');
@@ -580,7 +580,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		
+
 		return array_merge((array)$this->getItem(), (array)JFactory::getApplication()->getUserState('com_ijoomeradv.edit.item.data', array()));
 	}
 
@@ -607,13 +607,13 @@ class IjoomeradvModelItem extends JModelAdmin
 	{
 		// Initialise variables.
 		$pk = JRequest::getInt('id',0);
-		
+
 		// Get a level row instance.
 		$table = $this->getTable();
 
 		// Attempt to load the row.
 		$table->load($pk);
-		
+
 		// Check for a table object error.
 		if ($error = $table->getError()) {
 			$this->setError($error);
@@ -621,7 +621,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		}
 
 		// Prime required properties.
-		
+
 		if ($type = $this->getState('item.type')) {
 			$table->type = $type;
 		}
@@ -642,7 +642,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		$properties = $table->getProperties(1);
 		//echo '<pre>';print_r($table);exit;
 		$result = JArrayHelper::toObject($properties,'JObject');
-		
+
 		// Convert the params field to an array.
 		$registry = new JRegistry;
 		//$registry->loadString($table->params);
@@ -696,31 +696,31 @@ class IjoomeradvModelItem extends JModelAdmin
 	public function getMenutypes()
 	{
 		$db = $this->getDbo();
-		$query = 'SELECT a.id, a.title 
+		$query = 'SELECT a.id, a.title
 				FROM #__ijoomeradv_menu_types AS a';
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
-		
+
 		foreach($result as $key=>$value){
 			if($this->getItem()->menutype == $value->id){
 				$value->checked = true;
 			}else{
 				$value->checked = false;
 			}
-		} 
+		}
 		return $result;
 	}
-	
+
 	public function getMenuPostion($menuid){
 		$db = $this->getDbo();
 		$sql = 'SELECT 	position
 			FROM #__ijoomeradv_menu_types
 			WHERE id='.$menuid;
-	
+
 		$db->setQuery($sql);
 		return $db->loadResult();
 	}
-	
+
 	/**
 	 * Get the list of modules not in trash.
 	 *
@@ -1059,7 +1059,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		return true;
 	}
-	
+
 	/*
 	 * Rorder items order
 	 */
@@ -1120,19 +1120,19 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			}
 		}
-		
+
 		$q = 'SELECT count(id)
-				FROM #__ijoomeradv_menu 
+				FROM #__ijoomeradv_menu
 				WHERE home=1
 				AND published=1';
 		$db->setQuery($q);
 		$homecount = $db->loadResult();
-		
+
 		if(!$homecount && $data['home']==0){
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENU_CANNOT_UNSET_DEFAULT_DEFAULT'));
 			return false;
 		}
-		
+
 		if($table->home == 1 && $data['home']==0)
 		{
 			//set the error
@@ -1140,7 +1140,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENU_CANNOT_UNSET_DEFAULT_DEFAULT'));
 			return false;
 		}
-		
+
 		if($table->home == 0 && $data['home']==1)
 		{
 			//Write query to set home value in other menu items as 0
@@ -1156,13 +1156,13 @@ class IjoomeradvModelItem extends JModelAdmin
 				return false;
 			}
 		}
-	
+
 		// Bind the data.
 		if (!$table->bind($data)) {
 			$this->setError($table->getError());
 			return false;
 		}
-		
+
 		if(!$table->ordering){
 			$table->ordering = $table->getNextOrder();
 		}

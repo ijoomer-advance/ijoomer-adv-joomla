@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 
 JHTML::_('behavior.tooltip');
 
@@ -63,7 +63,7 @@ $options = array(
 			<li><a href="#page-PUSH" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_PUSH_CONFIG');?></a></li>
 			<li><a href="#page-ENCRYPTION" data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_ENCRYPTION');?></a></li>
 		</ul>
-		
+
 		<div id="config-document" class="tab-content">
 			<div id="page-GLOBAL" class="tab-pane active">
 				<div class="row-fluid">
@@ -83,7 +83,7 @@ $options = array(
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="page-THEME" class="tab-pane">
 				<div class="row-fluid">
 					<div class="span12">
@@ -102,14 +102,14 @@ $options = array(
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="page-PUSH" class="tab-pane">
 				<div class="row-fluid">
 					<div class="span12">
 						<fieldset class="adminform">
 							<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE');?></legend>
 							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-								<?php 
+								<?php
 									foreach($this->pushConfigIphone as $key=>$value):
 								?>
 										<tr>
@@ -127,7 +127,7 @@ $options = array(
 						<fieldset class="adminform">
 							<legend><?php echo JText::_('COM_IJOOMERADV_ANDROID');?></legend>
 							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-								<?php 
+								<?php
 									foreach($this->pushConfigAndroid as $key=>$value):
 								?>
 										<tr>
@@ -144,7 +144,7 @@ $options = array(
 					</div>
 				</div>
 			</div>
-			
+
 			<div id="page-ENCRYPTION" class="tab-pane">
 				<div class="row-fluid">
 					<div class="span12">
@@ -158,15 +158,15 @@ $options = array(
 							</span>
 						</td>
 						<td><?php echo $value->html; ?></td>
-					
+
 				<?php
 				$keyval =  $value->value;
 				endforeach;?>
 				<?php if($keyval == ''){?>
 				<td>
-				<?php 
-					//$md5_hash = md5(rand(0,999)); 
-					//We don't need a 32 character long string so we trim it down to 5 
+				<?php
+					//$md5_hash = md5(rand(0,999));
+					//We don't need a 32 character long string so we trim it down to 5
 					//$security_code = substr($md5_hash, 15, 5);
 						?>
 							<form>
@@ -181,7 +181,7 @@ $options = array(
 							</form>
 				</td>
 				<?php }?>
-				</tr>			
+				</tr>
 				</table>
 					</div>
 				</div>
@@ -189,8 +189,8 @@ $options = array(
 		</div>
 	</div>
 	<div class="clr"></div>
-	
-	
+
+
 
 	<input type="hidden" name="option" value="com_ijoomeradv" />
 	<input type="hidden" name="view" value="config" />

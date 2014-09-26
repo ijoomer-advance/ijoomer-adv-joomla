@@ -9,19 +9,19 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 class friend{
 	private $jomHelper;
 	private $date_now;
 	private $IJUserID;
-	private $mainframe; 
+	private $mainframe;
 	private $db;
 	private $my;
 	private $config;
-	private $jsonarray=array(); 
-	
+	private $jsonarray=array();
+
 	function __construct(){
-		$this->jomHelper	=	new jomHelper(); 
+		$this->jomHelper	=	new jomHelper();
         $this->date_now		=	JFactory::getDate();
 		$this->mainframe	=	& JFactory::getApplication();
 		$this->db			=	& JFactory::getDBO(); // set database object
@@ -33,10 +33,10 @@ class friend{
 			$this->jsonarray['notification']=$notification['notification'];
 		}
     }
-    
+
     /**
      * @uses to fetch all the member
-     * @example the json string will be like, : 
+     * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -45,20 +45,20 @@ class friend{
 	 * 			"pageNO":"pageNO"
 	 * 		}
 	 * 	}
-     * 
+     *
      */
 	function members(){
 		$pageNO=IJReq::getTaskData('pageNO',0,'int');
 		if($pageNO==0 || $pageNO==1){
-	  		$startFrom=0;		
+	  		$startFrom=0;
 		}else{
 			$startFrom = (PAGE_MEMBER_LIMIT*($pageNO-1));
 		}
-		
+
 		$searchModel =& CFactory::getModel('search');
 		$searchModel->setState('limit',PAGE_MEMBER_LIMIT);
  	 	$searchModel->setState('limitstart',$startFrom);
- 	 	
+
 		$results = $searchModel->getPeople($sorted='latest',$filter='all');
 		if(count($results)<=0){
 			IJReq::setResponse(204);
@@ -69,16 +69,16 @@ class friend{
 			$this->jsonarray['pageLimit']=PAGE_MEMBER_LIMIT;
 			$this->jsonarray['total']=$searchModel->get('_pagination')->get('total');
 		}
-	 	
+
 		foreach($results as $key=>$result){
 			$usr = $this->jomHelper->getUserDetail($result->_userid);
-			$this->jsonarray['member'][$key]['user_id']			= $usr->id;	
+			$this->jsonarray['member'][$key]['user_id']			= $usr->id;
 			$this->jsonarray['member'][$key]['user_name']		= $usr->name;
 			$this->jsonarray['member'][$key]['user_avatar'] 	= $usr->avatar;
 			$this->jsonarray['member'][$key]['user_lat'] 		= $usr->latitude;
 			$this->jsonarray['member'][$key]['user_long'] 		= $usr->longitude;
 			$this->jsonarray['member'][$key]['user_online'] 	= $usr->online;
-			$this->jsonarray['member'][$key]['user_profile']	= $usr->profile;	
+			$this->jsonarray['member'][$key]['user_profile']	= $usr->profile;
 		}
 
 		for($i=0,$inc=count($this->jsonarray['member']); $i < $inc; $i++){
@@ -93,10 +93,10 @@ class friend{
 		}
 		return $this->jsonarray;
 	}
-	
+
 	/**
      * @uses to fetch all the friends
-     * @example the json string will be like, : 
+     * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -106,36 +106,36 @@ class friend{
 	 * 			"pageNO":"pageNO"
 	 * 		}
 	 * 	}
-     * 
+     *
      */
-	function friends(){	
+	function friends(){
 		$pageNO = IJReq::getTaskData('pageNO',0,'int');
 		$userID = IJReq::getTaskData('userID',$this->IJUserID,'int');
-		
+
 		$access_limit = $this->jomHelper->getUserAccess($this->IJUserID,$userID);
-		
+
 		$query = "SELECT params
 					FROM #__community_users
 					WHERE userid=".$userID;
 		$this->db->setQuery($query);
 		$params = new CParameter($this->db->loadResult());
-		
+
 		if($access_limit<$params->get('privacyFriendsView')){
 			IJReq::setResponse( 706 );
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
 		}
-	
+
 		if($pageNO == 0 || $pageNO == 1){
-		  	$startFrom = 0;		
+		  	$startFrom = 0;
 		}else{
 			$startFrom = (PAGE_MEMBER_LIMIT*($pageNO-1));
 		}
-		
+
 		$friendsModel =& CFactory::getModel('friends');
 		$friendsModel->setState('limit', PAGE_MEMBER_LIMIT);
         $friendsModel->setState('limitstart', $startFrom);
-		
+
 		$results = $friendsModel->getFriends($userID);
 
 		if(count($results)<=0){
@@ -147,18 +147,18 @@ class friend{
 			$this->jsonarray['pageLimit']=PAGE_MEMBER_LIMIT;
 			$this->jsonarray['total']=$friendsModel->getFriendsCount($userID);
 		}
-		
+
 		foreach($results as $key=>$result){
 			$usr = $this->jomHelper->getUserDetail($result->_userid,$userID);
-			$this->jsonarray['member'][$key]['user_id']			= $usr->id;	
-			$this->jsonarray['member'][$key]['user_name']		= $usr->name;	
+			$this->jsonarray['member'][$key]['user_id']			= $usr->id;
+			$this->jsonarray['member'][$key]['user_name']		= $usr->name;
 			$this->jsonarray['member'][$key]['user_avatar']		= $usr->avatar;
 			$this->jsonarray['member'][$key]['user_lat']		= $usr->latitude;
 			$this->jsonarray['member'][$key]['user_long']		= $usr->longitude;
 			$this->jsonarray['member'][$key]['user_online']		= $usr->online;
 			$this->jsonarray['member'][$key]['user_profile']	= $usr->profile;
 		}
-		
+
 		for($i=0,$inc=count($this->jsonarray['member']); $i < $inc; $i++) {
 			for($j=$i+1,$inc=count($this->jsonarray['member']);$j < $inc; $j++) {
 				$firstRecord = $this->jsonarray['member'][$i];
@@ -171,10 +171,10 @@ class friend{
 		}
 		return $this->jsonarray;
 	}
-    
+
 	/**
 	 * @uses to add a friend
-	 * @example the json string will be like, : 
+	 * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -184,7 +184,7 @@ class friend{
 	 * 			"message":"message"
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 */
 	function addFriend(){
 		if($this->IJUserID == 0){
@@ -196,37 +196,37 @@ class friend{
 		$model =& CFactory::getModel('friends'); // get friend model
 		$memberID = IJReq::getTaskData('memberID',0,'int'); // get friend id for friend request
 		$message = IJReq::getTaskData('message'); // get message to sed it to user
-		
+
 		if(!$memberID){
 			IJReq::setResponse(400);
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
 		}
-		
+
 		$model->addFriend($memberID, $this->IJUserID, $message); // add friend function call
-		
+
 		//trigger for onFriendRequest
 		$eventObject = new stdClass();
 		$eventObject->profileOwnerId 	= $my->id;
 		$eventObject->friendId 			= $memberID;
 		$this->triggerFriendEvents( 'onFriendRequest' , $eventObject);
-		
+
 		$model->updateFriendCount( $this->IJUserID );
 		$model->updateFriendCount( $memberID );
-		
+
 		// get user push notification params
 		$query="SELECT `jomsocial_params`,`device_token`,`device_type`
-				FROM #__ijoomeradv_users 
+				FROM #__ijoomeradv_users
 				WHERE `userid`={$memberID}";
 		$this->db->setQuery($query);
 		$puser=$this->db->loadObject();
 		$ijparams = new CParameter($puser->jomsocial_params);
-		
+
 		//change for id based push notification
 		$pushOptions = array();
 		$pushOptions['detail']['content_data']['id']=$this->IJUserID;
 		$pushOptions = gzcompress(json_encode($pushOptions));
-		
+
 		$usr=$this->jomHelper->getUserDetail($this->IJUserID);
 		$obj = new stdClass();
 		$obj->id 		= null;
@@ -240,31 +240,31 @@ class friend{
 			$this->jsonarray['pushNotificationData']['type'] 	= 'profile';
 			$this->jsonarray['pushNotificationData']['configtype'] 	= 'pushnotif_friends_create_connection';
 		}
-					
+
 		$this->jsonarray['code']=200;
 		return $this->jsonarray;
 	}
-	
-	
+
+
 	private function triggerFriendEvents( $eventName, &$args, $target = null){
 		require_once( JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'apps.php' );
 		$appsLib	=& CAppPlugins::getInstance();
-		$appsLib->loadApplications();		
-		
+		$appsLib->loadApplications();
+
 		$params		= array();
 		$params[]	= &$args;
-		
+
 		if(!is_null($target))
 			$params[]	= $target;
-				
+
 		$appsLib->triggerEvent( $eventName , $params);
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * @uses to add a friend
-	 * @example the json string will be like, : 
+	 * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -273,7 +273,7 @@ class friend{
 	 * 			"memberID":"memberID"
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 */
 	function removeFriend(){
 		$memberID = IJReq::getTaskData('memberID',0,'int');
@@ -297,12 +297,12 @@ class friend{
 			return false;
 		}
 	}
-	
-	
+
+
 	private function delete($id){
 		$friend    = CFactory::getUser($id);
 
-		if( empty($this->my->id) || empty($friend->id) ) 
+		if( empty($this->my->id) || empty($friend->id) )
 			return false;
 
 		CFactory::load( 'helpers' , 'friends' );
@@ -318,7 +318,7 @@ class friend{
 		// Substract the friend count
 		$model->updateFriendCount( $this->my->id );
 		$model->updateFriendCount( $friend->id );
-		
+
 		// Add user points
 		// We deduct points to both parties
 		CFactory::load( 'libraries' , 'userpoints' );
@@ -333,11 +333,11 @@ class friend{
 
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * @uses to approve friend request
-	 * @example the json string will be like, : 
+	 * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -346,12 +346,12 @@ class friend{
 	 * 			"connectionID":"connectionID"
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 */
 	function approveRequest(){
 		$connectionId  = IJReq::getTaskData('connectionID');
 		$friendsModel	=& CFactory::getModel('friends');
-		
+
 		if( $friendsModel->isMyRequest( $connectionId, $this->IJUserID) ){
 			$connected	= $friendsModel->approveRequest($connectionId);
 			if($connected){
@@ -366,38 +366,38 @@ class friend{
 
 				CFactory::load ( 'libraries', 'activities' );
 				CActivityStream::add($act);
-				
+
 				//add user points - give points to both party
-				CFactory::load( 'libraries' , 'userpoints' );		
-				CUserPoints::assignPoint('friends.request.approve');				
+				CFactory::load( 'libraries' , 'userpoints' );
+				CUserPoints::assignPoint('friends.request.approve');
 
 				$friendId		= ( $connected[0] == $this->IJUserID) ? $connected[1] : $connected[0];
  				$friend			= CFactory::getUser( $friendId );
- 				$friendUrl      = CRoute::_('index.php?option=com_community&view=profile&userid='.$friendId);	
+ 				$friendUrl      = CRoute::_('index.php?option=com_community&view=profile&userid='.$friendId);
  				CUserPoints::assignPoint('friends.request.approve', $friendId);
 
 				// need to both user's friend list
 				$friendsModel->updateFriendCount( $this->IJUserID);
 				$friendsModel->updateFriendCount( $friendId );
-				
+
 				CFactory::load( 'libraries' , 'notification' );
-				
+
 				$params			= new CParameter( '' );
 				$params->set( 'url' , 'index.php?option=com_community&view=profile&userid='.$this->IJUserID );
 				CNotificationLibrary::add( 'etype_friends_create_connection' , $this->IJUserID , $friend->id , JText::sprintf('COM_COMMUNITY_FRIEND_REQUEST_APPROVED', $this->my->getDisplayName() ) , '' , 'friends.approve' , $params );
-				
+
 				// get user push notification params and user device token and device type
 				$query="SELECT `jomsocial_params`,`device_token`,`device_type`
-						FROM #__ijoomeradv_users 
+						FROM #__ijoomeradv_users
 						WHERE `userid`={$friendId}";
 				$this->db->setQuery($query);
 				$puser=$this->db->loadObject();
 				$ijparams = new CParameter($puser->jomsocial_params);
-				
+
 				//change for id based push notification
 				$pushOptions['detail']=array();
 				$pushOptions = gzcompress(json_encode($pushOptions));
-				
+
 				$usr=$this->jomHelper->getUserDetail($this->IJUserID);
 				$obj = new stdClass();
 				$obj->id 		= null;
@@ -411,10 +411,10 @@ class friend{
 					$this->jsonarray['pushNotificationData']['type'] 	= 'friend';
 					$this->jsonarray['pushNotificationData']['configtype'] 	= 'pushnotif_friends_request_connection';
 				}
-				
+
 				//trigger for onFriendApprove
 				require_once (JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'controller.php');
-				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');	
+				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $friendId;
@@ -429,7 +429,7 @@ class friend{
 
 	/**
 	 * @uses to reject friend request
-	 * @example the json string will be like, : 
+	 * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -438,7 +438,7 @@ class friend{
 	 * 			"connectionID":"connectionID"
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 */
 	function rejectRequest(){
 		$requestId=IJReq::getTaskData('connectionID');
@@ -448,7 +448,7 @@ class friend{
 			$pendingInfo = $friendsModel->getPendingUserId($requestId);
 			if( $friendsModel->rejectRequest( $requestId ) ){
 				//trigger for onFriendReject
-				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');	
+				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $pendingInfo->connect_from;
@@ -460,10 +460,10 @@ class friend{
 		$this->jsonarray['notification']['friendNotification']-=1;
 		return $this->jsonarray;
 	}
-	
+
 	/**
 	 * @uses to search friend/member
-	 * @example the json string will be like, : 
+	 * @example the json string will be like, :
 	 * 	{
 	 * 		"extName":"jomsocial",
 	 *		"extView":"friend",
@@ -473,57 +473,57 @@ class friend{
 	 * 			"pageNO":"pageno"
 	 * 		}
 	 * 	}
-	 * 
+	 *
 	 */
 	function search(){
 		$qstring  = IJReq::getTaskData('query','');
 		$pageNO  = IJReq::getTaskData('pageNO',0,'int');
 		if($pageNO == 0 || $pageNO == 1){
-		  	$startFrom = 0;		
+		  	$startFrom = 0;
 		}else{
 			$startFrom = (PAGE_MEMBER_LIMIT*($pageNO-1));
 		}
-			
+
 		$filter = array();
 		$strict = true;
-		$regex = $strict? 
-		 	'/^([.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,4})$/i' : 
+		$regex = $strict?
+		 	'/^([.0-9a-z_-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,4})$/i' :
 		 	'/^([*+!.&#$Š\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,4})$/i' ;
-	
+
 		// build where condition
 		$filterField	= array();
-		if(isset($qstring)){ 		
+		if(isset($qstring)){
 			switch ($this->config->get('displayname')){
 				case 'name' :
-					$field = 'name'; 
+					$field = 'name';
 					break;
-				default : 
+				default :
 					$field = 'username';
 					break;
 			}
-			$filter[] = "(UCASE(`{$field}`) like UCASE({$this->db->Quote("%{$qstring}%")}))";	 	  			 
+			$filter[] = "(UCASE(`{$field}`) like UCASE({$this->db->Quote("%{$qstring}%")}))";
     	}
-		
+
 		$finalResult	= array();
 		$total		= 0;
 		$avatarOnly = false;
-		
+
 		if(count($filter)> 0 || count($filterField > 0)){
 			$basicResult = null;
 			if(!empty($filter) && count($filter)>0){
-				$query="SELECT distinct b.`id` 
+				$query="SELECT distinct b.`id`
 						FROM #__users b";
-	
+
 				if($avatarOnly){
-					$query.="	INNER JOIN #__community_users AS c ON b.`id`=c.`userid` 
+					$query.="	INNER JOIN #__community_users AS c ON b.`id`=c.`userid`
 								AND c.`thumb` != {$this->db->Quote('components'.DS.'com_community'.DS.'assets'.DS.'default_thumb.jpg')}";
 				}
 				$query.= " WHERE b.block = 0 AND ".implode(' AND ',$filter);
-				$queryCnt ="SELECT COUNT(1) 
+				$queryCnt ="SELECT COUNT(1)
 							FROM ({$query}) AS z";
 				$this->db->setQuery($queryCnt);
 				$total	= $this->db->loadResult();
-			        
+
 				$query.=" LIMIT {$startFrom},".PAGE_MEMBER_LIMIT;
 				$this->db->setQuery( $query );
 				$finalResult = $this->db->loadColumn();
@@ -533,17 +533,17 @@ class friend{
 					return false;
 				}
 			}
-	
+
 			if(count($finalResult)>0){
 				$this->jsonarray['code'] = 200;
 				$this->jsonarray['pageLimit']=PAGE_MEMBER_LIMIT;
-				$this->jsonarray['total'] = $total;	
+				$this->jsonarray['total'] = $total;
 			}else{
 				IJReq::setResponse(204);
 				IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 				return false;
 			}
-			
+
 			$id = implode(",",$finalResult);
 			$where = array("`id` IN (".$id.")");
 	    	$datas = $this->getFiltered($where);
@@ -552,12 +552,12 @@ class friend{
 	    		IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 				return false;
 	    	}
-			
+
 			CFactory::setActiveProfile();
-			
+
 			foreach($datas as $key=>$data){
 				$usr = $this->jomHelper->getUserDetail($data->id);
-				
+
 				$this->jsonarray['member'][$key]['user_id']			= $usr->id;
 				$this->jsonarray['member'][$key]['user_name']		= $usr->name;
 				$this->jsonarray['member'][$key]['user_avatar'] 	= $usr->avatar;
@@ -566,7 +566,7 @@ class friend{
 				$this->jsonarray['member'][$key]['user_online'] 	= $usr->online;
 				$this->jsonarray['member'][$key]['user_profile']	= $usr->profile;
 			}
-			
+
 			for($i=0; $i < $inc; $i++){
 				for($j=$i+1;$j < $inc; $j++) {
 					$firstRecord = $this->jsonarray['member'][$i];
@@ -585,19 +585,19 @@ class friend{
 	// called by search()
 	private function getFiltered($wheres = array()){
 		$wheres[] = 'block = 0';
-		
+
 		switch ($this->config->get('displayname')){
 			case 'name' :
-			$field = 'name'; 
+			$field = 'name';
 			break;
-			default : 
+			default :
 			$field = 'username';
 			break;
 		}
-		
-		$query="SELECT id 
-				FROM #__users 
-				WHERE ".implode(' AND ',$wheres)." 
+
+		$query="SELECT id
+				FROM #__users
+				WHERE ".implode(' AND ',$wheres)."
 				ORDER BY {$field} ASC";
 		$this->db->setQuery( $query );
 		if($this->db->getErrorNum()) {

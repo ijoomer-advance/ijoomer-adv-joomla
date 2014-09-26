@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined( '_JEXEC' ) or die;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,8 +27,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <br />
 <div class="tabArea" align="center">
   <a class="tab" href="example.php">Example</a>
-      <a class="tab" href="about.html">About RSA</a> 
-      <a class="tab" href="DigitalSignature.html">About Digital Signature</a> 
+      <a class="tab" href="about.html">About RSA</a>
+      <a class="tab" href="DigitalSignature.html">About Digital Signature</a>
 </div>
 
 <div class="Paragraph">
