@@ -26,8 +26,8 @@ class message{
 	function __construct(){
 		$this->jomHelper	=	new jomHelper();
         $this->date_now		=	JFactory::getDate();
-		$this->mainframe	=	& JFactory::getApplication();
-		$this->db			=	& JFactory::getDBO(); // set database object
+		$this->mainframe = JFactory::getApplication();
+		$this->db		 = JFactory::getDBO(); // set database object
 		$this->IJUserID		=	$this->mainframe->getUserState('com_ijoomeradv.IJUserID', 0); //get login user id
 		$this->my			=	CFactory::getUser($this->IJUserID); // set the login user object
 		$this->config		=	CFactory::getConfig();
@@ -616,7 +616,7 @@ class message{
 		$userID		= explode(",",$userID);
 		$subject	= IJReq::getTaskData('subject');
 		$body		= IJReq::getTaskData('body');
-		$date		= & JFactory::getDate(); //get the time without any offset!
+		$date	 = JFactory::getDate(); //get the time without any offset!
 		$cDate		= $date->toSql();
 
 		$obj = new stdClass();

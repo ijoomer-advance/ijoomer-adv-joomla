@@ -21,7 +21,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	function __construct(){
 		parent::__construct();
 		$this->db			= JFactory::getDBO();
-		$this->mainframe	= & JFactory::getApplication();
+		$this->mainframe = JFactory::getApplication();
 	}
 
 	/**
@@ -1056,7 +1056,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					$profileType		= isset($post['type']) ? $post['type'] : 0;
 					$fileName			= JApplication::getHash( $file['tmp_name'] . time() );
 					$hashFileName		= JString::substr( $fileName , 0 , 24 );
-					$multiprofile		= & JTable::getInstance( 'MultiProfile' , 'CTable' );
+					$multiprofile	 = JTable::getInstance( 'MultiProfile' , 'CTable' );
 					$multiprofile->load( $profileType );
 					$useWatermark		= $profileType != COMMUNITY_DEFAULT_PROFILE && $config->get('profile_multiprofile') && !empty( $multiprofile->watermark ) ? true : false;
 					$storage			= JPATH_ROOT . DS . $config->getString('imagefolder') . DS . 'avatar';

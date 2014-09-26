@@ -23,8 +23,8 @@ class user{
 	function __construct(){
 		$this->jomHelper	=	new jomHelper();
         $this->date_now		=	JFactory::getDate();
-		$this->mainframe	=	& JFactory::getApplication();
-		$this->db			=	& JFactory::getDBO(); // set database object
+		$this->mainframe = JFactory::getApplication();
+		$this->db		 = JFactory::getDBO(); // set database object
 		$this->IJUserID		=	$this->mainframe->getUserState('com_ijoomeradv.IJUserID', 0); //get login user id
 		$this->my			=	CFactory::getUser($this->IJUserID); // set the login user object
 		$this->config		=	CFactory::getConfig();

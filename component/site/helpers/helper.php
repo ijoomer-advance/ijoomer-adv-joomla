@@ -64,7 +64,7 @@ class ijoomeradvHelper {
 	}
 
 	public static function getJomSocialVersion(){
-		$parser	= & JFactory::getXMLParser('Simple');
+		$parser = JFactory::getXMLParser('Simple');
 		$xml	= JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_community' . DS . 'community.xml';
 
 		if(file_exists($xml)){
