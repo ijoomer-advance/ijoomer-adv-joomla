@@ -32,7 +32,7 @@ defined ( 'IJ_MODEL' )			or define ( 'IJ_MODEL', 		IJ_SITE . DS . 'models' );
 defined ( 'IJ_TABLE' )			or define ( 'IJ_TABLE', 		IJ_SITE . DS . 'tables' );
 defined ( 'IJ_VIEW' )			or define ( 'IJ_VIEW', 			IJ_SITE . DS . 'views' );
 
-require_once (IJ_HELPER.DS.'helper.php'); // import ijoomeradv helper file
+require_once IJ_HELPER.DS.'helper.php'; // import ijoomeradv helper file
 set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom error handler
 $IJHelperObj= new ijoomeradvHelper(); // create hepler object
 $IJHelperObj->getRequestedObject(); // get requested json object
@@ -42,7 +42,7 @@ $IJHelperObj->getRequestedObject(); // get requested json object
 $controller = IJReq::getView(); // get the view
 $path = IJ_CONTROLLER . DS . $controller . '.php';
 if (file_exists ( $path )) { // check if controller file exist
-	require_once ($path);
+	require_once $path;
 } else {
 	$controller = '';
 }

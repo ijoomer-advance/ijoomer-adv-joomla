@@ -109,7 +109,7 @@ class IjoomeradvModelReport extends JModelList
 			$params 	= json_decode($table->params);
 
 			if($extension == 'jomsocial'){
-				require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
+				require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php';
 				switch($params->type){
 					case 'activity':
 						CFactory::load( 'libraries' , 'activities' );

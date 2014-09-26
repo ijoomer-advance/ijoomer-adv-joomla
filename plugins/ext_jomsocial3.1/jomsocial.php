@@ -18,22 +18,22 @@ class jomsocial{
 		jimport('joomla.utilities.date');
 		jimport('joomla.html.pagination');
 
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'time.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'url.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'owner.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'template.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'controller.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'views' .DS. 'views.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'views' .DS.'inbox' .DS. 'view.html.php');
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'time.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'url.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'owner.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'template.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'controller.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php' ;
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'views' .DS. 'views.php';
+		require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'views' .DS.'inbox' .DS. 'view.html.php';
 
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_community');
 		$plugin_path = JPATH_COMPONENT_SITE.DS.'extensions';
 		$lang->load('jomsocial',$plugin_path.DS.'jomsocial', $lang->getTag(), true);
 		if(file_exists(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php")){
-			require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
+			require_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php";
 		}
 	}
 

@@ -310,7 +310,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$jsonarray['profile'] = IJOOMER_GC_REGISTRATION;
 
 		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-			require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
+			require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
 			// update jomsocial latitude & longitude if not 0
 			if($data['latitude']!=0 && $data['longitude']!=0){
 				$query="UPDATE #__community_users
@@ -403,7 +403,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				// connect fb user to site user...
 				$user = & JFactory::getUser();
 				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-					require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
+					require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$user->id}',connectid='{$fbid}',type='facebook'";
 					$this->db->setQuery($query);
@@ -489,7 +489,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				$this->db->Query();
 
 				if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-					require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
+					require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
 					$this->db->setQuery($query);
@@ -672,7 +672,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		}
 
 		if($Full_flag!= 1 && strtolower(IJOOMER_GC_REGISTRATION)=== 'jomsocial' && file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php')){
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php'); // include jomsocial core file from library
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php'; // include jomsocial core file from library
 
 			if($post['type']>0){
 				$query="SELECT cp.id,cp.name,cf.fieldcode,cf.options,cpf.parent,cpf.field_id,cf.id as id,cf.type,cf.name,cf.required,cf.registration,cf.published,cf.tips
@@ -937,7 +937,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 		//if community installed
 		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-			//require_once(JPATH_ROOT. DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'image.php');
+			//require_once JPATH_ROOT. DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'image.php';
 			jimport('joomla.filesystem.file');
 			jimport('joomla.utilities.utility');
 			CFactory::load( 'helpers' , 'image' );

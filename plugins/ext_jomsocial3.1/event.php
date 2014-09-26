@@ -294,10 +294,10 @@ class event {
      *
      */
 	function search_field(){
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'category.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'category.php';
 		$halper_category_obj=new CCategoryHelper();
 
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'time.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'time.php';
 		$halper_time_obj=new CTimeHelper();
 
 		$eventsModel	=& CFactory::getModel('events');
@@ -1830,7 +1830,7 @@ class event {
 			return $this->jsonarray;
 		}
 
-    	require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'events.php');
+    	require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'events.php';
 		$event_controller_obj = new CommunityEventsController ();
 		$event		= JTable::getInstance( 'Event' , 'CTable' );
 

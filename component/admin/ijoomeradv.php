@@ -29,7 +29,7 @@ defined ( 'IJ_MODEL' )			or define ( 'IJ_MODEL', IJ_ADMIN . DS . 'models' );
 defined ( 'IJ_TABLE' )			or define ( 'IJ_TABLE', IJ_ADMIN . DS . 'tables' );
 defined ( 'IJ_VIEW' )			or define ( 'IJ_VIEW', IJ_ADMIN . DS . 'views' );
 
-require_once (IJ_HELPER.DS.'helper.php');
+require_once IJ_HELPER.DS.'helper.php';
 
 $document = JFactory::getDocument ();
 $document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.DS.'ijoomeradv.css' );
@@ -37,7 +37,7 @@ $document->addStyleSheet('components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'css'.D
 $controller = JRequest::getVar ('view','ijoomeradv');
 $path = IJ_CONTROLLER . DS . $controller . '.php';
 if (file_exists ( $path )) {
-	require_once ($path);
+	require_once $path;
 } else {
 	$classname = '';
 }

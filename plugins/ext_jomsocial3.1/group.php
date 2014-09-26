@@ -243,7 +243,7 @@ class group{
 		$uniqueID = IJReq::getTaskData('uniqueID', NULL, 'int');
 		$fields = IJReq::getTaskData('fields', 0, 'bool');
 
-		require_once (JPATH_SITE.DS."components".DS."com_community".DS."controllers".DS."groups.php");
+		require_once JPATH_SITE.DS."components".DS."com_community".DS."controllers".DS."groups.php";
 		$groupController=new CommunityGroupsController();
 		$groupModel	= CFactory::getModel( 'Groups' );
 
@@ -1212,7 +1212,7 @@ class group{
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
 		}
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
 		$group_controller_obj = new CommunityGroupsController ();
 
 		$groupModel	= CFactory::getModel('groups');
@@ -1475,7 +1475,7 @@ class group{
 				$group->published	= 0;
 
 				if( $group->store() ){
-					require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php');
+					require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
 					$group_controller_obj = new CommunityGroupsController ();
 					//trigger for onGroupDisable
 					$group_controller_obj->triggerGroupEvents( 'onGroupDisable' , $group);
@@ -3570,7 +3570,7 @@ class group{
 		$owner	= CFactory::getUser( $group->ownerid );
 
 
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
 		$group_controller_obj = new CommunityGroupsController ();
 		//trigger for onGroupJoin
 		$group_controller_obj->triggerGroupEvents( 'onGroupJoin' , $group , $this->my->id);
@@ -4033,7 +4033,7 @@ class group{
 			CUserPoints::assignPoint('group.member.remove', $memberID);
 
 			//trigger for onGroupLeave
-			require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php');
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
 			$group_controller_obj = new CommunityGroupsController ( );
 			$group_controller_obj->triggerGroupEvents( 'onGroupLeave' , $group , $memberID);
 		}

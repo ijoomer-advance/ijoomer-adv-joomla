@@ -11,7 +11,7 @@
 
 defined( '_JEXEC' ) or die;
 jimport('joomla.application.component.model');
-require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php' );
+require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php' ;
 
 class message{
 	private $jomHelper;

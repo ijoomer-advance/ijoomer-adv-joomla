@@ -42,7 +42,7 @@ class ijoomeradvHelper {
 
 		if(JRequest::get('post')){
 			if($encryption == 1){
-				require_once (IJ_SITE.DS.'encryption'.DS.'MCrypt.php');
+				require_once IJ_SITE.DS.'encryption'.DS.'MCrypt.php';
 				$encode = JRequest::getVar('reqObject');
 				$RSA = new MCrypt();
 				$decoded =  $RSA->decrypt($encode);

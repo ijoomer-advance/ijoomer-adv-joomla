@@ -499,7 +499,7 @@ class user{
 	private function update($id, $status){
 		$my	= CFactory::getUser($id);
 
-		require_once( COMMUNITY_COM_PATH.DS.'libraries'.DS.'apps.php');
+		require_once  COMMUNITY_COM_PATH.DS.'libraries'.DS.'apps.php';
 
 		$appsLib	=& CAppPlugins::getInstance();
 		$appsLib->loadApplications();

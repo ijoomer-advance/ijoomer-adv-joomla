@@ -247,7 +247,7 @@ class friend{
 
 
 	private function triggerFriendEvents( $eventName, &$args, $target = null){
-		require_once( JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'apps.php' );
+		require_once  JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'apps.php' ;
 		$appsLib	=& CAppPlugins::getInstance();
 		$appsLib->loadApplications();
 
@@ -413,8 +413,8 @@ class friend{
 				}
 
 				//trigger for onFriendApprove
-				require_once (JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'controller.php');
-				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');
+				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'controller.php';
+				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php';
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $friendId;
@@ -448,7 +448,7 @@ class friend{
 			$pendingInfo = $friendsModel->getPendingUserId($requestId);
 			if( $friendsModel->rejectRequest( $requestId ) ){
 				//trigger for onFriendReject
-				require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php');
+				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php';
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $pendingInfo->connect_from;

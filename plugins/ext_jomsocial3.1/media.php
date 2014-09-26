@@ -252,8 +252,8 @@ class media {
 	 *
 	 */
 	function addAlbum($aname = '', $adesc = '', $alat = '', $along = '') {
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'controller.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'controller.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php';
 
 		$albumID = IJReq::getTaskData ( 'albumID', null, 'int' );
 		$name = IJReq::getTaskData ( 'name', $aname );
@@ -1404,7 +1404,7 @@ class media {
 	// called by removeComment
 	// copied from com_community/controller/photos.php
 	private function removeAlbumComment($wallId) {
-		require_once (JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php');
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php';
 
 		$filter = JFilterInput::getInstance ();
 		$wallId = $filter->clean ( $wallId, 'int' );
@@ -1440,7 +1440,7 @@ class media {
 	// called by removePhotoComment
 	// copied from com_community/controllers/photos.php
 	private function removePhotoComment($wallId) {
-		require_once (JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php');
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php';
 
 		$filter = JFilterInput::getInstance ();
 		$wallId = $filter->clean ( $wallId, 'int' );
@@ -1482,7 +1482,7 @@ class media {
 	// called by removeComment
 	// copied from com_community/controllers/photos.php
 	private function removeVideoComment($wallId) {
-		require_once (JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php');
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'activities.php';
 
 		$filter = JFilterInput::getInstance ();
 		$wallId = $filter->clean ( $wallId, 'int' );
@@ -1632,7 +1632,7 @@ class media {
 			$startFrom = ($limit * ($pageNO - 1));
 		}
 
-		require_once (JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'photos.php');
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'photos.php';
 		$obj = new CommunityModelPhotos ( );
 		$photos = $obj->getPhotos ( $albumID, $limit, $startFrom, false );
 
@@ -3320,12 +3320,12 @@ class media {
 		$groupID	= IJReq::getTaskData ( 'groupID', 0, 'int' );
 		$type 		= ($groupID) ? VIDEO_GROUP_TYPE : VIDEO_USER_TYPE;
 
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'remote.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'videos.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'limits.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'videos.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php');
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'videos.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'remote.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'videos.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'limits.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' . DS . 'videos.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'videos.php';
 
 		// Preset the redirect url according to group type or user type
 		CFactory::load ( 'helpers', 'videos' );
@@ -3771,7 +3771,7 @@ class media {
 
 	// called by uploadPhotos
 	private function _checkUploadedFile($imageFile, $album, $handler) {
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php';
 
 		if (! $this->_validImage ( $imageFile )) {
 			IJReq::setResponse(415);
@@ -3939,7 +3939,7 @@ class media {
 
 	//
 	private function _rotatePhoto($imageFile, $photoTable, $storedPath, $thumbPath) {
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php';
 
 		// Read orientation data from original file
 		$orientation = CImageHelper::getOrientation ( $imageFile ['tmp_name'] );
@@ -4013,7 +4013,7 @@ class media {
 
 	//
 	private function _getHandler(CTableAlbum $album) {
-		require_once (JPATH_ROOT . DS . "components" . DS . "com_community" . DS . "controllers" . DS . "photos.php");
+		require_once JPATH_ROOT . DS . "components" . DS . "com_community" . DS . "controllers" . DS . "photos.php";
 		$handler = null;
 
 		// During AJAX calls, we might not be able to determine the groupid
@@ -4696,7 +4696,7 @@ class media {
 		CFactory::load ( 'libraries', 'photos' );
 		CFactory::load ( 'models', 'photos' );
 		CFactory::load ( 'helpers', 'image' );
-		require_once (JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php');
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'photos.php';
 		//get current user id for profile type
 		if($type=='profile'){
 			$uniqueID = $this->IJUserID;

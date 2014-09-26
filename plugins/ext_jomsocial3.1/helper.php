@@ -283,7 +283,7 @@ class jomHelper{
 			$content = CRemoteHelper::getContent($url);
 			$status = null;
 			if(!empty($content)){
-				require_once (JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php');
+				require_once JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php';
 				$json = new Services_JSON();
 				$data = $json->decode($content);
 
@@ -305,7 +305,7 @@ class jomHelper{
 
 			$status = null;
 			if(!empty($content)){
-				require_once (JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php');
+				require_once JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php';
 				$json = new Services_JSON();
 				$data = $json->decode($content);
 				if ($data->status == 'OK'){
@@ -340,7 +340,7 @@ class jomHelper{
 
 	function timeLapse($date){
 		jimport('joomla.utilities.date');
-		require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'helpers'.DS.'string.php');
+		require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'helpers'.DS.'string.php';
 		$now = new JDate();
 		$dateDiff = CTimeHelper::timeDifference($date->toUnix(), $now->toUnix());
 
@@ -361,7 +361,7 @@ class jomHelper{
 	}
 
 	function getDate( $str = '',$off=0 ){
-		require_once(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php');
+		require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
 
 		$extraOffset	= $this->config->get('daylightsavingoffset');
 		//convert to utc time first.
@@ -409,7 +409,7 @@ class jomHelper{
 	}
 
 	function showDate($time, $mode = 'datetime_today', $tz = 'kunena', $offset=null) {
-		require_once (JPATH_SITE.DS.'components'.DS.'com_kunena'.DS.'lib'.DS.'kunena.timeformat.class.php');
+		require_once JPATH_SITE.DS.'components'.DS.'com_kunena'.DS.'lib'.DS.'kunena.timeformat.class.php';
 
 		$date = JFactory::getDate ( $time );
 
@@ -912,7 +912,7 @@ class jomHelper{
 	 *
 	 */
 	function getLikes($element,$itemId,$userId){
-		require_once (JPATH_SITE.DS.'components'.DS.'com_community'.DS.'tables'.DS.'like.php');
+		require_once JPATH_SITE.DS.'components'.DS.'com_community'.DS.'tables'.DS.'like.php';
 		$like	=&  JTable::getInstance( 'Like' , 'CTable' );
 		$like->loadInfo($element, $itemId);
 		CFactory::load('libraries','like');

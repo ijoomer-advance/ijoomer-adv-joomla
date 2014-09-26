@@ -59,14 +59,14 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		unset($_SESSION['ijoomeradv_error']);
 
 		header ("content-type: application/json"); // set the header content type to JSON format
-		require_once (IJ_HELPER.DS.'helper.php'); // import ijoomeradv helper file
+		require_once IJ_HELPER.DS.'helper.php'; // import ijoomeradv helper file
 		$IJHelperObj= new ijoomeradvHelper(); // create hepler object
 		$encryption = $IJHelperObj->getencryption_config();
 		if($encryption == 1){
 			$json = json_encode($jsonarray);// output the JSON encoded string
 			// add  code for replace back slases to forward slases.
 			$json = str_replace('\\\\','/',$json);
-			require_once (IJ_SITE.'/encryption/MCrypt.php');
+			require_once IJ_SITE.'/encryption/MCrypt.php';
 			$RSA = new MCrypt();
 			$encoded =  $RSA->encrypt($json);
 			echo $encoded; exit;
@@ -208,7 +208,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 
 		switch ($results['option']){
 			case 'com_content':
-				require_once (JPATH_COMPONENT.DS.'extensions'.DS.'icms'.DS.'helper.php');
+				require_once JPATH_COMPONENT.DS.'extensions'.DS.'icms'.DS.'helper.php';
 				$helperClass = new icms_helper();
 				$urlResults  = $helperClass->getParseData($results);
 			break;
@@ -323,8 +323,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 				if($value->name=='IJOOMER_GC_REGISTRATION'){
 					switch($value->value){
 						case 'jomsocial':
-							require_once( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php');
-							require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
+							require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php';
+							require_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php";
 							$jomHelper	=	new jomHelper();
 							$jomsocial_version = $jomHelper->getjomsocialversion();
 
@@ -380,7 +380,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		// application get extension version info
 
 		if(file_exists(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php") && file_exists(JPATH_SITE.DS.'components'.DS.'com_community'.DS."community.php")){
-			require_once(JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php");
+			require_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.'jomsocial'.DS."helper.php";
 			$jomHelper	=	new jomHelper();
 			$jomsocial_version = $jomHelper->getjomsocialversion();
 			$jsonarray['configuration']['versioninfo']["jomsocial"]	= $jomsocial_version;
