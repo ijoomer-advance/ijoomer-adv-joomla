@@ -82,7 +82,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		$row =& $this->getTable();
 		$row->load($data['extid']);
 
-        include_once (JPATH_COMPONENT_SITE.DS.'extensions'.DS.$row->classname.DS.$row->classname.'.php');
+        include_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.$row->classname.DS.$row->classname.'.php';
         $class_obj = new $row->classname;
 
         if(method_exists($class_obj,'write_configuration')){

@@ -33,7 +33,7 @@ defined( '_JEXEC' ) or die;
 
 <div class="Paragraph">
 <?php
-include('MCrypt.php');
+include 'MCrypt.php';
 $RSA = new MCrypt();
 
 /* Example */

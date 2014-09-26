@@ -1376,7 +1376,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$config	= JFactory::getConfig();
 
 		// Assemble the login link.
-		include_once(JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php');
+		include_once JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php';
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
 		$link	= 'index.php?option=com_users&view=login'.$itemid;
@@ -1427,7 +1427,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			// Set the e-mail parameters
 			$lang =& JFactory::getLanguage();
 			$lang->load('com_users');
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php');
+			include_once JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php';
 
 
 			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
