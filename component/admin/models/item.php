@@ -12,7 +12,6 @@
 defined('_JEXEC') or die;
 
 // Include dependencies.
-jimport('joomla.application.component.modeladmin');
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.tablenested');

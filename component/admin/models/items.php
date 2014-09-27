@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
-
 /**
  * Menu Item List Model for Menus.
  *

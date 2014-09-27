@@ -11,9 +11,8 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
-
-class ijoomeradvModelconfig extends JModelLegacy{
+class ijoomeradvModelconfig extends JModelLegacy
+{
 
 	var $db;
 

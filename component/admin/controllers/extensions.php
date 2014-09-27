@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport ('joomla.application.component.controller');
-
 class ijoomeradvControllerExtensions extends JControllerLegacy
 {
 	public function home()

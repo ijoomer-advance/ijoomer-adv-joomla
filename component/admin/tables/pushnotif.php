@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
-
 class TablePushnotif extends JTable{
 	var $id				= null;
 	var $device_type	= null;
