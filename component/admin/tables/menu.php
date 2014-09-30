@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 // Import JTableMenu
 //JLoader::register('JTableMenu', JPATH_COMPONENT . '/tables/menu_table.php');
 //JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
-jimport('joomla.database.tablenested');
+
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_ijoomer

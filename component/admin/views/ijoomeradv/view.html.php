@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
-
 class ijoomeradvViewijoomeradv extends JViewLegacy {
 	function display($tmpl=null){
 		$document = JFactory::getDocument();

@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.view' );
-
 class IjoomeradvViewExtensions extends JViewLegacy {
 
 	function display($tpl = null) {

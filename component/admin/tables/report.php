@@ -11,8 +11,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.database.tablenested');
-
 class IjoomeradvTableReport extends JTable{
 	var $id 		= null;
 	var $message 	= null;
