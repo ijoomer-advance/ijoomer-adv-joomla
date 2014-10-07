@@ -150,7 +150,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		if ($itemimagedata['name']['imageicon'] or $itemimagedata['name']['imagetab'] or $itemimagedata['name']['imagetabactive'])
 		{
-			$dirpath = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_ijoomeradv' . DS . 'theme' . DS . 'custom';
+			$dirpath = JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/theme/custom';
 			shell_exec('chmod 777 '.$dirpath.' -R');
 
 			$form = $model->getForm($data);
@@ -161,7 +161,7 @@ class IjoomeradvControllerItem extends JControllerForm
 			}
 			else
 			{
-				$imagename 	= explode('.',$data['views']);
+				$imagename 	= explode(,$data['views']);
 				$postfix	= rand();
 				$imagename	= $imagename[3].$postfix;
 			}
@@ -230,11 +230,11 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					if($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
-						imagepng($imageResized, $dirpath.DS.'android'.DS.$dkey.DS.$imagename_home);
+						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_home);
 					}
 					else
 					{
-						imagepng($imageResized, $dirpath.DS.'iphone'.DS.$dkey.DS.$imagename_home);
+						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_home);
 					}
 				}
 
@@ -280,9 +280,9 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
 					if($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi'){
-						imagepng($imageResized, $dirpath.DS.'android'.DS.$dkey.DS.$imagename_tab);
+						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_tab);
 					}else{
-						imagepng($imageResized, $dirpath.DS.'iphone'.DS.$dkey.DS.$imagename_tab);
+						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_tab);
 					}
 				}
 
@@ -341,11 +341,11 @@ class IjoomeradvControllerItem extends JControllerForm
 					imagecopyresampled($imageResized, $image1, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image1), imagesy($image1));
 
 					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi'){
-						imagepng($imageResized, $dirpath.DS.'android'.DS.$dkey.DS.$imagename_tab_active);
+						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_tab_active);
 					}
 					else
 					{
-						imagepng($imageResized, $dirpath.DS.'iphone'.DS.$dkey.DS.$imagename_tab_active);
+						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_tab_active);
 					}
 				}
 
@@ -392,12 +392,12 @@ class IjoomeradvControllerItem extends JControllerForm
 		$data = $model->validate($form, $data);
 
 		//changes for custom menu type
-		$chcustom = explode('.',$data['views']);
+		$chcustom = explode(,$data['views']);
 
 		if ($chcustom[2] == 'custom')
 		{
 			$chcustom[3] = $menuoptions['actname'];
-			$data['views'] = implode('.',$chcustom);
+			$data['views'] = implode(,$chcustom);
 			unset($menuoptions['actname']);
 		}
 
@@ -468,7 +468,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		if($data['views'])
 		{
-			$view = explode('.',$data['views']);
+			$view = explode(,$data['views']);
 
 			if($data['requiredField'])
 			{
@@ -479,11 +479,11 @@ class IjoomeradvControllerItem extends JControllerForm
 
 				if($extension != 'default')
 				{
-					require_once JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.DS.$extension.'.php';
+					require_once JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$extension.'/'.$extension.'.php';
 				}
 				else
 				{
-					require_once JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.'.php';
+					require_once JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$extension.'.php';
 				}
 
 				$extClass	= $extension.'_menu';
@@ -574,7 +574,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		if (isset($type->extension) && isset($type->view))
 		{
-			$views = strtolower($type->extension).'.'.$type->view.'.'.$type->task.'.'.$type->remoteTask;
+			$views = strtolower($type->extension)..$type->view..$type->task..$type->remoteTask;
 		}
 		else
 		{

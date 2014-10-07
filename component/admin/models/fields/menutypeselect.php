@@ -53,7 +53,7 @@ class JFormFieldMenutypeselect extends JFormFieldList
 		if($screens){
 			foreach ($screens as $key=>$value){
 				foreach ($value as $k1=>$v1){
-					$sname = explode('.',$v1);
+					$sname = explode(,$v1);
 					$screenname[] = $sname[1];
 				}
 			}

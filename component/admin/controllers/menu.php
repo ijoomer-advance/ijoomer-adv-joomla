@@ -174,8 +174,8 @@ class IjoomeradvControllerMenu extends JControllerForm
 
 		foreach ($data['screen'] as $key=>$value)
 		{
-			$views = explode('.',$value);
-			$view[$views[0]][] = $views[1].'.'.$views[2].'.'.$views[3];
+			$views = explode(,$value);
+			$view[$views[0]][] = $views[1]..$views[2]..$views[3];
 		}
 
 		$data['screen'] = json_encode($view);

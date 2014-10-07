@@ -248,7 +248,7 @@ class friend{
 
 
 	private function triggerFriendEvents( $eventName, &$args, $target = null){
-		require_once  JPATH_SITE.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'apps.php' ;
+		require_once  JPATH_SITE.'/components/com_community/libraries/apps.php' ;
 		$appsLib	=& CAppPlugins::getInstance();
 		$appsLib->loadApplications();
 
@@ -414,8 +414,8 @@ class friend{
 				}
 
 				//trigger for onFriendApprove
-				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'controller.php';
-				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php';
+				require_once JPATH_ROOT.'/components/com_community/controllers/controller.php';
+				require_once JPATH_ROOT.'/components/com_community/controllers/friends.php';
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $friendId;
@@ -449,7 +449,7 @@ class friend{
 			$pendingInfo = $friendsModel->getPendingUserId($requestId);
 			if( $friendsModel->rejectRequest( $requestId ) ){
 				//trigger for onFriendReject
-				require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'controllers'.DS.'friends.php';
+				require_once JPATH_ROOT.'/components/com_community/controllers/friends.php';
 				$eventObject = new stdClass();
 				$eventObject->profileOwnerId 	= $this->IJUserID;
 				$eventObject->friendId 			= $pendingInfo->connect_from;
@@ -517,7 +517,7 @@ class friend{
 
 				if($avatarOnly){
 					$query.="	INNER JOIN #__community_users AS c ON b.`id`=c.`userid`
-								AND c.`thumb` != {$this->db->Quote('components'.DS.'com_community'.DS.'assets'.DS.'default_thumb.jpg')}";
+								AND c.`thumb` != {$this->db->Quote('components/com_community/assets/default_thumb.jpg')}";
 				}
 				$query.= " WHERE b.block = 0 AND ".implode(' AND ',$filter);
 				$queryCnt ="SELECT COUNT(1)

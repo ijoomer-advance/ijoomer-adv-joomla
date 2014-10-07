@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 jimport ( 'joomla.installer.installer' );
 jimport ( 'joomla.installer.helper' );
 jimport ( 'joomla.filesystem.file' );
-//require_once JPATH_ROOT.DS.'libraries'.DS.'legacy'.DS.'application'.DS.'helper.php';
+//require_once JPATH_ROOT.'/libraries/legacy/application/helper.php';
 
 class IjoomeradvModelExtensions extends JModelLegacy {
 	var $_data = null;
@@ -80,7 +80,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		$row =& $this->getTable();
 		$row->load($data['extid']);
 
-        include_once JPATH_COMPONENT_SITE.DS.'extensions'.DS.$row->classname.DS.$row->classname.'.php';
+        include_once JPATH_COMPONENT_SITE . '/extensions/'.$row->classname.'/'.$row->classname.'.php';
         $class_obj = new $row->classname;
 
         if(method_exists($class_obj,'write_configuration')){
@@ -154,7 +154,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		// Cleanup the install files
 		if (!is_file($package['packagefile'])) {
 			$config =& JFactory::getConfig();
-			$package['packagefile'] = $config->getValue('config.tmp_path').DS.$package['packagefile'];
+			$package['packagefile'] = $config->getValue('config.tmp_path').'/'.$package['packagefile'];
 		}
 
 		JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
@@ -195,7 +195,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 
 		// Build the appropriate paths
 		$config =& JFactory::getConfig();
-		$tmp_dest 	= $config->get('tmp_path').DS.$userfile['name'];
+		$tmp_dest 	= $config->get('tmp_path').'/'.$userfile['name'];
 
 		$tmp_src	= $userfile['tmp_name'];
 
@@ -1392,7 +1392,7 @@ class JInstaller extends JAdapter
 		{
 			$pathname = 'extension_root';
 			$extension=(string) $element->children()->attributes()->extensions;
-			$destination = $this->getPath($pathname).DS.$extension;
+			$destination = $this->getPath($pathname).'/'.$extension;
 		}
 
 		/*

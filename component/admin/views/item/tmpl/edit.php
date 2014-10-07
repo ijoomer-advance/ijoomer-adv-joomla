@@ -195,7 +195,7 @@ if(JRequest::getVar('ajax')){
 						<fieldset>
 							<?php
 								if($this->form->getValue('views')){
-									$view = explode('.',$this->form->getValue('views'));
+									$view = explode(,$this->form->getValue('views'));
 									$extension	 = $view[0];
 									$extView	 = $view[2];
 									$menuoptions = $this->form->getValue('menuoptions');
@@ -208,9 +208,9 @@ if(JRequest::getVar('ajax')){
 									}
 
 									if($extension != 'default'){
-										require_once JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.DS.$extension.'.php';
+										require_once JPATH_SITE . '/components/com_ijoomeradv/extensions/'.$extension.'/'.$extension.'.php';
 									}else{
-										require_once JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'extensions'.DS.$extension.'.php';
+										require_once JPATH_SITE . '/components/com_ijoomeradv/extensions/'.$extension.'.php';
 									}
 
 									$extClass	= $extension.'_menu';

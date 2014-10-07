@@ -42,7 +42,7 @@ class ijoomeradvHelper {
 
 		if(JRequest::get('post')){
 			if($encryption == 1){
-				require_once IJ_SITE.DS.'encryption'.DS.'MCrypt.php';
+				require_once IJ_SITE . '/encryption/MCrypt.php';
 				$encode = JRequest::getVar('reqObject');
 				$RSA = new MCrypt();
 				$decoded =  $RSA->decrypt($encode);
@@ -65,7 +65,7 @@ class ijoomeradvHelper {
 
 	public static function getJomSocialVersion(){
 		$parser = JFactory::getXMLParser('Simple');
-		$xml	= JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_community' . DS . 'community.xml';
+		$xml	= JPATH_ADMINISTRATOR . '/components/com_community/community.xml';
 
 		if(file_exists($xml)){
 			$parser->loadFile( $xml );
@@ -73,7 +73,7 @@ class ijoomeradvHelper {
 			$element	=& $doc->getElementByPath( 'version' );
 			$version	= $element->data();
 
-			$cv = explode('.',$version);
+			$cv = explode(,$version);
 			$cversion = $cv[0].$cv[1];
 			return $cversion;
 		}
@@ -233,7 +233,7 @@ class IJPushNotif{
 	 */
 	public static function sendIphonePushNotification($options){
 		$server=($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'certificates'.DS.'certificates.pem';
+		$keyCertFilePath = JPATH_SITE.'/components/com_ijoomeradv/certificates/certificates.pem';
 		// Construct the notification payload
 		$body = array();
 		$body['aps']= $options['aps'];
@@ -284,7 +284,7 @@ class IJPushNotif{
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // Disabling SSL Certificate support temporarly
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        curl_setopt($ch, CURLOPT_POSTFIEL'/', json_encode($fields));
 
         // Execute post
         $result = curl_exec($ch);
@@ -347,7 +347,7 @@ class IJException{
 
 		$json = json_encode($exception);
 
-		$logpath = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ijoomeradv'.DS.'logs'.DS.'com_ijoomeradv2.0.log.php';
+		$logpath = JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/logs/com_ijoomeradv2.0.log.php';
 
 		// If the file doesn't already exist we need to create it and generate the file header.
 		if (!is_file($logpath)){

@@ -49,7 +49,7 @@ defined('_JEXEC') or die;
 					<?php foreach ($list as $item): ?>
 						<li>
 							<input type="checkbox" <?php if($item->checked){echo 'checked="checked"';}?>
-								id="<?php echo $name.'.'.$item->view; ?>" value="<?php echo $name.'.'.$item->view.'.'.$item->task.'.'.$item->remoteTask; ?>"
+								id="<?php echo $name..$item->view; ?>" value="<?php echo $name..$item->view..$item->task..$item->remoteTask; ?>"
 								name="screen[]" class="chkbox chk-menulink-2">&nbsp;-&nbsp;<?php echo $item->caption; ?>
 					 	</li>
 					<?php endforeach; ?>
