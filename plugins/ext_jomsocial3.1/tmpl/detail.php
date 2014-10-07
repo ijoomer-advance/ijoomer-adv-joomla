@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
-JHTML::_('behavior.tooltip');
+defined('_JEXEC') or die;JHTML::_('behavior.tooltip');
 
 ?>
 <form action="<?php echo JRoute::_ ( $this->request_url )?>" method="post" name="adminForm" id="adminForm">

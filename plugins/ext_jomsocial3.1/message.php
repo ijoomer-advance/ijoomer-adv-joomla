@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
-jimport('joomla.application.component.model');
+defined('_JEXEC') or die;jimport('joomla.application.component.model');
 require_once  JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'models' . DS . 'models.php' ;
 
 class message{
