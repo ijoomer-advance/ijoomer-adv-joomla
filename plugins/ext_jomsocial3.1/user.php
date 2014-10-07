@@ -9,7 +9,9 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;class user{
+defined('_JEXEC') or die;
+
+class user{
 	private $jomHelper;
 	private $date_now;
 	private $IJUserID;

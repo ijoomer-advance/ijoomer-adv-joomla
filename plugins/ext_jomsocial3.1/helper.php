@@ -9,7 +9,9 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;class jomHelper{
+defined('_JEXEC') or die;
+
+class jomHelper{
 	private $date_now;
 	private $IJUserID;
 	private $mainframe;
