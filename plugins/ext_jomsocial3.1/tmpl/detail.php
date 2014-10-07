@@ -9,7 +9,8 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
+
 JHTML::_('behavior.tooltip');
 
 ?>

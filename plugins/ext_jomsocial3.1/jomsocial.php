@@ -9,7 +9,8 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined( '_JEXEC' ) or die;
+defined('_JEXEC') or die;
+
 class jomsocial{
 	var $classname = 'jomsocial';
 	var $sessionWhiteList=array("user.profileTypes");
