@@ -263,7 +263,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 	// iphone push notification
 	function sendIphonePushNotification($options){
 		$server=($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE.DS.'components'.DS.'com_ijoomer'.DS.'certificates'.DS.'certificates.pem';
+		$keyCertFilePath = JPATH_SITE . '/components/com_ijoomer/certificates/certificates.pem';
 		// Construct the notification payload
 		$body = array();
 		$body['aps']= $options['aps'];
@@ -307,7 +307,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // Disabling SSL Certificate support temporarly
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        curl_setopt($ch, CURLOPT_POSTFIEL'/', json_encode($fields));
 
         // Execute post
         $result = curl_exec($ch);

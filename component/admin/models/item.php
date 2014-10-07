@@ -102,7 +102,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function batch($commands, $pks, $contexts)
+	public function batch($comman'/', $pks, $contexts)
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
@@ -124,7 +124,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		if (!empty($commands['menu_id']))
 		{
-			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = JArrayHelper::getValue($comman'/', 'move_copy', 'c');
 
 			if ($cmd == 'c')
 			{
@@ -1062,7 +1062,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	/*
 	 * Rorder items order
 	 */
-	public function reorder($ids, $inc){
+	public function reorder($i'/', $inc){
 		$menutype = JRequest::getVar('menutype');
 		$table =& $this->getTable();
 		$table->load($ids[0]);

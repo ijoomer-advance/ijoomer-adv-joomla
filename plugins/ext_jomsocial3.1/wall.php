@@ -79,7 +79,7 @@ class wall{
 				if($actconfig=='all'){
 					$htmldata = $act->getFEED('', '', null, MAXIMUM_ACTIVITY+1 , '');
 				}else{
-					$htmldata = $act->getFEED($userID, $frids, null, MAXIMUM_ACTIVITY+1 , '');
+					$htmldata = $act->getFEED($userID, $fri'/', null, MAXIMUM_ACTIVITY+1 , '');
 				}
 				break;
 
@@ -118,7 +118,7 @@ class wall{
 			case 'wall':
 			default:
 				$userIDs=array($userID);
-				$htmldata = $act->getFEED($userID, $userIDs, null, MAXIMUM_WALL+1);
+				$htmldata = $act->getFEED($userID, $userI'/', null, MAXIMUM_WALL+1);
 				break;
 		}
 
@@ -250,7 +250,7 @@ class wall{
 							if ($video->type == 'file') {
 								$ext = JFile::getExt ( $video->path );
 
-								if ($ext == 'mov' && file_exists ( JPATH_SITE . DS . $video->path )) {
+								if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 									$video_file = JURI::root () . $video->path;
 								} else {
 									$lastpos = strrpos ( $video->path, '.' );
@@ -263,7 +263,7 @@ class wall{
 
 							$this->jsonarray['update'][$inc]['content_data']['id']				= $video->id;
 							$this->jsonarray['update'][$inc]['content_data']['caption']			= $video->title;
-							$this->jsonarray['update'][$inc]['content_data']['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'video_thumb.png';
+							$this->jsonarray['update'][$inc]['content_data']['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components/com_community/assets/video_thumb.png';
 							$this->jsonarray['update'][$inc]['content_data']['url'] 			= $video_file;
 							$this->jsonarray['update'][$inc]['content_data']['description'] 	= $video->description;
 							$this->jsonarray['update'][$inc]['content_data']['date'] 			= $this->jomHelper->timeLapse ( $this->jomHelper->getDate ( $video->created ) );
@@ -325,7 +325,7 @@ class wall{
 								if ($video->type == 'file') {
 									$ext = JFile::getExt ( $video->path );
 
-									if ($ext == 'mov' && file_exists ( JPATH_SITE . DS . $video->path )) {
+									if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 										$video_file = JURI::root () . $video->path;
 									} else {
 										$lastpos = strrpos ( $video->path, '.' );
@@ -338,7 +338,7 @@ class wall{
 
 								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['id']				= $video->id;
 								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['caption']			= $video->title;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'video_thumb.png';
+								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components/com_community/assets/video_thumb.png';
 								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['url'] 			= $video_file;
 								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['description'] 	= $video->description;
 								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['date'] 			= $this->jomHelper->timeLapse ( $this->jomHelper->getDate ( $video->created ) );
@@ -439,7 +439,7 @@ class wall{
 									if (! empty ( $s3BucketPath ))
 										$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
 								} else {
-									if (! file_exists ( JPATH_SITE . DS . $photo->image ))
+									if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
 										$photo->image = $photo->original;
 								}
 
@@ -480,7 +480,7 @@ class wall{
 										if (! empty ( $s3BucketPath ))
 											$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
 									} else {
-										if (! file_exists ( JPATH_SITE . DS . $photo->image ))
+										if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
 											$photo->image = $photo->original;
 									}
 									$this->jsonarray['update'][$inc]['image_data'][$key]['id']				= $photo->id;
@@ -555,7 +555,7 @@ class wall{
 								if (! empty ( $s3BucketPath ))
 									$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
 							} else {
-								if (! file_exists ( JPATH_SITE . DS . $photo->image ))
+								if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
 									$photo->image = $photo->original;
 							}
 
@@ -897,7 +897,7 @@ class wall{
 			else
 				$p_url	= JURI::base();
 		}
-		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
 		$result['members']			= $group->membercount;
 		$result['walls']			= $group->wallcount;
 		$result['discussions']		= $group->discusscount;
@@ -920,7 +920,7 @@ class wall{
 		$result['startdate'] 	= CTimeHelper::getFormattedTime($event->startdate, $format);
 		$result['enddate'] 		= CTimeHelper::getFormattedTime($event->enddate, $format);
 		$result['date'] 		= strtoupper(CEventHelper::formatStartDate($event, $this->config->get('eventdateformat')));
-		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 		$result['past'] 		= (strtotime($event->enddate)<time()) ? 1 : 0;
 		$result['ongoing']	 	= (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 		$result['confirmed']	= $event->confirmedcount;
@@ -1137,7 +1137,7 @@ class wall{
 					if( $oRow->groupid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') .'/'. 'images/favicon' .'/'.'groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$config->get('template').'/images/favicon/groups.png';
 						}
 
@@ -1148,7 +1148,7 @@ class wall{
 					if( $oRow->eventid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/events.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') .'/'. 'images/favicon' .'/'.'groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/events.png';
 						}
 					}
@@ -1156,13 +1156,13 @@ class wall{
 					// If it is not group or event stream, use normal favicon search
 					if( !($oRow->groupid || $oRow->eventid) ){
 						// check if the image icon exist in template folder
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS . $oRow->app.'.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') .'/'. 'images/favicon' .'/'. $oRow->app.'.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/'.$oRow->app.'.png';
 						}else{
 							// check if the image icon exist in asset folder
-							if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'favicon' . DS . $oRow->app.'.png') ){
+							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon' .'/'. $oRow->app.'.png') ){
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/'.$oRow->app.'.png';
-							}elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) . DS . $oRow->app . DS . 'favicon.png') ){
+							}elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) .'/'. $oRow->app .'/'. 'favicon.png') ){
 								$favicon = JURI::root(). CPluginHelper::getPluginURI('community',$oRow->app) . '/' .$oRow->app.'/favicon.png';
 							}else{
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/default.png';
@@ -1715,7 +1715,7 @@ class wall{
 							if ($video->type == 'file') {
 								$ext = JFile::getExt ( $video->path );
 
-								if ($ext == 'mov' && file_exists ( JPATH_SITE . DS . $video->path )) {
+								if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 									$video_file = JURI::root () . $video->path;
 								} else {
 									$lastpos = strrpos ( $video->path, '.' );
@@ -1728,7 +1728,7 @@ class wall{
 
 							$pushcontentdata['content_data']['id']				= $video->id;
 							$pushcontentdata['content_data']['caption']			= $video->title;
-							$pushcontentdata['content_data']['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'video_thumb.png';
+							$pushcontentdata['content_data']['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components/com_community/assets/video_thumb.png';
 							$pushcontentdata['content_data']['url'] 			= $video_file;
 							$pushcontentdata['content_data']['description'] 	= $video->description;
 							$pushcontentdata['content_data']['date'] 			= $this->jomHelper->timeLapse ( $this->jomHelper->getDate ( $video->created ) );
@@ -1825,7 +1825,7 @@ class wall{
 										if (! empty ( $s3BucketPath ))
 											$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
 									} else {
-										if (! file_exists ( JPATH_SITE . DS . $photo->image ))
+										if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
 											$photo->image = $photo->original;
 									}
 									$pushcontentdata['image_data'][$key]['id']				= $photo->id;

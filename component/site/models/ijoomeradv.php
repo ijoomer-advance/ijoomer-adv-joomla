@@ -11,7 +11,7 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvModelijoomeradv extends JModelLegacy{
+class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 
 	private $db;
 	private $mainframe;
@@ -169,10 +169,10 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 															);
 
 							if(($value->position == 1 or $value->position == 2) && ($value1->itemimage)){
-								$menuArray[$i]["menuitem"][$k]["icon"]	= JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.'custom'.DS.$device.DS.$device_type.DS.$value1->itemimage.'_icon.png';
+								$menuArray[$i]["menuitem"][$k]["icon"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_icon.png';
 							}else if($value->position == 3 && $value1->itemimage){
-								$menuArray[$i]["menuitem"][$k]["tab"]	= JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.'custom'.DS.$device.DS.$device_type.DS.$value1->itemimage.'_tab.png';
-								$menuArray[$i]["menuitem"][$k]["tab_active"]	= JURI::base().'administrator'.DS.'components'.DS.'com_ijoomeradv'.DS.'theme'.DS.'custom'.DS.$device.DS.$device_type.DS.$value1->itemimage.'_tab_active.png';
+								$menuArray[$i]["menuitem"][$k]["tab"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab.png';
+								$menuArray[$i]["menuitem"][$k]["tab_active"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab_active.png';
 							}
 
 							$k++;
@@ -285,7 +285,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$my = JFactory::getUser(); //get current user
 
 		//TODO : extension levels default params
-		$defaultParams='{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_friends_request_connection":"1","pushnotif_friends_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
+		$defaultParams='{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_frien'/'_request_connection":"1","pushnotif_frien'/'_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
 
 		$query="SELECT count(1)
 				FROM `#__ijoomeradv_users`
@@ -307,8 +307,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$jsonarray['code'] = 200;
 		$jsonarray['profile'] = IJOOMER_GC_REGISTRATION;
 
-		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-			require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
+		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
+			require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
 			// update jomsocial latitude & longitude if not 0
 			if($data['latitude']!=0 && $data['longitude']!=0){
 				$query="UPDATE #__community_users
@@ -322,19 +322,19 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		//change for id based push notification
 		$component = JComponentHelper::getComponent('com_community');
 		if(!empty($component->id) && $component->enabled==1){
-			$friendsModel 	= CFactory::getModel('friends');
-			$friends 		= $friendsModel->getFriendIds($my->id);
+			$frien'/'Model 	= CFactory::getModel('frien'/'');
+			$frien'/' 		= $frien'/'Model->getFriendI'/'($my->id);
 			$pushOptions['detail']=array();
 			$pushOptions = gzcompress(json_encode($pushOptions));
 			$message = JText::sprintf('COM_IJOOMERADV_USER_ONLINE',$my->name);
 			$obj = new stdClass();
 			$obj->id 		= null;
 			$obj->detail 	= $pushOptions;
-			$obj->tocount  	= count($friends);
+			$obj->tocount  	= count($frien'/');
 			$this->db->insertObject('#__ijoomeradv_push_notification_data',$obj,'id');
 			if($obj->id){
 				$jsonarray['pushNotificationData']['id'] 		= $obj->id;
-				$jsonarray['pushNotificationData']['to'] 		= implode(',',$friends);
+				$jsonarray['pushNotificationData']['to'] 		= implode(',',$frien'/');
 				$jsonarray['pushNotificationData']['message'] 	= $message;
 				$jsonarray['pushNotificationData']['type'] 		= 'online';
 				$jsonarray['pushNotificationData']['configtype'] 	= '';
@@ -400,8 +400,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			if($this->mainframe->login($credentials) == '1' && $fbid!=""){
 				// connect fb user to site user...
 				$user = JFactory::getUser();
-				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-					require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
+				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
+					require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$user->id}',connectid='{$fbid}',type='facebook'";
 					$this->db->setQuery($query);
@@ -486,8 +486,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				$this->db->setQuery($query);
 				$this->db->Query();
 
-				if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-					require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
+				if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
+					require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
 					$this->db->setQuery($query);
@@ -518,7 +518,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 				$usersipass['password'] = trim(str_replace("\n","",$password_set.$time));
 				if($this->mainframe->login($usersipass) == '1'){
 					if($jsonarray = $this->loginProccess()){
-						$this->fbFieldSet($aclval);
+						$this->fbFiel'/'et($aclval);
 						return $jsonarray;
 					}else{
 						return false;
@@ -535,7 +535,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	}
 
 
-	private function fbFieldSet($userid){
+	private function fbFiel'/'et($userid){
 		$fb=IJReq::getTaskData('fb');
 		$fieldConnection=array(	'FB_USERID'					=> (isset($fb->uid)) ? number_format($fb->uid,0,'','') : NULL,
 								'FB_USERNAME'				=> (isset($fb->username)) ? $fb->username : NULL,
@@ -590,18 +590,18 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 			if($fieldid){
 				$query="SELECT id
-						FROM #__community_fields_values
+						FROM #__community_fiel'/'_values
 						WHERE user_id={$userid}
 						AND field_id={$fieldid}";
 				$this->db->setQuery($query);
 				$field = $this->db->loadResult();
 
 				if($field){
-					$query="UPDATE `#__community_fields_values`
+					$query="UPDATE `#__community_fiel'/'_values`
 							SET `value`={$value}
 							WHERE `id`={$field}";
 				}else{
-					$query="INSERT INTO `#__community_fields_values` (`id`,`user_id`,`field_id`,`value`,`access`)
+					$query="INSERT INTO `#__community_fiel'/'_values` (`id`,`user_id`,`field_id`,`value`,`access`)
 							VALUES (NULL, '{$userid}', '{$fieldid}', '{$value}', 0)";
 				}
 				$this->db->setQuery($query);
@@ -669,12 +669,12 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			return false;
 		}
 
-		if($Full_flag!= 1 && strtolower(IJOOMER_GC_REGISTRATION)=== 'jomsocial' && file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php')){
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'libraries' .DS. 'core.php'; // include jomsocial core file from library
+		if($Full_flag!= 1 && strtolower(IJOOMER_GC_REGISTRATION)=== 'jomsocial' && file_exists(JPATH_ROOT . '/' . 'components' . '/' . 'com_community' . '/' . 'libraries' .'/'. 'core.php')){
+			require_once JPATH_ROOT . '/' . 'components' . '/' . 'com_community' . '/' . 'libraries' .'/'. 'core.php'; // include jomsocial core file from library
 
 			if($post['type']>0){
 				$query="SELECT cp.id,cp.name,cf.fieldcode,cf.options,cpf.parent,cpf.field_id,cf.id as id,cf.type,cf.name,cf.required,cf.registration,cf.published,cf.tips
-	 					FROM `#__community_profiles` AS cp,`#__community_profiles_fields` AS cpf,`#__community_fields` AS cf
+	 					FROM `#__community_profiles` AS cp,`#__community_profiles_fiel'/'` AS cpf,`#__community_fiel'/'` AS cf
 	 					WHERE cp.id=cpf.parent
 	 					AND cp.id={$post['type']}
 	 					AND cf.registration=1
@@ -683,33 +683,33 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 	 					order by cf.`ordering`,cpf.field_id";
 			}else{
 				$query="SELECT *
-						FROM `#__community_fields`
+						FROM `#__community_fiel'/'`
 						WHERE published=1 and registration=1
 						order by `ordering`";
 			}
 			$this->db->setQuery($query);
-			$fields = $this->db->loadObjectList();
+			$fiel'/' = $this->db->loadObjectList();
 
 			$inc=-1;
 			$incj=null;
-			if(count($fields)>0){
+			if(count($fiel'/')>0){
 				$jsonarray['code']=200;
 				$jsonarray['full'] = 1;
 
-				foreach($fields as $field){
+				foreach($fiel'/' as $field){
 					if($field->type=='group'){
 						$inc++;
-						$jsonarray['fields']['group'][$inc]['group_name']=$field->name;
+						$jsonarray['fiel'/'']['group'][$inc]['group_name']=$field->name;
 						$incj = 0;
 					}else{
 						if($incj===null){
 							$incj=0;
 						}
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['id'] = $field->id;
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['caption'] = $field->name;
-						//$jsonarray['fields']['group'][$inc]['field'][$incj]['fieldcode'] = $field->fieldcode;
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['required'] = $field->required;
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['value'] = '';
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['id'] = $field->id;
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['caption'] = $field->name;
+						//$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['fieldcode'] = $field->fieldcode;
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['required'] = $field->required;
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['value'] = '';
 
 						if($field->type == 'birthdate'){
 							$field->type = "date";
@@ -731,15 +731,15 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 							$field->type = 'map';
 						}
 
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['type'] = $field->type;
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['type'] = $field->type;
 						if(isset($field->options) and !empty($field->options)){
 							$option = explode("\n",$field->options);
 							foreach($option as $i=>$val){
-								$jsonarray['fields']['group'][$inc]['field'][$incj]['options'][$i]['value']=JText::_($val);
+								$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['options'][$i]['value']=JText::_($val);
 							}
 						}
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['privacy']['value']= 0;
-						$jsonarray['fields']['group'][$inc]['field'][$incj]['privacy']['options']= array(
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['privacy']['value']= 0;
+						$jsonarray['fiel'/'']['group'][$inc]['field'][$incj]['privacy']['options']= array(
 																											0=>array('value'=>0,'caption'=>'Public'),
 																											1=>array('value'=>20,'caption'=>'Site Members'),
 																											2=>array('value'=>30,'caption'=>'Friend'),
@@ -762,7 +762,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$post['password'] = $post['password1'] = $post['password2'] = trim(str_replace("\n","",$post['password']));
 		$post['email'] = $post['email1'] = $post['email2'] = trim(str_replace("\n","",$post['email']));
 		$post['groups'][0]=$system;
-		// Check if the user needs to activate their account.
+		// Check if the user nee'/' to activate their account.
 		if (($useractivation == 1) || ($useractivation == 2)) {
 			$post['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
 			$post['block'] = 1;
@@ -934,8 +934,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		}
 
 		//if community installed
-		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php')){
-			//require_once JPATH_ROOT. DS . 'components' . DS . 'com_community' . DS . 'helpers' .DS. 'image.php';
+		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
+			//require_once JPATH_ROOT. '/' . 'components' . '/' . 'com_community' . '/' . 'helpers' .'/'. 'image.php';
 			jimport('joomla.filesystem.file');
 			jimport('joomla.utilities.utility');
 			CFactory::load( 'helpers' , 'image' );
@@ -943,7 +943,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			$my			= CFactory::getUser($aclval);
 			$userid		= $my->id;
 			$config			= CFactory::getConfig();
-			$uploadLimit	= (double) $config->get('maxuploadsize');
+			$uploadLimit	= (double) $config->get('maxuploa'/'ize');
 			$uploadLimit	= ( $uploadLimit * 1024 * 1024 );
 
 			$file = JRequest::getVar('image','','FILES','array');
@@ -979,9 +979,9 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					$fileName		= JApplication::getHash( $file['tmp_name'] . time() );
 					$hashFileName	= JString::substr( $fileName , 0 , 24 );
 
-					$storage = JPATH_ROOT . DS . 'images' . DS . 'avatar';
-					$storageImage	= $storage . DS . $hashFileName . cImageTypeToExt( $file['type'] );
-					$storageThumbnail = $storage . DS . 'thumb_' . $hashFileName . cImageTypeToExt( $file['type'] );
+					$storage = JPATH_ROOT . '/' . 'images' . '/' . 'avatar';
+					$storageImage	= $storage . '/' . $hashFileName . cImageTypeToExt( $file['type'] );
+					$storageThumbnail = $storage . '/' . 'thumb_' . $hashFileName . cImageTypeToExt( $file['type'] );
 					$image	= 'images/avatar/' . $hashFileName . cImageTypeToExt( $file['type'] );
 					$thumbnail = 'images/avatar/' . 'thumb_' . $hashFileName . cImageTypeToExt( $file['type'] );
 
@@ -1009,24 +1009,24 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 				if(isset($post['type']) && ($post['type']) > 0) {
 					$query="SELECT cf.fieldcode,cfd.field_id AS id
-							FROM #__community_profiles_fields as cfd
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id
+							FROM #__community_profiles_fiel'/' as cfd
+							LEFT JOIN #__community_fiel'/' as cf ON cf.id = cfd.field_id
 					     	WHERE cf.type != 'group'
 					     	AND cfd.parent=".$post['type'];
 				}else{
 					$query="SELECT fieldcode,id
-							FROM `#__community_fields`
+							FROM `#__community_fiel'/'`
 							WHERE published=1
 							AND registration=1";
 				}
 				$this->db->setQuery($query);
-				$fields = $this->db->loadObjectList();
+				$fiel'/' = $this->db->loadObjectList();
 
-				foreach($fields as $field){
+				foreach($fiel'/' as $field){
 					$fid=$field->id;
 					$fvalue=IJReq::getTaskData('f'.$fid,'');
-					$query="INSERT INTO #__community_fields_values
-							SET user_id='{$userid}', field_id='{$fid}', value='".addslashes($fvalue)."'";
+					$query="INSERT INTO #__community_fiel'/'_values
+							SET user_id='{$userid}', field_id='{$fid}', value='".ad'/'lashes($fvalue)."'";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -1057,14 +1057,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					$multiprofile	 = JTable::getInstance( 'MultiProfile' , 'CTable' );
 					$multiprofile->load( $profileType );
 					$useWatermark		= $profileType != COMMUNITY_DEFAULT_PROFILE && $config->get('profile_multiprofile') && !empty( $multiprofile->watermark ) ? true : false;
-					$storage			= JPATH_ROOT . DS . $config->getString('imagefolder') . DS . 'avatar';
-					$storageImage		= $storage . DS . $hashFileName . CImageHelper::getExtension( $file['type'] );
-					$storageThumbnail	= $storage . DS . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
+					$storage			= JPATH_ROOT . '/' . $config->getString('imagefolder') . '/' . 'avatar';
+					$storageImage		= $storage . '/' . $hashFileName . CImageHelper::getExtension( $file['type'] );
+					$storageThumbnail	= $storage . '/' . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 					$image				= $config->getString('imagefolder') . '/avatar/' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 					$thumbnail			= $config->getString('imagefolder') . '/avatar/' . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 					$userModel			= CFactory::getModel( 'user' );
 
-					// Only resize when the width exceeds the max.
+					// Only resize when the width excee'/' the max.
 					if( !CImageHelper::resizeProportional( $file['tmp_name'] , $storageImage , $file['type'] , $imageMaxWidth ) ){
 						IJReq::setResponseCode(500);
 						IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE' , $storageImage));
@@ -1081,10 +1081,10 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					if( $useWatermark ){
 						// @rule: Before adding the watermark, we should copy the user's original image so that when the admin tries to reset the avatar,
 						// it will be able to grab the original picture.
-						JFile::copy( $storageImage , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_avatar' ) . CImageHelper::getExtension( $file['type'] ) );
-						JFile::copy( $storageThumbnail , JPATH_ROOT . DS . 'images' . DS . 'watermarks' . DS . 'original' . DS . md5( $my->id . '_thumb' ) . CImageHelper::getExtension( $file['type'] ) );
+						JFile::copy( $storageImage , JPATH_ROOT . '/' . 'images' . '/' . 'watermarks' . '/' . 'original' . '/' . md5( $my->id . '_avatar' ) . CImageHelper::getExtension( $file['type'] ) );
+						JFile::copy( $storageThumbnail , JPATH_ROOT . '/' . 'images' . '/' . 'watermarks' . '/' . 'original' . '/' . md5( $my->id . '_thumb' ) . CImageHelper::getExtension( $file['type'] ) );
 
-						$watermarkPath	= JPATH_ROOT . DS . JString::str_ireplace('/' , DS , $multiprofile->watermark);
+						$watermarkPath	= JPATH_ROOT . '/' . JString::str_ireplace('/' , '/' , $multiprofile->watermark);
 
 						list( $watermarkWidth , $watermarkHeight )	= getimagesize( $watermarkPath );
 						list( $avatarWidth , $avatarHeight ) 		= getimagesize( $storageImage );
@@ -1121,24 +1121,24 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 				if(isset($post['type']) && ($post['type']) > 0){
 					$query="SELECT cf.fieldcode,cfd.field_id AS id
-							FROM #__community_profiles_fields as cfd
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id
+							FROM #__community_profiles_fiel'/' as cfd
+							LEFT JOIN #__community_fiel'/' as cf ON cf.id = cfd.field_id
 					     	WHERE cf.type != 'group'
 					     	AND cfd.parent=".$post['type'];
 				}else{
 					$query="SELECT fieldcode,id
-							FROM `#__community_fields`
+							FROM `#__community_fiel'/'`
 							WHERE published=1
 							AND registration=1";
 				}
 				$this->db->setQuery($query);
-				$fields = $this->db->loadObjectList();
+				$fiel'/' = $this->db->loadObjectList();
 
-				foreach($fields as $field){
+				foreach($fiel'/' as $field){
 					$fid=$field->id;
 					$fvalue=IJReq::getTaskData('f'.$fid,'');
-					$query="INSERT INTO #__community_fields_values
-							SET user_id='{$userid}', field_id='{$fid}', value='".addslashes($fvalue[0])."', access='{$fvalue[1]}'";
+					$query="INSERT INTO #__community_fiel'/'_values
+							SET user_id='{$userid}', field_id='{$fid}', value='".ad'/'lashes($fvalue[0])."', access='{$fvalue[1]}'";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -1149,9 +1149,9 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		if(strtolower(IJOOMER_GC_REGISTRATION)=== 'kunena'){
 			$file = JRequest::getVar('image', '', 'files', 'array');
 			$ext = JFile::getExt($file['name']);
-			$commanpath = JPATH_SITE.DS.'media'.DS.'kunena'.DS.'avatars'.DS;
-			$filename = 'users'.DS.'avatar'.$aclval.'.'.$ext;
-			$thumbArray = array('resized'.DS.'size36'=>36,'resized'.DS.'size72'=>72,'resized'.DS.'size90'=>90,'resized'.DS.'size144'=>144,'resized'.DS.'size200'=>200);
+			$commanpath = JPATH_SITE.'/'.'media/kunena/avatars'.'/';
+			$filename = 'users/avatar'.$aclval.'.'.$ext;
+			$thumbArray = array('resized/size36'=>36,'resized/size72'=>72,'resized/size90'=>90,'resized/size144'=>144,'resized/size200'=>200);
 
 			if(JFile::upload($file['tmp_name'], $commanpath.$filename)){
 				$image=new SimpleImage();
@@ -1374,7 +1374,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$config	= JFactory::getConfig();
 
 		// Assemble the login link.
-		include_once JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php';
+		include_once JPATH_ROOT.'/'.'components/com_users/helpers/route.php';
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
 		$link	= 'index.php?option=com_users&view=login'.$itemid;
@@ -1425,7 +1425,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 			// Set the e-mail parameters
 			$lang =& JFactory::getLanguage();
 			$lang->load('com_users');
-			include_once JPATH_ROOT.DS.'components'.DS.'com_users'.DS.'helpers'.DS.'route.php';
+			include_once JPATH_ROOT.'/'.'components/com_users/helpers/route.php';
 
 
 			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;

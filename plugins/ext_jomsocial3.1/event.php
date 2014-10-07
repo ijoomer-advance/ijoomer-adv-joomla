@@ -271,7 +271,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$this->jsonarray['events'][$key]['avatar'] = ($result->avatar != '') ? $p_url. $result->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$this->jsonarray['events'][$key]['avatar'] = ($result->avatar != '') ? $p_url. $result->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 			$this->jsonarray['events'][$key]['past'] = (strtotime($result->enddate)<time()) ? 1 : 0;
 			$this->jsonarray['events'][$key]['ongoing'] = (strtotime($result->startdate)<=time() and strtotime($result->enddate)>time()) ? 1 : 0;
 			$this->jsonarray['events'][$key]['confirmed']=$result->confirmedcount;
@@ -294,10 +294,10 @@ class event {
      *
      */
 	function search_field(){
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'category.php';
+		require_once JPATH_ROOT . '/components/com_community/helpers/category.php';
 		$halper_category_obj=new CCategoryHelper();
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'helpers' . DS . 'time.php';
+		require_once JPATH_ROOT . '/components/com_community/helpers/time.php';
 		$halper_time_obj=new CTimeHelper();
 
 		$eventsModel	=& CFactory::getModel('events');
@@ -395,7 +395,7 @@ class event {
 		$this->jsonarray['event']['lat'] = $event->latitude;
 		$this->jsonarray['event']['long'] = $event->longitude;
 		$this->jsonarray['event']['isOpen'] = intval(!$event->permission); // 0-private, 1-open
-		$this->jsonarray['event']['allowInvite'] = intval($event->allowinvite && $userStatus); // 0- guest can not invite their friends, 1- guest can invite their friends
+		$this->jsonarray['event']['allowInvite'] = intval($event->allowinvite && $userStatus); // 0- guest can not invite their frien'/', 1- guest can invite their friends
 		$this->jsonarray['event']['isCommunityAdmin'] = intval($isCommunityAdmin);
 		$this->jsonarray['event']['isMap'] = intval($this->config->get('eventshowmap'));
 		$query="SELECT *
@@ -426,7 +426,7 @@ class event {
 				$invitemessage.=" \n".$frdcount." of your friends are the members of this event.";
 			}
 			$this->jsonarray['event']['invitationMessage']	= $invitemessage;
-			$this->jsonarray['event']['invitationicon']		= JURI::root().'components'.DS.'com_community'.DS.'templates'.DS.'default'.DS.'images'.DS.'action'.DS.'icon-invite-32.png';
+			$this->jsonarray['event']['invitationicon']		= JURI::root().'components'.'/'.'com_community'.'/'.'templates'.'/'.'default'.'/'.'images'.'/'.'action'.'/'.'icon-invite-32.png';
 		}
 		$query="SELECT count(id)
 				FROM #__community_activities
@@ -474,7 +474,7 @@ class event {
 				$p_url	= JURI::base();
 		}
 
-		$this->jsonarray['event']['avatar'] = ($event->avatar != '') ? $p_url.$event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+		$this->jsonarray['event']['avatar'] = ($event->avatar != '') ? $p_url.$event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 
 		$grp=($event->type=='group') ? "&groupid={$event->contentid}" : '' ;
 
@@ -1035,7 +1035,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -1154,7 +1154,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -1379,11 +1379,11 @@ class event {
 			$hashFileName = JString::substr ( $fileName, 0, 24 );
 
 			// @todo: configurable path for avatar storage?
-			$storage = JPATH_ROOT . DS . $this->config->getString ( 'imagefolder' ) . DS . 'avatar' . DS . 'events';
-			$storageImage = $storage . DS . $hashFileName . CImageHelper::getExtension ( $file ['type'] );
+			$storage = JPATH_ROOT .'/'. $this->config->getString ( 'imagefolder' ) .'/'. 'avatar/events';
+			$storageImage = $storage .'/'. $hashFileName . CImageHelper::getExtension ( $file ['type'] );
 			$image = $this->config->getString ( 'imagefolder' ) . '/avatar/events/' . $hashFileName . CImageHelper::getExtension ( $file ['type'] );
 
-			$storageThumbnail = $storage . DS . 'thumb_' . $hashFileName . CImageHelper::getExtension ( $file ['type'] );
+			$storageThumbnail = $storage .'/'. 'thumb_' . $hashFileName . CImageHelper::getExtension ( $file ['type'] );
 			$thumbnail = $this->config->getString ( 'imagefolder' ) . '/avatar/events/' . 'thumb_' . $hashFileName . CImageHelper::getExtension ( $file ['type'] );
 
 			// Generate full image
@@ -1638,17 +1638,17 @@ class event {
 
 			jimport( 'joomla.filesystem.file' );
 
-			if($eventData->avatar != 'components'.DS.'com_community'.DS.'assets'.DS.'eventAvatar.png' && !empty( $eventData->avatar ) ){
+			if($eventData->avatar != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'eventAvatar.png' && !empty( $eventData->avatar ) ){
 				$path = explode('/', $eventData->avatar);
 
-				$file = JPATH_ROOT . DS . $path[0] . DS . $path[1] . DS . $path[2] .DS . $path[3];
+				$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] .'/'. $path[3];
 				if(JFile::exists($file)){
 					JFile::delete($file);
 				}
 			}
 
-			if($eventData->thumb != 'components'.Ds.'com_community'.DS.'assets'.DS.'event_thumb.png' && !empty( $eventData->avatar ) ){
-				$file	= JPATH_ROOT . DS . JString::str_ireplace('/', DS, $eventData->thumb);
+			if($eventData->thumb != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png' && !empty( $eventData->avatar ) ){
+				$file	= JPATH_ROOT .'/'. JString::str_ireplace('/', '/', $eventData->thumb);
 				if(JFile::exists($file)){
 					JFile::delete($file);
 				}
@@ -1830,7 +1830,7 @@ class event {
 			return $this->jsonarray;
 		}
 
-    	require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'events.php';
+    	require_once JPATH_ROOT . '/components/com_community/controllers/events.php';
 		$event_controller_obj = new CommunityEventsController ();
 		$event		= JTable::getInstance( 'Event' , 'CTable' );
 
@@ -2185,7 +2185,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -2636,7 +2636,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.DS.'com_community'.DS.'assets'.DS.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -3134,7 +3134,7 @@ class event {
 					if( $oRow->groupid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $config->get('template') .'/'. 'images/favicon' .'/'.'groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$config->get('template').'/images/favicon/groups.png';
 						}
 
@@ -3145,7 +3145,7 @@ class event {
 					if( $oRow->eventid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/events.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') .'/'. 'images/favicon' .'/'.'groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/events.png';
 						}
 					}
@@ -3153,13 +3153,13 @@ class event {
 					// If it is not group or event stream, use normal favicon search
 					if( !($oRow->groupid || $oRow->eventid) ){
 						// check if the image icon exist in template folder
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS . $oRow->app.'.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') .'/'. 'images/favicon' .'/'. $oRow->app.'.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/'.$oRow->app.'.png';
 						}else{
 							// check if the image icon exist in asset folder
-							if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'favicon' . DS . $oRow->app.'.png') ){
+							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon' .'/'. $oRow->app.'.png') ){
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/'.$oRow->app.'.png';
-							}elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) . DS . $oRow->app . DS . 'favicon.png') ){
+							}elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) .'/'. $oRow->app .'/'. 'favicon.png') ){
 								$favicon = JURI::root(). CPluginHelper::getPluginURI('community',$oRow->app) . '/' .$oRow->app.'/favicon.png';
 							}else{
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/default.png';

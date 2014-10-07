@@ -81,7 +81,7 @@ class JInstallerExtensions extends JObject {
 		$this->set('extension_option', $extension_option);
 
 		if (!empty ($ename) && !empty($extension_classname)) {
-			$this->parent->setPath('extension_root',IJ_SITE.DS.'extensions');
+			$this->parent->setPath('extension_root',IJ_SITE . '/extensions');
 		} else {
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION').' '.JText::_('COM_IJOOMERADV_INSTALL').': '.JText::_('COM_IJOOMERADV_NO_EXTENSION_FILE_OR_CLASS_NAME_SPECIFIED'));
 			return false;
@@ -126,8 +126,8 @@ class JInstallerExtensions extends JObject {
 		// copy images to images folder
 		if(count($images)){
 			foreach ($images as $image){
-				$sorc=IJ_SITE.DS."extensions".DS.$ename.DS.$image;
-				$dest=IJ_ASSET.DS."images".DS.$image;
+				$sorc=IJ_SITE . "/extensions".'/'.$ename.'/'.$image;
+				$dest=IJ_ASSET . "/images".'/'.$image;
 				if(file_exists($sorc)){
 					copy($sorc,$dest);
 					rename($sorc,$dest);
@@ -136,24 +136,24 @@ class JInstallerExtensions extends JObject {
 		}
 
 		// theme move to theme folder at admin side
-		$folderTree=JFolder::listFolderTree($this->parent->getPath('extension_root').DS.$ename.DS.'theme'.DS,null);
+		$folderTree=JFolder::listFolderTree($this->parent->getPath('extension_root')$ename.'/'.'theme'.'/',null);
 
 		foreach($folderTree as $key=>$value){
-			$dir=str_replace($this->parent->getPath('extension_root').DS.$ename.DS.'theme'.DS,'',$value['fullname']);
-			$cdir=explode(DS,$dir);
+			$dir=str_replace($this->parent->getPath('extension_root').'/'.$ename.'/'.'theme'.'/','',$value['fullname']);
+			$cdir=explode('/',$dir);
 			if(count($cdir)==1){
 				// if theme folder is not there
-				if(!is_dir(IJ_ADMIN.DS.'theme'.DS.$dir)){
-					JFolder::create(IJ_ADMIN.DS.'theme'.DS.$dir);
+				if(!is_dir(IJ_ADMIN.'/'.'theme'.'/'.$dir)){
+					JFolder::create(IJ_ADMIN.'/'.'theme'.'/'.$dir);
 				}
 
 				// if extension theme already installed remove it
-				if(is_dir(IJ_ADMIN.DS.'theme'.DS.$dir.DS.$ename)){
-					JFolder::delete(IJ_ADMIN.DS.'theme'.DS.$dir.DS.$ename);
+				if(is_dir(IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename)){
+					JFolder::delete(IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename);
 				}
 
 				//move theme file
-				JFolder::move($value['fullname'].DS.$ename,IJ_ADMIN.DS.'theme'.DS.$dir.DS.$ename);
+				JFolder::move($value['fullname'].'/'.$ename,IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename);
 
 				// update theme option
 				$query="SELECT `options`
@@ -379,8 +379,8 @@ class JInstallerExtensions extends JObject {
 		}
 
 		// Set the plugin root path
-		$this->parent->setPath('extension_root',JPATH_COMPONENT_SITE.DS.'extensions');
-		$manifestFile = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$row->classname.'.xml';
+		$this->parent->setPath('extension_root',JPATH_COMPONENT_SITE . '/extensions');
+		$manifestFile = JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.$row->classname.'.xml';
 
 		if (file_exists($manifestFile)){
 			$xml =& JFactory::getXMLParser('Simple');
@@ -406,9 +406,9 @@ class JInstallerExtensions extends JObject {
 		$row->delete($row->id);
 
 		// If the folder is empty, let's delete it
-		$files = JFolder::files($this->parent->getPath('extension_root').DS.$row->classname);
+		$files = JFolder::files($this->parent->getPath('extension_root').'/'.$row->classname);
 
-		JFolder::delete($this->parent->getPath('extension_root').DS.$row->classname);
+		JFolder::delete($this->parent->getPath('extension_root').'/'.$row->classname);
 		unset ($row);
 		return $retval;
 	}

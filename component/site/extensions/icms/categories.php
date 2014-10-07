@@ -54,8 +54,8 @@ class categories{
 
 	private function getCategories($id){
 		JRequest::setVar('id',$id);
-		include_once  JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'application' . DS . 'categories.php' ;
-		include_once  JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'categories.php' ;
+		include_once  JPATH_SITE . '/libraries/joomla/application/categories.php' ;
+		include_once  JPATH_SITE . '/components/com_content/models/categories.php' ;
 
 		if($id == 0){
 			$ContentModelCategories = new ContentModelCategories();
@@ -70,8 +70,8 @@ class categories{
 
 	private function getArticles($id){
 		JRequest::setVar('id',$id);
-		include_once  JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'application' . DS . 'categories.php' ;
-		include_once  JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'categories.php' ;
+		include_once  JPATH_SITE . '/libraries/joomla/application/categories.php' ;
+		include_once  JPATH_SITE . '/components/com_content/models/categories.php' ;
 
 		if($id == 0){
 			$articles 	= '';
@@ -102,7 +102,7 @@ class categories{
 		if($totalarticles<=0){
 			$articleArray['articles'] 	= '';
 		}else{
-			require_once JPATH_COMPONENT.DS.'extensions'.DS.'icms'.DS.'articles.php';
+			require_once JPATH_COMPONENT . '/extensions/icms/articles.php';
 			$articlesObj = new articles();
 
 			$articleArray = $articlesObj->getArticleList($articles,$totalarticles,true);
@@ -111,7 +111,7 @@ class categories{
 		if($totalcategories <= 0){
 			$categoryArray['categories'] = '';
 		}else{
-			require_once JPATH_SITE.DS.'components'.DS.'com_content'.DS.'models'.DS.'category.php';
+			require_once JPATH_SITE . '/components/com_content/models/category.php';
 			$categoryObj = new ContentModelCategory();
 			$inc=0;
 			$categoryArray = null;
