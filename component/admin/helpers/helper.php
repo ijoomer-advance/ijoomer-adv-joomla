@@ -55,7 +55,7 @@ class ijoomeradvAdminHelper{
 			$element	=& $doc->getElementByPath( 'version' );
 			$version	= $element->data();
 
-			$cv = explode('.',$version);
+			$cv = explode(,$version);
 			$cversion = $cv[0].$cv[1];
 
 			return $cversion;

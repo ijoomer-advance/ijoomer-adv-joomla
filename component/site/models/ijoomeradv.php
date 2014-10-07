@@ -119,7 +119,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 					if($screens){
 						foreach ($screens as $val){
 							foreach ($val as $screen){
-								$screenname = (explode('.',$screen));
+								$screenname = (explode(,$screen));
 								$screennames[] = $screenname[2];
 								$positionScreens[$value->position][] =  $screenname[2];
 							}
@@ -153,7 +153,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 					$menuArray[$i]["menuitem"] = array();
 					if(!empty($menuitems)){
 						foreach ($menuitems as $value1){
-							$viewname = explode('.',$value1->views);
+							$viewname = explode(,$value1->views);
 
 							$remotedata = json_decode($value1->menuoptions);
 							if($remotedata){
@@ -169,10 +169,10 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 															);
 
 							if(($value->position == 1 or $value->position == 2) && ($value1->itemimage)){
-								$menuArray[$i]["menuitem"][$k]["icon"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_icon.png';
+								$menuArray[$i]["menuitem"][$k]["icon"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_icon.png';
 							}else if($value->position == 3 && $value1->itemimage){
-								$menuArray[$i]["menuitem"][$k]["tab"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab.png';
-								$menuArray[$i]["menuitem"][$k]["tab_active"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom'.'/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab_active.png';
+								$menuArray[$i]["menuitem"][$k]["tab"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab.png';
+								$menuArray[$i]["menuitem"][$k]["tab_active"]	= JURI::base().'administrator/components/com_ijoomeradv/theme/custom/'.$device.'/'.$device_type.'/'.$value1->itemimage.'_tab_active.png';
 							}
 
 							$k++;
@@ -200,7 +200,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 
 		if($menuobject){
 			//Set reqObject as per menuid request
-			$views = explode('.',$menuobject->views);
+			$views = explode(,$menuobject->views);
 			$mainframe->IJObject->reqObject->extName = $views[0];
 			$mainframe->IJObject->reqObject->extView = $views[1];
 			$mainframe->IJObject->reqObject->extTask = $views[2];
@@ -307,8 +307,8 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 		$jsonarray['code'] = 200;
 		$jsonarray['profile'] = IJOOMER_GC_REGISTRATION;
 
-		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
-			require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
+		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/components/com_community/libraries/core.php')){
+			require_once JPATH_ROOT.'/components/com_community/libraries/core.php';
 			// update jomsocial latitude & longitude if not 0
 			if($data['latitude']!=0 && $data['longitude']!=0){
 				$query="UPDATE #__community_users
@@ -400,8 +400,8 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 			if($this->mainframe->login($credentials) == '1' && $fbid!=""){
 				// connect fb user to site user...
 				$user = JFactory::getUser();
-				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
-					require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
+				if(strtolower(IJOOMER_GC_REGISTRATION)==='community' && file_exists(JPATH_ROOT.'/components/com_community/libraries/core.php')){
+					require_once JPATH_ROOT.'/components/com_community/libraries/core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$user->id}',connectid='{$fbid}',type='facebook'";
 					$this->db->setQuery($query);
@@ -486,8 +486,8 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 				$this->db->setQuery($query);
 				$this->db->Query();
 
-				if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
-					require_once JPATH_ROOT.'/'.'components/com_community/libraries/core.php';
+				if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/components/com_community/libraries/core.php')){
+					require_once JPATH_ROOT.'/components/com_community/libraries/core.php';
 					$query="INSERT INTO #__community_connect_users
 							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
 					$this->db->setQuery($query);
@@ -934,7 +934,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 		}
 
 		//if community installed
-		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/'.'components/com_community/libraries/core.php')){
+		if(strtolower(IJOOMER_GC_REGISTRATION)==='jomsocial' && file_exists(JPATH_ROOT.'/components/com_community/libraries/core.php')){
 			//require_once JPATH_ROOT. '/' . 'components' . '/' . 'com_community' . '/' . 'helpers' .'/'. 'image.php';
 			jimport('joomla.filesystem.file');
 			jimport('joomla.utilities.utility');
@@ -1149,8 +1149,8 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 		if(strtolower(IJOOMER_GC_REGISTRATION)=== 'kunena'){
 			$file = JRequest::getVar('image', '', 'files', 'array');
 			$ext = JFile::getExt($file['name']);
-			$commanpath = JPATH_SITE.'/'.'media/kunena/avatars'.'/';
-			$filename = 'users/avatar'.$aclval.'.'.$ext;
+			$commanpath = JPATH_SITE.'/media/kunena/avatars/';
+			$filename = 'users/avatar'.$aclval..$ext;
 			$thumbArray = array('resized/size36'=>36,'resized/size72'=>72,'resized/size90'=>90,'resized/size144'=>144,'resized/size200'=>200);
 
 			if(JFile::upload($file['tmp_name'], $commanpath.$filename)){
@@ -1374,7 +1374,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 		$config	= JFactory::getConfig();
 
 		// Assemble the login link.
-		include_once JPATH_ROOT.'/'.'components/com_users/helpers/route.php';
+		include_once JPATH_ROOT.'/components/com_users/helpers/route.php';
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid='.$itemid : '';
 		$link	= 'index.php?option=com_users&view=login'.$itemid;
@@ -1425,7 +1425,7 @@ class ijoomeradvModelijoomeradv exten'/' JModelLegacy{
 			// Set the e-mail parameters
 			$lang =& JFactory::getLanguage();
 			$lang->load('com_users');
-			include_once JPATH_ROOT.'/'.'components/com_users/helpers/route.php';
+			include_once JPATH_ROOT.'/components/com_users/helpers/route.php';
 
 
 			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;

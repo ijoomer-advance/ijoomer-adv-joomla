@@ -31,10 +31,10 @@ class jomsocial{
 
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_community');
-		$plugin_path = JPATH_COMPONENT_SITE.'/'.'extensions';
-		$lang->load('jomsocial',$plugin_path.'/'.'jomsocial', $lang->getTag(), true);
-		if(file_exists(JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php")){
-			require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php";
+		$plugin_path = JPATH_COMPONENT_SITE.'/extensions';
+		$lang->load('jomsocial',$plugin_path.'/jomsocial', $lang->getTag(), true);
+		if(file_exists(JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php")){
+			require_once JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php";
 		}
 	}
 

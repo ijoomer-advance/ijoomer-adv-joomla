@@ -32,7 +32,7 @@ defined('IJ_MODEL')			or define('IJ_MODEL', 		IJ_SITE . '/models');
 defined('IJ_TABLE')			or define('IJ_TABLE', 		IJ_SITE . '/tables');
 defined('IJ_VIEW')			or define('IJ_VIEW', 			IJ_SITE . '/views');
 
-require_once IJ_HELPER.'/'.'helper.php'; // import ijoomeradv helper file
+require_once IJ_HELPER.'/helper.php'; // import ijoomeradv helper file
 set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom error handler
 $IJHelperObj= new ijoomeradvHelper(); // create hepler object
 $IJHelperObj->getRequestedObject(); // get requested json object

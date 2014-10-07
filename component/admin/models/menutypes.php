@@ -81,7 +81,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				foreach ($default as $key=>$value){
 					$keys = $key;
 					foreach ($value as $screens){
-						$defaults[] = $keys.'.'.$screens;
+						$defaults[] = $keys..$screens;
 					}
 				}
 			}
@@ -189,7 +189,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 					$o->requiredField	= (int) $value->requiredField;
 
 					if($defaults){
-						if(in_array($component.'.'.$value->extView.'.'.$value->extTask.'.'.$value->remoteTask,$defaults)){
+						if(in_array($component..$value->extView..$value->extTask..$value->remoteTask,$defaults)){
 							$checked = true;
 						}else{
 							$checked = false;

@@ -188,7 +188,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		// $value comes as {menutype}.{parent_id}
-		$parts = explode('.', $value);
+		$parts = explode(, $value);
 		$menuType = $parts[0];
 		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
 
@@ -379,7 +379,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	protected function batchMove($value, $pks, $contexts)
 	{
 		// $value comes as {menutype}.{parent_id}
-		$parts = explode('.', $value);
+		$parts = explode(, $value);
 		$menuType = $parts[0];
 		$parentId = (int) JArrayHelper::getValue($parts, 1, 0);
 

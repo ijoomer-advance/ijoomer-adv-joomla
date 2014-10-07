@@ -36,7 +36,7 @@ class IjoomeradvViewItem extends JViewLegacy
 		$this->state	= $this->get('State');
 		$this->menutypes	= $this->get('Menutypes');
 
-		$extention = explode('.',$this->form->getValue('views'));
+		$extention = explode(,$this->form->getValue('views'));
 		$extention = $extention[0];
 
 		$lang =& JFactory::getLanguage();

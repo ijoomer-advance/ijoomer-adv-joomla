@@ -1110,7 +1110,7 @@ class media {
 					if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 						$video_file = JURI::root () . $video->path;
 					} else {
-						$lastpos = strrpos ( $video->path, '.' );
+						$lastpos = strrpos ( $video->path,  );
 
 						$vname = substr ( $video->path, 0, $lastpos );
 
@@ -1212,7 +1212,7 @@ class media {
 					if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 						$video_file = JURI::root () . $video->path;
 					} else {
-						$lastpos = strrpos ( $video->path, '.' );
+						$lastpos = strrpos ( $video->path,  );
 
 						$vname = substr ( $video->path, 0, $lastpos );
 
@@ -2240,7 +2240,7 @@ class media {
 					if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 						$video_file = JURI::root () . $video->path;
 					} else {
-						$lastpos = strrpos ( $video->path, '.' );
+						$lastpos = strrpos ( $video->path,  );
 
 						$vname = substr ( $video->path, 0, $lastpos );
 
@@ -2668,7 +2668,7 @@ class media {
 				if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 					$video_file = JURI::root () . $video->path;
 				} else {
-					$lastpos = strrpos ( $video->path, '.' );
+					$lastpos = strrpos ( $video->path,  );
 
 					$vname = substr ( $video->path, 0, $lastpos );
 
@@ -2776,7 +2776,7 @@ class media {
 			if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $videos->path )) {
 				$video_file = JURI::root () . $videos->path;
 			} else {
-				$lastpos = strrpos ( $video->path, '.' );
+				$lastpos = strrpos ( $video->path,  );
 				$vname = substr ( $video->path, 0, $lastpos );
 
 				if ($video->storage == 's3') {
@@ -3075,7 +3075,7 @@ class media {
 				if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 					$video_file = JURI::root () . $video->path;
 				} else {
-					$lastpos = strrpos ( $video->path, '.' );
+					$lastpos = strrpos ( $video->path,  );
 
 					$vname = substr ( $video->path, 0, $lastpos );
 
@@ -3411,7 +3411,7 @@ class media {
 				if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 					$video_file = JURI::root () . $video->path;
 				} else {
-					$lastpos = strrpos ( $video->path, '.' );
+					$lastpos = strrpos ( $video->path,  );
 
 					$vname = substr ( $video->path, 0, $lastpos );
 
@@ -4460,7 +4460,7 @@ class media {
 				if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 					$video_file = JURI::root () . $video->path;
 				} else {
-					$lastpos = strrpos ( $video->path, '.' );
+					$lastpos = strrpos ( $video->path,  );
 
 					$vname = substr ( $video->path, 0, $lastpos );
 
