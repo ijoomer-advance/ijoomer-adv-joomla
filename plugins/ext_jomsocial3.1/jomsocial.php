@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;
-
+defined( '_JEXEC' ) or die;
 class jomsocial{
 	var $classname = 'jomsocial';
 	var $sessionWhiteList=array("user.profileTypes");
@@ -33,8 +32,8 @@ class jomsocial{
 		$lang->load('com_community');
 		$plugin_path = JPATH_COMPONENT_SITE.'/'.'extensions';
 		$lang->load('jomsocial',$plugin_path.'/'.'jomsocial', $lang->getTag(), true);
-		if(file_exists(JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php")){
-			require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php";
+		if(file_exists(JPATH_COMPONENT_SITE.'/'.'extensions'.'/jomsocial'.'/'."helper.php")){
+			require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/jomsocial'.'/'."helper.php";
 		}
 	}
 

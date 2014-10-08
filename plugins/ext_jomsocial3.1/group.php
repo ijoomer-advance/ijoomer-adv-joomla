@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;
-
+defined( '_JEXEC' ) or die;
 class group{
 	private $jomHelper;
 	private $date_now;
@@ -210,7 +209,7 @@ class group{
 				else
 					$p_url	= JURI::base();
 			}
-			$this->jsonarray['groups'][$key]['avatar']		= ($value->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$value->avatar;
+			$this->jsonarray['groups'][$key]['avatar']		= ($value->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$value->avatar;
 			$this->jsonarray['groups'][$key]['members']		= intval($value->membercount);
 			$this->jsonarray['groups'][$key]['walls']		= intval($value->wallcount);
 			$this->jsonarray['groups'][$key]['discussions']	= intval($value->discusscount);
@@ -817,7 +816,7 @@ class group{
 		}
 
 
-		$this->jsonarray['group']['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+		$this->jsonarray['group']['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 
 
 		$isMember			= $group->isMember( $this->my->id )?1:0;
@@ -885,7 +884,7 @@ class group{
 				$invitemessage.=" \n".$frdcount." of your friends are the members of this group.";
 			}
 			$this->jsonarray['group']['invitationMessage']	= $invitemessage;
-			$this->jsonarray['group']['invitationicon']		= JURI::root().'components'.'/'.'com_community'.'/'.'templates'.'/'.'default'.'/'.'images'.'/'.'action'.'/'.'icon-invite-32.png';
+			$this->jsonarray['group']['invitationicon']		= JURI::root().'components'.'/com_community'.'/templates'.'/default'.'/images'.'/action'.'/icon-invite-32.png';
 		}
 
 		$photoModel	=& CFactory::getModel( 'photos' );
@@ -1413,7 +1412,7 @@ class group{
 				jimport( 'joomla.filesystem.file' );
 
 				//@rule: Delete only thumbnail and avatars that exists for the specific group
-				if($groupData->avatar != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.jpg' && !empty($groupData->avatar)){
+				if($groupData->avatar != 'components'.'/com_community'.'/assets'.'/group.jpg' && !empty($groupData->avatar)){
 					$path = explode('/', $groupData->avatar);
 					$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] . '/' . $path[3];
 					if(JFile::exists($file)){
@@ -1421,7 +1420,7 @@ class group{
 					}
 				}
 
-				if($groupData->thumb != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'group_thumb.jpg' && !empty($groupData->thumb))
+				if($groupData->thumb != 'components'.'/com_community'.'/assets'.'/group_thumb.jpg' && !empty($groupData->thumb))
 				{
 					$path = explode('/', $groupData->thumb);
 					$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] . '/ '. $path[3];
@@ -3640,7 +3639,7 @@ class group{
 				else
 					$p_url	= JURI::base();
 			}
-			$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+			$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 			$groupdata['members']	= intval($group->membercount);
 			$groupdata['walls']		= intval($group->wallcount);
 			$groupdata['discussions']= intval($group->discusscount);
@@ -3807,7 +3806,7 @@ class group{
 					else
 						$p_url	= JURI::base();
 				}
-				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 				$groupdata['members']	= intval($group->membercount);
 				$groupdata['walls']		= intval($group->wallcount);
 				$groupdata['discussions']= intval($group->discusscount);
@@ -4681,7 +4680,7 @@ class group{
 			$this->db->setQuery($query);
 			$data = $this->db->loadObject();
 
-			//JTable::addIncludePath(JPATH_ROOT.'/'.'components'.'/'.'com_community'.'/'.'tables');
+			//JTable::addIncludePath(JPATH_ROOT.'/'.'components'.'/com_community'.'/tables');
 	       	$table 	=& JTable::getInstance('Wall','CTable');
 
 			$table->contentid = $data->comment_id;
@@ -4840,7 +4839,7 @@ class group{
 					else
 						$p_url	= JURI::base();
 				}
-				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 				$groupdata['members']	= intval($group->membercount);
 				$groupdata['walls']		= intval($group->wallcount);
 				$groupdata['discussions']= intval($group->discusscount);

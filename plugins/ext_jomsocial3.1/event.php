@@ -9,7 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die;
 jimport('joomla.version');
 
 class event {
@@ -271,7 +271,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$this->jsonarray['events'][$key]['avatar'] = ($result->avatar != '') ? $p_url. $result->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+			$this->jsonarray['events'][$key]['avatar'] = ($result->avatar != '') ? $p_url. $result->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 			$this->jsonarray['events'][$key]['past'] = (strtotime($result->enddate)<time()) ? 1 : 0;
 			$this->jsonarray['events'][$key]['ongoing'] = (strtotime($result->startdate)<=time() and strtotime($result->enddate)>time()) ? 1 : 0;
 			$this->jsonarray['events'][$key]['confirmed']=$result->confirmedcount;
@@ -426,7 +426,7 @@ class event {
 				$invitemessage.=" \n".$frdcount." of your friends are the members of this event.";
 			}
 			$this->jsonarray['event']['invitationMessage']	= $invitemessage;
-			$this->jsonarray['event']['invitationicon']		= JURI::root().'components'.'/'.'com_community'.'/'.'templates'.'/'.'default'.'/'.'images'.'/'.'action'.'/'.'icon-invite-32.png';
+			$this->jsonarray['event']['invitationicon']		= JURI::root().'components'.'/com_community'.'/templates'.'/default'.'/images'.'/action'.'/icon-invite-32.png';
 		}
 		$query="SELECT count(id)
 				FROM #__community_activities
@@ -474,7 +474,7 @@ class event {
 				$p_url	= JURI::base();
 		}
 
-		$this->jsonarray['event']['avatar'] = ($event->avatar != '') ? $p_url.$event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+		$this->jsonarray['event']['avatar'] = ($event->avatar != '') ? $p_url.$event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 
 		$grp=($event->type=='group') ? "&groupid={$event->contentid}" : '' ;
 
@@ -1035,7 +1035,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -1154,7 +1154,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -1638,7 +1638,7 @@ class event {
 
 			jimport( 'joomla.filesystem.file' );
 
-			if($eventData->avatar != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'eventAvatar.png' && !empty( $eventData->avatar ) ){
+			if($eventData->avatar != 'components'.'/com_community'.'/assets'.'/eventAvatar.png' && !empty( $eventData->avatar ) ){
 				$path = explode('/', $eventData->avatar);
 
 				$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] . '/'. $path[3];
@@ -1647,7 +1647,7 @@ class event {
 				}
 			}
 
-			if($eventData->thumb != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png' && !empty( $eventData->avatar ) ){
+			if($eventData->thumb != 'components'.'/com_community'.'/assets'.'/event_thumb.png' && !empty( $eventData->avatar ) ){
 				$file	= JPATH_ROOT .'/'. JString::str_ireplace('/', DS, $eventData->thumb);
 				if(JFile::exists($file)){
 					JFile::delete($file);
@@ -2185,7 +2185,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+			$eventdata['avatar'] = ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;
@@ -2636,7 +2636,7 @@ class event {
 					$p_url	= JURI::base();
 			}
 
-			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+			$eventdata['avatar'] = ($result->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 			$eventdata['past'] = (strtotime($event->enddate)<time()) ? 1 : 0;
 			$eventdata['ongoing'] = (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 			$eventdata['confirmed']=$event->confirmedcount;

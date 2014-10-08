@@ -9,8 +9,7 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;
-
+defined( '_JEXEC' ) or die;
 class user{
 	private $jomHelper;
 	private $date_now;
@@ -307,7 +306,7 @@ class user{
 				$storageImage		= $storage .'/'. $hashFileName . CImageHelper::getExtension($file['type']);
 				$storageThumbnail	= $storage . '/thumb_' . $hashFileName . CImageHelper::getExtension($file['type']);
 				$image				= $this->config->getString('imagefolder').'/'.'avatar'.'/'.$hashFileName.CImageHelper::getExtension($file['type']);
-				$thumbnail			= $this->config->getString('imagefolder').'/'.'avatar'.'/'.'thumb_'.$hashFileName.CImageHelper::getExtension($file['type']);
+				$thumbnail			= $this->config->getString('imagefolder').'/'.'avatar'.'/thumb_'.$hashFileName.CImageHelper::getExtension($file['type']);
 				$userModel			= CFactory::getModel('user');
 
 				// Only resize when the width exceeds the max.
@@ -327,8 +326,8 @@ class user{
 				if($useWatermark){
 					// @rule: Before adding the watermark, we should copy the user's original image so that when the admin tries to reset the avatar,
 					// it will be able to grab the original picture.
-					JFile::copy( $storageImage , JPATH_ROOT.'/'.'images'.'/'.'watermarks'.'/'.'original'.'/'.md5($this->my->id.'_avatar').CImageHelper::getExtension($file['type']));
-					JFile::copy( $storageThumbnail , JPATH_ROOT.'/'.'images'.'/'.'watermarks'.'/'.'original'.'/'.md5($this->my->id.'_thumb').CImageHelper::getExtension($file['type']));
+					JFile::copy( $storageImage , JPATH_ROOT.'/'.'images'.'/watermarks'.'/original'.'/'.md5($this->my->id.'_avatar').CImageHelper::getExtension($file['type']));
+					JFile::copy( $storageThumbnail , JPATH_ROOT.'/'.'images'.'/watermarks'.'/original'.'/'.md5($this->my->id.'_thumb').CImageHelper::getExtension($file['type']));
 
 					$watermarkPath	= JPATH_ROOT .'/'. CString::str_ireplace('/' , DS , $multiprofile->watermark);
 
@@ -500,7 +499,7 @@ class user{
 	private function update($id, $status){
 		$my	= CFactory::getUser($id);
 
-		require_once  COMMUNITY_COM_PATH.'/'.'libraries'.'/'.'apps.php';
+		require_once  COMMUNITY_COM_PATH.'/'.'libraries'.'/apps.php';
 
 		$appsLib	=& CAppPlugins::getInstance();
 		$appsLib->loadApplications();
@@ -889,7 +888,7 @@ class user{
 				$this->jsonarray['notifications']['global'][$ind]['startdate']		= CTimeHelper::getFormattedTime($event->startdate, $format);
 				$this->jsonarray['notifications']['global'][$ind]['enddate']		= CTimeHelper::getFormattedTime($event->enddate, $format);
 				$this->jsonarray['notifications']['global'][$ind]['date']			= strtoupper(CEventHelper::formatStartDate($event, $this->config->get('eventdateformat')));
-				$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+				$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($event->avatar != '') ? $p_url. $event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 				$this->jsonarray['notifications']['global'][$ind]['past']			= (strtotime($event->enddate)<time()) ? 1 : 0;
 				$this->jsonarray['notifications']['global'][$ind]['ongoing']		= (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 				$this->jsonarray['notifications']['global'][$ind]['confirmed']		= $event->confirmedcount;
@@ -919,7 +918,7 @@ class user{
 	        	$this->jsonarray['notifications']['global'][$ind]['id']				= $group->id;
 				$this->jsonarray['notifications']['global'][$ind]['title']			= $group->name;
 				$this->jsonarray['notifications']['global'][$ind]['description'] 	= strip_tags($group->description);
-				$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+				$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 				$this->jsonarray['notifications']['global'][$ind]['members']		= intval($group->membercount);
 				$this->jsonarray['notifications']['global'][$ind]['walls']			= intval($group->wallcount);
 				$this->jsonarray['notifications']['global'][$ind]['discussions']	= intval($group->discusscount);
@@ -941,7 +940,7 @@ class user{
 			        	$this->jsonarray['notifications']['global'][$ind]['id']				= $group->id;
 						$this->jsonarray['notifications']['global'][$ind]['title']			= $group->name;
 						$this->jsonarray['notifications']['global'][$ind]['description'] 	= strip_tags($group->description);
-						$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+						$this->jsonarray['notifications']['global'][$ind]['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 						$this->jsonarray['notifications']['global'][$ind]['members']		= intval($group->membercount);
 						$this->jsonarray['notifications']['global'][$ind]['walls']			= intval($group->wallcount);
 						$this->jsonarray['notifications']['global'][$ind]['discussions']	= intval($group->discusscount);

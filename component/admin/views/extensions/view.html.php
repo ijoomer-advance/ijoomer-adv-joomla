@@ -64,7 +64,7 @@ class IjoomeradvViewExtensions extends JViewLegacy {
 			JToolBarHelper::divider();
 			JToolBarHelper::cancel( 'cancel', 'Close' );
 
-			require_once JPATH_ADMINISTRATOR.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'helpers'.'/'.'helper.php';
+			require_once JPATH_ADMINISTRATOR.'/'.'components'.'/com_ijoomeradv'.'/helpers'.'/helper.php';
 			$ijoomerHelper = new ijoomeradvAdminHelper();
 			$orig_comp_avail=$ijoomerHelper->getComponent($extension->option);
 			if(!$orig_comp_avail){

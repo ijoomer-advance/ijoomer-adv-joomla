@@ -9,7 +9,8 @@
 # Technical Support: Forum - http://www.ijoomer.com/Forum/
 ----------------------------------------------------------------------------------*/
 
-defined('_JEXEC') or die;
+defined( '_JEXEC' ) or die;
+
 class wall{
 	private $jomHelper;
 	private $date_now;
@@ -897,7 +898,7 @@ class wall{
 			else
 				$p_url	= JURI::base();
 		}
-		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/com_community'.'/assets'.'/group.png' : $p_url.$group->avatar;
 		$result['members']			= $group->membercount;
 		$result['walls']			= $group->wallcount;
 		$result['discussions']		= $group->discusscount;
@@ -920,7 +921,7 @@ class wall{
 		$result['startdate'] 	= CTimeHelper::getFormattedTime($event->startdate, $format);
 		$result['enddate'] 		= CTimeHelper::getFormattedTime($event->enddate, $format);
 		$result['date'] 		= strtoupper(CEventHelper::formatStartDate($event, $this->config->get('eventdateformat')));
-		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components'.'/com_community'.'/assets'.'/event_thumb.png';
 		$result['past'] 		= (strtotime($event->enddate)<time()) ? 1 : 0;
 		$result['ongoing']	 	= (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 		$result['confirmed']	= $event->confirmedcount;

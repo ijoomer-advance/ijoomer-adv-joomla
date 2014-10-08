@@ -32,7 +32,7 @@ defined('IJ_VIEW')			or define('IJ_VIEW', IJ_ADMIN . '/views');
 require_once IJ_HELPER.'/'.'helper.php';
 
 $document = JFactory::getDocument ();
-$document->addStyleSheet('components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'css'.'/'.'ijoomeradv.css' );
+$document->addStyleSheet('components'.'/com_ijoomeradv'.'/assets'.'/css'.'/ijoomeradv.css' );
 
 $controller = JRequest::getVar ('view','ijoomeradv');
 $path = IJ_CONTROLLER .'/'. $controller . '.php';
