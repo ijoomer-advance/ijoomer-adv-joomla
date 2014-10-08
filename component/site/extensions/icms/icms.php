@@ -16,14 +16,14 @@ class icms {
 	public $sessionWhiteList=array('articles.archive','articles.featured','articles.singleArticle','articles.articleDetail','categories.allCategories','categories.singleCategory','categories.category','categories.categoryBlog');
 
 	function init(){
-		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'category.php';
-		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'archive.php';
-		include_once JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'helpers' . DS . 'query.php';
+		include_once JPATH_SITE . '/components/com_content/models/category.php';
+		include_once JPATH_SITE . '/components/com_content/models/archive.php';
+		include_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_content');
-		$plugin_path = JPATH_COMPONENT_SITE.DS.'extensions';
-		$lang->load('icms',$plugin_path.DS.'icms', $lang->getTag(), true);
+		$plugin_path = JPATH_COMPONENT_SITE.'/'.'extensions';
+		$lang->load('icms',$plugin_path.'/'.'icms', $lang->getTag(), true);
 	}
 
 	function write_configuration(&$d) {

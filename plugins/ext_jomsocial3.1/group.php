@@ -209,7 +209,7 @@ class group{
 				else
 					$p_url	= JURI::base();
 			}
-			$this->jsonarray['groups'][$key]['avatar']		= ($value->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$value->avatar;
+			$this->jsonarray['groups'][$key]['avatar']		= ($value->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$value->avatar;
 			$this->jsonarray['groups'][$key]['members']		= intval($value->membercount);
 			$this->jsonarray['groups'][$key]['walls']		= intval($value->wallcount);
 			$this->jsonarray['groups'][$key]['discussions']	= intval($value->discusscount);
@@ -243,7 +243,7 @@ class group{
 		$uniqueID = IJReq::getTaskData('uniqueID', NULL, 'int');
 		$fields = IJReq::getTaskData('fields', 0, 'bool');
 
-		require_once JPATH_SITE.DS."components".DS."com_community".DS."controllers".DS."groups.php";
+		require_once JPATH_SITE.'/'."components".'/'."com_community".'/'."controllers".'/'."groups.php";
 		$groupController=new CommunityGroupsController();
 		$groupModel	= CFactory::getModel( 'Groups' );
 
@@ -816,7 +816,7 @@ class group{
 		}
 
 
-		$this->jsonarray['group']['avatar']	= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+		$this->jsonarray['group']['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
 
 
 		$isMember			= $group->isMember( $this->my->id )?1:0;
@@ -884,7 +884,7 @@ class group{
 				$invitemessage.=" \n".$frdcount." of your friends are the members of this group.";
 			}
 			$this->jsonarray['group']['invitationMessage']	= $invitemessage;
-			$this->jsonarray['group']['invitationicon']		= JURI::root().'components'.DS.'com_community'.DS.'templates'.DS.'default'.DS.'images'.DS.'action'.DS.'icon-invite-32.png';
+			$this->jsonarray['group']['invitationicon']		= JURI::root().'components'.'/'.'com_community'.'/'.'templates'.'/'.'default'.'/'.'images'.'/'.'action'.'/'.'icon-invite-32.png';
 		}
 
 		$photoModel	=& CFactory::getModel( 'photos' );
@@ -1212,7 +1212,7 @@ class group{
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
 		}
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
+		require_once JPATH_ROOT . '/components/com_community/controllers/groups.php';
 		$group_controller_obj = new CommunityGroupsController ();
 
 		$groupModel	= CFactory::getModel('groups');
@@ -1412,18 +1412,18 @@ class group{
 				jimport( 'joomla.filesystem.file' );
 
 				//@rule: Delete only thumbnail and avatars that exists for the specific group
-				if($groupData->avatar != 'components'.DS.'com_community'.DS.'assets'.DS.'group.jpg' && !empty($groupData->avatar)){
+				if($groupData->avatar != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.jpg' && !empty($groupData->avatar)){
 					$path = explode('/', $groupData->avatar);
-					$file = JPATH_ROOT . DS . $path[0] . DS . $path[1] . DS . $path[2] .DS . $path[3];
+					$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] . '/' . $path[3];
 					if(JFile::exists($file)){
 						JFile::delete($file);
 					}
 				}
 
-				if($groupData->thumb != 'components'.DS.'com_community'.DS.'assets'.DS.'group_thumb.jpg' && !empty($groupData->thumb))
+				if($groupData->thumb != 'components'.'/'.'com_community'.'/'.'assets'.'/'.'group_thumb.jpg' && !empty($groupData->thumb))
 				{
 					$path = explode('/', $groupData->thumb);
-					$file = JPATH_ROOT . DS . $path[0] . DS . $path[1] . DS . $path[2] .DS . $path[3];
+					$file = JPATH_ROOT .'/'. $path[0] .'/'. $path[1] .'/'. $path[2] . '/ '. $path[3];
 					if(JFile::exists($file)){
 						JFile::delete($file);
 					}
@@ -1475,7 +1475,7 @@ class group{
 				$group->published	= 0;
 
 				if( $group->store() ){
-					require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
+					require_once JPATH_ROOT . '/components/com_community/controllers/groups.php';
 					$group_controller_obj = new CommunityGroupsController ();
 					//trigger for onGroupDisable
 					$group_controller_obj->triggerGroupEvents( 'onGroupDisable' , $group);
@@ -2011,21 +2011,21 @@ class group{
 				case 'discussion':
 					$file->discussionid =   $parentTable->id;
 					$file->groupid      =   $parentTable->groupid;
-					$file->filepath     =   'images' . DS .'files' . DS . $type . DS . $file->discussionid . DS . $fileName;
+					$file->filepath     =   'images' .'/'.'files' .'/'. $type .'/'. $file->discussionid .'/'. $fileName;
 					break;
 				case 'bulletin':
 					$file->bulletinid   =   $parentTable->id;
 					$file->groupid      =   $parentTable->groupid;
-					$file->filepath     =   'images' . DS .'files' . DS . $type . DS . $file->bulletinid . DS . $fileName;
+					$file->filepath     =   'images' .'/'.'files' .'/'. $type .'/'. $file->bulletinid .'/'. $fileName;
 					break;
 			}
 
-			if( !JFolder::exists( JPATH_ROOT . DS . 'images' . DS . 'files' . DS . $type . DS . $parentTable->id ) ){
-				JFolder::create( JPATH_ROOT . DS . 'images' . DS . 'files' . DS . $type . DS . $parentTable->id , (int) octdec( $this->config->get('folderpermissionsphoto') ) );
-				JFile::copy( JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'index.html' , JPATH_ROOT . DS . 'files' . DS . $type . DS . $parentTable->id  . DS . 'index.html' );
+			if( !JFolder::exists( JPATH_ROOT . '/images/files' .'/'. $type .'/'. $parentTable->id ) ){
+				JFolder::create( JPATH_ROOT . '/images/files' .'/'. $type .'/'. $parentTable->id , (int) octdec( $this->config->get('folderpermissionsphoto') ) );
+				JFile::copy( JPATH_ROOT . '/components/com_community/index.html' , JPATH_ROOT . '/files' .'/'. $type .'/'. $parentTable->id  . '/index.html' );
 			}
 
-			JFile::copy( $_file['tmp_name'] , JPATH_ROOT . DS . 'images' . DS . 'files' . DS . $type . DS . $parentTable->id . DS . $fileName);
+			JFile::copy( $_file['tmp_name'] , JPATH_ROOT . '/images/files' .'/'. $type .'/'. $parentTable->id .'/'. $fileName);
 
 			$table->bind($file);
 
@@ -3079,9 +3079,9 @@ class group{
 					$hashFileName	= JString::substr( $fileName , 0 , 24 );
 
 					// @todo: configurable path for avatar storage?
-					$storage			= JPATH_ROOT . DS . $this->config->getString('imagefolder') . DS . 'avatar' . DS . 'groups';
-					$storageImage		= $storage . DS . $hashFileName . CImageHelper::getExtension( $file['type'] );
-					$storageThumbnail	= $storage . DS . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
+					$storage			= JPATH_ROOT .'/'. $this->config->getString('imagefolder') . '/avatar/groups';
+					$storageImage		= $storage .'/'. $hashFileName . CImageHelper::getExtension( $file['type'] );
+					$storageThumbnail	= $storage . '/thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 					$image				= $this->config->getString('imagefolder'). '/avatar/groups/' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 					$thumbnail			= $this->config->getString('imagefolder'). '/avatar/groups/' . 'thumb_' . $hashFileName . CImageHelper::getExtension( $file['type'] );
 
@@ -3570,7 +3570,7 @@ class group{
 		$owner	= CFactory::getUser( $group->ownerid );
 
 
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
+		require_once JPATH_ROOT . '/components/com_community/controllers/groups.php';
 		$group_controller_obj = new CommunityGroupsController ();
 		//trigger for onGroupJoin
 		$group_controller_obj->triggerGroupEvents( 'onGroupJoin' , $group , $this->my->id);
@@ -3639,7 +3639,7 @@ class group{
 				else
 					$p_url	= JURI::base();
 			}
-			$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+			$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
 			$groupdata['members']	= intval($group->membercount);
 			$groupdata['walls']		= intval($group->wallcount);
 			$groupdata['discussions']= intval($group->discusscount);
@@ -3806,7 +3806,7 @@ class group{
 					else
 						$p_url	= JURI::base();
 				}
-				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
 				$groupdata['members']	= intval($group->membercount);
 				$groupdata['walls']		= intval($group->wallcount);
 				$groupdata['discussions']= intval($group->discusscount);
@@ -4033,7 +4033,7 @@ class group{
 			CUserPoints::assignPoint('group.member.remove', $memberID);
 
 			//trigger for onGroupLeave
-			require_once JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'controllers' . DS . 'groups.php';
+			require_once JPATH_ROOT . '/components/com_community/controllers/groups.php';
 			$group_controller_obj = new CommunityGroupsController ( );
 			$group_controller_obj->triggerGroupEvents( 'onGroupLeave' , $group , $memberID);
 		}
@@ -4460,7 +4460,7 @@ class group{
 					if( $oRow->groupid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') )
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'.'groups.png') )
 						{
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/groups.png';
 						}
@@ -4473,7 +4473,7 @@ class group{
 					{
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/events.png';
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS .'groups.png') )
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'.'groups.png') )
 						{
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/events.png';
 						}
@@ -4483,18 +4483,18 @@ class group{
 					if( !($oRow->groupid || $oRow->eventid) )
 					{
 						// check if the image icon exist in template folder
-						if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'templates' . DS . $this->config->get('template') . DS . 'images' . DS . 'favicon' . DS . $oRow->app.'.png') )
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'. $oRow->app.'.png') )
 						{
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/'.$oRow->app.'.png';
 						}
 						else
 						{
 							// check if the image icon exist in asset folder
-							if ( JFile::exists(JPATH_ROOT . DS . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'favicon' . DS . $oRow->app.'.png') )
+							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon' .'/'. $oRow->app.'.png') )
 							{
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/'.$oRow->app.'.png';
 							}
-							elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) . DS . $oRow->app . DS . 'favicon.png') )
+							elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) .'/'. $oRow->app . '/favicon.png') )
 							{
 								$favicon = JURI::root(). CPluginHelper::getPluginURI('community',$oRow->app) . '/' .$oRow->app.'/favicon.png';
 							}
@@ -4680,7 +4680,7 @@ class group{
 			$this->db->setQuery($query);
 			$data = $this->db->loadObject();
 
-			//JTable::addIncludePath(JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'tables');
+			//JTable::addIncludePath(JPATH_ROOT.'/'.'components'.'/'.'com_community'.'/'.'tables');
 	       	$table 	=& JTable::getInstance('Wall','CTable');
 
 			$table->contentid = $data->comment_id;
@@ -4839,7 +4839,7 @@ class group{
 					else
 						$p_url	= JURI::base();
 				}
-				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.DS.'com_community'.DS.'assets'.DS.'group.png' : $p_url.$group->avatar;
+				$groupdata['avatar']	= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
 				$groupdata['members']	= intval($group->membercount);
 				$groupdata['walls']		= intval($group->wallcount);
 				$groupdata['discussions']= intval($group->discusscount);

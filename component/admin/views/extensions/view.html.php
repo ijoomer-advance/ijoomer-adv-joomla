@@ -64,7 +64,7 @@ class IjoomeradvViewExtensions extends JViewLegacy {
 			JToolBarHelper::divider();
 			JToolBarHelper::cancel( 'cancel', 'Close' );
 
-			require_once JPATH_ADMINISTRATOR.DS.'components'.DS.'com_ijoomeradv'.DS.'helpers'.DS.'helper.php';
+			require_once JPATH_ADMINISTRATOR.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'helpers'.'/'.'helper.php';
 			$ijoomerHelper = new ijoomeradvAdminHelper();
 			$orig_comp_avail=$ijoomerHelper->getComponent($extension->option);
 			if(!$orig_comp_avail){
@@ -75,7 +75,7 @@ class IjoomeradvViewExtensions extends JViewLegacy {
 			$groups = $this->get('ExtGroups');
 
 			$lang = JFactory::getLanguage();
-			$base_dir = JPATH_COMPONENT_SITE.DS."extensions".DS.$extension->classname;
+			$base_dir = JPATH_COMPONENT_SITE.'/'."extensions".'/'.$extension->classname;
 			$lang->load($extension->classname, $base_dir,null,true);
 
 			foreach ($groups as $key=>$value){
@@ -90,7 +90,7 @@ class IjoomeradvViewExtensions extends JViewLegacy {
 			$this->assignRef('groups',		$groups);
 			$this->assignRef('extension',	$extension);
 
-			$this->addTemplatePath(JPATH_COMPONENT_SITE.DS."extensions".DS.$extension->classname.DS."tmpl");
+			$this->addTemplatePath(JPATH_COMPONENT_SITE.'/'."extensions".'/'.$extension->classname.'/'."tmpl");
 		}else{
 			JToolBarHelper::title(JText::_( 'COM_IJOOMERADV_EXTENSIONS_TITLE' ), 'extensions_48');
 			JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);

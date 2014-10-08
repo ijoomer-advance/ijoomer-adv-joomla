@@ -47,7 +47,7 @@ class ijoomeradvAdminHelper{
 	function getJomSocialVersion(){
 		JHTML::_('behavior.tooltip', '.hasTip');
 		$parser		=& JFactory::getXMLParser('Simple');
-		$xml		= JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_community' . DS . 'community.xml';
+		$xml		= JPATH_ADMINISTRATOR . '/components/com_community/community.xml';
 
 		if(file_exists($xml)){
 			$parser->loadFile( $xml );

@@ -43,7 +43,7 @@ jimport ( 'joomla.html.pane' );
 										} else {
 											$app = JFactory::getApplication ();
 											$template = $app->getTemplate ();
-											$plg_img = JURI::base () . "components" . DS . "com_ijoomeradv" . DS . "assets" . DS . "images" . DS . "default.png";
+											$plg_img = JURI::base () . "components" .'/'. "com_ijoomeradv" .'/'. "assets" .'/'. "images" .'/'. "default.png";
 										} ?>
 								<td align="center" width="33%">
 									<a href=<?php echo $link?>>
