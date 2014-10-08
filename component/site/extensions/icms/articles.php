@@ -34,7 +34,7 @@ class articles {
      *
      */
 	function archive(){
-		include_once  JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'archive.php' ;
+		include_once  JPATH_SITE . '/components/com_content/models/archive.php' ;
 		$ContentModelArchive = new ContentModelArchive();
 		$items = $ContentModelArchive->getItems();
 
@@ -239,7 +239,7 @@ class articles {
 	 *
 	 */
 	private function getarticleDetail($id){
-		include_once  JPATH_SITE . DS . 'components' . DS . 'com_content' . DS . 'models' . DS . 'article.php' ;
+		include_once  JPATH_SITE . '/components/com_content/models/article.php' ;
 		$ContentModelArticle = new ContentModelArticle();
 		$items = $ContentModelArticle->getItem($id);
 

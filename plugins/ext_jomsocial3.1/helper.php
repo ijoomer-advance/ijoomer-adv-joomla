@@ -70,13 +70,13 @@ class jomHelper{
 	function getjomsocialversion(){
 
 		/*$parser		=& JFactory::getXMLParser('Simple');
-		$xml		= JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_community'.DS.'community.xml';
+		$xml		= JPATH_ROOT.'/'.'administrator'.'/'.'components'.'/'.'com_community'.'/'.'community.xml';
 		$parser->loadFile( $xml );
 		$doc		=& $parser->document;
 		$element	=& $doc->getElementByPath( 'version' );
 		return	$version= $element->data();*/
 
-		$xmlfile		= JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_community'.DS.'community.xml';
+		$xmlfile		= JPATH_ROOT.'/'.'administrator'.'/'.'components'.'/'.'com_community'.'/'.'community.xml';
 		$xml = JFactory::getXML($xmlfile,1);
 		$version = (string)$xml->version;
 		return	$version;
@@ -226,7 +226,7 @@ class jomHelper{
 		$server = 'ssl://gateway.push.apple.com:2195';
 		if(PUSH_SERVER=='1')
 			$server = 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE.DS.'components'.DS.'com_ijoomeradv'.DS.'certificates'.DS.'certificates.pem';
+		$keyCertFilePath = JPATH_SITE.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'certificates'.'/'.'certificates.pem';
 
 		$sound = 'default';
 		// Construct the notification payload
@@ -284,7 +284,7 @@ class jomHelper{
 			$content = CRemoteHelper::getContent($url);
 			$status = null;
 			if(!empty($content)){
-				require_once JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php';
+				require_once JPATH_SITE.'/'.'plugins'.'/'.'system'.'/'.'azrul.system'.'/'.'pc_includes'.'/'.'JSON.php';
 				$json = new Services_JSON();
 				$data = $json->decode($content);
 
@@ -306,7 +306,7 @@ class jomHelper{
 
 			$status = null;
 			if(!empty($content)){
-				require_once JPATH_SITE.DS.'plugins'.DS.'system'.DS.'azrul.system'.DS.'pc_includes'.DS.'JSON.php';
+				require_once JPATH_SITE.'/'.'plugins'.'/'.'system'.'/'.'azrul.system'.'/'.'pc_includes'.'/'.'JSON.php';
 				$json = new Services_JSON();
 				$data = $json->decode($content);
 				if ($data->status == 'OK'){
@@ -341,7 +341,7 @@ class jomHelper{
 
 	function timeLapse($date){
 		jimport('joomla.utilities.date');
-		require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'helpers'.DS.'string.php';
+		require_once JPATH_ROOT.'/'.'components'.'/'.'com_community'.'/'.'helpers'.'/'.'string.php';
 		$now = new JDate();
 		$dateDiff = CTimeHelper::timeDifference($date->toUnix(), $now->toUnix());
 
@@ -362,7 +362,7 @@ class jomHelper{
 	}
 
 	function getDate( $str = '',$off=0 ){
-		require_once JPATH_ROOT.DS.'components'.DS.'com_community'.DS.'libraries'.DS.'core.php';
+		require_once JPATH_ROOT.'/'.'components'.'/'.'com_community'.'/'.'libraries'.'/'.'core.php';
 
 		$extraOffset	= $this->config->get('daylightsavingoffset');
 		//convert to utc time first.
@@ -410,7 +410,7 @@ class jomHelper{
 	}
 
 	function showDate($time, $mode = 'datetime_today', $tz = 'kunena', $offset=null) {
-		require_once JPATH_SITE.DS.'components'.DS.'com_kunena'.DS.'lib'.DS.'kunena.timeformat.class.php';
+		require_once JPATH_SITE.'/'.'components'.'/'.'com_kunena'.'/'.'lib'.'/'.'kunena.timeformat.class.php';
 
 		$date = JFactory::getDate ( $time );
 
@@ -620,7 +620,7 @@ class jomHelper{
 						if (! empty ( $s3BucketPath ))
 							$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
 					} else {
-						if (! file_exists ( JPATH_SITE . DS . $photo->image ))
+						if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
 							$photo->image = $photo->original;
 					}
 					$pushcontentdata['photodetail']['thumb'] = $p_url . $photo->thumbnail;
@@ -692,7 +692,7 @@ class jomHelper{
 					if ($video->type == 'file') {
 						$ext = JFile::getExt ( $video->path );
 
-						if ($ext == 'mov' && file_exists ( JPATH_SITE . DS . $video->path )) {
+						if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
 							$video_file = JURI::root () . $video->path;
 						} else {
 							$lastpos = strrpos ( $video->path, '.' );
@@ -710,7 +710,7 @@ class jomHelper{
 
 					$pushcontentdata['id'] = $video->id;
 					$pushcontentdata['caption'] = $video->title;
-					$pushcontentdata['thumb'] = ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components' . DS . 'com_community' . DS . 'assets' . DS . 'video_thumb.png';
+					$pushcontentdata['thumb'] = ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components/com_community/assets/video_thumb.png';
 					$pushcontentdata['url'] = $video_file;
 					$pushcontentdata['description'] = $video->description;
 					$pushcontentdata['date'] = $this->timeLapse ( $this->getDate ( $video->created ) );
@@ -913,7 +913,7 @@ class jomHelper{
 	 *
 	 */
 	function getLikes($element,$itemId,$userId){
-		require_once JPATH_SITE.DS.'components'.DS.'com_community'.DS.'tables'.DS.'like.php';
+		require_once JPATH_SITE.'/'.'components'.'/'.'com_community'.'/'.'tables'.'/'.'like.php';
 		$like	=&  JTable::getInstance( 'Like' , 'CTable' );
 		$like->loadInfo($element, $itemId);
 		CFactory::load('libraries','like');
@@ -1413,8 +1413,8 @@ class jomHelper{
 		$filename = JFile::makeSafe($audiofile['name']);
 		$fileext= strtolower(JFile::getExt($filename));
 		$src	= $audiofile['tmp_name'];
-		$dest3gp= JPATH_COMPONENT_SITE.DS.'assets'.DS.'voice'.DS.$randomname.'.'.$fileext;
-		$destmp3= JPATH_COMPONENT_SITE.DS.'assets'.DS.'voice'.DS.$randomname.'.mp3';
+		$dest3gp= JPATH_COMPONENT_SITE.'/'.'assets'.'/'.'voice'.'/'.$randomname.'.'.$fileext;
+		$destmp3= JPATH_COMPONENT_SITE.'/'.'assets'.'/'.'voice'.'/'.$randomname.'.mp3';
 
 		if($fileext == '3gp' or $fileext == 'aac' or $fileext == 'm4a'){
 			if(JFile::upload($src, $dest3gp)){
@@ -1446,7 +1446,7 @@ class jomHelper{
 		preg_match_all('/{voice}(.*?){\/voice}/',$content, $matches);
 		$i=0;
 		foreach($matches[1] as $match){
-			$content=preg_replace('/{voice}(.*?){\/voice}/','{voice}'.JURI::base().'components'.DS.'com_ijoomeradv'.DS.'assets'.DS.'voice'.DS.$match.'{/voice}',$content,1);
+			$content=preg_replace('/{voice}(.*?){\/voice}/','{voice}'.JURI::base().'components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'voice'.'/'.$match.'{/voice}',$content,1);
 			$content=str_replace('amp;','',$content);
 			$i++;
 		}
