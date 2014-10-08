@@ -29,10 +29,10 @@ defined('IJ_MODEL')			or define('IJ_MODEL', IJ_ADMIN . '/models');
 defined('IJ_TABLE')			or define('IJ_TABLE', IJ_ADMIN . '/tables');
 defined('IJ_VIEW')			or define('IJ_VIEW', IJ_ADMIN . '/views');
 
-require_once IJ_HELPER.'/'.'helper.php';
+require_once IJ_HELPER.'/helper.php';
 
 $document = JFactory::getDocument ();
-$document->addStyleSheet('components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'css'.'/'.'ijoomeradv.css' );
+$document->addStyleSheet('components/com_ijoomeradv/assets/css/ijoomeradv.css' );
 
 $controller = JRequest::getVar ('view','ijoomeradv');
 $path = IJ_CONTROLLER .'/'. $controller . '.php';

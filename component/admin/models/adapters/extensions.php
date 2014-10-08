@@ -81,7 +81,7 @@ class JInstallerExtensions extends JObject {
 		$this->set('extension_option', $extension_option);
 
 		if (!empty ($ename) && !empty($extension_classname)) {
-			$this->parent->setPath('extension_root',IJ_SITE.'/'.'extensions');
+			$this->parent->setPath('extension_root',IJ_SITE.'/extensions');
 		} else {
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION').' '.JText::_('COM_IJOOMERADV_INSTALL').': '.JText::_('COM_IJOOMERADV_NO_EXTENSION_FILE_OR_CLASS_NAME_SPECIFIED'));
 			return false;
@@ -136,24 +136,24 @@ class JInstallerExtensions extends JObject {
 		}
 
 		// theme move to theme folder at admin side
-		$folderTree=JFolder::listFolderTree($this->parent->getPath('extension_root').'/'.$ename.'/'.'theme'.DS,null);
+		$folderTree=JFolder::listFolderTree($this->parent->getPath('extension_root').'/'.$ename.'/theme'.DS,null);
 
 		foreach($folderTree as $key=>$value){
-			$dir=str_replace($this->parent->getPath('extension_root').'/'.$ename.'/'.'theme'.DS,'',$value['fullname']);
+			$dir=str_replace($this->parent->getPath('extension_root').'/'.$ename.'/theme'.DS,'',$value['fullname']);
 			$cdir=explode(DS,$dir);
 			if(count($cdir)==1){
 				// if theme folder is not there
-				if(!is_dir(IJ_ADMIN.'/'.'theme'.'/'.$dir)){
-					JFolder::create(IJ_ADMIN.'/'.'theme'.'/'.$dir);
+				if(!is_dir(IJ_ADMIN.'/theme/'.$dir)){
+					JFolder::create(IJ_ADMIN.'/theme/'.$dir);
 				}
 
 				// if extension theme already installed remove it
-				if(is_dir(IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename)){
-					JFolder::delete(IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename);
+				if(is_dir(IJ_ADMIN.'/theme/'.$dir.'/'.$ename)){
+					JFolder::delete(IJ_ADMIN.'/theme/'.$dir.'/'.$ename);
 				}
 
 				//move theme file
-				JFolder::move($value['fullname'].'/'.$ename,IJ_ADMIN.'/'.'theme'.'/'.$dir.'/'.$ename);
+				JFolder::move($value['fullname'].'/'.$ename,IJ_ADMIN.'/theme/'.$dir.'/'.$ename);
 
 				// update theme option
 				$query="SELECT `options`
@@ -379,8 +379,8 @@ class JInstallerExtensions extends JObject {
 		}
 
 		// Set the plugin root path
-		$this->parent->setPath('extension_root',JPATH_COMPONENT_SITE.'/'.'extensions');
-		$manifestFile = JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.$row->classname.'.xml';
+		$this->parent->setPath('extension_root',JPATH_COMPONENT_SITE.'/extensions');
+		$manifestFile = JPATH_COMPONENT_SITE.'/extensions/'.$row->classname.'.xml';
 
 		if (file_exists($manifestFile)){
 			$xml =& JFactory::getXMLParser('Simple');

@@ -897,7 +897,7 @@ class wall{
 			else
 				$p_url	= JURI::base();
 		}
-		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components'.'/'.'com_community'.'/'.'assets'.'/'.'group.png' : $p_url.$group->avatar;
+		$result['avatar']			= ($group->avatar=="") ? JURI::base().'components/com_community/assets/group.png' : $p_url.$group->avatar;
 		$result['members']			= $group->membercount;
 		$result['walls']			= $group->wallcount;
 		$result['discussions']		= $group->discusscount;
@@ -920,7 +920,7 @@ class wall{
 		$result['startdate'] 	= CTimeHelper::getFormattedTime($event->startdate, $format);
 		$result['enddate'] 		= CTimeHelper::getFormattedTime($event->enddate, $format);
 		$result['date'] 		= strtoupper(CEventHelper::formatStartDate($event, $this->config->get('eventdateformat')));
-		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components'.'/'.'com_community'.'/'.'assets'.'/'.'event_thumb.png';
+		$result['avatar'] 		= ($event->avatar != '')? JURI::base ().$event->avatar : JURI::base ().'components/com_community/assets/event_thumb.png';
 		$result['past'] 		= (strtotime($event->enddate)<time()) ? 1 : 0;
 		$result['ongoing']	 	= (strtotime($event->startdate)<=time() and strtotime($event->enddate)>time()) ? 1 : 0;
 		$result['confirmed']	= $event->confirmedcount;
@@ -1137,7 +1137,7 @@ class wall{
 					if( $oRow->groupid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'.'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$config->get('template').'/images/favicon/groups.png';
 						}
 
@@ -1148,7 +1148,7 @@ class wall{
 					if( $oRow->eventid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/events.png';
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'.'groups.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/groups.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/events.png';
 						}
 					}
@@ -1156,11 +1156,11 @@ class wall{
 					// If it is not group or event stream, use normal favicon search
 					if( !($oRow->groupid || $oRow->eventid) ){
 						// check if the image icon exist in template folder
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates' .'/'. $this->config->get('template') . '/images/favicon' .'/'. $oRow->app.'.png') ){
+						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/'. $oRow->app.'.png') ){
 							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/'.$oRow->app.'.png';
 						}else{
 							// check if the image icon exist in asset folder
-							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon' .'/'. $oRow->app.'.png') ){
+							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon/'. $oRow->app.'.png') ){
 								$favicon = JURI::root(). 'components/com_community/assets/favicon/'.$oRow->app.'.png';
 							}elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) .'/'. $oRow->app . '/favicon.png') ){
 								$favicon = JURI::root(). CPluginHelper::getPluginURI('community',$oRow->app) . '/' .$oRow->app.'/favicon.png';
