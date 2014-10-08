@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 jimport ( 'joomla.installer.installer' );
 jimport ( 'joomla.installer.helper' );
 jimport ( 'joomla.filesystem.file' );
-//require_once JPATH_ROOT.'/'.'libraries'.'/legacy'.'/application'.'/helper.php';
+//require_once JPATH_ROOT.'/libraries/legacy/application/helper.php';
 
 class IjoomeradvModelExtensions extends JModelLegacy {
 	var $_data = null;
@@ -80,7 +80,7 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		$row =& $this->getTable();
 		$row->load($data['extid']);
 
-        include_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.$row->classname.'/'.$row->classname.'.php';
+        include_once JPATH_COMPONENT_SITE.'/extensions/'.$row->classname.'/'.$row->classname.'.php';
         $class_obj = new $row->classname;
 
         if(method_exists($class_obj,'write_configuration')){

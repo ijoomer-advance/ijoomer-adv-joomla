@@ -22,8 +22,8 @@ class icms {
 
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_content');
-		$plugin_path = JPATH_COMPONENT_SITE.'/'.'extensions';
-		$lang->load('icms',$plugin_path.'/'.'icms', $lang->getTag(), true);
+		$plugin_path = JPATH_COMPONENT_SITE.'/extensions';
+		$lang->load('icms',$plugin_path.'/icms', $lang->getTag(), true);
 	}
 
 	function write_configuration(&$d) {

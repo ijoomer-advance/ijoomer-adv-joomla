@@ -102,7 +102,7 @@ class categories{
 		if($totalarticles<=0){
 			$articleArray['articles'] 	= '';
 		}else{
-			require_once JPATH_COMPONENT.'/'.'extensions'.'/icms'.'/articles.php';
+			require_once JPATH_COMPONENT.'/extensions/icms/articles.php';
 			$articlesObj = new articles();
 
 			$articleArray = $articlesObj->getArticleList($articles,$totalarticles,true);
@@ -111,7 +111,7 @@ class categories{
 		if($totalcategories <= 0){
 			$categoryArray['categories'] = '';
 		}else{
-			require_once JPATH_SITE.'/'.'components'.'/com_content'.'/models'.'/category.php';
+			require_once JPATH_SITE.'/components/com_content/models/category.php';
 			$categoryObj = new ContentModelCategory();
 			$inc=0;
 			$categoryArray = null;

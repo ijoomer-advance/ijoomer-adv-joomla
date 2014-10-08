@@ -57,7 +57,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		unset($_SESSION['ijoomeradv_error']);
 
 		header ("content-type: application/json"); // set the header content type to JSON format
-		require_once IJ_HELPER.'/'.'helper.php'; // import ijoomeradv helper file
+		require_once IJ_HELPER.'/helper.php'; // import ijoomeradv helper file
 		$IJHelperObj= new ijoomeradvHelper(); // create hepler object
 		$encryption = $IJHelperObj->getencryption_config();
 		if($encryption == 1){
@@ -206,7 +206,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 
 		switch ($results['option']){
 			case 'com_content':
-				require_once JPATH_COMPONENT.'/'.'extensions'.'/icms'.'/helper.php';
+				require_once JPATH_COMPONENT.'/extensions/icms/helper.php';
 				$helperClass = new icms_helper();
 				$urlResults  = $helperClass->getParseData($results);
 			break;
@@ -322,7 +322,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 					switch($value->value){
 						case 'jomsocial':
 							require_once  JPATH_ROOT . '/components/com_community/libraries' .'/'. 'core.php';
-							require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/jomsocial'.'/'."helper.php";
+							require_once JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php";
 							$jomHelper	=	new jomHelper();
 							$jomsocial_version = $jomHelper->getjomsocialversion();
 
@@ -377,8 +377,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 
 		// application get extension version info
 
-		if(file_exists(JPATH_COMPONENT_SITE.'/'.'extensions'.'/jomsocial'.'/'."helper.php") && file_exists(JPATH_SITE.'/'.'components'.'/com_community'.'/'."community.php")){
-			require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/jomsocial'.'/'."helper.php";
+		if(file_exists(JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php") && file_exists(JPATH_SITE.'/components/com_community/'."community.php")){
+			require_once JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php";
 			$jomHelper	=	new jomHelper();
 			$jomsocial_version = $jomHelper->getjomsocialversion();
 			$jsonarray['configuration']['versioninfo']["jomsocial"]	= $jomsocial_version;
@@ -414,73 +414,73 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 		foreach ($viewnames as $key=>$value){
 			foreach ($value as $ky=>$val){
 				$themearray['theme'][$i]['viewname']=$val;
-				$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_icon.png';
-				$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_tab.png';
-				$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_tab_active.png';
+				$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_icon.png';
+				$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_tab.png';
+				$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/'.$key.'/'.$device.'/'.$device_type.'/'.$val.'_tab_active.png';
 				$i++;
 			}
 		}
 
 		$themearray['theme'][$i]['viewname']='Home';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Home_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Home_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Home_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Home_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Home_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Home_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='More';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'More_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'More_tab_active.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/More_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/More_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='Registration';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Registration_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Registration_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Registration_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Registration_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Registration_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Registration_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='Web';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Web_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Web_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Web_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Web_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Web_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Web_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='Login';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Login_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Login_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Login_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Login_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Login_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Login_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='Logout';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Logout_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Logout_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'Logout_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Logout_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Logout_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/Logout_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='PluginsContactUs';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsContactUs_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsContactUs_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsContactUs_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsContactUs_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsContactUs_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsContactUs_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='PluginsFacebookNearByVenues';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsFacebookNearByVenues_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsFacebookNearByVenues_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsFacebookNearByVenues_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsFacebookNearByVenues_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsFacebookNearByVenues_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsFacebookNearByVenues_tab_active.png';
 		$i++;
 
 		$themearray['theme'][$i]['viewname']='PluginsYoutubePlaylist';
-		$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsYoutubePlaylist_icon.png';
-		$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsYoutubePlaylist_tab.png';
-		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'PluginsYoutubePlaylist_tab_active.png';
+		$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsYoutubePlaylist_icon.png';
+		$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsYoutubePlaylist_tab.png';
+		$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/PluginsYoutubePlaylist_tab_active.png';
 		$i++;
 
 		$customView = $model->getCustomView();
 		foreach ($customView as $key=>$value){
 			$viewname	=	explode('.',$value->views);
 			$themearray['theme'][$i]['viewname']=$viewname[3];
-			$themearray['theme'][$i]['icon']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'defaultActivity_icon.png';
-			$themearray['theme'][$i]['tab']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'defaultActivity_tab.png';
-			$themearray['theme'][$i]['tab_active']=JURI::base().'administrator'.'/components'.'/com_ijoomeradv'.'/theme'.'/'.$theme.'/'.'default'.'/'.$device.'/'.$device_type.'/'.'defaultActivity_tab_active.png';
+			$themearray['theme'][$i]['icon']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/defaultActivity_icon.png';
+			$themearray['theme'][$i]['tab']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/defaultActivity_tab.png';
+			$themearray['theme'][$i]['tab_active']=JURI::base().'administrator/components/com_ijoomeradv/theme/'.$theme.'/default/'.$device.'/'.$device_type.'/defaultActivity_tab_active.png';
 			$i++;
 		}
 
