@@ -53,7 +53,7 @@ defined('_JEXEC') or die;
 			            	<?php echo JHtml::_('grid.id', $key, $value->id); ?>
 			            </td>
 			            <td align="center" width="50px">
-			                <img src="<?php echo JURI::base().'components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'images'.'/'.$value->classname.'_48.png'; ?>" alt="<?php echo $value->name; ?>"/>
+			                <img src="<?php echo JURI::base().'components'.'com_ijoomeradv'.'assets'.'images'.'/'.$value->classname.'_48.png'; ?>" alt="<?php echo $value->name; ?>"/>
 			            </td>
 			            <td align="center">
 			                <b><?php echo $value->name; ?></b>
