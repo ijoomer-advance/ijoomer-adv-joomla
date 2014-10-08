@@ -15,7 +15,7 @@ define('IJADV_VERSION',1.4);
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 $document = JFactory::getDocument (); // get document object
-$document->addStyleSheet('components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'css'.'/'.'ijoomeradv.css'); // add ijoomeradv default style to document stack
+$document->addStyleSheet('components'.'com_ijoomeradv'.'assets'.'css'.'ijoomeradv.css'); // add ijoomeradv default style to document stack
 
 jimport ('joomla.version'); // import version file
 $version = new JVersion (); // create version object

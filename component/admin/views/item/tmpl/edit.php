@@ -208,9 +208,9 @@ if(JRequest::getVar('ajax')){
 									}
 
 									if($extension != 'default'){
-										require_once JPATH_SITE.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'extensions'.'/'.$extension.'/'.$extension.'.php';
+										require_once JPATH_SITE.'/'.'components'.'com_ijoomeradv'.'extensions'.'/'.$extension.'/'.$extension.'.php';
 									}else{
-										require_once JPATH_SITE.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'extensions'.'/'.$extension.'.php';
+										require_once JPATH_SITE.'/'.'components'.'com_ijoomeradv'.'extensions'.'/'.$extension.'.php';
 									}
 
 									$extClass	= $extension.'_menu';
