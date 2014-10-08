@@ -19,22 +19,22 @@ class jomsocial{
 		jimport('joomla.utilities.date');
 		jimport('joomla.html.pagination');
 
-		require_once  JPATH_ROOT . '/components/com_community/helpers' .'/'. 'time.php';
-		require_once  JPATH_ROOT . '/components/com_community/helpers' .'/'. 'url.php';
+		require_once  JPATH_ROOT . '/components/com_community/helpers/'. 'time.php';
+		require_once  JPATH_ROOT . '/components/com_community/helpers/'. 'url.php';
 		require_once  JPATH_ROOT . '/components/com_community/helpers/owner.php';
-		require_once  JPATH_ROOT . '/components/com_community/libraries' .'/'. 'core.php';
-		require_once  JPATH_ROOT . '/components/com_community/libraries' .'/'. 'template.php';
+		require_once  JPATH_ROOT . '/components/com_community/libraries/'. 'core.php';
+		require_once  JPATH_ROOT . '/components/com_community/libraries/'. 'template.php';
 		require_once  JPATH_ROOT . '/components/com_community/controllers/controller.php';
 		require_once  JPATH_ROOT . '/components/com_community/models/models.php' ;
-		require_once  JPATH_ROOT . '/components/com_community/views' .'/'. 'views.php';
-		require_once  JPATH_ROOT . '/components/com_community/views' .'/'.'inbox' .'/'. 'view.html.php';
+		require_once  JPATH_ROOT . '/components/com_community/views/'. 'views.php';
+		require_once  JPATH_ROOT . '/components/com_community/views/inbox/'. 'view.html.php';
 
 		$lang =& JFactory::getLanguage();
 		$lang->load('com_community');
-		$plugin_path = JPATH_COMPONENT_SITE.'/'.'extensions';
-		$lang->load('jomsocial',$plugin_path.'/'.'jomsocial', $lang->getTag(), true);
-		if(file_exists(JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php")){
-			require_once JPATH_COMPONENT_SITE.'/'.'extensions'.'/'.'jomsocial'.'/'."helper.php";
+		$plugin_path = JPATH_COMPONENT_SITE.'/extensions';
+		$lang->load('jomsocial',$plugin_path.'/jomsocial', $lang->getTag(), true);
+		if(file_exists(JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php")){
+			require_once JPATH_COMPONENT_SITE.'/extensions/jomsocial/'."helper.php";
 		}
 	}
 

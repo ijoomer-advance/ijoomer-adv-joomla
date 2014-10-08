@@ -60,7 +60,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo JHtml::_('grid.id', $key, $value->id); ?>
 					</td>
 					<td class="center">
-						<?php //echo (isset($params->content->file))?JURI::root().'components'.'/'.'com_ijoomeradv'.'/'.'assets'.'/'.'voice'.$params->content->file:'';?>
+						<?php //echo (isset($params->content->file))?JURI::root().'components/com_ijoomeradv/assets/voice'.$params->content->file:'';?>
 						<?php echo (isset($params->content->file))?'<div>{voice}ijoomeradv_9344d.3gp&5{/voice}<div>':'';?>
 					</td>
 					<!--<td class="center">

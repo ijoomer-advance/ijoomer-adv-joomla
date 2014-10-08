@@ -42,7 +42,7 @@ class ijoomeradvHelper {
 
 		if(JRequest::get('post')){
 			if($encryption == 1){
-				require_once IJ_SITE.'/'.'encryption'.'/'.'MCrypt.php';
+				require_once IJ_SITE.'/encryption/MCrypt.php';
 				$encode = JRequest::getVar('reqObject');
 				$RSA = new MCrypt();
 				$decoded =  $RSA->decrypt($encode);
@@ -233,7 +233,7 @@ class IJPushNotif{
 	 */
 	public static function sendIphonePushNotification($options){
 		$server=($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'certificates'.'/'.'certificates.pem';
+		$keyCertFilePath = JPATH_SITE.'/components/com_ijoomeradv/certificates/certificates.pem';
 		// Construct the notification payload
 		$body = array();
 		$body['aps']= $options['aps'];
@@ -347,7 +347,7 @@ class IJException{
 
 		$json = json_encode($exception);
 
-		$logpath = JPATH_ADMINISTRATOR.'/'.'components'.'/'.'com_ijoomeradv'.'/'.'logs'.'/'.'com_ijoomeradv2.0.log.php';
+		$logpath = JPATH_ADMINISTRATOR.'/components/com_ijoomeradv/logs/com_ijoomeradv2.0.log.php';
 
 		// If the file doesn't already exist we need to create it and generate the file header.
 		if (!is_file($logpath)){

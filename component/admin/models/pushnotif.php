@@ -263,7 +263,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy {
 	// iphone push notification
 	function sendIphonePushNotification($options){
 		$server=($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE.'/'.'components'.'/'.'com_ijoomer'.'/'.'certificates'.'/'.'certificates.pem';
+		$keyCertFilePath = JPATH_SITE.'/components/com_ijoomer/certificates/certificates.pem';
 		// Construct the notification payload
 		$body = array();
 		$body['aps']= $options['aps'];
