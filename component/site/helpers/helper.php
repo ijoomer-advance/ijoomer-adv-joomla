@@ -25,7 +25,7 @@ class ijoomeradvHelper
 
 	function __construct()
 	{
-		$this->db = &JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 		$this->mainframe = JFactory::getApplication();
 	}
 
@@ -80,8 +80,8 @@ class ijoomeradvHelper
 		if (file_exists($xml))
 		{
 			$parser->loadFile($xml);
-			$doc =& $parser->document;
-			$element =& $doc->getElementByPath('version');
+			$doc =  $parser->document;
+			$element =  $doc->getElementByPath('version');
 			$version = $element->data();
 
 			$cv = explode('.', $version);

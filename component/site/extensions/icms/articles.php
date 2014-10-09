@@ -20,7 +20,7 @@ class articles
 
 	function __construct()
 	{
-		$this->db =& JFactory::getDBO();
+		$this->db =  JFactory::getDBO();
 	}
 
 	/**
@@ -69,7 +69,7 @@ class articles
 		$pageNO = IJReq::getTaskData('pageNO', 1, 'int');
 
 		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
-		$model =& JModelLegacy::getInstance('Featured', 'ContentModel', array('ignore_request' => true));
+		$model =  JModelLegacy::getInstance('Featured', 'ContentModel', array('ignore_request' => true));
 
 		$appParams = JComponentHelper::getParams('com_content');
 		$model->setState('params', $appParams);
@@ -110,7 +110,7 @@ class articles
 		$keyword = IJReq::getTaskData('key', '');
 
 		JModel::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
-		$model =& JModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$model =  JModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 		$appParams = JComponentHelper::getParams('com_content');
 		//set search type
 		$appParams->set('filter_field', 'title');

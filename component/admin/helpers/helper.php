@@ -52,14 +52,14 @@ class ijoomeradvAdminHelper
 	function getJomSocialVersion()
 	{
 		JHTML::_('behavior.tooltip', '.hasTip');
-		$parser =& JFactory::getXMLParser('Simple');
+		$parser =  JFactory::getXMLParser('Simple');
 		$xml = JPATH_ADMINISTRATOR . '/components/com_community/community.xml';
 
 		if (file_exists($xml))
 		{
 			$parser->loadFile($xml);
-			$doc =& $parser->document;
-			$element =& $doc->getElementByPath('version');
+			$doc =  $parser->document;
+			$element =  $doc->getElementByPath('version');
 			$version = $element->data();
 
 			$cv = explode('.', $version);

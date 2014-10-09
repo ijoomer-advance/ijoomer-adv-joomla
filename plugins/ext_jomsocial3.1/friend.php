@@ -63,7 +63,7 @@ class friend
 			$startFrom = (PAGE_MEMBER_LIMIT * ($pageNO - 1));
 		}
 
-		$searchModel =& CFactory::getModel('search');
+		$searchModel =  CFactory::getModel('search');
 		$searchModel->setState('limit', PAGE_MEMBER_LIMIT);
 		$searchModel->setState('limitstart', $startFrom);
 
@@ -152,7 +152,7 @@ class friend
 			$startFrom = (PAGE_MEMBER_LIMIT * ($pageNO - 1));
 		}
 
-		$friendsModel =& CFactory::getModel('friends');
+		$friendsModel =  CFactory::getModel('friends');
 		$friendsModel->setState('limit', PAGE_MEMBER_LIMIT);
 		$friendsModel->setState('limitstart', $startFrom);
 
@@ -222,7 +222,7 @@ class friend
 			return false;
 		}
 
-		$model =& CFactory::getModel('friends'); // get friend model
+		$model =  CFactory::getModel('friends'); // get friend model
 		$memberID = IJReq::getTaskData('memberID', 0, 'int'); // get friend id for friend request
 		$message = IJReq::getTaskData('message'); // get message to sed it to user
 
@@ -280,11 +280,11 @@ class friend
 	private function triggerFriendEvents($eventName, &$args, $target = null)
 	{
 		require_once JPATH_SITE . '/components/com_community/libraries/apps.php';
-		$appsLib =& CAppPlugins::getInstance();
+		$appsLib =  CAppPlugins::getInstance();
 		$appsLib->loadApplications();
 
 		$params = array();
-		$params[] = &$args;
+		$params[] = $args;
 
 		if (!is_null($target))
 			$params[] = $target;
@@ -390,7 +390,7 @@ class friend
 	function approveRequest()
 	{
 		$connectionId = IJReq::getTaskData('connectionID');
-		$friendsModel =& CFactory::getModel('friends');
+		$friendsModel =  CFactory::getModel('friends');
 
 		if ($friendsModel->isMyRequest($connectionId, $this->IJUserID))
 		{
@@ -486,7 +486,7 @@ class friend
 	function rejectRequest()
 	{
 		$requestId = IJReq::getTaskData('connectionID');
-		$friendsModel =& CFactory::getModel('friends');
+		$friendsModel =  CFactory::getModel('friends');
 
 		if ($friendsModel->isMyRequest($requestId, $this->IJUserID))
 		{

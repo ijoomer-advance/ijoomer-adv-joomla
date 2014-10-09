@@ -226,7 +226,7 @@ class IjoomeradvHelper
 			$rlu = array();
 			foreach ($menuTypes as &$type)
 			{
-				$rlu[$type->menutype] = &$type;
+				$rlu[$type->menutype] = $type;
 				$type->links = array();
 			}
 
@@ -235,7 +235,7 @@ class IjoomeradvHelper
 			{
 				if (isset($rlu[$link->menutype]))
 				{
-					$rlu[$link->menutype]->links[] = &$link;
+					$rlu[$link->menutype]->links[] = $link;
 
 					// Cleanup garbage.
 					unset($link->menutype);

@@ -129,14 +129,14 @@ class IjoomeradvModelReport extends JModelList
 				{
 					case 'activity':
 						CFactory::load('libraries', 'activities');
-						$activity =& JTable::getInstance('Activity', 'CTable');
+						$activity =  JTable::getInstance('Activity', 'CTable');
 						$activity->load($params->content->id);
 						$jomparams = json_decode($activity->params);
 
 						switch ($activity->app)
 						{
 							case 'profile':
-								$profile =& JTable::getInstance('Profile', 'CTable');
+								$profile =  JTable::getInstance('Profile', 'CTable');
 								$profile->load($activity->actor);
 								$profile->status = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 
@@ -151,7 +151,7 @@ class IjoomeradvModelReport extends JModelList
 								$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($activity->store()) ? true : false;
 
-								$wall =& JTable::getInstance('Wall', 'CTable');
+								$wall =  JTable::getInstance('Wall', 'CTable');
 								$wall->load($jomparams->wallid);
 								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								break;
@@ -160,7 +160,7 @@ class IjoomeradvModelReport extends JModelList
 								if ($jomparams->action == 'upload')
 								{
 									$activity->title = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$photo =& JTable::getInstance('Photo', 'CTable');
+									$photo =  JTable::getInstance('Photo', 'CTable');
 									$photo->load($jomparams->photoid);
 									$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$photo->store();
@@ -168,7 +168,7 @@ class IjoomeradvModelReport extends JModelList
 								else
 								{
 									$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$wall =& JTable::getInstance('Wall', 'CTable');
+									$wall =  JTable::getInstance('Wall', 'CTable');
 									$wall->load($jomparams->wallid);
 									$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$wall->store();
@@ -196,7 +196,7 @@ class IjoomeradvModelReport extends JModelList
 							case 'albums':
 							case 'groups.wall':
 							case 'events.wall':
-								$wall =& JTable::getInstance('Wall', 'CTable');
+								$wall =  JTable::getInstance('Wall', 'CTable');
 								$wall->load($params->content->id);
 								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($wall->store()) ? true : false;
@@ -205,7 +205,7 @@ class IjoomeradvModelReport extends JModelList
 						break;
 
 					case 'photos':
-						$photo =& JTable::getInstance('Photo', 'CTable');
+						$photo =  JTable::getInstance('Photo', 'CTable');
 						$photo->load($params->content->id);
 						$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 						$result = ($photo->store()) ? true : false;

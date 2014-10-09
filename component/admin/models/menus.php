@@ -201,7 +201,7 @@ class IjoomeradvModelMenus extends JModelList
 	public function &getModules()
 	{
 		$model = JModelLegacy::getInstance('Menu', 'IjoomeradvModel', array('ignore_request' => true));
-		$result = &$model->getModules();
+		$result = $model->getModules();
 
 		return $result;
 	}

@@ -19,7 +19,7 @@ class MCrypt
 
 	function __construct()
 	{
-		$this->_db = &JFactory::getDBO();
+		$this->_db = JFactory::getDBO();
 	}
 
 	protected function hex2bin($hexdata)

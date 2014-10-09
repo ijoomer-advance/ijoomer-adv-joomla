@@ -16,7 +16,7 @@ class JInstallerExtensions extends JObject
 
 	function __construct(&$parent)
 	{
-		$this->parent =& $parent;
+		$this->parent =  $parent;
 		$this->tbl_prefix = '#__ijoomeradv_';
 	}
 
@@ -24,10 +24,10 @@ class JInstallerExtensions extends JObject
 	function install()
 	{
 		// Get a database connector object
-		$db =& $this->parent->getDBO();
+		$db =  $this->parent->getDBO();
 
 		// Get the extension manifest object
-		$this->manifest =& $this->parent->getManifest();
+		$this->manifest =  $this->parent->getManifest();
 
 		$query = "SELECT `manifest_cache`
 				FROM #__extensions
@@ -49,7 +49,7 @@ class JInstallerExtensions extends JObject
 		 */
 		// Set the extensions name
 		$name = $this->manifest->name;
-		$filter =& JFilterInput::getInstance();
+		$filter =  JFilterInput::getInstance();
 		$name = $filter->clean($name, 'string');
 		$this->set('name', $name);
 
@@ -64,7 +64,7 @@ class JInstallerExtensions extends JObject
 		$type = (string) $this->manifest->attributes()->type;
 
 		// Set the installation path
-		$element =& $this->manifest->files;
+		$element =  $this->manifest->files;
 		$ename = (string) $element->children()->attributes()->extensions;
 
 		//collect images to $images variable and remove the entry from the files element
@@ -248,11 +248,11 @@ class JInstallerExtensions extends JObject
 			$db->setQuery($query);
 			$db->Query();
 
-			$pconfig =& $this->manifest->config;
+			$pconfig =  $this->manifest->config;
 
 			if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children()))
 			{
-				$cfgs =& $pconfig->children();
+				$cfgs =  $pconfig->children();
 
 				foreach ($cfgs as $cfg)
 				{
@@ -284,7 +284,7 @@ class JInstallerExtensions extends JObject
 		}
 		else
 		{
-			$row =& JTable::getInstance('extensions', 'Table');
+			$row =  JTable::getInstance('extensions', 'Table');
 			$row->name = $this->get('name');
 			$row->classname = $this->get('extension_classname');
 			$row->option = $this->get('extension_option');
@@ -319,11 +319,11 @@ class JInstallerExtensions extends JObject
 			}
 			else
 			{
-				$pconfig =& $this->manifest->config;
+				$pconfig =  $this->manifest->config;
 
 				if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children()))
 				{
-					$cfgs =& $pconfig->children();
+					$cfgs =  $pconfig->children();
 					foreach ($cfgs as $cfg)
 					{
 
@@ -415,9 +415,9 @@ class JInstallerExtensions extends JObject
 		// Initialize variables
 		$row = null;
 		$retval = true;
-		$db =& $this->parent->getDBO();
+		$db =  $this->parent->getDBO();
 
-		$row =& JTable::getInstance('extensions', 'Table');
+		$row =  JTable::getInstance('extensions', 'Table');
 		if (!$row->load((int) $clientId))
 		{
 			JError::raiseWarning(100, JText::_('COM_IJOOMERADV_ERROR_UNKOWN_EXTENSION'));
@@ -430,7 +430,7 @@ class JInstallerExtensions extends JObject
 
 		if (file_exists($manifestFile))
 		{
-			$xml =& JFactory::getXMLParser('Simple');
+			$xml =  JFactory::getXMLParser('Simple');
 
 			// If we cannot load the xml file return null
 			if (!$xml->loadFile($manifestFile))
@@ -439,7 +439,7 @@ class JInstallerExtensions extends JObject
 				return false;
 			}
 
-			$root =& $xml->document;
+			$root =  $xml->document;
 			if ($root->name() != 'install' && $root->name() != 'mosinstall')
 			{
 				JError::raiseWarning(100, JText::_('COM_IJOOMERADV_EXTENSIONS') . ' ' . JText::_('COM_IJOOMERADV_UNINSTALL') . ': ' . JText::_('COM_IJOOMERADV_INVALID_MANIFIEST_FILE'));
@@ -467,7 +467,7 @@ class JInstallerExtensions extends JObject
 	function _rollback_plugin($arg)
 	{
 		// Get database connector object
-		$db =& $this->parent->getDBO();
+		$db =  $this->parent->getDBO();
 
 		// Remove the entry from the #__plugins table
 		$query = 'DELETE' .

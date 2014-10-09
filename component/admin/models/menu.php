@@ -305,7 +305,7 @@ class IjoomeradvModelMenu extends JModelForm
 			{
 				$result[$menuType] = array();
 			}
-			$result[$menuType][] = &$module;
+			$result[$menuType][] = $module;
 		}
 
 		return $result;

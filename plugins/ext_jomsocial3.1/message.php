@@ -372,18 +372,18 @@ class message
 			$data->body = $msgData['body'] = IJReq::getTaskData('body', '') . $voicedata;
 			$data->body = $inputFilter->clean($data->body);
 			$data->sent = 0;
-			$model = &CFactory::getModel('user');
+			$model = CFactory::getModel('user');
 			$actualTo = array();
 
 			// are we saving ??
 			CFactory::load('libraries', 'apps');
-			$appsLib =& CAppPlugins::getInstance();
+			$appsLib =  CAppPlugins::getInstance();
 			$saveSuccess = $appsLib->triggerEvent('onFormSave', array('jsform-inbox-write'));
 
 			if (empty($saveSuccess) || !in_array(false, $saveSuccess))
 			{
 				// @rule: Check if user exceeded limit
-				$inboxModel =& CFactory::getModel('inbox');
+				$inboxModel =  CFactory::getModel('inbox');
 				$useRealName = ($this->config->get('displayname') == 'name') ? true : false;
 				$maxSent = $this->config->get('pmperday');
 				$totalSent = $inboxModel->getTotalMessageSent($this->IJUserID);
@@ -462,7 +462,7 @@ class message
 					return false;
 				}
 
-				$model = &CFactory::getModel('inbox');
+				$model = CFactory::getModel('inbox');
 
 				$msgData ['to'] = $actualTo;
 				$msgData ['action'] = 'doSubmit';
@@ -527,7 +527,7 @@ class message
 		$body = IJReq::getTaskData('body', '') . $voicedata;
 		$body = $filter->clean($body, 'string');
 
-		$model = &CFactory::getModel('inbox');
+		$model = CFactory::getModel('inbox');
 		$message = $model->getMessage($uniqueID);
 		$messageRecepient = $model->getParticipantsID($uniqueID, $this->IJUserID);
 
@@ -573,7 +573,7 @@ class message
 			return false;
 		}
 
-		$date =& JFactory::getDate(); //get the time without any offset!
+		$date =  JFactory::getDate(); //get the time without any offset!
 
 		$obj = new stdClass ();
 		$obj->id = null;

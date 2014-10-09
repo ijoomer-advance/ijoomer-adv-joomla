@@ -565,7 +565,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
 					$this->db->setQuery($query);
 					$this->db->Query();
-					$config =& CFactory::getConfig();
+					$config =  CFactory::getConfig();
 					// store user image...
 					CFactory::load('libraries', 'facebook');
 					$facebook = new CFacebook;
@@ -726,7 +726,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$post['email'] = IJReq::getTaskData('email');
 		$post['type'] = IJReq::getTaskData('type', 0, 'int');
 		$Full_flag = IJReq::getTaskData('full', 0, 'int');
-		$lang =& JFactory::getLanguage();
+		$lang =  JFactory::getLanguage();
 		$lang->load('com_users');
 
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'no')
@@ -1103,7 +1103,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					// @todo: configurable width?
 					$imageMaxWidth = 160;
 
-					$lang =& JFactory::getLanguage();
+					$lang =  JFactory::getLanguage();
 					$lang->load('com_community');
 
 					$profileType = isset($post['type']) ? $post['type'] : 0;
@@ -1481,7 +1481,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$user = new JUser($userid); // Get the user object
 
 		JPluginHelper::importPlugin('user'); // Fire the onBeforeStoreUser trigger
-		$dispatcher =& JDispatcher::getInstance();
+		$dispatcher =  JDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeStoreUser', array($user->getProperties(), false));
 
 		$query = "UPDATE #__users
@@ -1550,7 +1550,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$user = $this->db->loadObject();
 
 		// Set the e-mail parameters
-		$lang =& JFactory::getLanguage();
+		$lang =  JFactory::getLanguage();
 		$lang->load('com_users');
 		$config = JFactory::getConfig();
 
@@ -1584,7 +1584,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 	function _sendConfirmationMail($email, $token)
 	{
-		$config = &JFactory::getConfig();
+		$config = JFactory::getConfig();
 
 		if (IJ_JOOMLA_VERSION === 1.5)
 		{
@@ -1592,7 +1592,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$sitename = $config->getValue('sitename');
 
 			// Set the e-mail parameters
-			$lang =& JFactory::getLanguage();
+			$lang =  JFactory::getLanguage();
 			$lang->load('com_user');
 
 			$from = $config->getValue('mailfrom');
@@ -1609,7 +1609,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		else
 		{
 			// Set the e-mail parameters
-			$lang =& JFactory::getLanguage();
+			$lang =  JFactory::getLanguage();
 			$lang->load('com_users');
 			include_once JPATH_ROOT . '/components/com_users/helpers/route.php';
 
