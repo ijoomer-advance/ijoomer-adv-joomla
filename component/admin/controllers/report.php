@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -24,14 +24,14 @@ class ijoomeradvControllerReport extends JControllerLegacy
 
 		if (!$model->delete())
 		{
-	        $msg = JText::_('COM_IJOOMERADV_REPORT_DELETE_ERROR');
-	    }
-	    else
-	    {
-	        $msg = JText::_('COM_IJOOMERADV_REPORT_DELETE');
-	    }
+			$msg = JText::_('COM_IJOOMERADV_REPORT_DELETE_ERROR');
+		}
+		else
+		{
+			$msg = JText::_('COM_IJOOMERADV_REPORT_DELETE');
+		}
 
-		$this->setRedirect (JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg );
+		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg);
 	}
 
 	function action()
@@ -41,13 +41,13 @@ class ijoomeradvControllerReport extends JControllerLegacy
 
 		if ($model->{$action}())
 		{
-			$msg = ($action =='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE');
+			$msg = ($action == 'deletereport') ? JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE') : JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE');
 		}
 		else
 		{
-			$msg = ($action =='deletereport')?JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE_ERROR'):JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE_ERROR');
+			$msg = ($action == 'deletereport') ? JText::_('COM_IJOOMERADV_REPORT_ACTION_DELETE_ERROR') : JText::_('COM_IJOOMERADV_REPORT_ACTION_IGNORE_ERROR');
 		}
 
-		$this->setRedirect (JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg);
+		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=report'), $msg);
 	}
 }

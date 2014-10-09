@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The HTML Menus Menu Item View.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvViewMenu extends JViewLegacy
 {
@@ -31,10 +31,10 @@ class IjoomeradvViewMenu extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form	= $this->get('Form');
-		$this->item	= $this->get('Item');
-		$this->state		= $this->get('State');
-		$this->menuitems	= $this->get('Menuitems');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->state = $this->get('State');
+		$this->menuitems = $this->get('Menuitems');
 
 		parent::display($tpl);
 		$this->addToolbar();
@@ -43,14 +43,14 @@ class IjoomeradvViewMenu extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
-		$isNew		= ($this->item->id == 0);
+		$user = JFactory::getUser();
+		$isNew = ($this->item->id == 0);
 
 		JToolBarHelper::title(JText::_($isNew ? 'COM_IJOOMERADV_VIEW_NEW_MENU_TITLE' : 'COM_IJOOMERADV_VIEW_EDIT_MENU_TITLE'), 'menu.png');
 

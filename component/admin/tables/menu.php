@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -12,16 +12,16 @@
 defined('_JEXEC') or die;
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
  */
 class IjoomeradvTableMenu extends JTable
 {
 	/**
 	 * Method to delete a node and, optionally, its child nodes from the table.
 	 *
-	 * @param   integer  $pk        The primary key of the node to delete.
-	 * @param   boolean  $children  True to delete child nodes, false to move them up a level.
+	 * @param   integer $pk       The primary key of the node to delete.
+	 * @param   boolean $children True to delete child nodes, false to move them up a level.
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -29,15 +29,15 @@ class IjoomeradvTableMenu extends JTable
 	 * @since   2.5
 	 */
 
-	var $id 		= null;
-	var $title 		= null;
-	var $note 		= null;
-	var $type 		= null;
-	var $published 	= 1;
-	var $access 	= 1;
-	var $views		= null;
-	var $requiredField	= 0;
-	var $itemimage	= null;
+	var $id = null;
+	var $title = null;
+	var $note = null;
+	var $type = null;
+	var $published = 1;
+	var $access = 1;
+	var $views = null;
+	var $requiredField = 0;
+	var $itemimage = null;
 
 	function IjoomeradvTableMenu(& $db)
 	{
@@ -49,40 +49,42 @@ class IjoomeradvTableMenu extends JTable
 		return parent::delete($pk, $children);
 	}
 
-	public function getNextOrder(){
+	public function getNextOrder()
+	{
 		$sql = 'SELECT max(ordering)
 				FROM #__ijoomeradv_menu
-				WHERE menutype='.$this->menutype;
+				WHERE menutype=' . $this->menutype;
 		$this->_db->setQuery($sql);
 		$maxvalue = $this->_db->loadResult();
-		return $maxvalue+1;
+		return $maxvalue + 1;
 	}
 
-	public function saveorder($idArray, $lft_array){
+	public function saveorder($idArray, $lft_array)
+	{
 		if (is_array($idArray) && is_array($lft_array) && count($idArray) == count($lft_array))
+		{
+			for ($i = 0, $count = count($idArray); $i < $count; $i++)
 			{
-				for ($i = 0, $count = count($idArray); $i < $count; $i++)
-				{
-					// Do an update to change the lft values in the table for each id
-					$query = $this->_db->getQuery(true);
-					$query->update($this->_tbl);
-					$query->where($this->_tbl_key . ' = ' . (int) $idArray[$i]);
-					$query->set('ordering = ' . (int) $lft_array[$i]);
-					$this->_db->setQuery($query);
+				// Do an update to change the lft values in the table for each id
+				$query = $this->_db->getQuery(true);
+				$query->update($this->_tbl);
+				$query->where($this->_tbl_key . ' = ' . (int) $idArray[$i]);
+				$query->set('ordering = ' . (int) $lft_array[$i]);
+				$this->_db->setQuery($query);
 
-					// Check for a database error.
-					if (!$this->_db->execute())
-					{
-						$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_REORDER_FAILED', get_class($this), $this->_db->getErrorMsg()));
-						$this->setError($e);
-						return false;
-					}
+				// Check for a database error.
+				if (!$this->_db->execute())
+				{
+					$e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_REORDER_FAILED', get_class($this), $this->_db->getErrorMsg()));
+					$this->setError($e);
+					return false;
 				}
-				return true;
 			}
-			else
-			{
-				return false;
-			}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }

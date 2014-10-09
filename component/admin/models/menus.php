@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -23,14 +23,14 @@ class IjoomeradvModelMenus extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array	An optional associative array of configuration settings.
+	 * @param   array    An optional associative array of configuration settings.
 	 *
-	 * @see		JController
-	 * @since   1.6
+	 * @see        JController
+	 * @since      1.6
 	 */
 	public function __construct($config = array())
 	{
-		$config=null;
+		$config = null;
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
@@ -83,11 +83,12 @@ class IjoomeradvModelMenus extends JModelList
 			array_map(array($db, 'quote'), $menuTypes)
 		);
 
-		foreach ($items as $key=>$value){
+		foreach ($items as $key => $value)
+		{
 			$query = 'SELECT count(id) as countPublished
 				  	  FROM #__ijoomeradv_menu
 				      WHERE published=1
-				      AND menutype IN ('.$value->id.')';
+				      AND menutype IN (' . $value->id . ')';
 			$db->setQuery($query);
 			$count = $db->loadObject();
 			$countPublished[$value->id] = $count->countPublished;
@@ -95,7 +96,7 @@ class IjoomeradvModelMenus extends JModelList
 			$query = 'SELECT count(id) as countUnpublished
 				  	  FROM #__ijoomeradv_menu
 				      WHERE published=0
-				      AND menutype IN ('.$value->id.')';
+				      AND menutype IN (' . $value->id . ')';
 			$db->setQuery($query);
 			$count = $db->loadObject();
 			$countUnpublished[$value->id] = $count->countUnpublished;
@@ -103,7 +104,7 @@ class IjoomeradvModelMenus extends JModelList
 			$query = 'SELECT count(id) as countTrashed
 				  	  FROM #__ijoomeradv_menu
 				      WHERE published=-2
-				      AND menutype IN ('.$value->id.')';
+				      AND menutype IN (' . $value->id . ')';
 			$db->setQuery($query);
 			$count = $db->loadObject();
 			$countTrashed[$value->id] = $count->countTrashed;
@@ -138,13 +139,13 @@ class IjoomeradvModelMenus extends JModelList
 
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__ijoomeradv_menu_types').' AS a');
+		$query->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a');
 
 
 		$query->group('a.id, a.title, a.description');
 
 		// Add the list ordering clause.
-		$query->order($db->escape($this->getState('list.ordering', 'a.id')).' '.$db->escape($this->getState('list.direction', 'ASC')));
+		$query->order($db->escape($this->getState('list.ordering', 'a.id')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		return $query;
 	}
@@ -154,8 +155,8 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
+	 * @param   string $ordering  An optional ordering field.
+	 * @param   string $direction An optional direction (asc|desc).
 	 *
 	 * @return  void
 	 *
@@ -199,8 +200,8 @@ class IjoomeradvModelMenus extends JModelList
 	 */
 	public function &getModules()
 	{
-		$model	= JModelLegacy::getInstance('Menu', 'IjoomeradvModel', array('ignore_request' => true));
-		$result	= &$model->getModules();
+		$model = JModelLegacy::getInstance('Menu', 'IjoomeradvModel', array('ignore_request' => true));
+		$result = &$model->getModules();
 
 		return $result;
 	}

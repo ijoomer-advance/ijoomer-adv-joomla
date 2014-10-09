@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -16,25 +16,25 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class JFormFieldMenuParent extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.6
+	 * @var        string
+	 * @since    1.6
 	 */
 	protected $type = 'MenuParent';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return	array	The field option objects.
-	 * @since	1.6
+	 * @return    array    The field option objects.
+	 * @since    1.6
 	 */
 	protected function getOptions()
 	{
@@ -47,11 +47,13 @@ class JFormFieldMenuParent extends JFormFieldList
 		$query->select('a.id AS value, a.title AS text');
 		$query->from('#__ijoomeradv_menu AS a');
 
-		if ($menuType = $this->form->getValue('menutype')) {
-			$query->where('a.menutype = '.$db->quote($menuType));
+		if ($menuType = $this->form->getValue('menutype'))
+		{
+			$query->where('a.menutype = ' . $db->quote($menuType));
 		}
-		else {
-			$query->where('a.menutype != '.$db->quote(''));
+		else
+		{
+			$query->where('a.menutype != ' . $db->quote(''));
 		}
 
 		$query->where('a.published != -2');
@@ -63,13 +65,15 @@ class JFormFieldMenuParent extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 
 		// Pad the option text with spaces using depth level as a multiplier.
-		for ($i = 0, $n = count($options); $i < $n; $i++) {
-			$options[$i]->text = str_repeat('- ', $options[$i]->level).$options[$i]->text;
+		for ($i = 0, $n = count($options); $i < $n; $i++)
+		{
+			$options[$i]->text = str_repeat('- ', $options[$i]->level) . $options[$i]->text;
 		}
 
 		// Merge any additional options in the XML definition.

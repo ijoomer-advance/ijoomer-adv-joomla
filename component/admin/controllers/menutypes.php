@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The Menu List Controller
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvControllerMenutypes extends JControllerLegacy
 {

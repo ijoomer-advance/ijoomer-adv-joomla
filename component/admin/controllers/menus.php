@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The Menu List Controller
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvControllerMenus extends JControllerLegacy
 {
@@ -30,7 +30,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	 */
 	function add()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit',null);
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit', null);
 	}
 
 	/*
@@ -39,15 +39,15 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	function edit()
 	{
 		$id = JFactory::getApplication()->input->getArray('cid', array()); //JRequest::getVar('cid',null,'','array');
-		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit&id='.$id[0],null);
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit&id=' . $id[0], null);
 	}
 
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
+	 * @param   string $name   The model name. Optional.
+	 * @param   string $prefix The class prefix. Optional.
+	 * @param   array  $config Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 *
@@ -100,7 +100,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	/**
 	 * Rebuild the menu tree.
 	 *
-	 * @return	bool	False on failure or error, true on success.
+	 * @return    bool    False on failure or error, true on success.
 	 */
 	public function rebuild()
 	{
@@ -131,7 +131,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	public function resync()
 	{
 		// Initialise variables.
-		$db    = JFactory::getDbo();
+		$db = JFactory::getDbo();
 		$parts = null;
 
 		// Load a lookup table of all the component id's.

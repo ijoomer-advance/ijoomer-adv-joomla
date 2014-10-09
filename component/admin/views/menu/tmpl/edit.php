@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -12,7 +12,7 @@
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
@@ -21,18 +21,19 @@ JHtml::_('behavior.formvalidation');
 ?>
 
 <script type="text/javascript">
-	Joomla.submitbutton = function(task)
-	{
+	Joomla.submitbutton = function (task) {
 		if (task == 'cancel' || document.formvalidator.isValid(document.id('item-form'))) {
 			Joomla.submitform(task, document.getElementById('item-form'));
 		}
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="item-form">
-<div class="width-100 span12">
-	<fieldset class="adminform">
-		<legend><?php echo JText::_('COM_IJOOMERADV_MENU_DETAILS');?></legend>
+<form
+	action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit&id=' . (int) $this->item->id); ?>"
+	method="post" name="adminForm" id="item-form">
+	<div class="width-100 span12">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_IJOOMERADV_MENU_DETAILS'); ?></legend>
 			<table class="table table-striped">
 				<tr>
 					<td><?php echo $this->form->getLabel('title'); ?></td>
@@ -51,10 +52,10 @@ JHtml::_('behavior.formvalidation');
 					<td><?php echo $this->form->getInput('screen'); ?></td>
 				</tr>
 			</table>
-	</fieldset>
+		</fieldset>
 
-	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+		<input type="hidden" name="task" value=""/>
+		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
 <div class="clr"></div>

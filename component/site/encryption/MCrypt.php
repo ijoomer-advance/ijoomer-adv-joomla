@@ -19,24 +19,26 @@ class MCrypt
 
 	function __construct()
 	{
-		$this->_db= & JFactory::getDBO();
+		$this->_db = &JFactory::getDBO();
 	}
 
-	protected function hex2bin($hexdata) {
-	  $bindata = '';
+	protected function hex2bin($hexdata)
+	{
+		$bindata = '';
 
-	  for ($i = 0; $i < strlen($hexdata); $i += 2) {
-	        $bindata .= chr(hexdec(substr($hexdata, $i, 2)));
-	  }
+		for ($i = 0; $i < strlen($hexdata); $i += 2)
+		{
+			$bindata .= chr(hexdec(substr($hexdata, $i, 2)));
+		}
 
-	  return $bindata;
+		return $bindata;
 	}
 
 	// encryption..
 	function encrypt($input)
 	{
 
-		$query="SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
+		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
 
@@ -58,7 +60,7 @@ class MCrypt
 	// decryption..
 	function decrypt($code)
 	{
-		$query="SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
+		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
 
@@ -71,11 +73,11 @@ class MCrypt
 
 		mcrypt_generic_deinit($td);
 		mcrypt_module_close($td);
-  		$decrypted = $this->pkcs5_unpad($decrypted);
+		$decrypted = $this->pkcs5_unpad($decrypted);
 		return $decrypted;
 	}
 
-	function pkcs5_pad ($text, $blocksize)
+	function pkcs5_pad($text, $blocksize)
 	{
 		$pad = $blocksize - (strlen($text) % $blocksize);
 		return $text . str_repeat(chr($pad), $pad);
@@ -83,7 +85,7 @@ class MCrypt
 
 	function pkcs5_unpad($text)
 	{
-		$pad = ord($text{strlen($text)-1});
+		$pad = ord($text{strlen($text) - 1});
 		if ($pad > strlen($text)) return false;
 		if (strspn($text, chr($pad), strlen($text) - $pad) != $pad) return false;
 		return substr($text, 0, -1 * $pad);

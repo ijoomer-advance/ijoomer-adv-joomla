@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -11,8 +11,10 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvViewijoomeradv extends JViewLegacy {
-	function display($tmpl=null){
+class ijoomeradvViewijoomeradv extends JViewLegacy
+{
+	function display($tmpl = null)
+	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_TITLE'));
 

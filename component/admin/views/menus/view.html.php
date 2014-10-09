@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The HTML Menus Menu Menus View.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @version		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @version        1.6
  */
 class IjoomeradvViewMenus extends JViewLegacy
 {
@@ -30,13 +30,14 @@ class IjoomeradvViewMenus extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items		= $this->get('Items');
-		$this->modules		= $this->get('Modules');
-		$this->pagination	= $this->get('Pagination');
-		$this->state		= $this->get('State');
+		$this->items = $this->get('Items');
+		$this->modules = $this->get('Modules');
+		$this->pagination = $this->get('Pagination');
+		$this->state = $this->get('State');
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
@@ -48,20 +49,20 @@ class IjoomeradvViewMenus extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT.'/helpers/menus.php';
+		require_once JPATH_COMPONENT . '/helpers/menus.php';
 
 		$document = JFactory::getDocument();
-		$document->setTitle( JText::_('COM_IJOOMERADV_MENUS') );
+		$document->setTitle(JText::_('COM_IJOOMERADV_MENUS'));
 
-		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_MENUS'),'index.php?option=com_ijoomeradv&view=menus',JRequest::getVar('view') == 'menus');
-		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_ITEMS'),'index.php?option=com_ijoomeradv&view=items',JRequest::getVar('view') == 'items');
+		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_MENUS'), 'index.php?option=com_ijoomeradv&view=menus', JRequest::getVar('view') == 'menus');
+		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_SUBMENU_ITEMS'), 'index.php?option=com_ijoomeradv&view=items', JRequest::getVar('view') == 'items');
 
-		JToolBarHelper::title(   JText::_( 'COM_IJOOMERADV_MENUS' )	, 'menumanager_48' );
-		JToolBarHelper::custom('home','home','', JText::_('COM_IJOOMERADV_HOME'), false, false);
+		JToolBarHelper::title(JText::_('COM_IJOOMERADV_MENUS'), 'menumanager_48');
+		JToolBarHelper::custom('home', 'home', '', JText::_('COM_IJOOMERADV_HOME'), false, false);
 		JToolBarHelper::divider();
 		JToolBarHelper::addNew('add');
 		JToolBarHelper::editList('edit');

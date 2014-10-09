@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -15,7 +15,7 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 {
 	public function home()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv',null);
+		$this->setRedirect('index.php?option=com_ijoomeradv', null);
 	}
 
 	function add()
@@ -36,9 +36,9 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 
 	function save()
 	{
-		$app   = JFactory::getApplication();
-		$post  = $app->input->get('post');
-		$task  = $app->input->get('task');
+		$app = JFactory::getApplication();
+		$post = $app->input->get('post');
+		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
 		if ($model->setExtConfig($post))
@@ -50,14 +50,14 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 			$msg = JText::_('COM_IJOOMERADV_ERROR_SAVING_CONFIG');
 		}
 
-		$this->setRedirect ('index.php?option=com_ijoomeradv&view=extensions', $msg);
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions', $msg);
 	}
 
 	function apply()
 	{
-		$app   = JFactory::getApplication();
-		$post  = $app->input->get('post');
-		$task  = $app->input->get('task');
+		$app = JFactory::getApplication();
+		$post = $app->input->get('post');
+		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
 		if ($model->setExtConfig($post))
@@ -69,18 +69,18 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 			$msg = JText::_('COM_IJOOMERADV_ERROR_SAVING_CONFIG');
 		}
 
-		$this->setRedirect ('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]='.$post['extid'], $msg);
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $post['extid'], $msg);
 	}
 
 	function install()
 	{
-		$app   = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$model = $this->getModel('extensions');
 		$model->install();
 
 		$app->input->set('view', 'extensions');
 		$app->input->set('layout', 'default');
-		$app->input->set('hidemainmenu', 0 );
+		$app->input->set('hidemainmenu', 0);
 
 		parent::display();
 	}
@@ -100,47 +100,47 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 
 	function publish()
 	{
-		$app  = JFactory::getApplication();
-		$post = $app->input->getArray('post',array());
-		$cid  = $post['cid'];
+		$app = JFactory::getApplication();
+		$post = $app->input->getArray('post', array());
+		$cid = $post['cid'];
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{
-			throw new RuntimeException(JText::_( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_PUBLISH'), 500);
+			throw new RuntimeException(JText::_('COM_IJOOMERADV_SELECT_EXTENSION_TO_PUBLISH'), 500);
 		}
 
-		$model = $this->getModel( 'extensions' );
+		$model = $this->getModel('extensions');
 
-		if (!$model->publish ( $cid, 1 ))
+		if (!$model->publish($cid, 1))
 		{
-			echo "<script>alert('" . $model->getError ( true ) . "');</script>\n";
+			echo "<script>alert('" . $model->getError(true) . "');</script>\n";
 		}
 
 		$app->input->set('layout', 'manage');
 
-		parent::display ();
+		parent::display();
 	}
 
 	function unpublish()
 	{
-		$app  = JFactory::getApplication();
-		$post = $app->input->getArray('post',array());
-		$cid  = $post['cid'];
+		$app = JFactory::getApplication();
+		$post = $app->input->getArray('post', array());
+		$cid = $post['cid'];
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{
-			throw new RuntimeException(JText::_( 'COM_IJOOMERADV_SELECT_EXTENSION_TO_UNPUBLISH'), 500);
+			throw new RuntimeException(JText::_('COM_IJOOMERADV_SELECT_EXTENSION_TO_UNPUBLISH'), 500);
 		}
 
-		$model = $this->getModel ( 'extensions' );
+		$model = $this->getModel('extensions');
 
-		if (!$model->publish ($cid, 0))
+		if (!$model->publish($cid, 0))
 		{
-			echo "<script>alert('" . $model->getError ( true ) . "');</script>\n";
+			echo "<script>alert('" . $model->getError(true) . "');</script>\n";
 		}
 
 		$app->input->set('layout', 'manage');
 
-		parent::display ();
+		parent::display();
 	}
 }

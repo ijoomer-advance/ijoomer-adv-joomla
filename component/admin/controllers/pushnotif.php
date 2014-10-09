@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -24,7 +24,7 @@ class ijoomeradvControllerPushnotif extends JControllerLegacy
 		$app->input->set('layout', 'detail');
 		$app->input->set('hidemainmenu', 1);
 
-		parent::display ();
+		parent::display();
 	}
 
 	function apply()

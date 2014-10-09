@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The HTML Menus Menu Item TYpes View.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvViewMenutypes extends JViewLegacy
 {
@@ -26,8 +26,8 @@ class IjoomeradvViewMenutypes extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$this->recordId = JRequest::getInt('recordId');
-		$this->types 	= $this->get('TypeOptions');
-		$this->menuitems	= $this->get('Menuitems');
+		$this->types = $this->get('TypeOptions');
+		$this->menuitems = $this->get('Menuitems');
 
 		parent::display($tpl);
 	}

@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The HTML Menus Menu Item View.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvViewItem extends JViewLegacy
 {
@@ -30,18 +30,18 @@ class IjoomeradvViewItem extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form		= $this->get('Form');
-		$this->item		= $this->get('Item');
-		$this->modules	= $this->get('Modules');
-		$this->state	= $this->get('State');
-		$this->menutypes	= $this->get('Menutypes');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->modules = $this->get('Modules');
+		$this->state = $this->get('State');
+		$this->menutypes = $this->get('Menutypes');
 
-		$extention = explode('.',$this->form->getValue('views'));
+		$extention = explode('.', $this->form->getValue('views'));
 		$extention = $extention[0];
 
 		$lang =& JFactory::getLanguage();
-		$base_dir = JPATH_COMPONENT_SITE.'/'."extensions".'/'.$extention;
-		$lang->load($extention, $base_dir,null,true);
+		$base_dir = JPATH_COMPONENT_SITE . '/' . "extensions" . '/' . $extention;
+		$lang->load($extention, $base_dir, null, true);
 
 		parent::display($tpl);
 		$this->addToolbar();
@@ -50,14 +50,14 @@ class IjoomeradvViewItem extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	protected function addToolbar()
 	{
 		JRequest::setVar('hidemainmenu', true);
 
-		$user		= JFactory::getUser();
-		$isNew		= ($this->item->id == 0);
+		$user = JFactory::getUser();
+		$isNew = ($this->item->id == 0);
 
 		JToolBarHelper::title(JText::_($isNew ? 'COM_IJOOMERADV_VIEW_NEW_ITEM_TITLE' : 'COM_IJOOMERADV_VIEW_EDIT_ITEM_TITLE'), 'menu-add');
 
