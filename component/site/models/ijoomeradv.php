@@ -307,7 +307,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		}
 		else
 		{
-			$IJHelperObj = new ijoomeradvHelper(); // create hepler object
+			$IJHelperObj = new ijoomeradvHelper; // create hepler object
 			if (!$IJHelperObj->getComponent($option))
 			{
 				IJReq::setResponseCode(404);
@@ -376,7 +376,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$pushOptions['detail'] = array();
 			$pushOptions = gzcompress(json_encode($pushOptions));
 			$message = JText::sprintf('COM_IJOOMERADV_USER_ONLINE', $my->name);
-			$obj = new stdClass();
+			$obj = new stdClass;
 			$obj->id = null;
 			$obj->detail = $pushOptions;
 			$obj->tocount = count($friends);
@@ -481,7 +481,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 					// store user image...
 					CFactory::load('libraries', 'facebook');
-					$facebook = new CFacebook();
+					$facebook = new CFacebook;
 					// edited by Salim (Date: 08-09-2011)
 					$data['pic_big'] = str_replace('profile.cc.fbcdn', 'profile.ak.fbcdn', $data['pic_big']);
 					$data['pic_big'] = str_replace('hprofile-cc-', 'hprofile-ak-', $data['pic_big']);
@@ -568,7 +568,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					$config =& CFactory::getConfig();
 					// store user image...
 					CFactory::load('libraries', 'facebook');
-					$facebook = new CFacebook();
+					$facebook = new CFacebook;
 
 					// edited by Salim (Date: 08-09-2011)
 					$data['pic_big'] = str_replace('profile.cc.fbcdn', 'profile.ak.fbcdn', $data['pic_big']);
@@ -1040,7 +1040,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$sendEmail = $this->db->loadColumn();
 			if (count($sendEmail) > 0)
 			{
-				$jdate = new JDate();
+				$jdate = new JDate;
 				// Build the query to add the messages
 				$query = "INSERT INTO {$this->db->quoteName('#__messages')} ({$this->db->quoteName('user_id_from')}, {$this->db->quoteName('user_id_to')}, {$this->db->quoteName('date_time')}, {$this->db->quoteName('subject')}, {$this->db->quoteName('message')}) VALUES ";
 				$messages = array();
@@ -1309,7 +1309,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 			if (JFile::upload($file['tmp_name'], $commanpath . $filename))
 			{
-				$image = new SimpleImage();
+				$image = new SimpleImage;
 				foreach ($thumbArray AS $path => $size)
 				{
 					copy($commanpath . $filename, $commanpath . $path . $filename);

@@ -15,7 +15,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 define('IJADV_VERSION', 1.5);
 
 jimport('joomla.version');
-$version = new JVersion();
+$version = new JVersion;
 
 //define joomla version
 defined('IJ_JOOMLA_VERSION') or define('IJ_JOOMLA_VERSION', floatval($version->RELEASE));

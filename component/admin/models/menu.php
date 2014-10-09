@@ -162,7 +162,7 @@ class IjoomeradvModelMenu extends JModelForm
 
 		foreach ($result as $key => $value)
 		{
-			$o = new stdClass();
+			$o = new stdClass;
 			$o->menuid = $value->menuid;
 			$o->menutitle = $value->menutitle;
 			$o->itemid = $value->itemid;

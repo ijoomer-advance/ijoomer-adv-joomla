@@ -34,7 +34,7 @@ defined('IJ_VIEW') or define('IJ_VIEW', IJ_SITE . '/views');
 
 require_once IJ_HELPER . '/helper.php'; // import ijoomeradv helper file
 set_error_handler(array('ijoomeradvError', 'ijErrorHandler'));//set custom error handler
-$IJHelperObj = new ijoomeradvHelper(); // create hepler object
+$IJHelperObj = new ijoomeradvHelper; // create hepler object
 $IJHelperObj->getRequestedObject(); // get requested json object
 
 $controller = IJReq::getView(); // get the view

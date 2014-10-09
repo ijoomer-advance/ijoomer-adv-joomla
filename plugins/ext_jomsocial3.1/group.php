@@ -24,7 +24,7 @@ class group
 
 	function __construct()
 	{
-		$this->jomHelper = new jomHelper();
+		$this->jomHelper = new jomHelper;
 		$this->date_now = JFactory::getDate();
 		$this->mainframe = JFactory::getApplication();
 		$this->db = JFactory::getDBO(); // set database object
@@ -271,7 +271,7 @@ class group
 		$fields = IJReq::getTaskData('fields', 0, 'bool');
 
 		require_once JPATH_SITE . '/' . "components" . '/' . "com_community" . '/' . "controllers" . '/' . "groups.php";
-		$groupController = new CommunityGroupsController();
+		$groupController = new CommunityGroupsController;
 		$groupModel = CFactory::getModel('Groups');
 
 		if ($fields)
@@ -312,7 +312,7 @@ class group
 					return false;
 				}
 
-				$data = new stdClass();
+				$data = new stdClass;
 				$data->categories = $groupModel->getCategories();
 
 
@@ -497,7 +497,7 @@ class group
 					$group->updateStats();
 					$group->store();
 
-					$act = new stdClass();
+					$act = new stdClass;
 					$act->cmd = 'group.updated';
 					$act->actor = $this->my->id;
 					$act->target = 0;
@@ -557,7 +557,7 @@ class group
 			if ($group->published)
 			{
 				CFactory::load('libraries', 'activities');
-				$act = new stdClass();
+				$act = new stdClass;
 				$act->cmd = 'group.create';
 				$act->actor = $this->my->id;
 				$act->target = 0;
@@ -1377,7 +1377,7 @@ class group
 				$pushOptions = gzcompress(json_encode($pushOptions));
 
 				$message = JText::sprintf('COM_COMMUNITY_GROUPS_APPROVE_MEMBER');
-				$obj = new stdClass();
+				$obj = new stdClass;
 				$obj->id = null;
 				$obj->detail = $pushOptions;
 				$obj->tocount = 1;
@@ -1393,7 +1393,7 @@ class group
 
 				//trigger for onGroupJoinApproved
 				CFactory::load('controllers', 'groups');
-				$group_controller_obj = new CommunityGroupsController();
+				$group_controller_obj = new CommunityGroupsController;
 				$group_controller_obj->triggerGroupEvents('onGroupJoinApproved', $group, $memberID);
 			}
 		}
@@ -1439,7 +1439,7 @@ class group
 		$group =& JTable::getInstance('Group', 'CTable');
 		$group->load($uniqueID);
 
-		$data = new stdClass();
+		$data = new stdClass;
 		$data->groupid = $uniqueID;
 		$data->memberid = $this->my->id;
 
@@ -1491,7 +1491,7 @@ class group
 		}
 
 		CFactory::load('libraries', 'reporting');
-		$report = new CReportingLibrary();
+		$report = new CReportingLibrary;
 
 		switch ($type)
 		{
@@ -1506,7 +1506,7 @@ class group
 
 				$report->createReport(JText::_('Bad group'), $link, $message);
 
-				$action = new stdClass();
+				$action = new stdClass;
 				$action->label = 'Unpublish group';
 				$action->method = 'groups,unpublishGroup';
 				$action->parameters = $uniqueID;
@@ -1524,7 +1524,7 @@ class group
 
 				$report->createReport(JText::_('COM_COMMUNITY_INVALID_DISCUSSION'), $link, $message);
 
-				$action = new stdClass();
+				$action = new stdClass;
 				$action->label = 'Remove discussion';
 				$action->method = 'groups,removeDiscussion';
 				$action->parameters = $discussionID;
@@ -1963,7 +1963,7 @@ class group
 			$match = array('{group}', '{announcement}');
 			$replace = array($group->name, $bulletin->title);
 			$message = str_replace($match, $replace, JText::sprintf('COM_COMMUNITY_GROUPS_EMAIL_NEW_BULLETIN_SUBJECT'));
-			$obj = new stdClass();
+			$obj = new stdClass;
 			$obj->id = null;
 			$obj->detail = $pushOptions;
 			$obj->tocount = count($puserlist);
@@ -1985,7 +1985,7 @@ class group
 
 				// Add activity logging
 				CFactory::load('libraries', 'activities');
-				$act = new stdClass();
+				$act = new stdClass;
 				$act->cmd = 'group.news.create';
 				$act->actor = $this->my->id;
 				$act->target = 0;
@@ -2270,7 +2270,7 @@ class group
 		$table =& JTable::getInstance('File', 'CTable');
 
 		CFactory::load('libraries', 'files');
-		$fileLib = new CFilesLibrary();
+		$fileLib = new CFilesLibrary;
 
 		if (CLimitsLibrary::exceedDaily('files', $this->IJUserID))
 		{
@@ -2424,7 +2424,7 @@ class group
 						$pushOptions['detail']['content_data']['type'] = 'discussion';
 						$pushOptions = gzcompress(json_encode($pushOptions));
 
-						$obj = new stdClass();
+						$obj = new stdClass;
 						$obj->id = null;
 						$obj->detail = $pushOptions;
 						$obj->tocount = 1;
@@ -2807,7 +2807,7 @@ class group
 				$url = CRoute::_('index.php?option=com_community&view=groups&task=viewgroup&groupid=' . $uniqueID);
 				CFactory::load('libraries', 'activities');
 
-				$act = new stdClass();
+				$act = new stdClass;
 				$act->cmd = 'group.discussion.create';
 				$act->actor = $this->my->id;
 				$act->target = 0;
@@ -2938,7 +2938,7 @@ class group
 					$pushOptions['detail']['content_data']['type'] = 'discussion';
 					$pushOptions = gzcompress(json_encode($pushOptions));
 
-					$obj = new stdClass();
+					$obj = new stdClass;
 					$obj->id = null;
 					$obj->detail = $pushOptions;
 					$obj->tocount = 1;
@@ -3053,7 +3053,7 @@ class group
 			// Build the URL
 			$discussURL = CUrl::build('groups', 'viewdiscussion', array('groupid' => $discussion->groupid, 'topicid' => $discussion->id), true);
 
-			$act = new stdClass();
+			$act = new stdClass;
 			$act->cmd = 'group.discussion.reply';
 			$act->actor = $this->my->id;
 			$act->target = 0;
@@ -3170,7 +3170,7 @@ class group
 				$pushOptions['detail']['content_data']['type'] = 'discussion';
 				$pushOptions = gzcompress(json_encode($pushOptions));
 
-				$obj = new stdClass();
+				$obj = new stdClass;
 				$obj->id = null;
 				$obj->detail = $pushOptions;
 				$obj->tocount = 1;
@@ -3417,7 +3417,7 @@ class group
 			return false;
 		}
 
-		$data = new stdClass();
+		$data = new stdClass;
 		$data->id = $groupid;
 
 		$groupsModel =& CFactory::getModel('groups');
@@ -3515,7 +3515,7 @@ class group
 					if ($group->approvals == COMMUNITY_PUBLIC_GROUP)
 					{
 						$url = CRoute::_('index.php?option=com_community&view=groups&task=viewgroup&groupid=' . $uniqueID);
-						$act = new stdClass();
+						$act = new stdClass;
 						$act->cmd = 'group.avatar.upload';
 						$act->actor = $this->my->id;
 						$act->target = 0;
@@ -3749,7 +3749,7 @@ class group
 		$match = array('{group}', '{email}');
 		$replace = array($group->name, $title);
 		$message = str_replace($match, $replace, JText::sprintf('COM_COMMUNITY_GROUPS_SENDMAIL_SUBJECT'));
-		$obj = new stdClass();
+		$obj = new stdClass;
 		$obj->id = null;
 		$obj->detail = $pushOptions;
 		$obj->tocount = count($puserlist);
@@ -4035,7 +4035,7 @@ class group
 		// Test if member is approved, then we add logging to the activities.
 		if ($member->approved)
 		{
-			$act = new stdClass();
+			$act = new stdClass;
 			$act->cmd = 'group.join';
 			$act->actor = $this->my->id;
 			$act->target = 0;
@@ -4113,7 +4113,7 @@ class group
 			$pushOptions['detail']['content_data']['type'] = 'group';
 		}
 		$pushOptions = gzcompress(json_encode($pushOptions));
-		$obj = new stdClass();
+		$obj = new stdClass;
 		$obj->id = null;
 		$obj->detail = $pushOptions;
 		$obj->tocount = 1;
@@ -4298,7 +4298,7 @@ class group
 				$pushOptions['detail']['content_data']['type'] = 'group';
 				$pushOptions = gzcompress(json_encode($pushOptions));
 
-				$obj = new stdClass();
+				$obj = new stdClass;
 				$obj->id = null;
 				$obj->detail = $pushOptions;
 				$obj->tocount = 1;
@@ -4528,7 +4528,7 @@ class group
 			$groupMember =& JTable::getInstance('GroupMembers', 'CTable');
 			$groupMember->load($memberID, $uniqueID);
 
-			$data = new stdClass();
+			$data = new stdClass;
 
 			$data->groupid = $uniqueID;
 			$data->memberid = $memberID;
@@ -4654,7 +4654,7 @@ class group
 				}
 			}
 
-			$act = new stdClass();
+			$act = new stdClass;
 			$act->cmd = 'group.wall.create';
 			$act->actor = $this->my->id;
 			$act->target = 0;
@@ -4776,7 +4776,7 @@ class group
 				$pushOptions['detail']['content_data']['type'] = 'group';
 				$pushOptions = gzcompress(json_encode($pushOptions));
 
-				$obj = new stdClass();
+				$obj = new stdClass;
 				$obj->id = null;
 				$obj->detail = $pushOptions;
 				$obj->tocount = 1;

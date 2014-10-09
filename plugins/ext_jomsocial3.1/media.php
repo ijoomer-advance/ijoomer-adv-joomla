@@ -5167,7 +5167,7 @@ class media
 				}
 				$my = CFactory::getUser();
 				// Generate activity stream.
-				$act = new stdClass();
+				$act = new stdClass;
 				$act->cmd = 'cover.upload';
 				$act->actor = $my->id;
 				$act->target = 0;
@@ -5185,7 +5185,7 @@ class media
 
 				$act->like_type = 'cover.upload';
 
-				$params = new JRegistry();
+				$params = new JRegistry;
 				$params->set('attachment', str_replace(JPATH_ROOT . '/', '', $dest));
 				$params->set('type', $type);
 
@@ -5222,7 +5222,7 @@ class media
 		$file = JRequest::getVar('uploadCover', '', 'FILES', 'array');
 		$config = CFactory::getConfig();
 		$my = JFactory::getUser();
-		$now = new JDate();
+		$now = new JDate;
 
 		// Load up required models and properties
 		CFactory::load('libraries', 'photos');
@@ -5320,7 +5320,7 @@ class media
 			$msg['path'] = JURI::root() . str_replace(JPATH_ROOT . '/', '', $dest);
 
 			// Generate activity stream.
-			$act = new stdClass();
+			$act = new stdClass;
 			$act->cmd = 'cover.upload';
 			$act->actor = $my->id;
 			$act->target = 0;
@@ -5338,7 +5338,7 @@ class media
 			//;
 			$act->like_type = 'cover.upload';
 
-			$params = new JRegistry();
+			$params = new JRegistry;
 			$params->set('attachment', $msg['path']);
 			$params->set('type', $type);
 

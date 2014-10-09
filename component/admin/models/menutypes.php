@@ -156,7 +156,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				$checked = false;
 			}
 
-			$o = new stdClass();
+			$o = new stdClass;
 			$o->itemid = $value->itemid;
 			$o->itemtitle = $value->itemtitle;
 			$o->itemtype = $value->itemtype;
