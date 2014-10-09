@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -11,14 +11,15 @@
 
 defined('_JEXEC') or die;
 
-class IjoomeradvTableReport extends JTable{
-	var $id 		= null;
-	var $message 	= null;
+class IjoomeradvTableReport extends JTable
+{
+	var $id = null;
+	var $message = null;
 	var $created_by = null;
-	var $created	= null;
-	var $extension	= null;
-	var $status		= null;
-	var $params		= null;
+	var $created = null;
+	var $extension = null;
+	var $status = null;
+	var $params = null;
 
 	function IjoomeradvTableReport(& $db)
 	{

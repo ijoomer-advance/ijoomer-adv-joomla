@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -36,9 +36,9 @@ class IjoomeradvControllerItem extends JControllerForm
 	public function add()
 	{
 		// Initialise variables.
-		$app     = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$context = 'com_ijoomeradv.edit.item';
-		$result  = parent::add();
+		$result = parent::add();
 
 		if ($result)
 		{
@@ -56,9 +56,9 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to run batch operations.
 	 *
-	 * @param   object  $model  The model.
+	 * @param   object $model The model.
 	 *
-	 * @return  boolean	 True if successful, false otherwise and internal error is set.
+	 * @return  boolean     True if successful, false otherwise and internal error is set.
 	 *
 	 * @since   1.6
 	 */
@@ -78,7 +78,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to cancel an edit.
 	 *
-	 * @param   string  $key  The name of the primary key of the URL variable.
+	 * @param   string $key The name of the primary key of the URL variable.
 	 *
 	 * @return  boolean  True if access level checks pass, false otherwise.
 	 *
@@ -89,7 +89,7 @@ class IjoomeradvControllerItem extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app     = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$context = 'com_ijoomeradv.edit.item';
 		$app->setUserState('com_ijoomeradv.edit.item.data', null);
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=items', false));
@@ -98,9 +98,9 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to edit an existing record.
 	 *
-	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key
-	 * (sometimes required to avoid router collisions).
+	 * @param   string $key    The name of the primary key of the URL variable.
+	 * @param   string $urlVar The name of the URL variable if different from the primary key
+	 *                         (sometimes required to avoid router collisions).
 	 *
 	 * @return  boolean  True if access level check and checkout passes, false otherwise.
 	 *
@@ -109,7 +109,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	public function edit($key = null, $urlVar = null)
 	{
 		// Initialise variables.
-		$app    = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$result = parent::edit();
 
 		if ($result)
@@ -125,8 +125,8 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to save a record.
 	 *
-	 * @param   string  $key     The name of the primary key of the URL variable.
-	 * @param   string  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param   string $key    The name of the primary key of the URL variable.
+	 * @param   string $urlVar The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
 	 * @return  boolean  True if successful, false otherwise.
 	 *
@@ -138,37 +138,37 @@ class IjoomeradvControllerItem extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app           = JFactory::getApplication();
-		$model         = $this->getModel('Item', '', array());
-		$post          = $app->input->getArray('post', array());
-		$data          = $post['jform'];
-		$task          = $this->getTask();
-		$context       = 'com_ijoomeradv.edit.item';
-		$recordId      = $app->input->getInt('id', 0);
+		$app = JFactory::getApplication();
+		$model = $this->getModel('Item', '', array());
+		$post = $app->input->getArray('post', array());
+		$data = $post['jform'];
+		$task = $this->getTask();
+		$context = 'com_ijoomeradv.edit.item';
+		$recordId = $app->input->getInt('id', 0);
 		$itemimagedata = $app->input->files->get('jform');
-		$position      = $model->getMenuPostion($data['menutype']);
+		$position = $model->getMenuPostion($data['menutype']);
 
 		if ($itemimagedata['name']['imageicon'] or $itemimagedata['name']['imagetab'] or $itemimagedata['name']['imagetabactive'])
 		{
 			$dirpath = JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/theme/custom';
-			shell_exec('chmod 777 '.$dirpath.' -R');
+			shell_exec('chmod 777 ' . $dirpath . ' -R');
 
 			$form = $model->getForm($data);
 
-			if($form->getValue('itemimage'))
+			if ($form->getValue('itemimage'))
 			{
 				$imagename = $form->getValue('itemimage');
 			}
 			else
 			{
-				$imagename 	= explode('.',$data['views']);
-				$postfix	= rand();
-				$imagename	= $imagename[3].$postfix;
+				$imagename = explode('.', $data['views']);
+				$postfix = rand();
+				$imagename = $imagename[3] . $postfix;
 			}
 
-			$imagename_home = $imagename.'_icon.png';
-			$imagename_tab 	= $imagename.'_tab.png';
-			$imagename_tab_active 	= $imagename.'_tab_active.png';
+			$imagename_home = $imagename . '_icon.png';
+			$imagename_tab = $imagename . '_tab.png';
+			$imagename_tab_active = $imagename . '_tab_active.png';
 		}
 		else
 		{
@@ -177,20 +177,20 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		if ($position == 1 or $position == 2)
 		{
-			if ($itemimagedata['name']['imageicon'] && $itemimagedata['error']['imageicon']<=0 && $itemimagedata['size']['imageicon']>0)
+			if ($itemimagedata['name']['imageicon'] && $itemimagedata['error']['imageicon'] <= 0 && $itemimagedata['size']['imageicon'] > 0)
 			{
 
-				$imagetype 	= $itemimagedata['type']['imageicon'];
+				$imagetype = $itemimagedata['type']['imageicon'];
 
-				if($imagetype =='image/jpg' || $imagetype =='image/jpeg' )
+				if ($imagetype == 'image/jpg' || $imagetype == 'image/jpeg')
 				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if($imagetype=='image/png')
+				else if ($imagetype == 'image/png')
 				{
 					$image = imagecreatefrompng($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if($imagetype=='image/gif')
+				else if ($imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imageicon']);
 				}
@@ -199,42 +199,43 @@ class IjoomeradvControllerItem extends JControllerForm
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
 				}
 
-				$devicetypearray = array('xhdpi'=>96,
-										'hdpi'=>72,
-										'mdpi'=>48,
-										'ldpi'=>36,
-										3=>57,
-										4=>114,
-										5=>114);
+				$devicetypearray = array('xhdpi' => 96,
+					'hdpi' => 72,
+					'mdpi' => 48,
+					'ldpi' => 36,
+					3 => 57,
+					4 => 114,
+					5 => 114);
 
-				foreach ($devicetypearray as $dkey=>$dvalue)
+				foreach ($devicetypearray as $dkey => $dvalue)
 				{
 					$imageResized = imagecreatetruecolor($dvalue, $dvalue);
 
-					if (function_exists ("imageAntiAlias" ))
+					if (function_exists("imageAntiAlias"))
 					{
-						imageAntiAlias ( $imageResized, true );
+						imageAntiAlias($imageResized, true);
 					}
-					imagealphablending ( $imageResized, false );
+					imagealphablending($imageResized, false);
 
-					if (function_exists ( "imagesavealpha" )){
-						imagesavealpha ( $imageResized, true );
-					}
-
-					if (function_exists ( "imagecolorallocatealpha" ))
+					if (function_exists("imagesavealpha"))
 					{
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+						imagesavealpha($imageResized, true);
+					}
+
+					if (function_exists("imagecolorallocatealpha"))
+					{
+						$transparent = imagecolorallocatealpha($imageResized, 255, 255, 255, 127);
 					}
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue, $dvalue, imagesx($image), imagesy($image));
 
-					if($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
-						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_home);
+						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_home);
 					}
 					else
 					{
-						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_home);
+						imagepng($imageResized, $dirpath . '/iphone/' . $dkey . '/' . $imagename_home);
 					}
 				}
 
@@ -243,65 +244,80 @@ class IjoomeradvControllerItem extends JControllerForm
 		}
 		else
 		{
-			if ($itemimagedata['name']['imagetab'] && $itemimagedata['error']['imagetab']<=0 && $itemimagedata['size']['imagetab']>0){
+			if ($itemimagedata['name']['imagetab'] && $itemimagedata['error']['imagetab'] <= 0 && $itemimagedata['size']['imagetab'] > 0)
+			{
 
-				$imagetype 	= $itemimagedata['type']['imagetab'];
-				if($imagetype=="image/jpg" || $imagetype=="image/jpeg" ){
+				$imagetype = $itemimagedata['type']['imagetab'];
+				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
+				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetab']);
-				}else if($imagetype=="image/png"){
+				}
+				else if ($imagetype == "image/png")
+				{
 					$image = imagecreatefrompng($itemimagedata['tmp_name']['imagetab']);
-				}else if($imagetype=='image/gif'){
+				}
+				else if ($imagetype == 'image/gif')
+				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetab']);
-				}else{
+				}
+				else
+				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetab']);
 				}
 
-				$devicetypearray = array('xhdpi'=>array('height'=>64,'width'=>64),
-										'hdpi'=>array('height'=>48,'width'=>48),
-										'mdpi'=>array('height'=>32,'width'=>32),
-										'ldpi'=>array('height'=>24,'width'=>24),
-										3=>array('height'=>32,'width'=>32),
-										4=>array('height'=>64,'width'=>64),
-										5=>array('height'=>64,'width'=>64));
+				$devicetypearray = array('xhdpi' => array('height' => 64, 'width' => 64),
+					'hdpi' => array('height' => 48, 'width' => 48),
+					'mdpi' => array('height' => 32, 'width' => 32),
+					'ldpi' => array('height' => 24, 'width' => 24),
+					3 => array('height' => 32, 'width' => 32),
+					4 => array('height' => 64, 'width' => 64),
+					5 => array('height' => 64, 'width' => 64));
 
-				foreach ($devicetypearray as $dkey=>$dvalue){
+				foreach ($devicetypearray as $dkey => $dvalue)
+				{
 					$imageResized = imagecreatetruecolor($dvalue['width'], $dvalue['height']);
 
-					if (function_exists ( "imageAntiAlias" )){
-						imageAntiAlias ( $imageResized, true );
+					if (function_exists("imageAntiAlias"))
+					{
+						imageAntiAlias($imageResized, true);
 					}
-					imagealphablending ( $imageResized, false );
-					if (function_exists ( "imagesavealpha" )){
-						imagesavealpha ( $imageResized, true );
+					imagealphablending($imageResized, false);
+					if (function_exists("imagesavealpha"))
+					{
+						imagesavealpha($imageResized, true);
 					}
-					if (function_exists ( "imagecolorallocatealpha" )){
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+					if (function_exists("imagecolorallocatealpha"))
+					{
+						$transparent = imagecolorallocatealpha($imageResized, 255, 255, 255, 127);
 					}
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
-					if($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi'){
-						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_tab);
-					}else{
-						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_tab);
+					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					{
+						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab);
+					}
+					else
+					{
+						imagepng($imageResized, $dirpath . '/iphone/' . $dkey . '/' . $imagename_tab);
 					}
 				}
 
 				imagedestroy($image);
 			}
 
-			if ($itemimagedata['name']['imagetabactive'] && $itemimagedata['error']['imagetabactive']<=0 && $itemimagedata['size']['imagetabactive']>0)
+			if ($itemimagedata['name']['imagetabactive'] && $itemimagedata['error']['imagetabactive'] <= 0 && $itemimagedata['size']['imagetabactive'] > 0)
 			{
-				$imagetype 	= $itemimagedata['type']['imagetabactive'];
+				$imagetype = $itemimagedata['type']['imagetabactive'];
 
-				if ($imagetype=="image/jpg" || $imagetype=="image/jpeg" )
+				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
 				{
 					$image1 = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetabactive']);
 				}
-				else if($imagetype=="image/png")
+				else if ($imagetype == "image/png")
 				{
 					$image1 = imagecreatefrompng($itemimagedata['tmp_name']['imagetabactive']);
 				}
-				else if($imagetype=='image/gif')
+				else if ($imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetabactive']);
 				}
@@ -310,42 +326,44 @@ class IjoomeradvControllerItem extends JControllerForm
 					$image1 = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetabactive']);
 				}
 
-				$devicetypearray = array('xhdpi'=>array('height'=>64,'width'=>64),
-										'hdpi'=>array('height'=>48,'width'=>48),
-										'mdpi'=>array('height'=>32,'width'=>32),
-										'ldpi'=>array('height'=>24,'width'=>24),
-										3=>array('height'=>32,'width'=>32),
-										4=>array('height'=>64,'width'=>64),
-										5=>array('height'=>64,'width'=>64));
+				$devicetypearray = array('xhdpi' => array('height' => 64, 'width' => 64),
+					'hdpi' => array('height' => 48, 'width' => 48),
+					'mdpi' => array('height' => 32, 'width' => 32),
+					'ldpi' => array('height' => 24, 'width' => 24),
+					3 => array('height' => 32, 'width' => 32),
+					4 => array('height' => 64, 'width' => 64),
+					5 => array('height' => 64, 'width' => 64));
 
-				foreach ($devicetypearray as $dkey=>$dvalue)
+				foreach ($devicetypearray as $dkey => $dvalue)
 				{
 					$imageResized = imagecreatetruecolor($dvalue['width'], $dvalue['height']);
 
-					if (function_exists ( "imageAntiAlias" ))
+					if (function_exists("imageAntiAlias"))
 					{
-						imageAntiAlias ( $imageResized, true );
+						imageAntiAlias($imageResized, true);
 					}
 
-					imagealphablending ( $imageResized, false );
+					imagealphablending($imageResized, false);
 
-					if (function_exists ( "imagesavealpha" ))
+					if (function_exists("imagesavealpha"))
 					{
-						imagesavealpha ( $imageResized, true );
+						imagesavealpha($imageResized, true);
 					}
 
-					if (function_exists ( "imagecolorallocatealpha" )){
-						$transparent = imagecolorallocatealpha ( $imageResized, 255, 255, 255, 127 );
+					if (function_exists("imagecolorallocatealpha"))
+					{
+						$transparent = imagecolorallocatealpha($imageResized, 255, 255, 255, 127);
 					}
 
 					imagecopyresampled($imageResized, $image1, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image1), imagesy($image1));
 
-					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi'){
-						imagepng($imageResized, $dirpath.'/android/'.$dkey.'/'.$imagename_tab_active);
+					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					{
+						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab_active);
 					}
 					else
 					{
-						imagepng($imageResized, $dirpath.'/iphone/'.$dkey.'/'.$imagename_tab_active);
+						imagepng($imageResized, $dirpath . '/iphone/' . $dkey . '/' . $imagename_tab_active);
 					}
 				}
 
@@ -392,12 +410,12 @@ class IjoomeradvControllerItem extends JControllerForm
 		$data = $model->validate($form, $data);
 
 		//changes for custom menu type
-		$chcustom = explode('.',$data['views']);
+		$chcustom = explode('.', $data['views']);
 
 		if ($chcustom[2] == 'custom')
 		{
 			$chcustom[3] = $menuoptions['actname'];
-			$data['views'] = implode('.',$chcustom);
+			$data['views'] = implode('.', $chcustom);
 			unset($menuoptions['actname']);
 		}
 
@@ -424,10 +442,12 @@ class IjoomeradvControllerItem extends JControllerForm
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++)
 			{
-				if ($errors[$i] instanceof Exception){
+				if ($errors[$i] instanceof Exception)
+				{
 					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
 				}
-				else{
+				else
+				{
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}
@@ -466,33 +486,33 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		$this->setMessage(JText::_('COM_IJOOMERADV_SAVE_SUCCESS'));
 
-		if($data['views'])
+		if ($data['views'])
 		{
-			$view = explode('.',$data['views']);
+			$view = explode('.', $data['views']);
 
-			if($data['requiredField'])
+			if ($data['requiredField'])
 			{
-				$extension	 = $view[0];
-				$extView	 = $view[1];
-				$extTask	 = $view[2];
-				$remoteTask	 = $view[3];
+				$extension = $view[0];
+				$extView = $view[1];
+				$extTask = $view[2];
+				$remoteTask = $view[3];
 
-				if($extension != 'default')
+				if ($extension != 'default')
 				{
-					require_once JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$extension.'/'.$extension.'.php';
+					require_once JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $extension . '/' . $extension . '.php';
 				}
 				else
 				{
-					require_once JPATH_SITE.'/components/com_ijoomeradv/extensions/'.$extension.'.php';
+					require_once JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $extension . '.php';
 				}
 
-				$extClass	= $extension.'_menu';
-				$extClass 	= new $extClass();
+				$extClass = $extension . '_menu';
+				$extClass = new $extClass();
 
 				if ($data['id'] <= 0)
 				{
 					// Initialiase variables.
-					$db    = JFactory::getDbo();
+					$db = JFactory::getDbo();
 					$query = $db->getQuery(true);
 
 					// Create the base select statement.
@@ -505,7 +525,7 @@ class IjoomeradvControllerItem extends JControllerForm
 					$data['id'] = $db->loadResult();
 				}
 
-				$extClass->setRequiredInput($extension,$extView,$extTask,$remoteTask,$menuoptions,$data);
+				$extClass->setRequiredInput($extension, $extView, $extTask, $remoteTask, $menuoptions, $data);
 			}
 		}
 
@@ -559,22 +579,22 @@ class IjoomeradvControllerItem extends JControllerForm
 	function setType()
 	{
 		// Initialise variables.
-		$app  = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$data = array();
 
 		// Get the posted values from the request.
-		$post     = $app->input->getArray('post', array());
-		$data     = $post['jform'];
+		$post = $app->input->getArray('post', array());
+		$data = $post['jform'];
 		$recordId = $app->input->getInt('id', 0);
 
 		// Get the type.
-		$type   = $data['type'];
-		$type 	= json_decode(base64_decode($type));
-		$title 	= isset($type->caption) ? $type->caption : null;
+		$type = $data['type'];
+		$type = json_decode(base64_decode($type));
+		$title = isset($type->caption) ? $type->caption : null;
 
 		if (isset($type->extension) && isset($type->view))
 		{
-			$views = strtolower($type->extension).'.'.$type->view.'.'.$type->task.'.'.$type->remoteTask;
+			$views = strtolower($type->extension) . '.' . $type->view . '.' . $type->task . '.' . $type->remoteTask;
 		}
 		else
 		{
@@ -597,8 +617,8 @@ class IjoomeradvControllerItem extends JControllerForm
 		$app->setUserState('com_ijoomeradv.edit.item.requiredField', $requiredField);
 
 		unset($data['request']);
-		$data['type']          = $title;
-		$data['views']         = $views;
+		$data['type'] = $title;
+		$data['views'] = $views;
 		$data['requiredField'] = $requiredField;
 
 		//Save the data in the session.

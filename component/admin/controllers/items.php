@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -14,9 +14,9 @@ defined('_JEXEC') or die;
 /**
  * The Menu Item Controller
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class IjoomeradvControllerItems extends JControllerAdmin
 {
@@ -24,7 +24,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	{
 		parent::__construct($config);
 
-		$this->registerTask('unsetDefault',	'setDefault');
+		$this->registerTask('unsetDefault', 'setDefault');
 	}
 
 	public function display($cachable = false, $urlparams = false)
@@ -42,7 +42,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	 */
 	function add()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit',null);
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit', null);
 	}
 
 	/*
@@ -51,13 +51,13 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	function edit()
 	{
 		$app = JFactory::getApplication();
-		$id  = $app->input->getArray('cid', array());
-		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit&id='.$id[0],null);
+		$id = $app->input->getArray('cid', array());
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit&id=' . $id[0], null);
 	}
 
 	/**
 	 * Proxy for getModel
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
 	{
@@ -67,8 +67,8 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Rebuild the nested set tree.
 	 *
-	 * @return	bool	False on failure or error, true on success.
-	 * @since	1.6
+	 * @return    bool    False on failure or error, true on success.
+	 * @since    1.6
 	 */
 	public function rebuild()
 	{
@@ -98,9 +98,9 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$app           = JFactory::getApplication();
-		$post          = $app->input->getArray('post', array());
-		$order         = $post['order'];
+		$app = JFactory::getApplication();
+		$post = $app->input->getArray('post', array());
+		$order = $post['order'];
 		$originalOrder = explode(',', JRequest::getString('original_order_values'));
 
 		// Make sure something has changed
@@ -111,7 +111,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		else
 		{
 			// Nothing to reorder
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
 			return true;
 		}
 	}
@@ -119,7 +119,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Method to set the home property for a list of items
 	 *
-	 * @since	1.6
+	 * @since    1.6
 	 */
 	function setDefault()
 	{
@@ -127,11 +127,11 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$app    = JFactory::getApplication();
-		$cid    = $app->input->getArray('cid', array());
-		$data	= array('setDefault' => 1, 'unsetDefault' => 0);
-		$task 	= $this->getTask();
-		$value	= JArrayHelper::getValue($data, $task, 0, 'int');
+		$app = JFactory::getApplication();
+		$cid = $app->input->getArray('cid', array());
+		$data = array('setDefault' => 1, 'unsetDefault' => 0);
+		$task = $this->getTask();
+		$value = JArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid))
 		{

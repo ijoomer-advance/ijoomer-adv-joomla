@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -16,17 +16,17 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package		Joomla.Administrator
- * @subpackage	com_ijoomer
- * @since		1.6
+ * @package        Joomla.Administrator
+ * @subpackage     com_ijoomer
+ * @since          1.6
  */
 class JFormFieldMenuOrdering extends JFormFieldList
 {
 	/**
 	 * The form field type.
 	 *
-	 * @var		string
-	 * @since	1.7
+	 * @var        string
+	 * @since    1.7
 	 */
 	protected $type = 'MenuOrdering';
 
@@ -34,8 +34,8 @@ class JFormFieldMenuOrdering extends JFormFieldList
 	 * Method to get the list of siblings in a menu.
 	 * The method requires that parent be set.
 	 *
-	 * @return	array	The field option objects or false if the parent field has not been set
-	 * @since	1.7
+	 * @return    array    The field option objects or false if the parent field has not been set
+	 * @since    1.7
 	 */
 	protected function getOptions()
 	{
@@ -44,7 +44,7 @@ class JFormFieldMenuOrdering extends JFormFieldList
 
 		// Get the parent
 		$parent_id = $this->form->getValue('parent_id', 0);
-		if ( empty($parent_id))
+		if (empty($parent_id))
 		{
 			return false;
 		}
@@ -56,11 +56,13 @@ class JFormFieldMenuOrdering extends JFormFieldList
 
 		$query->where('a.published >= 0');
 		$query->where('a.parent_id =' . (int) $parent_id);
-		if ($menuType = $this->form->getValue('menutype')) {
-			$query->where('a.menutype = '.$db->quote($menuType));
+		if ($menuType = $this->form->getValue('menutype'))
+		{
+			$query->where('a.menutype = ' . $db->quote($menuType));
 		}
-		else {
-			$query->where('a.menutype != '.$db->quote(''));
+		else
+		{
+			$query->where('a.menutype != ' . $db->quote(''));
 		}
 
 		$query->order('a.lft ASC');
@@ -71,14 +73,15 @@ class JFormFieldMenuOrdering extends JFormFieldList
 		$options = $db->loadObjectList();
 
 		// Check for a database error.
-		if ($db->getErrorNum()) {
+		if ($db->getErrorNum())
+		{
 			JError::raiseWarning(500, $db->getErrorMsg());
 		}
 
 		$options = array_merge(
-		array(array ('value' =>'-1', 'text'=>JText::_('COM_IJOOMERADV_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
-		$options,
-		array(array( 'value' =>'-2', 'text'=>JText::_('COM_IJOOMERADV_ITEM_FIELD_ORDERING_VALUE_LAST')))
+			array(array('value' => '-1', 'text' => JText::_('COM_IJOOMERADV_ITEM_FIELD_ORDERING_VALUE_FIRST'))),
+			$options,
+			array(array('value' => '-2', 'text' => JText::_('COM_IJOOMERADV_ITEM_FIELD_ORDERING_VALUE_LAST')))
 		);
 
 		// Merge any additional options in the XML definition.
@@ -86,6 +89,7 @@ class JFormFieldMenuOrdering extends JFormFieldList
 
 		return $options;
 	}
+
 	/**
 	 * Method to get the field input markup
 	 *

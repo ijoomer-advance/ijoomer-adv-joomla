@@ -15,12 +15,12 @@ class ijoomeradvControllerconfig extends JControllerLegacy
 {
 	public function home()
 	{
-		$this->setRedirect('index.php?option=com_ijoomeradv',null);
+		$this->setRedirect('index.php?option=com_ijoomeradv', null);
 	}
 
 	function save()
 	{
-		$model  = $this->getModel('config');
+		$model = $this->getModel('config');
 		$config = $model->store();
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));
 	}

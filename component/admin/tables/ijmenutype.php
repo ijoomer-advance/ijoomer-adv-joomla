@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -23,7 +23,7 @@ class JTableIjmenuType extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabase  &$db  A database connector object.
+	 * @param   JDatabase &$db A database connector object.
 	 *
 	 * @since  11.1
 	 */
@@ -73,11 +73,10 @@ class JTableIjmenuType extends JTable
 	}
 
 
-
 	/**
 	 * Method to delete a row from the database table by primary key value.
 	 *
-	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 * @param   mixed $pk An optional primary key value to delete.  If not set the instance property value is used.
 	 *
 	 * @return  boolean  True on success.
 	 *

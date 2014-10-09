@@ -1,5 +1,5 @@
 <?php
-  /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -11,41 +11,46 @@
 
 defined('_JEXEC') or die;
 
-jimport ( 'joomla.installer.installer' );
-jimport ( 'joomla.installer.helper' );
-jimport ( 'joomla.filesystem.file' );
+jimport('joomla.installer.installer');
+jimport('joomla.installer.helper');
+jimport('joomla.filesystem.file');
 
-class IjoomeradvModelExtensions extends JModelLegacy {
+class IjoomeradvModelExtensions extends JModelLegacy
+{
 	var $_data = null;
 	var $_total = null;
 	var $_pagination = null;
 	var $_table_prefix = null;
-	var $_all_list=false;
+	var $_all_list = false;
 
-	function __construct() {
+	function __construct()
+	{
 		parent::__construct();
 
 		global $context;
 		$mainframe = JFactory::getApplication();
 		//$context='id';
-	  	$this->_table_prefix = '#__ijoomeradv_';
-		$limit		= $mainframe->getUserStateFromRequest( $context.'limit', 'limit', $mainframe->getCfg('list_limit'), 0);
-		$limitstart = $mainframe->getUserStateFromRequest( $context.'limitstart', 'limitstart', 0 );
+		$this->_table_prefix = '#__ijoomeradv_';
+		$limit = $mainframe->getUserStateFromRequest($context . 'limit', 'limit', $mainframe->getCfg('list_limit'), 0);
+		$limitstart = $mainframe->getUserStateFromRequest($context . 'limitstart', 'limitstart', 0);
 
 		$this->setState('limit', $limit);
 		$this->setState('limitstart', $limitstart);
 	}
 
-	function getData() {
-		if (empty($this->_data)) {
+	function getData()
+	{
+		if (empty($this->_data))
+		{
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
 		return $this->_data;
 	}
 
-	function getExtensionData() {
-		$extId = JRequest::getVar('cid',array(0),'','array');
+	function getExtensionData()
+	{
+		$extId = JRequest::getVar('cid', array(0), '', 'array');
 		$query = "SELECT *
 				  FROM {$this->_table_prefix}extensions
 				  WHERE id=$extId[0]";
@@ -56,90 +61,107 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		return $this->_data;
 	}
 
-	function getExtGroups(){
-		$db = JFactory :: getDBO();
-		$query="SELECT DISTINCT `group`
-				FROM #__ijoomeradv_".$this->_data->classname."_config";
+	function getExtGroups()
+	{
+		$db = JFactory:: getDBO();
+		$query = "SELECT DISTINCT `group`
+				FROM #__ijoomeradv_" . $this->_data->classname . "_config";
 
 		$db->setQuery($query);
 		return $db->loadColumn();
 	}
 
-	function getExtConfig($group){
-		$db = JFactory :: getDBO();
-		$query="SELECT *
-				FROM #__ijoomeradv_".$this->_data->classname."_config
+	function getExtConfig($group)
+	{
+		$db = JFactory:: getDBO();
+		$query = "SELECT *
+				FROM #__ijoomeradv_" . $this->_data->classname . "_config
 				WHERE `group`='$group'";
 
 		$db->setQuery($query);
 		return $db->loadObjectlist('name');
 	}
 
-	function setExtConfig($data){
+	function setExtConfig($data)
+	{
 		$row =& $this->getTable();
 		$row->load($data['extid']);
 
-        include_once JPATH_COMPONENT_SITE.'/extensions/'.$row->classname.'/'.$row->classname.'.php';
-        $class_obj = new $row->classname;
+		include_once JPATH_COMPONENT_SITE . '/extensions/' . $row->classname . '/' . $row->classname . '.php';
+		$class_obj = new $row->classname;
 
-        if(method_exists($class_obj,'write_configuration')){
-       		$class_obj->write_configuration($data);
-       	}else{
-       		return false;
-       	}
+		if (method_exists($class_obj, 'write_configuration'))
+		{
+			$class_obj->write_configuration($data);
+		}
+		else
+		{
+			return false;
+		}
 		return true;
 	}
 
-	function getTotal() {
-		if (empty($this->_total)) {
+	function getTotal()
+	{
+		if (empty($this->_total))
+		{
 			$query = $this->_buildQuery();
 			$this->_total = $this->_getListCount($query);
-			$this->_total = $this->_total?$this->_total:0;
+			$this->_total = $this->_total ? $this->_total : 0;
 		}
 		return $this->_total;
 	}
 
-	function getPagination() {
-		if (empty($this->_pagination)) {
+	function getPagination()
+	{
+		if (empty($this->_pagination))
+		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination( $this->getTotal(), $this->getState('limitstart'), $this->getState('limit') );
+			$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
 		}
 		return $this->_pagination;
 	}
 
-	function _buildQuery() {
-		$orderby	= $this->_buildContentOrderBy();
-		$query="SELECT p.*
+	function _buildQuery()
+	{
+		$orderby = $this->_buildContentOrderBy();
+		$query = "SELECT p.*
 				FROM {$this->_table_prefix}extensions AS p
 				WHERE p.classname!='iuser'
 				{$orderby}";
 		return $query;
 	}
 
-	function _buildContentOrderBy() {
-		global  $context;
+	function _buildContentOrderBy()
+	{
+		global $context;
 		$mainframe = JFactory::getApplication();
-		$filter_order     = $mainframe->getUserStateFromRequest( $context.'filter_order',      'filter_order', 	  'id' );
-		$filter_order_Dir = $mainframe->getUserStateFromRequest( $context.'filter_order_Dir',  'filter_order_Dir', '' );
-		$orderby 	= ' ORDER BY p.'.$filter_order.' '.$filter_order_Dir;
+		$filter_order = $mainframe->getUserStateFromRequest($context . 'filter_order', 'filter_order', 'id');
+		$filter_order_Dir = $mainframe->getUserStateFromRequest($context . 'filter_order_Dir', 'filter_order_Dir', '');
+		$orderby = ' ORDER BY p.' . $filter_order . ' ' . $filter_order_Dir;
 		return $orderby;
 	}
 
-	function install() {
+	function install()
+	{
 		$mainframe = JFactory::getApplication();
 		$this->setState('action', 'install');
-	    $package = $this->_getPackageFromUpload();
+		$package = $this->_getPackageFromUpload();
 
-	    if($package['type']!='extensions') {
+		if ($package['type'] != 'extensions')
+		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('COM_IJOOMERADV_INVALID_PACKAGE'));
 			return false;
-	    }
+		}
 
 		$installer =& JInstaller::getInstance();
-		if (!$installer->install($package['dir'])) {
+		if (!$installer->install($package['dir']))
+		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION_ERROR', JText::_($package['type']), JText::_('COM_IJOOMERADV_ERROR'));
 			$result = false;
-		} else {
+		}
+		else
+		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION', JText::_($package['type']), JText::_('COM_IJOOMERADV_SUCCESS'));
 			$result = true;
 		}
@@ -151,9 +173,10 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		$this->setState('extension.message', $installer->get('extension.message'));
 
 		// Cleanup the install files
-		if (!is_file($package['packagefile'])) {
+		if (!is_file($package['packagefile']))
+		{
 			$config =& JFactory::getConfig();
-			$package['packagefile'] = $config->getValue('config.tmp_path').'/'.$package['packagefile'];
+			$package['packagefile'] = $config->getValue('config.tmp_path') . '/' . $package['packagefile'];
 		}
 
 		JInstallerHelper::cleanupInstall($package['packagefile'], $package['extractdir']);
@@ -164,39 +187,44 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 	/**
 	 * @param string The class name for the installer
 	 */
-	function _getPackageFromUpload() {
+	function _getPackageFromUpload()
+	{
 		// Get the uploaded file information
-		$userfile = JRequest::getVar('install_extension', null, 'files', 'array' );
+		$userfile = JRequest::getVar('install_extension', null, 'files', 'array');
 
 		// Make sure that file uploads are enabled in php
-		if (!(bool) ini_get('file_uploads')) {
+		if (!(bool) ini_get('file_uploads'))
+		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLFILE'));
 			return false;
 		}
 
 		// Make sure that zlib is loaded so that the package can be unpacked
-		if (!extension_loaded('zlib')) {
+		if (!extension_loaded('zlib'))
+		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLZLIB'));
 			return false;
 		}
 
 		// If there is no uploaded file, we have a problem...
-		if (!is_array($userfile) ) {
+		if (!is_array($userfile))
+		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('NO_FILE_SELECTED'));
 			return false;
 		}
 
 		// Check if there was a problem uploading the file.
-		if ( $userfile['error'] || $userfile['size'] < 1 ) {
+		if ($userfile['error'] || $userfile['size'] < 1)
+		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLUPLOADERROR'));
 			return false;
 		}
 
 		// Build the appropriate paths
 		$config =& JFactory::getConfig();
-		$tmp_dest 	= $config->get('tmp_path').'/'.$userfile['name'];
+		$tmp_dest = $config->get('tmp_path') . '/' . $userfile['name'];
 
-		$tmp_src	= $userfile['tmp_name'];
+		$tmp_src = $userfile['tmp_name'];
 
 		// Move uploaded file
 		$uploaded = JFile::upload($tmp_src, $tmp_dest);
@@ -206,15 +234,18 @@ class IjoomeradvModelExtensions extends JModelLegacy {
 		return $package;
 	}
 
-	function publish($cid = array(), $publish = 1){
-		if (count( $cid )){
-			$cids = implode( ',', $cid );
-			$query = 'UPDATE '.$this->_table_prefix.'extensions'
-					  . ' SET published = ' . intval( $publish )
-					  . ' WHERE  `id` 	 IN ( '.$cids.' )';
-			$this->_db->setQuery( $query );
+	function publish($cid = array(), $publish = 1)
+	{
+		if (count($cid))
+		{
+			$cids = implode(',', $cid);
+			$query = 'UPDATE ' . $this->_table_prefix . 'extensions'
+				. ' SET published = ' . intval($publish)
+				. ' WHERE  `id` 	 IN ( ' . $cids . ' )';
+			$this->_db->setQuery($query);
 
-			if (!$this->_db->query()) {
+			if (!$this->_db->query())
+			{
 				$this->setError($this->_db->getErrorMsg());
 				return false;
 			}
@@ -365,7 +396,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the allow overwrite switch
 	 *
-	 * @param   boolean  $state  Overwrite switch state
+	 * @param   boolean $state Overwrite switch state
 	 *
 	 * @return  boolean  True it state is set, false if it is not
 	 *
@@ -402,7 +433,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the redirect location
 	 *
-	 * @param   string  $newurl  New redirect location
+	 * @param   string $newurl New redirect location
 	 *
 	 * @return  void
 	 *
@@ -428,7 +459,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the upgrade switch
 	 *
-	 * @param   boolean  $state  Upgrade switch state
+	 * @param   boolean $state Upgrade switch state
 	 *
 	 * @return  boolean  True if upgrade, false otherwise
 	 *
@@ -470,8 +501,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Get an installer path by name
 	 *
-	 * @param   string  $name     Path name
-	 * @param   string  $default  Default value
+	 * @param   string $name    Path name
+	 * @param   string $default Default value
 	 *
 	 * @return  string  Path
 	 *
@@ -485,8 +516,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Sets an installer path by name
 	 *
-	 * @param   string  $name   Path name
-	 * @param   string  $value  Path
+	 * @param   string $name  Path name
+	 * @param   string $value Path
 	 *
 	 * @return  void
 	 *
@@ -500,7 +531,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Pushes a step onto the installer stack for rolling back steps
 	 *
-	 * @param   array  $step  Installer step
+	 * @param   array $step Installer step
 	 *
 	 * @return  void
 	 *
@@ -514,8 +545,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Installation abort method
 	 *
-	 * @param   string  $msg   Abort message from the installer
-	 * @param   string  $type  Package type if defined
+	 * @param   string $msg  Abort message from the installer
+	 * @param   string $type Package type if defined
 	 *
 	 * @return  boolean  True if successful
 	 *
@@ -612,7 +643,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Package installation method
 	 *
-	 * @param   string  $path  Path to package source folder
+	 * @param   string $path Path to package source folder
 	 *
 	 * @return  boolean  True if successful
 	 *
@@ -680,7 +711,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Discovered package installation method
 	 *
-	 * @param   integer  $eid  Extension ID
+	 * @param   integer $eid Extension ID
 	 *
 	 * @return  boolean  True if successful
 	 *
@@ -808,7 +839,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Package update method
 	 *
-	 * @param   string  $path  Path to package source folder
+	 * @param   string $path Path to package source folder
 	 *
 	 * @return  boolean  True if successful
 	 *
@@ -870,9 +901,9 @@ class JInstaller extends JAdapter
 	/**
 	 * Package uninstallation method
 	 *
-	 * @param   string   $type        Package type
-	 * @param   mixed    $identifier  Package identifier for adapter
-	 * @param   integer  $cid         Application ID; deprecated in 1.6
+	 * @param   string  $type       Package type
+	 * @param   mixed   $identifier Package identifier for adapter
+	 * @param   integer $cid        Application ID; deprecated in 1.6
 	 *
 	 * @return  boolean  True if successful
 	 *
@@ -915,7 +946,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Refreshes the manifest cache stored in #__extensions
 	 *
-	 * @param   integer  $eid  Extension ID
+	 * @param   integer $eid Extension ID
 	 *
 	 * @return  mixed  void on success, false on error @todo missing return value ?
 	 *
@@ -1018,7 +1049,7 @@ class JInstaller extends JAdapter
 	 * Backward compatible method to parse through a queries element of the
 	 * installation manifest file and take appropriate action.
 	 *
-	 * @param   SimpleXMLElement  $element  The XML node to process
+	 * @param   SimpleXMLElement $element The XML node to process
 	 *
 	 * @return  mixed  Number of queries processed or False on error
 	 *
@@ -1063,7 +1094,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Method to extract the name of a discreet installation sql file from the installation manifest file.
 	 *
-	 * @param   object  $element  The XML node to process
+	 * @param   object $element The XML node to process
 	 *
 	 * @return  mixed  Number of queries processed or False on error
 	 *
@@ -1153,8 +1184,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the schema version for an extension by looking at its latest update
 	 *
-	 * @param   SimpleXMLElement  $schema  Schema Tag
-	 * @param   integer           $eid     Extension ID
+	 * @param   SimpleXMLElement $schema Schema Tag
+	 * @param   integer          $eid    Extension ID
 	 *
 	 * @return  void
 	 *
@@ -1221,8 +1252,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Method to process the updates for an item
 	 *
-	 * @param   SimpleXMLElement  $schema  The XML node to process
-	 * @param   integer           $eid     Extension Identifier
+	 * @param   SimpleXMLElement $schema The XML node to process
+	 * @param   integer          $eid    Extension Identifier
 	 *
 	 * @return  boolean           Result of the operations
 	 *
@@ -1351,10 +1382,10 @@ class JInstaller extends JAdapter
 	 * Method to parse through a files element of the installation manifest and take appropriate
 	 * action.
 	 *
-	 * @param   SimpleXMLElement  $element   The XML node to process
-	 * @param   integer           $cid       Application ID of application to install to
-	 * @param   array             $oldFiles  List of old files (SimpleXMLElement's)
-	 * @param   array             $oldMD5    List of old MD5 sums (indexed by filename with value as MD5)
+	 * @param   SimpleXMLElement $element  The XML node to process
+	 * @param   integer          $cid      Application ID of application to install to
+	 * @param   array            $oldFiles List of old files (SimpleXMLElement's)
+	 * @param   array            $oldMD5   List of old MD5 sums (indexed by filename with value as MD5)
 	 *
 	 * @return  boolean      True on success
 	 *
@@ -1384,8 +1415,8 @@ class JInstaller extends JAdapter
 		else
 		{
 			$pathname = 'extension_root';
-			$extension=(string) $element->children()->attributes()->extensions;
-			$destination = $this->getPath($pathname).'/'.$extension;
+			$extension = (string) $element->children()->attributes()->extensions;
+			$destination = $this->getPath($pathname) . '/' . $extension;
 		}
 
 		/*
@@ -1479,8 +1510,8 @@ class JInstaller extends JAdapter
 	 * Method to parse through a languages element of the installation manifest and take appropriate
 	 * action.
 	 *
-	 * @param   SimpleXMLElement  $element  The XML node to process
-	 * @param   integer           $cid      Application ID of application to install to
+	 * @param   SimpleXMLElement $element The XML node to process
+	 * @param   integer          $cid     Application ID of application to install to
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -1595,8 +1626,8 @@ class JInstaller extends JAdapter
 	 * Method to parse through a media element of the installation manifest and take appropriate
 	 * action.
 	 *
-	 * @param   SimpleXMLElement  $element  The XML node to process
-	 * @param   integer           $cid      Application ID of application to install to
+	 * @param   SimpleXMLElement $element The XML node to process
+	 * @param   integer          $cid     Application ID of application to install to
 	 *
 	 * @return  boolean     True on success
 	 *
@@ -1733,8 +1764,8 @@ class JInstaller extends JAdapter
 	 *
 	 * Copy files from source directory to the target directory
 	 *
-	 * @param   array    $files      Array with filenames
-	 * @param   boolean  $overwrite  True if existing files can be replaced
+	 * @param   array   $files     Array with filenames
+	 * @param   boolean $overwrite True if existing files can be replaced
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -1841,8 +1872,8 @@ class JInstaller extends JAdapter
 	 * Method to parse through a files element of the installation manifest and remove
 	 * the files that were installed
 	 *
-	 * @param   object   $element  The XML node to process
-	 * @param   integer  $cid      Application ID of application to remove from
+	 * @param   object  $element The XML node to process
+	 * @param   integer $cid     Application ID of application to remove from
 	 *
 	 * @return  boolean  True on success
 	 *
@@ -2005,7 +2036,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Copies the installation manifest file to the extension folder in the given client
 	 *
-	 * @param   integer  $cid  Where to copy the installfile [optional: defaults to 1 (admin)]
+	 * @param   integer $cid Where to copy the installfile [optional: defaults to 1 (admin)]
 	 *
 	 * @return  boolean  True on success, False on error
 	 *
@@ -2095,7 +2126,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Is the XML file a valid Joomla installation manifest file.
 	 *
-	 * @param   string  $file  An xmlfile path to check
+	 * @param   string $file An xmlfile path to check
 	 *
 	 * @return  mixed  A SimpleXMLElement, or null if the file failed to parse
 	 *
@@ -2136,10 +2167,10 @@ class JInstaller extends JAdapter
 	/**
 	 * Cleans up discovered extensions if they're being installed some other way
 	 *
-	 * @param   string   $type     The type of extension (component, etc)
-	 * @param   string   $element  Unique element identifier (e.g. com_content)
-	 * @param   string   $folder   The folder of the extension (plugins; e.g. system)
-	 * @param   integer  $client   The client application (administrator or site)
+	 * @param   string  $type    The type of extension (component, etc)
+	 * @param   string  $element Unique element identifier (e.g. com_content)
+	 * @param   string  $folder  The folder of the extension (plugins; e.g. system)
+	 * @param   integer $client  The client application (administrator or site)
 	 *
 	 * @return  object    Result of query
 	 *
@@ -2162,8 +2193,8 @@ class JInstaller extends JAdapter
 	/**
 	 * Compares two "files" entries to find deleted files/folders
 	 *
-	 * @param   array  $old_files  An array of SimpleXMLElement objects that are the old files
-	 * @param   array  $new_files  An array of SimpleXMLElement objects that are the new files
+	 * @param   array $old_files An array of SimpleXMLElement objects that are the old files
+	 * @param   array $new_files An array of SimpleXMLElement objects that are the new files
 	 *
 	 * @return  array  An array with the delete files and folders in findDeletedFiles[files] and findDeletedFiles[folders] respectively
 	 *
@@ -2266,7 +2297,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Loads an MD5SUMS file into an associative array
 	 *
-	 * @param   string  $filename  Filename to load
+	 * @param   string $filename Filename to load
 	 *
 	 * @return  array  Associative array with filenames as the index and the MD5 as the value
 	 *
@@ -2303,7 +2334,7 @@ class JInstaller extends JAdapter
 	 *
 	 * XML Root tag should be 'install' except for languages which use meta file.
 	 *
-	 * @param   string  $path  Full path to XML file.
+	 * @param   string $path Full path to XML file.
 	 *
 	 * @return  array  XML metadata.
 	 *

@@ -1,7 +1,7 @@
 <?php
 /**
  * @copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
- * @license GNU/GPL, see license.txt or http://www.gnu.org/copyleft/gpl.html
+ * @license   GNU/GPL, see license.txt or http://www.gnu.org/copyleft/gpl.html
  * Developed by Tailored Solutions - ijoomer.com
  *
  * ijoomer can be downloaded from www.ijoomer.com
@@ -18,18 +18,20 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
-if (version_compare(JVERSION, '1.6.0', 'ge')){
+if (version_compare(JVERSION, '1.6.0', 'ge'))
+{
 	jimport('joomla.html.parameter');
 }
 
 class plgSystemsmiley extends JPlugin
 {
-	public $plg_name	= "smiley";
+	public $plg_name = "smiley";
 
-	function OnBeforeRender(){
-		$siteUrl  = JURI::root(true);
-		$pluginLivePath = $siteUrl.'/plugins/system/'.$this->plg_name;
-		$document  = JFactory::getDocument();
-		$document->addScript($pluginLivePath.'/smiley.js');
+	function OnBeforeRender()
+	{
+		$siteUrl = JURI::root(true);
+		$pluginLivePath = $siteUrl . '/plugins/system/' . $this->plg_name;
+		$document = JFactory::getDocument();
+		$document->addScript($pluginLivePath . '/smiley.js');
 	}
 }

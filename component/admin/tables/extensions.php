@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -13,20 +13,24 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 
-class TableExtensions extends JTable{
+class TableExtensions extends JTable
+{
 	var $id = null;
 	var $name = null;
 	var $classname = null;
 	var $option = null;
 	var $published = null;
 
-	function TableExtensions(& $db) {
+	function TableExtensions(& $db)
+	{
 		$this->_table_prefix = '#__ijoomeradv_';
-		parent::__construct($this->_table_prefix.'extensions', 'id', $db);
+		parent::__construct($this->_table_prefix . 'extensions', 'id', $db);
 	}
 
-	function bind($array, $ignore = '') {
-		if (key_exists( 'params', $array ) && is_array( $array['params'] )) {
+	function bind($array, $ignore = '')
+	{
+		if (key_exists('params', $array) && is_array($array['params']))
+		{
 			$registry = new JRegistry();
 			$registry->loadArray($array['params']);
 			$array['params'] = $registry->toString();

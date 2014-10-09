@@ -1,5 +1,5 @@
 <?php
- /*--------------------------------------------------------------------------------
+/*--------------------------------------------------------------------------------
 # com_ijoomeradv_1.5 - iJoomer Advanced
 # ------------------------------------------------------------------------
 # author Tailored Solutions - ijoomer.com
@@ -17,10 +17,11 @@ class IjoomeradvModelReport extends JModelList
 
 	function __construct()
 	{
-		$this->db=JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 
-		$config=null;
-		if (empty($config['filter_fields'])) {
+		$config = null;
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'created', 'a.created',
@@ -52,11 +53,12 @@ class IjoomeradvModelReport extends JModelList
 		$app = JFactory::getApplication('administrator');
 
 		$extension = JRequest::getVar('extensiontype', null);
-		if(!empty($extension)){
-			$app->setUserState($this->context.'.extensiontype', $extension);
+		if (!empty($extension))
+		{
+			$app->setUserState($this->context . '.extensiontype', $extension);
 		}
 
-		$extensiontype = $app->getUserState($this->context.'.extensiontype');
+		$extensiontype = $app->getUserState($this->context . '.extensiontype');
 		$this->setState('filter.extensiontype', $extensiontype);
 
 		// List state information.
@@ -65,99 +67,119 @@ class IjoomeradvModelReport extends JModelList
 
 	function delete()
 	{
-		$cids = JRequest::getVar('cid',array());
-		$table = $this->getTable('report','IjoomeradvTable');
-		foreach($cids as $cid) {
-	        if (!$table->delete($cid)) {
-	            $this->setError( $table->getErrorMsg() );
-	            return false;
-	        }
-	    }
-	    return true;
-	}
-
-	function ignore(){
-		$cid = JRequest::getInt('cid',0);
-		if($cid){
-			$table = $this->getTable('report','IjoomeradvTable');
-			$table->load($cid);
-			if($table->status!=1){
-				$table->status=2;
-				if($table->store()){
-					return true;
-				}else{
-					return false;
-				}
-			}else{
+		$cids = JRequest::getVar('cid', array());
+		$table = $this->getTable('report', 'IjoomeradvTable');
+		foreach ($cids as $cid)
+		{
+			if (!$table->delete($cid))
+			{
+				$this->setError($table->getErrorMsg());
 				return false;
 			}
-		}else{
+		}
+		return true;
+	}
+
+	function ignore()
+	{
+		$cid = JRequest::getInt('cid', 0);
+		if ($cid)
+		{
+			$table = $this->getTable('report', 'IjoomeradvTable');
+			$table->load($cid);
+			if ($table->status != 1)
+			{
+				$table->status = 2;
+				if ($table->store())
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
 			return false;
 		}
 	}
 
-	function deletereport(){
-		$cid = JRequest::getInt('cid',0);
+	function deletereport()
+	{
+		$cid = JRequest::getInt('cid', 0);
 		$result = false;
-		if($cid){
-			$table = $this->getTable('report','IjoomeradvTable');
+		if ($cid)
+		{
+			$table = $this->getTable('report', 'IjoomeradvTable');
 			$table->load($cid);
 
-			$extension	= $table->extension;
-			$params 	= json_decode($table->params);
+			$extension = $table->extension;
+			$params = json_decode($table->params);
 
-			if($extension == 'jomsocial'){
-				require_once  JPATH_ROOT . '/components/com_community/libraries/'. 'core.php';
-				switch($params->type){
+			if ($extension == 'jomsocial')
+			{
+				require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php';
+				switch ($params->type)
+				{
 					case 'activity':
-						CFactory::load( 'libraries' , 'activities' );
-						$activity	=& JTable::getInstance( 'Activity' , 'CTable' );
+						CFactory::load('libraries', 'activities');
+						$activity =& JTable::getInstance('Activity', 'CTable');
 						$activity->load($params->content->id);
 						$jomparams = json_decode($activity->params);
 
-						switch($activity->app){
+						switch ($activity->app)
+						{
 							case 'profile':
-								$profile=& JTable::getInstance( 'Profile' , 'CTable' );
+								$profile =& JTable::getInstance('Profile', 'CTable');
 								$profile->load($activity->actor);
-								$profile->status=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$profile->status = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 
-								$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$activity->title = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 
-								$result = ($activity->store())?true:false;
-								$result = ($profile->store())?true:false;
+								$result = ($activity->store()) ? true : false;
+								$result = ($profile->store()) ? true : false;
 								break;
 
 							case 'albums.comment':
 							case 'albums':
-								$activity->content=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-								$result = ($activity->store())?true:false;
+								$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$result = ($activity->store()) ? true : false;
 
-								$wall=& JTable::getInstance( 'Wall' , 'CTable' );
+								$wall =& JTable::getInstance('Wall', 'CTable');
 								$wall->load($jomparams->wallid);
-								$wall->comment=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								break;
 
 							case 'photos':
-								if($jomparams->action=='upload'){
-									$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$photo=& JTable::getInstance( 'Photo' , 'CTable' );
+								if ($jomparams->action == 'upload')
+								{
+									$activity->title = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+									$photo =& JTable::getInstance('Photo', 'CTable');
 									$photo->load($jomparams->photoid);
-									$photo->caption=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+									$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$photo->store();
-								}else{
-									$activity->content=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$wall=& JTable::getInstance( 'Wall' , 'CTable' );
+								}
+								else
+								{
+									$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+									$wall =& JTable::getInstance('Wall', 'CTable');
 									$wall->load($jomparams->wallid);
-									$wall->comment=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+									$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$wall->store();
 								}
-								$result = ($activity->store())?true:false;
+								$result = ($activity->store()) ? true : false;
 								break;
 
 							case 'events.wall':
 							case 'groups.wall':
-								$activity->title=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-								$result = ($activity->store())?true:false;
+								$activity->title = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$result = ($activity->store()) ? true : false;
 								break;
 
 							default:
@@ -167,25 +189,26 @@ class IjoomeradvModelReport extends JModelList
 
 						break;
 					case 'wall':
-						switch ($params->content->app){
+						switch ($params->content->app)
+						{
 							case 'videos':
 							case 'profile.status':
 							case 'albums':
 							case 'groups.wall':
 							case 'events.wall':
-								$wall=& JTable::getInstance( 'Wall' , 'CTable' );
+								$wall =& JTable::getInstance('Wall', 'CTable');
 								$wall->load($params->content->id);
-								$wall->comment=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-								$result = ($wall->store())?true:false;
+								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+								$result = ($wall->store()) ? true : false;
 								break;
 						}
 						break;
 
 					case 'photos':
-						$photo=& JTable::getInstance( 'Photo' , 'CTable' );
+						$photo =& JTable::getInstance('Photo', 'CTable');
 						$photo->load($params->content->id);
-						$photo->caption=JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-						$result = ($photo->store())?true:false;
+						$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
+						$result = ($photo->store()) ? true : false;
 						break;
 
 					default:
@@ -195,16 +218,22 @@ class IjoomeradvModelReport extends JModelList
 			}
 
 			//Set status in report table
-			if($result){
-				$table = $this->getTable('report','IjoomeradvTable');
+			if ($result)
+			{
+				$table = $this->getTable('report', 'IjoomeradvTable');
 				$table->load($cid);
-				$table->status=1;
-				if($table->store()){
+				$table->status = 1;
+				if ($table->store())
+				{
 					return true;
-				}else{
+				}
+				else
+				{
 					return false;
 				}
-			}else{
+			}
+			else
+			{
 				return false;
 			}
 
@@ -214,32 +243,36 @@ class IjoomeradvModelReport extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
 
-		$select= 'SELECT a.* ';
+		$select = 'SELECT a.* ';
 		$where = 'WHERE 1 ';
 		$groupby = '';
 
 
 		//filter by extension type
 		$extensiontype = $this->getState('filter.extensiontype');
-		if(!empty($extensiontype) && $extensiontype!='default'){
+		if (!empty($extensiontype) && $extensiontype != 'default')
+		{
 			$where .= "AND extension='$extensiontype' ";
 		}
 
-		$cid = JRequest::getVar('cid',0);
-		if($cid){
-			$where .= 'AND a.params=(SELECT params FROM #__ijoomeradv_report WHERE id='.$cid.')';
-		}else{
-			$select 	.= ',count(a.id) as itemcount ';
-			$groupby 	.= 'GROUP BY a.params ';
+		$cid = JRequest::getVar('cid', 0);
+		if ($cid)
+		{
+			$where .= 'AND a.params=(SELECT params FROM #__ijoomeradv_report WHERE id=' . $cid . ')';
+		}
+		else
+		{
+			$select .= ',count(a.id) as itemcount ';
+			$groupby .= 'GROUP BY a.params ';
 		}
 
-		$query = $select.
-				  'FROM `#__ijoomeradv_report` AS a '.
-				  $where.' '.
-				  $groupby.'ORDER BY '.$this->getState('list.ordering','id').' '.$this->getState('list.direction', 'ASC');
+		$query = $select .
+			'FROM `#__ijoomeradv_report` AS a ' .
+			$where . ' ' .
+			$groupby . 'ORDER BY ' . $this->getState('list.ordering', 'id') . ' ' . $this->getState('list.direction', 'ASC');
 
 		return $query;
 	}
