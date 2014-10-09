@@ -50,7 +50,7 @@ class ijoomeradvHelper
 			{
 				require_once IJ_SITE . '/encryption/MCrypt.php';
 				$encode = JRequest::getVar('reqObject');
-				$RSA = new MCrypt();
+				$RSA = new MCrypt;
 				$decoded = $RSA->decrypt($encode);
 				$this->mainframe->IJObject->reqObject = json_decode($decoded);
 			}
@@ -353,7 +353,7 @@ class IJException
 	{
 		$mainframe = JFactory::getApplication();
 
-		$error = new stdClass();
+		$error = new stdClass;
 		$error->class = ($mainframe->IJObject->response->errClass) ? $mainframe->IJObject->response->errClass : NULL;
 		$error->file = ($mainframe->IJObject->response->errFile) ? $mainframe->IJObject->response->errFile : NULL;
 		$error->function = ($mainframe->IJObject->response->errFunction) ? $mainframe->IJObject->response->errFunction : NULL;

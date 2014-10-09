@@ -24,7 +24,7 @@ class wall
 
 	function __construct()
 	{
-		$this->jomHelper = new jomHelper();
+		$this->jomHelper = new jomHelper;
 		$this->date_now = JFactory::getDate();
 		$this->mainframe = JFactory::getApplication();
 		$this->db = JFactory::getDBO(); // set database object
@@ -76,7 +76,7 @@ class wall
 			$pageNO = ($limit * ($pageNO - 1));
 		}
 
-		$act = new CActivities();
+		$act = new CActivities;
 
 		switch ($type)
 		{
@@ -1020,7 +1020,7 @@ class wall
 
 				if ($day != $row->getDayDiff())
 				{
-					$act = new stdClass();
+					$act = new stdClass;
 					$act->type = 'content';
 					$day = $row->getDayDiff();
 
@@ -1057,7 +1057,7 @@ class wall
 					}
 				}
 
-				$act = new stdClass();
+				$act = new stdClass;
 				$act->type = 'content';
 
 				// Set to compact view if necessary
@@ -1260,7 +1260,7 @@ class wall
 					}
 				}
 
-				$act1 = new CActivities();
+				$act1 = new CActivities;
 
 				// Format the title
 				$oRow->title = ($plgObj) ? $plgObj->_censor($oRow->title) : $oRow->title;
@@ -1310,7 +1310,7 @@ class wall
 			}
 		}
 
-		$objActivity = new stdClass();
+		$objActivity = new stdClass;
 		$objActivity->data = $htmlData;
 
 		return $objActivity;
@@ -1523,7 +1523,7 @@ class wall
 			if (COwnerHelper::isMine($this->IJUserID, $uniqueID))
 			{
 				//save the message
-				$status = new CommunityModelStatus();
+				$status = new CommunityModelStatus;
 				$status->update($this->IJUserID, $rawMessage, $privacy);
 
 				//set user status for current session.
@@ -1548,7 +1548,7 @@ class wall
 
 			//push to activity stream
 			$privacyParams = $this->my->getParams();
-			$act = new stdClass();
+			$act = new stdClass;
 			$act->cmd = 'profile.status.update';
 			$act->actor = $this->IJUserID;
 			$act->target = $uniqueID;
@@ -1590,7 +1590,7 @@ class wall
 			$match = array('{actor}', '{stream}');
 			$replace = array($usr->name, JText::_('COM_COMMUNITY_SINGULAR_STREAM'));
 			$message = str_replace($match, $replace, JText::sprintf('COM_COMMUNITY_ACITIVY_WALL_EMAIL_SUBJECT'));
-			$obj = new stdClass();
+			$obj = new stdClass;
 			$obj->id = null;
 			$obj->detail = $pushOptions;
 			$obj->tocount = count($recipient->id);
@@ -1635,7 +1635,7 @@ class wall
 		$act->load($actid);
 
 		//who can add comment
-		$obj = new stdClass();
+		$obj = new stdClass;
 
 		if ($act->groupid > 0)
 		{
@@ -2210,7 +2210,7 @@ class wall
 				$pushOptions['detail']['content_data'] = $pushcontentdata;
 				$pushOptions = gzcompress(json_encode($pushOptions));
 
-				$obj = new stdClass();
+				$obj = new stdClass;
 				$obj->id = null;
 				$obj->detail = $pushOptions;
 				$obj->tocount = count($puserlist);
@@ -2270,7 +2270,7 @@ class wall
 		}
 
 		CFactory::load('models', 'activities');
-		$model = new CommunityModelActivities();
+		$model = new CommunityModelActivities;
 		$filter = JFilterInput::getInstance();
 		$type = $filter->clean($type, 'string');
 		$uniqueID = $filter->clean($uniqueID, 'int');
@@ -2542,7 +2542,7 @@ class wall
 			{
 				$usr = $this->jomHelper->getUserDetail($comment->post_by);
 				CFactory::load('libraries', 'comment');
-				$com_obj = new CComment();
+				$com_obj = new CComment;
 				$wall = $com_obj->stripCommentData($comment->comment);
 				$comm = htmlspecialchars($wall, ENT_QUOTES, 'UTF-8');
 				$dates = $this->jomHelper->getDate($comment->dt);

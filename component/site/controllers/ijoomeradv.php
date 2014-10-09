@@ -65,7 +65,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 		header("content-type: application/json"); // set the header content type to JSON format
 		require_once IJ_HELPER . '/helper.php'; // import ijoomeradv helper file
-		$IJHelperObj = new ijoomeradvHelper(); // create hepler object
+		$IJHelperObj = new ijoomeradvHelper; // create hepler object
 		$encryption = $IJHelperObj->getencryption_config();
 		if ($encryption == 1)
 		{
@@ -73,7 +73,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			// add  code for replace back slases to forward slases.
 			$json = str_replace('\\\\', '/', $json);
 			require_once IJ_SITE . '/encryption/MCrypt.php';
-			$RSA = new MCrypt();
+			$RSA = new MCrypt;
 			$encoded = $RSA->encrypt($json);
 			echo $encoded;
 			exit;
@@ -243,7 +243,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		{
 			case 'com_content':
 				require_once JPATH_COMPONENT . '/extensions/icms/helper.php';
-				$helperClass = new icms_helper();
+				$helperClass = new icms_helper;
 				$urlResults = $helperClass->getParseData($results);
 				break;
 		}
@@ -375,7 +375,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 						case 'jomsocial':
 							require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php';
 							require_once JPATH_COMPONENT_SITE . '/extensions/jomsocial/' . "helper.php";
-							$jomHelper = new jomHelper();
+							$jomHelper = new jomHelper;
 							$jomsocial_version = $jomHelper->getjomsocialversion();
 
 							if ($jomsocial_version >= 3)
@@ -418,7 +418,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		$homeMenu = $model->getHomeMenu();
 		if ($homeMenu)
 		{
-			$homeMenuobj = new stdClass();
+			$homeMenuobj = new stdClass;
 			$homeMenuobj->itemid = $homeMenu->id;
 			$homeMenuobj->itemcaption = $homeMenu->title;
 			$viewname = explode('.', $homeMenu->views);
@@ -440,7 +440,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		if (file_exists(JPATH_COMPONENT_SITE . '/extensions/jomsocial/' . "helper.php") && file_exists(JPATH_SITE . '/components/com_community/' . "community.php"))
 		{
 			require_once JPATH_COMPONENT_SITE . '/extensions/jomsocial/' . "helper.php";
-			$jomHelper = new jomHelper();
+			$jomHelper = new jomHelper;
 			$jomsocial_version = $jomHelper->getjomsocialversion();
 			$jsonarray['configuration']['versioninfo']["jomsocial"] = $jomsocial_version;
 		}
@@ -918,7 +918,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 			$app = JFactory::getApplication();
 			require_once JPATH_SITE . '/components/com_contact/models/contact.php';
-			$ContactModelContact = new ContactModelContact();
+			$ContactModelContact = new ContactModelContact;
 			$params = JComponentHelper::getParams('com_contact');
 			$contact = $ContactModelContact->getItem($toID);
 			$params->merge($contact->params);

@@ -22,7 +22,7 @@ class ijoomeradvAdminHelper
 
 	function getComponent($option)
 	{
-		$version = new JVersion();
+		$version = new JVersion;
 
 		$query = "SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled
 				FROM #__extensions as e

@@ -52,7 +52,7 @@ class ijoomeradvViewReport extends JViewLegacy
 		$this->request_url = $uri;
 
 		//set default list all in extension list
-		$defaultext = new stdClass();
+		$defaultext = new stdClass;
 		$defaultext->name = JText::_('COM_IJOOMERADV_SELECT_EXTENSION');
 		$defaultext->classname = 'default';
 		array_unshift($this->extension, $defaultext);

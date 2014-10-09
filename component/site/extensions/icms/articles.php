@@ -39,7 +39,7 @@ class articles
 	function archive()
 	{
 		include_once JPATH_SITE . '/components/com_content/models/archive.php';
-		$ContentModelArchive = new ContentModelArchive();
+		$ContentModelArchive = new ContentModelArchive;
 		$items = $ContentModelArchive->getItems();
 
 		$total = count($items);
@@ -280,7 +280,7 @@ class articles
 	private function getarticleDetail($id)
 	{
 		include_once JPATH_SITE . '/components/com_content/models/article.php';
-		$ContentModelArticle = new ContentModelArticle();
+		$ContentModelArticle = new ContentModelArticle;
 		$items = $ContentModelArticle->getItem($id);
 
 		if ($items->params->get('access-view'))
