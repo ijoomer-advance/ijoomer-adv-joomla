@@ -40,7 +40,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 	function getUsers()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT `username`
 				FROM `#__users`
 				WHERE `id` in (SELECT `userid` FROM #__ijoomeradv_users)";
@@ -51,7 +51,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 	function getPushNotifications()
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT *
 				FROM `#__ijoomeradv_push_notification`
 				ORDER BY `id` DESC";
@@ -62,9 +62,9 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 	function store()
 	{
-		$row =& $this->getTable();
+		$row =  $this->getTable();
 		$data = JRequest::get('post');
-		$db =& JFactory::getDBO();
+		$db =  JFactory::getDBO();
 
 		$query = "SELECT `name`, `value`
 				FROM `#__ijoomeradv_config`

@@ -50,7 +50,7 @@ class com_ijoomeradvInstallerScript
 	public function install(JAdapterInstance $adapter)
 	{
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		// set default menu items if no menu present
 		$query = "SELECT count(*)

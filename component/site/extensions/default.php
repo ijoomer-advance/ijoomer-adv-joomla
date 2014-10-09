@@ -277,7 +277,7 @@ class default_menu
 
 	public function setRequiredInput($extension, $extView, $extTask, $remoteTask, $menuoptions, $data)
 	{
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$options = null;
 
 		switch ($extTask)

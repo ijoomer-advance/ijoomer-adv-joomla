@@ -84,7 +84,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 
 	function setExtConfig($data)
 	{
-		$row =& $this->getTable();
+		$row =  $this->getTable();
 		$row->load($data['extid']);
 
 		include_once JPATH_COMPONENT_SITE . '/extensions/' . $row->classname . '/' . $row->classname . '.php';
@@ -154,7 +154,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			return false;
 		}
 
-		$installer =& JInstaller::getInstance();
+		$installer =  JInstaller::getInstance();
 		if (!$installer->install($package['dir']))
 		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION_ERROR', JText::_($package['type']), JText::_('COM_IJOOMERADV_ERROR'));
@@ -175,7 +175,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		// Cleanup the install files
 		if (!is_file($package['packagefile']))
 		{
-			$config =& JFactory::getConfig();
+			$config =  JFactory::getConfig();
 			$package['packagefile'] = $config->getValue('config.tmp_path') . '/' . $package['packagefile'];
 		}
 
@@ -221,7 +221,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		}
 
 		// Build the appropriate paths
-		$config =& JFactory::getConfig();
+		$config =  JFactory::getConfig();
 		$tmp_dest = $config->get('tmp_path') . '/' . $userfile['name'];
 
 		$tmp_src = $userfile['tmp_name'];

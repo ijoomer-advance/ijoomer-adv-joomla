@@ -147,7 +147,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	{
 		$extTask = IJReq::getExtTask(); // get requested extension task (function inside view file)
 		$extView = IJReq::getExtView(); // get requested extension view (file name of extension)
-		$my =& JFactory::getUser();
+		$my =  JFactory::getUser();
 
 		if ($my->id > 0)
 		{
@@ -604,7 +604,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 */
 	function logout()
 	{
-		$my =& JFactory::getUser();
+		$my =  JFactory::getUser();
 		if (!$my->id)
 		{
 			$jsonarray['code'] = 400; // if userid not passed or null
@@ -1012,7 +1012,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			echo $version;
 			if ($extension->name != 'ICMS')
 			{
-				$db =& JFactory::getDBO();
+				$db =  JFactory::getDBO();
 				$query = "SELECT `manifest_cache`
 						FROM #__extensions
 						WHERE `element`='{$extension->option}'";

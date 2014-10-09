@@ -1093,7 +1093,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	public function reorder($ids, $inc)
 	{
 		$menutype = JRequest::getVar('menutype');
-		$table =& $this->getTable();
+		$table =  $this->getTable();
 		$table->load($ids[0]);
 		$table->move($inc, 'menutype=' . $menutype);
 	}

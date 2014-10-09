@@ -288,7 +288,7 @@ class jomHelper
 
 	function updateLatLong($uid = 0, $lat = 255, $long = 255)
 	{
-		$db =& JFactory::getDBO();
+		$db =  JFactory::getDBO();
 		if ($uid == 0)
 			return false;
 
@@ -426,7 +426,7 @@ class jomHelper
 		$utc_date = new JDate($str);
 		$date = new JDate($utc_date->toUnix() + $off * 3600);
 
-		$my =& JFactory::getUser();
+		$my =  JFactory::getUser();
 		$cMy = CFactory::getUser();
 
 		//J1.6 returns timezone as string, not integer offset.
@@ -574,7 +574,7 @@ class jomHelper
 		}
 
 		// getting pending friend request count
-		$friendModel =& CFactory::getModel('friends');
+		$friendModel =  CFactory::getModel('friends');
 		$pendingFren = $friendModel->countPending($this->IJUserID);
 		$jsonarray['notification']['friendNotification'] = intval($pendingFren);
 
@@ -600,7 +600,7 @@ class jomHelper
 		CFactory::load('helpers', 'content');
 		$notifCount = 5;
 		$notificationModel = CFactory::getModel('notification');
-		$myParams =& $this->my->getParams();
+		$myParams =  $this->my->getParams();
 		$sinceWhere = '';
 		$type = 0;
 		$since = $myParams->get('lastnotificationlist', '');
@@ -652,7 +652,7 @@ class jomHelper
 
 		if ($element == 'groups.discussion' || $element == 'groups.discussion.reply' || $element == 'photos.album' || $element == 'albums' || $element == 'photos.wall.create' || $element == 'cover.upload')
 		{
-			$act =& JTable::getInstance('Activity', 'CTable');
+			$act =  JTable::getInstance('Activity', 'CTable');
 			$act->load($itemId);
 			$itemId = $act->like_id;
 		}
@@ -675,7 +675,7 @@ class jomHelper
 		}
 		else
 		{
-			$act =& JTable::getInstance('Activity', 'CTable');
+			$act =  JTable::getInstance('Activity', 'CTable');
 			$act->load($itemId);
 			$userid = $act->actor;
 		}
@@ -686,7 +686,7 @@ class jomHelper
 		switch ($element)
 		{
 			case 'photo':
-				$photo =& JTable::getInstance('Photo', 'CTable');
+				$photo =  JTable::getInstance('Photo', 'CTable');
 				$photo->load($itemId);
 				if ($photo->id)
 				{
@@ -764,7 +764,7 @@ class jomHelper
 			case 'album':
 				break;
 			case 'videos':
-				$video =& JTable::getInstance('Video', 'CTable');
+				$video =  JTable::getInstance('Video', 'CTable');
 				$video->load($itemId);
 				if ($video->id)
 				{
@@ -865,7 +865,7 @@ class jomHelper
 				}
 				break;
 			case 'profile.status':
-				$stream =& JTable::getInstance('Activity', 'CTable');
+				$stream =  JTable::getInstance('Activity', 'CTable');
 				$stream->load($itemId);
 
 				if ($stream->id)
@@ -947,7 +947,7 @@ class jomHelper
 
 		if ($element == 'groups.discussion' || $element == 'groups.discussion.reply' || $element == 'photos.album')
 		{
-			$act =& JTable::getInstance('Activity', 'CTable');
+			$act =  JTable::getInstance('Activity', 'CTable');
 			$act->load($itemId);
 			$itemId = $act->like_id;
 		}
@@ -994,7 +994,7 @@ class jomHelper
 
 		if ($element == 'groups.discussion' || $element == 'groups.discussion.reply' || $element == 'photos.album' || $element == 'albums' || $element == 'photos.wall.create' || $element == 'cover.upload')
 		{
-			$act =& JTable::getInstance('Activity', 'CTable');
+			$act =  JTable::getInstance('Activity', 'CTable');
 			$act->load($itemId);
 			$itemId = $act->like_id;
 		}
@@ -1024,7 +1024,7 @@ class jomHelper
 	function getLikes($element, $itemId, $userId)
 	{
 		require_once JPATH_SITE . '/components/com_community/tables/like.php';
-		$like =& JTable::getInstance('Like', 'CTable');
+		$like =  JTable::getInstance('Like', 'CTable');
 		$like->loadInfo($element, $itemId);
 		CFactory::load('libraries', 'like');
 		$likes = new CLike;
@@ -1126,7 +1126,7 @@ class jomHelper
 		}
 
 		// get access level and profile view permission.
-		$params =& $userObj->getParams();
+		$params =  $userObj->getParams();
 		$access_limit = $this->getUserAccess($frontUser, $userObj->_userid);
 		$profileview = $params->get('privacyProfileView'); // get profile view access
 
@@ -1512,10 +1512,10 @@ class jomHelper
 		$photoid = $param->get('photoid', false);
 		$count = $param->get('count', 1);
 
-		$photos =& JTable::getInstance('photo', 'CTable');
+		$photos =  JTable::getInstance('photo', 'CTable');
 		$photos->load($photoid);
 
-		$album =& JTable::getInstance('Album', 'CTable');
+		$album =  JTable::getInstance('Album', 'CTable');
 		$album->load($photos->albumid);
 
 		if ($count == 1 && !empty($html_data->title))

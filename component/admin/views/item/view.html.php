@@ -39,7 +39,7 @@ class IjoomeradvViewItem extends JViewLegacy
 		$extention = explode('.', $this->form->getValue('views'));
 		$extention = $extention[0];
 
-		$lang =& JFactory::getLanguage();
+		$lang =  JFactory::getLanguage();
 		$base_dir = JPATH_COMPONENT_SITE . '/' . "extensions" . '/' . $extention;
 		$lang->load($extention, $base_dir, null, true);
 
