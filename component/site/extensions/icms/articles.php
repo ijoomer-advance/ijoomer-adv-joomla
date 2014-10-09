@@ -381,11 +381,13 @@ class articles {
 			$jsonarray['article']['created']	= $items->created;
 			$jsonarray['article']['author']		= $items->author;
 			$jsonarray['article']['shareLink']	= JURI::base()."index.php?option=com_content&view=article&id={$items->id}:{$items->alias}&catid={$items->catid}";
-			//$jsonarray['article']['hits'] 			= $items->hits;
-			//$jsonarray['article']['publish_on']		= JHtml::_('date', $items->publish_up, JText::_('DATE_FORMAT_LC2'));
-		}else{
-			$jsonarray['code'] 						= 706;
+
 		}
+		else
+		{
+			$jsonarray['code'] = 706;
+		}
+
 		return $jsonarray;
 	}
 

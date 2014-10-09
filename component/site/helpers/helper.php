@@ -296,9 +296,6 @@ class IJPushNotif{
 	}
 }
 
-
-
-
 class IJException{
 	/**
 	 * @uses to set error
@@ -475,7 +472,6 @@ class SimpleImage {
      	$this->image = $new_image;
    	}
 }
-
 
 /*
  * copied from class.image-resize.php

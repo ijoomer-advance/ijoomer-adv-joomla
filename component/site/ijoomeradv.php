@@ -37,8 +37,6 @@ set_error_handler( array( 'ijoomeradvError', 'ijErrorHandler' ));//set custom er
 $IJHelperObj= new ijoomeradvHelper(); // create hepler object
 $IJHelperObj->getRequestedObject(); // get requested json object
 
-//defined ( 'IJ_JOMSOCIAL_VERSION' ) or define ( 'IJ_JOMSOCIAL_VERSION', $IJHelperObj->getJomSocialVersion() ); // define jomsocial version
-
 $controller = IJReq::getView(); // get the view
 $path = IJ_CONTROLLER .'/'. $controller . '.php';
 if (file_exists ( $path )) { // check if controller file exist

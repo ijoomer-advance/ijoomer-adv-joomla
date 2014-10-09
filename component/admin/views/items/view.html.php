@@ -41,12 +41,6 @@ class IjoomeradvViewItems extends JViewLegacy
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
 
-		// Check for errors.
-		/*if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
-		}*/
-
 		$this->ordering = array();
 
 		// Preprocess the list of items to find ordering divisions.
@@ -56,10 +50,11 @@ class IjoomeradvViewItems extends JViewLegacy
 
 		//menu filter
 		$menuOptionsList	= array();
-		//$menuOptionsList[] = JHtml::_('select.option', '*', JText::_('COM_IJOOMER_MENU_MENUTYPE'));
+
 		foreach ($this->menus as $menus) {
 			$menuOptionsList[] = JHtml::_('select.option', $menus->id, JText::_($menus->title));
 		}
+
 		$this->menuOptions = $menuOptionsList;
 
 		// Levels filter.

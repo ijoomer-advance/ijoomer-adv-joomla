@@ -36,22 +36,12 @@ defined('_JEXEC') or die;
 include 'MCrypt.php';
 $RSA = new MCrypt();
 
-/* Example */
-/*echo"<i>Keys:</i><br />";
-$keys = $RSA->generate_keys ('9990454949', '9990450271', 1);
-$new_keys = $RSA->generate_keys ('1234567890', '1234567890', 1);*/
-/*print "<pre>";
-print_r($new_keys);
-exit;*/
 $key = "tailoredsolution";
 
-//$message1 = "¥ Á á å ã Ã æ Ç Ñ Õ Ü ? = * & % $ # @ ! ¿ © €";
-//$message1 = "{username:salim,password:salim123}";
 $message1 = "Hello all";
 
 $encoded1 =  $RSA->encrypt($message1);
 
-//$encoded1 = "adb3e4882c7904196d751dfd8637202a";
 $decoded1 =  $RSA->decrypt($encoded1);
 
 echo "<b>Message:</b> $message1<br />\n";

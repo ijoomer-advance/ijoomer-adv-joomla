@@ -67,15 +67,8 @@ class jomHelper{
 		return $result;
 	}
 
-	function getjomsocialversion(){
-
-		/*$parser		=& JFactory::getXMLParser('Simple');
-		$xml		= JPATH_ROOT.'/administrator/components/com_community/community.xml';
-		$parser->loadFile( $xml );
-		$doc		=& $parser->document;
-		$element	=& $doc->getElementByPath( 'version' );
-		return	$version= $element->data();*/
-
+	function getjomsocialversion()
+	{
 		$xmlfile		= JPATH_ROOT.'/administrator/components/com_community/community.xml';
 		$xml = JFactory::getXML($xmlfile,1);
 		$version = (string)$xml->version;
@@ -201,7 +194,7 @@ class jomHelper{
 		    	'data.type' => $whentype,
 		    	'data.totalcount' =>$totMsg,
 		    	'data.badge' => 1,
-	            'data.message' => $messageText //TODO Add more params with just simple data instead
+	            'data.message' => $messageText // @TODO Add more params with just simple data instead
 	        );
 	        $ch = curl_init();
 
@@ -250,12 +243,11 @@ class jomHelper{
 		$fp = stream_socket_client($server, $err, $errstr, 60, STREAM_CLIENT_CONNECT, $ctx);
 		// for production change the server to ssl://gateway.push.apple.com:219
 
-		if (!$fp){
-			//print "Failed to connect $err $errstr\n";
+		if (!$fp)
+		{
 			return;
 		}
-		//
-		//$payload = '{"aps": {"badge": 1, "alert": "Hello from iJoomer!", "sound": "cow","type":"online"}}';//json_encode($body);
+
 		$payload = json_encode($body);
 
 		$msg = chr(0) . pack("n",32) . pack('H*', str_replace(' ', '', $device_token)) . pack("n",strlen($payload)) . $payload;
@@ -522,8 +514,6 @@ class jomHelper{
 		$notifCount = 5;
 		$notificationModel	= CFactory::getModel( 'notification' );
 		$myParams			=&	$this->my->getParams();
-
-		//$notifications = $notificationModel->getNotificationCount($this->IJUserID,'0',$myParams->get('lastnotificationlist',''));
 		$sinceWhere = '';
 		$type = 0;
 		$since = $myParams->get('lastnotificationlist','');
@@ -664,24 +654,6 @@ class jomHelper{
 				}
 				break;
 			case 'album':
-				/*$album	=& JTable::getInstance( 'Album' , 'CTable' );
-				$album->load( $itemId );
-				if($album->id){
-					$query="SELECT `jomsocial_params`,`device_token`,`device_type`
-						FROM #__ijoomeradv_users
-						WHERE `userid`={$album->creator}";
-					$this->db->setQuery($query);
-					$puser=$this->db->loadObjectList();
-					$ijparams = new CParameter($puser->jomsocial_params);
-					if($ijparams->get('pushnotif_videos_like')==1 && $album->creator!=$this->IJUserID && !empty($puser)){
-						$sendpushflag = true;
-
-						$usr=$this->getUserDetail($this->IJUserID);
-						$search = array('{actor}','{album}');
-						$replace = array($usr->name,$album->title);
-						$message = str_replace($search,$replace,JText::_('COM_COMMUNITY_ALBUM_LIKE_EMAIL_SUBJECT'));
-					}
-				}*/
 				break;
 			case 'videos':
 				$video			=& JTable::getInstance( 'Video' , 'CTable' );
@@ -1327,7 +1299,6 @@ class jomHelper{
 
 			case 'cover.upload':
 				$user 	= CFactory::getUser($html_data->actor);
-				//$params = new JRegistry($html_data->params);
 				$params = new CParameter($html_data->params);
 				$type 	= $params->get('type');
 
@@ -1338,9 +1309,6 @@ class jomHelper{
 					$id = $type.'id';
 					$cTable = JTable::getInstance(ucfirst($type),'CTable');
 					$cTable->load($html_data->$id);
-
-					//$act =& JTable::getInstance('Activity', 'CTable');
-					//$act->load($itemId);
 
 					if($type == 'group')
 					{
@@ -1426,18 +1394,18 @@ class jomHelper{
     			$sec 	= explode('.',$duration[2]);
 
     			$voicefiletext = $randomname.'.'.$fileext;
-    			//$durationtext = $minute.':'.$sec[0];
+
     			$durationtext = (($minute*60)+$sec[0]);
 
     			$fileinfo['voicetext'] 	=  '{voice}'.$voicefiletext.'&'.$durationtext.'{/voice}';
     			$fileinfo['voice3gppath']= $this->addAudioFile('{voice}'.$voicefiletext.'&'.$durationtext.'{/voice}');
 				return $fileinfo;
 			}else{
-				//TODO File not uploded sucessfully
+				// @TODO File not uploded sucessfully
 				return false;
 			}
 		}else{
-			//TODO bad extension for file uppload
+			// @TODO bad extension for file uppload
 			return false;
 		}
 	}

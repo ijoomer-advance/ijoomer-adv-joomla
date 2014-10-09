@@ -33,10 +33,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				<th class="title">
 					<?php echo JText::_('COM_IJOOMERADV_REPORT_ITEM'); ?>
 				</th>
-				<!--<th class="title" width="10%">
-					<?php echo JText::_('COM_IJOOMERADV_REPORT_EXTENSIONS'); ?>
-				</th>
-				--><th class="title" width="20%">
+				<th class="title" width="20%">
 					<?php echo JText::_('COM_IJOOMERADV_REPORT_VIEW'); ?>
 				</th>
 				<th width="5%">
@@ -60,13 +57,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 						<?php echo JHtml::_('grid.id', $key, $value->id); ?>
 					</td>
 					<td class="center">
-						<?php //echo (isset($params->content->file))?JURI::root().'components/com_ijoomeradv/assets/voice'.$params->content->file:'';?>
 						<?php echo (isset($params->content->file))?'<div>{voice}ijoomeradv_9344d.3gp&5{/voice}<div>':'';?>
 					</td>
-					<!--<td class="center">
-						<?php echo $value->extension;?>
-					</td>
-					--><td class="center">
+					<td class="center">
 						<a href="<?php echo JRoute::_($this->request_url).'&layout=detail&cid='.$value->id;?>">Reports [<?php echo $value->itemcount;?>]</a>
 					</td>
 					<td class="center">

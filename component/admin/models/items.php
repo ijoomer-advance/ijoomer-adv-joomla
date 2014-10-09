@@ -169,15 +169,19 @@ class IjoomeradvModelItems extends JModelList
 		$app	= JFactory::getApplication();
 
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published)) {
 			$published = '= '.(int) $published;
-		} elseif ($published === '') {
+		}
+		elseif ($published === '')
+		{
 			$published = 'IN (0, 1)';
-		}else{
+		}
+		else
+		{
 			$published = 'IN (0, 1, -2)';
 		}
 
-		//$menutype = $this->getUserStateFromRequest($this->context.'.filter.menutype', 'filter_menutype', 0, 'int');
 		// Select all fields from the table.
 		$menutype = $this->getState('filter.menutype');
 		if (is_numeric($menutype)) {

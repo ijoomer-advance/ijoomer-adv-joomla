@@ -13,8 +13,6 @@ defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
 
-//jimport ( 'joomla.html.pane' );
-//$pane = JPane::getInstance ('tabs');
 $options = array(
 	'onActive' => 'function(title, description){
 		description.setStyle("display", "block");
@@ -164,18 +162,12 @@ $options = array(
 				endforeach;?>
 				<?php if($keyval == ''){?>
 				<td>
-				<?php
-					//$md5_hash = md5(rand(0,999));
-					//We don't need a 32 character long string so we trim it down to 5
-					//$security_code = substr($md5_hash, 15, 5);
-						?>
 							<form>
 			    				<label for="length" style="display:none;">Length: </label>
 			    				<input type="text" id="length" name="length" value="16" style="display:none;">
 							    <label for="characters" style="display:none;">Characters: </label>
 							    <input type="text" id="chars" name="chars" value="abcde" style="display:none;">
 							    <label for="gencode" style="display:none;"> Generated Code: </label>
-							    <!-- input type="text" id="IJOOMER_ENC_KEY" name="IJOOMER_ENC_KEY" style="display:none;"-->
 							   	<label style="display:none;"> Generate Key: </label>
 							   	<button class="btn btn-small" type="button" id="generate" style="margin-top:-10px;">Generate&nbsp;Key</button>
 							</form>

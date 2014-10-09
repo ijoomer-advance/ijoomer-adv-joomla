@@ -127,10 +127,6 @@ $saveOrder 	= ($listOrder == 'a.ordering' && $listDirn == 'asc');
 			endforeach; ?>
 		</tbody>
 	</table>
-	<?php //Load the batch processing form.is user is allowed ?>
-	<?php //if($user->authorize('core.create', 'com_ijoomeradv') || $user->authorize('core.edit', 'com_ijoomeradv')) : ?>
-		<?php //echo $this->loadTemplate('batch'); ?>
-	<?php //endif;?>
 
 	<div>
 		<input type="hidden" name="task" value="" />

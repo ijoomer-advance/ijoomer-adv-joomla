@@ -161,7 +161,7 @@ class IjoomeradvModelReport extends JModelList
 								break;
 
 							default:
-								//TODO : Default
+								// @TODO : Default
 								break;
 						}
 
@@ -189,7 +189,7 @@ class IjoomeradvModelReport extends JModelList
 						break;
 
 					default:
-						//TODO : Default
+						// @TODO : Default
 						break;
 				}
 			}
@@ -210,31 +210,6 @@ class IjoomeradvModelReport extends JModelList
 
 		}
 	}
-
-	/*protected function getListQuery()
-	{
-		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-
-		$where = 'WHERE 1 ';
-		$extensiontype = $this->getState('filter.extensiontype');
-		if(!empty($extensiontype) && $extensiontype!='default'){
-			$where .= "AND extension='$extensiontype' ";
-		}
-
-		$cid = JRequest::getVar('cid',0);
-		if($cid){
-			$where .= 'AND a.id ='.$cid;
-		}
-
-		$query = 'SELECT a.*,count(a.id) as itemcount
-				  FROM `#__ijoomeradv_report` AS a '.
-				  $where.'
-				  GROUP BY a.params ORDER BY '.$this->getState('list.ordering','id').' '.$this->getState('list.direction', 'ASC');
-
-		return $query;
-	}*/
 
 	protected function getListQuery()
 	{
