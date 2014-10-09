@@ -43,7 +43,6 @@ class MCrypt
 		$size = mcrypt_get_block_size('rijndael-128', 'cbc');
 		$input = $this->pkcs5_pad($input, $size);
 		$iv = '0000000000000000';
-		//$key = 'tailoredsolution';
 		$td = mcrypt_module_open('rijndael-128', '', 'cbc', '');
 		//$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 		mcrypt_generic_init($td, $key, $iv);
@@ -63,10 +62,8 @@ class MCrypt
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
 
-		//$key = $this->hex2bin($key);
 		$code = base64_decode($code);
 		$iv = '0000000000000000';
-		//$key = 'tailoredsolution';
 		$td = mcrypt_module_open('rijndael-128', '', 'cbc', '');
 
 		mcrypt_generic_init($td, $key, $iv);

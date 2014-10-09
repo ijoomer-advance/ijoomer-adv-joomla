@@ -50,7 +50,7 @@ class icms {
 
 	function prepareHTML(&$Config)
 	{
-		//TODO : Prepare custom html for ICMS
+		// @TODO : Prepare custom html for ICMS
 	}
 }
 
@@ -61,9 +61,6 @@ class icms_menu {
 			case 'categoryBlog':
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
-
-				//$class = new CategoriesModelCategories();
-				//$query = $class->getListQuery();
 
 				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();
@@ -95,9 +92,6 @@ class icms_menu {
 			case 'singleCategory':
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR.'/components/com_categories/models/categories.php';
-
-				//$class = new CategoriesModelCategories();
-				//$query = $class->getListQuery();
 
 				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
 				$db = JFactory::getDbo();

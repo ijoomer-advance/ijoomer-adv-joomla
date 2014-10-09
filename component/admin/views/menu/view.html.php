@@ -36,12 +36,6 @@ class IjoomeradvViewMenu extends JViewLegacy
 		$this->state		= $this->get('State');
 		$this->menuitems	= $this->get('Menuitems');
 
-		// Check for errors.
-		/*if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
-		}*/
-
 		parent::display($tpl);
 		$this->addToolbar();
 	}

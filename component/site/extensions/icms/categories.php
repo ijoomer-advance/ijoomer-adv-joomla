@@ -31,7 +31,8 @@ class categories{
      *
      */
 
-	public function category(){
+	public function category()
+	{
 		$id = IJReq::getTaskData('id',0,'int');
 		$categories	= $this->getCategories($id);
 		if($id <= 0){
@@ -41,16 +42,6 @@ class categories{
 		}
 		return $this->prepareObject($articles,$categories);
 	}
-	/*public function allCategories(){
-		$id = IJReq::getTaskData('id',0,'int');
-		$categories	= $this->getCategories($id);
-		if($id <= 0){
-			$articles 	= null;
-		}else{
-			$articles	= $this->getArticles($id);
-		}
-		return $this->prepareObject($articles,$categories);
-	}*/
 
 	private function getCategories($id){
 		JRequest::setVar('id',$id);

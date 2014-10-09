@@ -11,10 +11,6 @@
 
 defined('_JEXEC') or die;
 
-// Import JTableMenu
-//JLoader::register('JTableMenu', JPATH_COMPONENT . '/tables/menu_table.php');
-//JLoader::register('JTableMenu', JPATH_PLATFORM . '/joomla/database/table/menu.php');
-
 /**
  * @package		Joomla.Administrator
  * @subpackage	com_ijoomer
@@ -34,7 +30,6 @@ class IjoomeradvTableMenu extends JTable
 	 */
 
 	var $id 		= null;
-	//var $menutype 	= null;
 	var $title 		= null;
 	var $note 		= null;
 	var $type 		= null;

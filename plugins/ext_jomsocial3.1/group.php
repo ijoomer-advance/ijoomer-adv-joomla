@@ -299,18 +299,22 @@ class group{
 
 						$this->jsonarray['code']=200;
 						return $this->jsonarray;
-					}else{
-						//IJReq::setResponse(500);
-						//IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
+					}
+					else
+					{
 						return false;
 					}
 				}
-			}else{
+			}
+			else
+			{
 				IJReq::setResponse(706,JText::_('COM_COMMUNITY_GROUPS_DISABLE_CREATE_MESSAGE'));
 				IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 				return false;
 			}
-		}else{
+		}
+		else
+		{
 			// edit group
 			$group		=& JTable::getInstance( 'Group' , 'CTable' );
 			$group->load( $uniqueID );
@@ -326,7 +330,9 @@ class group{
 
 			if(!$gid){
 				return false;
-			}else{
+			}
+			else
+			{
 				$this->jsonarray['code']=200;
 				return $this->jsonarray;
 			}
@@ -2140,8 +2146,8 @@ class group{
 				case 'bulletin':
 					break;
 			}
-			//$json = array('id'=>$table->id);
 		}
+
 		$this->jsonarray['code']=200;
 		return $this->jsonarray;
 	}
@@ -2396,7 +2402,7 @@ class group{
 		}
 
 		$isNew	= is_null( $discussion->id ) || !$discussion->id ? true : false;
-		//echo $my->id;
+
 		if( $isNew ){
 			$discussion->creator		= $this->my->id;
 		}
@@ -3537,8 +3543,6 @@ class group{
 		}else{
 			$table->delete();
 		}
-		//$group	=& JTable::getInstance( 'Group' , 'CTable' );
-		//$group->load( $table->groupid );
 
 		$this->jsonarray['code']=200;
 		return $this->jsonarray;
@@ -3586,7 +3590,6 @@ class group{
 			$act->app		= 'groups';
 			$act->cid		= $group->id;
 
-			//$params = new CParameter('');
 			$params = new CParameter('');
 			$params->set( 'group_url' , 'index.php?option=com_community&view=groups&task=viewgroup&groupid=' . $group->id );
 
@@ -4046,597 +4049,6 @@ class group{
 		return $this->jsonarray;
 	}
 
-
-	/**
-	 * @uses to get group wall list
-	 * @example the json string will be like, :
-	 * 	{
-	 * 		"extName":"jomsocial",
-	 *		"extView":"group",
- 	 *		"extTask":"wall",
-	 * 		"taskData":{
-	 * 			"uniqueID":"uniqueID",
-	 * 			"pageNO":"pageNO"
-	 * 		}
-	 * 	}
-	 *
-	 */
-	/*function wall(){
-		$uniqueID	= IJReq::getTaskData('uniqueID', 0, 'int');
-		$pageNO		= IJReq::getTaskData('pageNO', 0, 'int');
-		$limit		= PAGE_ACTIVITIES_LIMIT;
-
-		CFactory::load('helpers','owner');
-		CFactory::load('libraries','activities');
-
-		$act	= new CActivities();
-
-		$friendsModel =& CFactory::getModel('friends');
-		$frids=$friendsModel->getFriendIds($this->IJUserID);
-
-		if($pageNO == '1'  || $pageNO == '0'){
-		  	$startFrom = 0;
-		}else{
-			$startFrom = ($limit*($pageNO-1));
-		}
-
-		$options = array(
-					'actor' => '0',
-					'target' => '0',
-					'date' => '',
-					'maxList' => MAXIMUM_ACTIVITY+1,
-					'app' => array('groups.wall','groups.attend','events.wall','videos','groups.discussion','groups.discussion.reply','groups.bulletin','photos','events'),
-					'cid' => '',
-					'groupid' => $uniqueID,
-					'eventid' => '',
-    				'exclusions' => '',
-    				'displayArchived' => '1');
-
-		$htmldata = $this->_getData( $options );
-
-		if (preg_match('[^2.]', IJ_JOMSOCIAL_VERSION, $matches)){
- 		 	$htmldata = $htmldata->data;
-		}
-
-		$groupModel	= CFactory::getModel('groups');
-		$cAdmin = (int) $groupModel->isAdmin($this->IJUserID, $uniqueID);
-		$cCommunityAdmin = COwnerHelper::isCommunityAdmin($this->IJUserID);
-
-		$inc = 0;
-		$xx=0;
-		for($x=0;$x<count($htmldata);$x++){
-			$html =$htmldata[$x];
-			$titletag = isset($html->title) ? $html->title : "";
-			if(isset($html->type) && $html->type == 'title'){
-				continue;
-			}else{
-				$temp_htmldata[$xx]=$html;
-				$xx++;
-			}
-		}
-		$htmldata = $temp_htmldata;
-
-		if($startno+$limit>= count($htmldata)){
-			$cout = count($htmldata);
-		}else{
-			$cout = $startno+$limit;
-		}
-
-		if(count($htmldata)>0){
-			$this->jsonarray['code']=200;
-			$this->jsonarray['pageLimit']=PAGE_ACTIVITIES_LIMIT;
-			$this->jsonarray['total']=count($htmldata);
-		}else{
-			IJReq::setResponseCode(204);
-			return false;
-		}
-		//echo '<pre>';print_r($htmldata);exit;
-		for($m=$startFrom;$m<$cout;$m++){
-			$html =$htmldata[$m];
-			$titletag = isset($html->title) ? $html->title : "";
-			if(isset($html->type) && $html->type == 'title'){
-				$date  = '';
-				$time = '';
-				$id = '';
-				$content = '';
-				$actor = '';
-				$likeAllowed = $commentAllowed = 0;
-				continue;
-			}else{
-				$date  = $html->createdDate;
-				$time  = $html->created;
-				$id	   = $html->id;
-		  		$content = $html->content;
-				$actor = $html->actor;
-				$likeAllowed = $html->likeAllowed=="" ? 0 : 1;
-				$commentAllowed = $html->commentAllowed=="" ? 0 : 1;
-			}
-
-			$str=strip_tags($content,"<img>");
-			$str = preg_replace('#.+?src=[\'"]([^\'"]+)[\'"].+#i',"$1", $str);
-			$str =preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $str);
-			$str=trim($str);
-			$str_exp =explode("\n", $str);
-
-			$imgtag="";
-			for($k=0;$k<count($str_exp);$k++){
-				if(strstr($str_exp[$k],'http://') || strstr($str_exp[$k],'https://')){
-				  if(strstr($str_exp[$k],'/photos/') || strstr($str_exp[$k],'/groupphotos/')){
-			  			$imgtag .="<img>".$str_exp[$k]."</img>";
-						$bigimg = str_replace("thumb_","",$str_exp[$k]);
-
-						$absolutePath = str_replace(JURI::base(),JPATH_SITE."/",$bigimg);
-						if(file_exists($absolutePath)){
-							$imgtag .="<bigimg>".$bigimg."</bigimg>";
-						}else{
-							$orignleimg = str_replace("photos","originalphotos",$bigimg);
-							$orignleimgcheck = str_replace(JURI::base(),JPATH_SITE."/",$orignleimg);
-							if(file_exists($orignleimgcheck)){
-								$imgtag .="<bigimg>".$orignleimg."</bigimg>";
-							}else{
-								$imgtag .="<bigimg>".$str_exp[$k]."</bigimg>";
-							}
-						}
-			  		}else{
-						$video_icon = $str_exp[$k];
-						$query = "SELECT `cid` FROM #__community_activities WHERE `id`='".$id."'";
-						$this->db->setQuery($query);
-						$cids = $this->db->loadResult();
-
-						$query = "SELECT `path`,`type` FROM #__community_videos WHERE `id`='".$cids."'";
-						$this->db->setQuery($query);
-						$result = $this->db->loadObject();
-
-						if($result->type == 'file'){
-							$lastpos = strrpos($result->path, '.');
-							$vname = substr($result->path, 0 ,$lastpos);
-							$video_name = JURI::base().$vname.".mp4";
-						}else{
-							$video_name = $result->path;
-						}
-
-						if($video_icon && $video_name){
-							$videotag = '';
-							$videotag .="<video_icon>".$video_icon."</video_icon>";
-							$videotag .="<video_path>".$video_name."</video_path>";
-						}
-					}
-				}else{
-			   		$imgtag .="<text>".$str_exp[$k]."</text>";
-			   	}
-		  	}
-
-			if($html->type=="title"){
-				$this->jsonarray[$inc]["title"] = strip_tags($titletag);
-			}else{
-				$this->jsonarray['update'][$inc]['id'] 							= $id;
-
-				$usr = $this->jomHelper->getUserDetail($actor);
-				$this->jsonarray['update'][$inc]['user_detail']['user_id'] 		= $usr->id;
-				$this->jsonarray['update'][$inc]['user_detail']['user_name'] 	= $usr->name;
-				$this->jsonarray['update'][$inc]['user_detail']['user_avatar'] 	= $usr->avatar;
-				$this->jsonarray['update'][$inc]["user_detail"]["user_profile"] = $usr->profile;
-				$this->jsonarray['update'][$inc]["titletag"] = strip_tags($titletag);
-
-				if($html->app=='photos' || $html->app=='wall' && $content!="")
-					$this->jsonarray['update'][$inc]["content"] = $imgtag;
-				else
-					$this->jsonarray['update'][$inc]["content"] = strip_tags($content);
-
-				if($html->app=='videos'){
-					$this->jsonarray['update'][$inc]["video"] = $videotag;
-				}
-
-				$this->jsonarray['update'][$inc]["date"] 			= $time;
-				$this->jsonarray['update'][$inc]['likeAllowed'] 	= $likeAllowed;
-				$this->jsonarray['update'][$inc]['likeCount'] 		= intval($html->likeCount);
-				$this->jsonarray['update'][$inc]['liked']		 	= ($html->userLiked==1) ? 1 : 0 ;
-				$this->jsonarray['update'][$inc]['commentAllowed'] 	= $commentAllowed;
-				$this->jsonarray['update'][$inc]['commentCount'] 	= intval($html->commentCount);
-
-				$query="SELECT comment_type,like_type
-						FROM #__community_activities
-						WHERE id={$id}";
-				$this->db->setQuery($query);
-				$extra=$this->db->loadObject();
-
-				$this->jsonarray['update'][$inc]['liketype'] 	= $extra->like_type;
-				$this->jsonarray['update'][$inc]['commenttype'] = $extra->comment_type;
-				$this->jsonarray['update'][$inc]['type'] = $html->app;
-				$this->jsonarray['update'][$inc]['deleteAllowed'] = intval($this->IJUserID == $actor || $cAdmin || $cCommunityAdmin);
-			}
-			$inc++;
-		}
-		return $this->jsonarray;
-	}*/
-
-
-	// called by wall
-	/*private function _getData( $options ){
-		$dispatcher =& CDispatcher::getInstanceStatic();
-		$observers =& $dispatcher->getObservers();
-		$plgObj = false;
-		for ($i = 0; $i < count($observers); $i++){
-			if ($observers[$i] instanceof plgCommunityWordfilter){
-				$plgObj = $observers[$i];
-			}
-		}
-
-		// Default params
-		$default = array(
-			'actor' =>0,
-			'target' => 0,
-			'date' => null,
-			'app' => null,
-			'cid' => null, // don't filter with cid
-			'groupid' => null,
-			'eventid' => null,
-			'maxList' => 20 ,
-			'type' => '' ,
-			'exclusions' => null ,
-			'displayArchived' => false
-		);
-		$options = array_merge($default, $options);
-		extract($options);
-
-		CFactory::load('libraries', 'mapping');
-		CFactory::load('libraries', 'wall');
-		CFactory::load('libraries', 'groups');
-		CFactory::load('libraries', 'events');
-		CFactory::load('helpers', 'friends');
-
-		$activities = CFactory::getModel('activities');
-		$appModel	= CFactory::getModel('apps');
-		$html 		= '';
-		$numLines 	= 0;
-		$actorId	= $actor;
-		$htmlData 	= array();
-
-		//Get blocked list
-		$model		   = CFactory::getModel('block');
-		$blockLists    = $model->getBanList($this->my->id);
-		$blockedUserId = array();
-
-		foreach($blockLists as $blocklist){
-		    $blockedUserId[] = $blocklist->blocked_userid;
-        }
-
-        // Exclude banned userid
-        if( !empty($target) && !empty($blockedUserId) ){
-            $target = array_diff($target,$blockedUserId);
-		}
-
-		if( !empty($app)){
-			$rows = $activities->getAppActivities( $options );
-		}else{
-			$rows = $activities->getActivities( $actor, $target, $date, $maxList , $this->config->get('respectactivityprivacy') , $exclusions , $displayArchived );
-		}
-
-		$day = -1;
-
-
-		// If exclusion is set, we need to remove activities that arrives
-		// after the exclusion list is set.
-		// Inject additional properties for processing
-		for($i = 0; $i < count($rows); $i++){
-			$row			=& $rows[$i];
-
-			// A 'used' activities = activities that has been aggregated
-			$row->used 		= false;
-
-			// If the id is larger than any of the exclusion list,
-			// we simply hide it
-			if(isset($exclusion) && $exclusion > 0 && $row->id > $exclusions){
-				$row->used 		= true;
-			}
-		}
-
-		unset($row);
-
-
-		$dayinterval 	= ACTIVITY_INTERVAL_DAY;
-		$lastTitle 		= '';
-
-		for($i = 0; $i < count($rows) && (count($htmlData) <= $maxList ); $i++){
-			$row		= $rows[$i];
-			$oRow		=& $rows[$i];	// The original object
-
-			// store aggregated activities
-			$oRow->activities = array();
-
-			if(!$row->used && count($htmlData) <= $maxList ){
-				$oRow	=& $rows[$i];
-
-				if(!isset($row->used)){
-					$row->used = false;
-				}
-
-				if($day != $row->getDayDiff() ){
-					$act		= new stdClass();
-					$act->type	= 'content';
-					$day		= $row->getDayDiff();
-
-					if($day == 0){
-						$act->title = JText::_('TODAY');
-					}else if($day == 1){
-						$act->title = JText::_('COM_COMMUNITY_ACTIVITIES_YESTERDAY');
-					}else if($day < 7){
-						$act->title = JText::sprintf('COM_COMMUNITY_ACTIVITIES_DAYS_AGO', $day);
-					}else if(($day >= 7) && ($day < 30)){
-						$dayinterval = ACTIVITY_INTERVAL_WEEK;
-						$act->title = (intval($day/$dayinterval) == 1 ? JText::_('COM_COMMUNITY_ACTIVITIES_WEEK_AGO') : JText::sprintf('COM_COMMUNITY_ACTIVITIES_WEEK_AGO_MANY', intval($day/$dayinterval)));
-					}else if(($day >= 30)){
-						$dayinterval = ACTIVITY_INTERVAL_MONTH;
-						$act->title = (intval($day/$dayinterval) == 1 ? JText::_('COM_COMMUNITY_ACTIVITIES_MONTH_AGO') : JText::sprintf('COM_COMMUNITY_ACTIVITIES_MONTH_AGO_MANY', intval($day/$dayinterval)));
-					}
-
-					// set to a new 'title' type if this new one has a new title
-					// only add if this is a new title
-					if($act->title != $lastTitle){
-						$lastTitle 	= $act->title;
-						$act->type 	= 'title';
-						$htmlData[] = $act;
-					}
-				}
-
-				$act = new stdClass();
-				$act->type = 'content';
-
-				// Set to compact view if necessary
-				// This method is a bit crude, but we have no other reliable data
-				// to choose which will go to compact view
-
-				// Attend an event
-				$act->compactView		= !( strpos( $oRow->params , 'action=events.attendence.attend') === FALSE );
-				$act->compactView		=  $act->compactView || !( strpos( $oRow->params , '"action":"events.attendence.attend"') === FALSE );
-
-				// Create an event
-				$act->compactView		= $act->compactView || !(strpos( $oRow->params , 'action=events.create') === FALSE);
-				$act->compactView		= $act->compactView || !(strpos( $oRow->params , '"action":"events.create"') === FALSE);
-
-				// Update/join group
-				$act->compactView		= $act->compactView || ($oRow->app == 'groups' && empty($oRow->content));
-
-				// Add as friend
-				$act->compactView		= $act->compactView || ($oRow->app == 'friends');
-
-				// Add/Remove app. This is tricky since string is hard-coded
-				// and no other info is available
-				$act->compactView		= $act->compactView || ($oRow->title == JText::_('COM_COMMUNITY_ACTIVITIES_APPLICATIONS_ADDED') );
-
-				// Feature a user
-				$act->compactView		= $act->compactView || ($oRow->app == 'users');
-
-				$title 	= $row->title;
-				$app 	= $row->app;
-				$cid 	= $row->cid;
-				$actor 	= $row->actor;
-
-				//Check for event or group title if exists
-				if($row->eventid){
-					$eventModel	= CFactory::getModel('events');
-					$act->appTitle  = $eventModel->getTitle($row->eventid);
-				}
-				else if($row->groupid){
-					$groupModel	= CFactory::getModel('groups');
-					$act->appTitle  = $groupModel->getGroupName($row->groupid);
-				}
-
-				for($j = $i; ($j < count($rows)) && ($row->getDayDiff() == $day); $j++){
-					$row = $rows[$j];
-					// we aggregate stream that has the same content on the same day.
-					// we should not however aggregate content that does not support
-					// multiple content. How do we detect? easy, they don't have
-					// {multiple} in the title string
-
-					// However, if the activity is from the same user, we only want
-					// to show the laste acitivity
-					if( ($row->getDayDiff() == $day)
-						&& ($row->title  == $title)
-						&& ($app == $row->app)
-						&& ($cid == $row->cid )
-						&& (
-							( JString::strpos($row->title, '{/multiple}') !== FALSE )
-							||
-							($row->actor == $actor )
-						)){
-						// @rule: If an exclusion is added, we need to fetch activities without these items.
-						// Aggregated activities should also be excluded.
-						$row->used 			= true;
-						$oRow->activities[] = $row;
-					}
-				}
-
-				$app	= !empty($oRow->app) ? $this->_appLink($oRow->app, $oRow->actor, $oRow->target,$oRow->title) : '';
-
-				$oRow->title	= CString::str_ireplace('{app}', $app, $oRow->title);
-
-				$favicon = '';
-
-
-				// this should not really be empty
-				if(!empty($oRow->app)){
-					// Favicon override with group image for known group stream data
-
-					if( $oRow->groupid ){
-						// check if the image icon exist in template folder
-						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/groups.png') )
-						{
-							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/groups.png';
-						}
-
-					}
-
-					// Favicon override with event image for known event stream data
-					// This would override group favicon
-					if( $oRow->eventid )
-					{
-						// check if the image icon exist in template folder
-						$favicon = JURI::root(). 'components/com_community/assets/favicon/events.png';
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/groups.png') )
-						{
-							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/events.png';
-						}
-					}
-
-					// If it is not group or event stream, use normal favicon search
-					if( !($oRow->groupid || $oRow->eventid) )
-					{
-						// check if the image icon exist in template folder
-						if ( JFile::exists(JPATH_ROOT . '/components/com_community/templates/'. $this->config->get('template') . '/images/favicon/'. $oRow->app.'.png') )
-						{
-							$favicon = JURI::root(). 'components/com_community/templates/'.$this->config->get('template').'/images/favicon/'.$oRow->app.'.png';
-						}
-						else
-						{
-							// check if the image icon exist in asset folder
-							if ( JFile::exists(JPATH_ROOT . '/components/com_community/assets/favicon/'. $oRow->app.'.png') )
-							{
-								$favicon = JURI::root(). 'components/com_community/assets/favicon/'.$oRow->app.'.png';
-							}
-							elseif ( JFile::exists(CPluginHelper::getPluginPath('community',$oRow->app) .'/'. $oRow->app . '/favicon.png') )
-							{
-								$favicon = JURI::root(). CPluginHelper::getPluginURI('community',$oRow->app) . '/' .$oRow->app.'/favicon.png';
-							}
-							else
-							{
-								$favicon = JURI::root(). 'components/com_community/assets/favicon/default.png';
-							}
-						}
-					}
-				}
-				else
-				{
-				    $favicon = JURI::root(). 'components/com_community/assets/favicon/default.png';
-				}
-
-				$act->favicon = $favicon;
-
-				$target = $this->_targetLink($oRow->target, true );
-				$oRow->title	= CString::str_ireplace('{target}', $target, $oRow->title);
-
-				if(count($oRow->activities) > 1)
-				{
-
-					// multiple
-					$actorsLink = '';
-					foreach( $oRow->activities as $actor )
-					{
-						if(empty($actorsLink))
-						{
-							$actorsLink = $this->_actorLink(intval($actor->actor));
-						}
-						else
-						{
-							// only add if this actor is NOT already linked
-							$alink = $this->_actorLink(intval($actor->actor));
-							$pos = strpos($actorsLink, $alink);
-							if ($pos === false)
-							{
-								$actorsLink .= ', '.$alink;
-							}
-						}
-					}
-					$actorLink = $this->_actorLink(intval($oRow->actor));
-
-					$count = count($oRow->activities);
-
-					$oRow->title 	= preg_replace('/\{single\}(.*?)\{\/single\}/i', '', $oRow->title);
-					$search  		= array('{multiple}','{/multiple}');
-
-					$oRow->title	= CString::str_ireplace($search, '', $oRow->title);
-
-					//Joomla 1.6 CString::str_ireplace issue of not replacing correctly strings with backslashes
-					$oRow->title = str_ireplace($search, '', $oRow->title);
-
-					$oRow->title	= CString::str_ireplace('{actors}'	, $actorsLink, $oRow->title);
-					$oRow->title	= CString::str_ireplace('{actor}'	, $actorLink, $oRow->title);
-					$oRow->title	= CString::str_ireplace('{count}'	, $count, $oRow->title);
-				}
-				else
-				{
-					// single
-					$actorLink = $this->_actorLink(intval($oRow->actor));
-
-					$oRow->title = preg_replace('/\{multiple\}(.*)\{\/multiple\}/i', '', $oRow->title);
-					$search  = array('{single}','{/single}');
-					$oRow->title	= CString::str_ireplace($search, '', $oRow->title);
-					$oRow->title	= CString::str_ireplace('{actor}', $actorLink, $oRow->title);
-				}
-
-				// If the param contains any data, replace it with the content
-				preg_match_all("/{(.*?)}/", $oRow->title, $matches, PREG_SET_ORDER);
-				if(!empty( $matches ))
-				{
-					$params = new CParameter( $oRow->params );
-					foreach ($matches as $val)
-					{
-						$replaceWith = $params->get($val[1], null);
-
-						//if the replacement start with 'index.php', we can CRoute it
-						if( strpos($replaceWith, 'index.php') === 0)
-						{
-							$replaceWith = CRoute::_($replaceWith);
-						}
-						if( !is_null( $replaceWith ) )
-						{
-							$oRow->title	= CString::str_ireplace($val[0], $replaceWith, $oRow->title);
-						}
-					}
-				}
-
-				$act1	= new CActivities();
-
-				// Format the title
-				$oRow->title = ($plgObj) ? $plgObj->_censor($oRow->title) : $oRow->title;
-				$oRow->title = $this->_formatTitle($oRow);
-				$act->id 		= $oRow->id;
-				$act->title 	= $oRow->title;
-				$act->actor 	= $oRow->actor;
-				$act->target 	= $oRow->target;
-				$act->content	= $act1->getActivityContent( $oRow );
-
-
-				$timeFormat		= $this->config->get( 'activitiestimeformat' );
-				$dayFormat		= $this->config->get( 'activitiesdayformat' );
-				$date			= CTimeHelper::getDate($oRow->created);
-
-				$createdTime = '';
-				if($this->config->get('activitydateformat') == COMMUNITY_DATE_FIXED){
-					$createdTime 	= $date->toFormat($dayinterval == ACTIVITY_INTERVAL_DAY ? $timeFormat : $dayFormat ,true);
-				}else{
-					$createdTime	= CTimeHelper::timeLapse($date);
-				}
-				$act->created 			= $createdTime;
-				$act->createdDate 		= (C_JOOMLA_15==1)?$date->toFormat(JText::_('DATE_FORMAT_LC2')):$date->Format(JText::_('DATE_FORMAT_LC2'));
-				$act->app 				= $oRow->app;
-				$act->eventid			= $oRow->eventid;
-				$act->groupid			= $oRow->groupid;
-				$act->group_access		= $oRow->group_access;
-				$act->event_access		= $oRow->event_access;
-				$act->location			= $oRow->getLocation();
-				$act->commentCount		= $oRow->getCommentCount();
-				$act->commentAllowed	= $oRow->allowComment();
-				$act->commentLast		= $oRow->getLastComment();
-				$act->likeCount			= $oRow->getLikeCount();
-				$act->likeAllowed		= $oRow->allowLike();
-				$act->isFriend			= $this->my->isFriendWith( $act->actor );
-				$act->isMyGroup			= $this->my->isInGroup($oRow->groupid);
-				$act->isMyEvent			= $this->my->isInEvent($oRow->eventid);
-				$act->userLiked			= $oRow->userLiked($this->my->id);
-
-				$htmlData[] = $act;
-			}
-		}
-
-		$objActivity				= new stdClass();
-		$objActivity->data			= $htmlData;
-
-		return $objActivity;
-	}*/
-
-
 	/**
 	 * @uses to add wall or comment
 	 * @example the json string will be like, :
@@ -4690,15 +4102,12 @@ class group{
 			$table->post_by = $this->my->id;
 
 			$table->store();
-			/*$id = $table->id;
-
-			$this->jsonarray["id"] = $id;
-			$dates = $this->jomHelper->getDate($table->date);
-			$createdTime = $this->jomHelper->timeLapse($dates);
-			$this->jsonarray["date"] = $createdTime;//$table->date;*/
 			$this->jsonarray['code']=200;
+
 			return $this->jsonarray;
-		}else{
+		}
+		else
+		{
 			$groupModel	= CFactory::getModel( 'groups' );
 			$group		=& JTable::getInstance( 'Group' , 'CTable' );
 			$group->load( $uniqueID );
@@ -4715,9 +4124,6 @@ class group{
 			CFactory::load ( 'libraries', 'activities' );
 
 			$isAdmin = $groupModel->isAdmin( $this->my->id , $group->id );
-			// Store event will update all stats count data
-			//$group->updateStats();
-			//$group->store();
 
 			if( $this->config->get( 'antispam_akismet_walls') ){
 				CFactory::load( 'libraries' , 'spamfilter' );
@@ -4737,12 +4143,10 @@ class group{
 				}
 			}
 
-			//if( $group->approvals == COMMUNITY_PUBLIC_GROUP ){
 				$act = new stdClass();
 				$act->cmd 		= 'group.wall.create';
 				$act->actor 	= $this->my->id;
 				$act->target 	= 0;
-				//$act->title		= JText::sprintf('COM_COMMUNITY_GROUPS_WALL_POST_GROUP' , '{group_url}' , $group->name );
 				$act->title		= $message;
 				$act->content	= '';
 				$act->app		= 'groups.wall';
@@ -4754,9 +4158,8 @@ class group{
 				// Allow Like
 				$act->like_type = 'groups.wall';
 				$act->like_id = CActivities::COMMENT_SELF;
-				//CActivityStream::add( $act, $params->toString() );
 				CActivityStream::add($act);
-			//}
+
 
 			// @rule: Add user points
 			CFactory::load( 'libraries' , 'userpoints' );

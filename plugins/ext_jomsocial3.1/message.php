@@ -162,7 +162,6 @@ class message{
 				LEFT JOIN #__community_msg as cm on cmr.`msg_id`=cm.`id`
 				WHERE cmr.`msg_parent`={$uniqueID}
 				AND ((cmr.`msg_from`={$this->IJUserID} AND cmr.`to`={$userID}) OR (cmr.`msg_from`={$userID} AND cmr.`to`={$this->IJUserID}))
-				/*AND cmr.`deleted`=0 */
 				AND cm.`deleted`=0
 				ORDER BY cm.`posted_on` DESC";
 		$this->db->setQuery($query);
@@ -419,7 +418,6 @@ class message{
 
 				$msgData ['to'] = $actualTo;
 				$msgData ['action'] = 'doSubmit';
-				//$msgData ['submitBtn'] = 'Send message';
 
 				$msgid = $model->send ( $msgData );
 				$data->sent = 1;
@@ -580,13 +578,6 @@ class message{
 			$this->jsonarray['pushNotificationData']['type'] 	= 'message';
 			$this->jsonarray['pushNotificationData']['configtype'] 	= 'pushnotif_inbox_create_message';
 		}
-
-		// onMessageDisplay Event trigger
-		/*$appsLib	=& CAppPlugins::getInstance();
-		$appsLib->loadApplications();
-		$args = array();
-		$args[]	=& $obj;
-		$appsLib->triggerEvent( 'onMessageDisplay' , $args );*/
 
 		$this->jsonarray['code'] = 200;
 		return $this->jsonarray;

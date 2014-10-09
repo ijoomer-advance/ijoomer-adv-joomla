@@ -142,8 +142,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 							WHERE menutype=$value->id
 							AND published=1
 							AND access IN ($groups)
-							/*AND (IF((menudevice=1),($value->menudevice=$menudevice),(menudevice=$menudevice)) OR menudevice=4
-								OR IF((menudevice=1 AND $value->menudevice=1),true,false)) */
 							ORDER BY ordering";
 
 					$this->db->setQuery($query);
@@ -284,7 +282,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 
 		$my = JFactory::getUser(); //get current user
 
-		//TODO : extension levels default params
+		// @TODO : extension levels default params
 		$defaultParams='{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_friends_request_connection":"1","pushnotif_friends_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
 
 		$query="SELECT count(1)
@@ -707,7 +705,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 						}
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['id'] = $field->id;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['caption'] = $field->name;
-						//$jsonarray['fields']['group'][$inc]['field'][$incj]['fieldcode'] = $field->fieldcode;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['required'] = $field->required;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['value'] = '';
 
@@ -955,14 +952,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
 					return false;
 				}
-				//if( !CImageHelper::isValidType( $file['type'] ) )
+
 				if( !cValidImageType( $file['type'] ) ){
 					IJReq::setResponseCode(415);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
 					return false;
 	           	}
 
-				//if( !CImageHelper::isValid($file['tmp_name'] ) )
+
 				if( !cValidImage($file['tmp_name'] ) ){
 					IJReq::setResponseCode(415);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
@@ -1385,7 +1382,6 @@ class ijoomeradvModelijoomeradv extends JModelLegacy{
 		$mailfrom	= $config->get('mailfrom');
 		$sitename	= $config->get('sitename');
 		$link_text	= JRoute::_($link, false, $mode);
-		//$link_html	= JRoute::_($link, true, $mode);
 		$username = $data['username'];
 		$subject = JText::sprintf('COM_USERS_EMAIL_USERNAME_REMINDER_SUBJECT',$sitename);
 		$body = JText::sprintf('COM_USERS_EMAIL_USERNAME_REMINDER_BODY',$sitename,$username,$link_text);

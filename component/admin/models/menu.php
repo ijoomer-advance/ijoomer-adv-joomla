@@ -246,7 +246,7 @@ class IjoomeradvModelMenu extends JModelForm
 
 		// Iterate the items to delete each one.
 		foreach ($itemIds as $itemId) {
-			// TODO: Delete the menu associations - Menu items and Modules
+			// @TODO: Delete the menu associations - Menu items and Modules
 
 			if (!$table->delete($itemId))
 			{

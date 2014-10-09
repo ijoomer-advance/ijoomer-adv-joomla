@@ -639,12 +639,12 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		// Convert to the JObject before adding the params.
 		$properties = $table->getProperties(1);
-		//echo '<pre>';print_r($table);exit;
+
 		$result = JArrayHelper::toObject($properties,'JObject');
 
 		// Convert the params field to an array.
 		$registry = new JRegistry;
-		//$registry->loadString($table->params);
+
 		$result->params = $registry->toArray();
 
 		// Merge the request arguments in to the params for a component.
@@ -672,17 +672,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		$app = JFactory::getApplication();
 		//echo '<pre>';print_r($app);exit;
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
-		/*if ($assoc)
-		{
-			if ($pk != null)
-			{
-				$result->associations = IjoomeradvHelper::getAssociations($pk);
-			}
-			else
-			{
-				$result->associations = array();
-			}
-		}*/
+
 		$result->menuordering = $pk;
 		return $result;
 	}
@@ -944,7 +934,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		}
 
 		// Now load the component params.
-		// TODO: Work out why 'fixing' this breaks JForm
+		// @TODO: Work out why 'fixing' this breaks JForm
 		if ($isNew = false) {
 			$path = JPath::clean(JPATH_ADMINISTRATOR.'/components/'.$option.'/config.xml');
 		}
@@ -958,11 +948,6 @@ class IjoomeradvModelItem extends JModelAdmin
 				throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
 			}
 		}
-
-		// Load the specific type file
-		/*if (!$form->loadFile('item_'.$type, false, false)) {
-			throw new Exception(JText::_('JERROR_LOADFILE_FAILED'));
-		}*/
 
 	// Association menu items
 		$app = JFactory::getApplication();

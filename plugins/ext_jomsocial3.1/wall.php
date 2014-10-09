@@ -150,7 +150,6 @@ class wall{
 			return false;
 		}
 
-		//echo '<pre>';print_r($htmldata);exit;
 		foreach ($htmldata as $key=>$html){
 			$titletag 		= isset($html->title) ? $html->title : "";
 			//change titletag for all activities for version > 2.8
@@ -311,82 +310,6 @@ class wall{
 							$this->jsonarray['update'][$inc]['deleteAllowed']=intval($this->my->authorise('community.delete','activities.'.$html->id));
 						}
 
-						/*$vinc = 0;
-						foreach ($videos as $video){
-							if($video->id){
-								if ($video->storage == 's3') {
-									$s3BucketPath = $this->config->get ( 'storages3bucket' );
-									if (! empty ( $s3BucketPath ))
-										$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
-								}else{
-									$p_url = JURI::base();
-								}
-
-								if ($video->type == 'file') {
-									$ext = JFile::getExt ( $video->path );
-
-									if ($ext == 'mov' && file_exists ( JPATH_SITE .'/'. $video->path )) {
-										$video_file = JURI::root () . $video->path;
-									} else {
-										$lastpos = strrpos ( $video->path, '.' );
-										$vname = substr ( $video->path, 0, $lastpos );
-										$video_file = $p_url . $vname . ".mp4";
-									}
-								}else{
-									$video_file = $video->path;
-								}
-
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['id']				= $video->id;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['caption']			= $video->title;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['thumb']			= ($video->thumb) ? $p_url . $video->thumb : JURI::base () . 'components/com_community/assets/video_thumb.png';
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['url'] 			= $video_file;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['description'] 	= $video->description;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['date'] 			= $this->jomHelper->timeLapse ( $this->jomHelper->getDate ( $video->created ) );
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['location'] 		= $video->location;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['permissions'] 	= $video->permissions;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['categoryId']		= $video->category_id;
-
-								if($type=='group'){
-									$this->jsonarray['update'][$inc]['liked'] 			= ($html->userLiked>=0) ? 0 : 1 ;
-								}
-
-								//likes
-								$likes = $this->jomHelper->getLikes ( 'videos', $video->id, $this->IJUserID );
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['likes']			= $likes->likes;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['dislikes']		= $likes->dislikes;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['liked']			= $likes->liked;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['disliked'] 		= $likes->disliked;
-
-								//comments
-								$count = $this->jomHelper->getCommentCount ( $video->id, 'videos' );
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['commentCount']	= $count;
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['deleteAllowed']	= intval ( ($this->IJUserID == $video->creator or COwnerHelper::isCommunityAdmin ( $this->IJUserID )) );
-
-								if (SHARE_VIDEOS) {
-									$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['shareLink'] 	= JURI::base () . "index.php?option=com_community&view=videos&task=video&userid={$video->creator}&videoid={$video->id}";
-								}
-
-								$query="SELECT count(id)
-										FROM #__community_videos_tag
-										WHERE `videoid`={$video->id}";
-								$this->db->setQuery($query);
-								$this->jsonarray['update'][$inc]['content_data']['video'][$vinc]['tags'] 			= $this->db->loadResult();
-
-								if($video->groupid){
-									$this->getGroupData($video->groupid,$this->jsonarray['update'][$inc]['group_data']);
-
-									$srch = array("&#9658;","&quot;","► ".$usr->name);
-									$rplc = array("►","\"","► ".$this->jsonarray['update'][$inc]['group_data']['title']);
-									$this->jsonarray['update'][$inc]['titletag'] = str_replace($srch,$rplc,strip_tags($titletag));
-								}else{
-									$srch = array("&#9658;","&quot;");
-									$rplc = array("►","\"");
-									$this->jsonarray['update'][$inc]['titletag'] = str_replace($srch,$rplc,strip_tags($titletag));
-								}
-								$this->jsonarray['update'][$inc]['deleteAllowed'] = intval(($this->IJUserID == $html->actor || (isset($gadmin) || isset($gsadmin))));
-							}
-							$vinc++;
-						}*/
 						break;
 
 					case 'photos':
@@ -469,47 +392,6 @@ class wall{
 								$count=$this->db->loadResult();
 								$this->jsonarray['update'][$inc]['image_data'][$key]['tags'] = $count;
 							}
-
-							/*$str		= preg_match_all('|(#\w+=)(\d+)+|',$html->content,$match);
-							if($str){
-								foreach($match[2] as $key=>$value){
-									$photo = $photoModel->getPhoto($value);
-									$p_url = JURI::base ();
-									if ($photo->storage == 's3') {
-										$s3BucketPath = $this->config->get ( 'storages3bucket' );
-										if (! empty ( $s3BucketPath ))
-											$p_url = 'http://' . $s3BucketPath . '.s3.amazonaws.com/';
-									} else {
-										if (! file_exists ( JPATH_SITE .'/'. $photo->image ))
-											$photo->image = $photo->original;
-									}
-									$this->jsonarray['update'][$inc]['image_data'][$key]['id']				= $photo->id;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['caption'] 		= $photo->caption;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['thumb'] 			= $p_url . $photo->thumbnail;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['url'] 			= $p_url . $photo->image;
-									if (SHARE_PHOTOS == 1) {
-										$this->jsonarray['update'][$inc]['image_data'][$key]['shareLink']	= JURI::base () . "index.php?option=com_community&view=photos&task=photo&userid={$photo->creator}&albumid={$photo->albumid}#photoid={$photo->id}";
-									}
-
-									//likes
-									$likes = $this->jomHelper->getLikes ( 'photo', $photo->id, $this->IJUserID );
-									$this->jsonarray['update'][$inc]['image_data'][$key]['likes'] 		= $likes->likes;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['dislikes'] 	= $likes->dislikes;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['liked'] 		= $likes->liked;
-									$this->jsonarray['update'][$inc]['image_data'][$key]['disliked'] 	= $likes->disliked;
-
-									//comments
-									$count = $this->jomHelper->getCommentCount ( $photo->id, 'photos' );
-									$this->jsonarray['update'][$inc]['image_data'][$key]['commentCount'] = $count;
-
-									$query="SELECT count(id)
-											FROM #__community_photos_tag
-											WHERE `photoid`={$photo->id}";
-									$this->db->setQuery($query);
-									$count=$this->db->loadResult();
-									$this->jsonarray['update'][$inc]['image_data'][$key]['tags'] = $count;
-								}
-							}*/
 
 							if($album->groupid){
 								$groupModel = CFactory::getModel('groups');
@@ -607,16 +489,11 @@ class wall{
 						$activeGroup = $groupsModel->getMostActiveGroup();
 						if( !is_null($activeGroup)) {
 							$this->getGroupData($activeGroup->id,$this->jsonarray['update'][$inc]['group_data']);
-//							$this->jsonarray['update'][$inc]['group_data']['groupname'] 	= $activeGroup->name;
-//							$this->jsonarray['update'][$inc]['group_data']['groupmembercount'] = JText::sprintf( (CStringHelper::isPlural( $activeGroup->getMembersCount())) ? 'COM_COMMUNITY_GROUPS_MEMBER_COUNT_MANY' : 'COM_COMMUNITY_GROUPS_MEMBER_COUNT' , $activeGroup->getMembersCount() );
 						}
 						$this->jsonarray['update'][$inc]['titletag'] = $titletag;
 						$this->jsonarray['update'][$inc]['deleteAllowed'] = intval($this->my->authorise('community.delete','activities.'.$html->id));
 						break;
 					case 'groups':
-						/*$srch = array("&#9658;","&quot;");
-						$rplc = array("►","\"");
-						$this->jsonarray['update'][$inc]['titletag'] = str_replace($srch,$rplc,strip_tags($titletag));*/
 						$this->jsonarray['update'][$inc]['titletag'] = $titletag;
 						$content_id = $this->getActivityContentID($html->id);
 						$this->jsonarray['update'][$inc]['type'] = 'group';
@@ -851,8 +728,6 @@ class wall{
 						break;
 
 					default:
-//						$srch = array("&#9658;","&quot;");
-//						$rplc = array("►","\"");
 						$actor = CFactory::getUser($html->actor);
 						$srch = array('{actor}',"&#9658;","&quot;");
 						$rplc = array($actor->getDisplayName(),"►","\"");
@@ -1133,7 +1008,6 @@ class wall{
 				// this should not really be empty
 				if(!empty($oRow->app)){
 					// Favicon override with group image for known group stream data
-					//if(in_array($oRow->app, CGroups::getStreamAppCode())){
 					if( $oRow->groupid ){
 						// check if the image icon exist in template folder
 						$favicon = JURI::root(). 'components/com_community/assets/favicon/groups.png';
@@ -2107,7 +1981,6 @@ class wall{
 			}
 		}else{
 			// Cannot comment on non-friend stream.
-			//IJReq::setResponse(706,JText::_('Permission denied'));
 			IJReq::setResponse(704,JText::_('Session expire'));
 			IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 			return false;
@@ -2173,43 +2046,6 @@ class wall{
 			$activity->delete($type);
 		}
 
-		/*switch($type){
-			case 'groups.wall':
-				$act	=& JTable::getInstance( 'Activity' , 'CTable' );
-				$act->load($uniqueID);
-				$group_id = $act->groupid;
-
-				$group		  =& JTable::getInstance( 'Group' , 'CTable' );
-				$group->load( $group_id );
-
-				//superadmin, group creator can delete all the activity while normal user can delete thier own post only
-				if($user->authorise('community.delete','activities.'.$uniqueID, $group)){
-					$model->deleteActivity( $type, $uniqueID, $group );
-				}
-				break;
-			case 'events.wall':
-				//to retrieve the event id
-				$act	=& JTable::getInstance( 'Activity' , 'CTable' );
-				$act->load($uniqueID);
-				$event_id = $act->eventid;
-
-				$event		  =& JTable::getInstance( 'Event' , 'CTable' );
-				$event->load( $event_id );
-
-				if($user->authorise('community.delete','activities.'.$uniqueID, $event)){
-					$model->deleteActivity( $type, $uniqueID, $event);
-					$wall =CFactory::getModel('wall');
-					$wall->deleteAllChildPosts($uniqueID, $type);
-				}
-				break;
-			default:
-				//delete if this activity belongs to the current user
-				if($user->authorise('community.delete','activities.'.$uniqueID)){
-					$model->deleteActivity( $type, $uniqueID );
-				}else{
-					$model->hide( $id, $uniqueID );
-				}
-			}*/
 		$this->jsonarray['code']=200;
 		return $this->jsonarray;
 	}
@@ -2219,7 +2055,6 @@ class wall{
 		$filter = JFilterInput::getInstance();
 		$wallid = $filter->clean($wallid, 'int');
 
-		//CFactory::load('helper', 'owner');
 		$table =& JTable::getInstance('Wall', 'CTable');
 		$table->load($wallid);
 		if($table->delete()){
@@ -2412,7 +2247,7 @@ class wall{
 				IJException::setErrorInfo(__FILE__,__LINE__,__CLASS__,__METHOD__,__FUNCTION__);
 				return false;
 			}
-			//$isAdmin			= intval($group->isAdmin($this->IJUserID));
+
 			$isCommunityAdmin	= intval(COwnerHelper::isCommunityAdmin($this->IJUserID));
 			foreach($comments as $key=>$comment){
 				$usr = $this->jomHelper->getUserDetail($comment->post_by);

@@ -229,7 +229,7 @@ class JInstallerExtensions extends JObject {
 				$cfgs =& $pconfig->children();
 
 				foreach ($cfgs as $cfg) {
-					//if($cfg->_name=="cfg"){
+
 						$cnfg=trim((string)$cfg);
 						$query="SELECT count(*)
 								FROM `#__ijoomeradv_{$this->get('extension_classname')}_config`
@@ -249,7 +249,7 @@ class JInstallerExtensions extends JObject {
 							$db->setQuery($query);
 							$db->query();
 						}
-					//}
+
 				}
 			}
 
@@ -290,7 +290,7 @@ class JInstallerExtensions extends JObject {
 				if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children())) {
 					$cfgs =& $pconfig->children();
 					foreach ($cfgs as $cfg) {
-						//if($cfg->_name=="cfg"){
+
 							$query="INSERT INTO #__ijoomeradv_{$this->get('extension_classname')}_config (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`)
 									VALUES (NULL,
 									'".trim( (string)$cfg->attributes()->caption )."',
@@ -303,7 +303,7 @@ class JInstallerExtensions extends JObject {
 									'".trim( (string)$cfg->attributes()->server )."')";
 							$db->setQuery($query);
 							$db->query();
-						//}
+
 					}
 				}
 			}
@@ -356,13 +356,9 @@ class JInstallerExtensions extends JObject {
 		$dirHandle = opendir($dir);
 	    while($file = readdir($dirHandle)){
 	        if(is_dir($dir.$file) && $file != '.' && $file != '..'){
-				//echo '<pre>';print_r($file);
 
 	        	$count = recurseDirs($main.$file."/",$count); // Correct call and fixed counting
-	        }/*else{
-	            $count++;
-	            echo "$count: filename: $file in $main \n<br />";
-	        }*/
+	        }
 	    }
 	}
 

@@ -383,8 +383,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 			$jomsocial_version = $jomHelper->getjomsocialversion();
 			$jsonarray['configuration']['versioninfo']["jomsocial"]	= $jomsocial_version;
 		}
-		//$jsonarray['configuration']['versioninfo']["jomsocial"]	= "3.0";
-
 
 		// application theme list
 		$jsonarray['configuration']['theme']			= $this->statictheme();
@@ -543,10 +541,13 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 			ob_end_clean();
 			$jsonarray['code']=200; // logout success
 			$jsonarray['message']=NULL;
-		}else{
+		}
+		else
+		{
 			$jsonarray['code']=500; // logout unsuccess
 			$jsonarray['message']=JText::_('COM_IJOOMERADV_UNABLE_LOGOUT');
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
@@ -728,8 +729,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 	 *
 	 */
 
-	//{"task":"contactUs","taskdata":{"form":"0","toID":"6","menuID":"24","name":"name","email":"email","subject":"subject","message":"message"}}
-	//{"task":"contactUs","taskData":{"form":"1","toID":"6","menuID":"24"}}
 	function contactUs(){
 		$form    	=IJReq::getTaskData('form');
 		$toID    	=IJReq::getTaskData('toID');
@@ -775,10 +774,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 			$jsonarray['contact']['misc'] 	    = ($serverUse->showMiscInfo==1) ? strip_tags($row->misc) : "";
 			$jsonarray['contact']['emailTo'] 	= ($serverUse->showEmail==1) ? $row->email_to : "";
 			$jsonarray['contact']['image'] 	    = ($serverUse->showMiscImage==1) ? JURI::base().$row->image : "";
-			//$jsonarray['contact']['showContactForm'] 	= intval($remoteUse->showContactForm);
-
-			//$explode= explode(',',$remoteUse->subjectLine);
-			//$jsonarray['contact']['subjectLine'] = $explode;
 
 			$decodeParams = json_decode($row->params);
 			if($decodeParams->linka_name || $decodeParams->linka){
@@ -832,11 +827,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 				$jsonarry['code']=200;
 				$jsonarry['message']=$thankYouText;
 				$this->outputJSON($jsonarry);
-			}/*else{
-				$jsonarry['code']=400;
-				$jsonarry['message']='Invalid Email';
-				$this->outputJSON($jsonarry);
-			}*/
+			}
+
 			return true;
 		}
 
@@ -861,7 +853,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 
 			// Prepare email body
 			$prefix = JText::sprintf('COM_IJOOMERADV_ENQUIRY_TEXT', JURI::base());
-			//$body	= $prefix."\n".$name.' <'.$email.'>'."\r\n\r\n".stripslashes($body);
 			$body	= $prefix."\n"."from:".$name.' <'.$email.'>'."\r\n\r\n".stripslashes($body);
 
 			$mail = JFactory::getMailer();
@@ -919,7 +910,9 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy{
 				if($extension->version){
 					echo ' / '.$extension->version;
 				}
-			}else{
+			}
+			else
+			{
 				echo ' / '.IJ_JOOMLA_VERSION;
 			}
 		}
