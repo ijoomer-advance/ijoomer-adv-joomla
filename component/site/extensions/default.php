@@ -1,13 +1,11 @@
 <?php
-/*--------------------------------------------------------------------------------
-# com_ijoomeradv_1.5 - iJoomer Advanced
-# ------------------------------------------------------------------------
-# author Tailored Solutions - ijoomer.com
-# copyright Copyright (C) 2010 Tailored Solutions. All rights reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://www.ijoomer.com
-# Technical Support: Forum - http://www.ijoomer.com/Forum/
-----------------------------------------------------------------------------------*/
+/**
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.extensions
+ *
+ * @copyright   Copyright (C) 2010 - 2014 Tailored Solutions PVT. Ltd. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
 
 defined('_JEXEC') or die;
 
