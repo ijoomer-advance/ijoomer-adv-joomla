@@ -10,22 +10,30 @@
 defined('_JEXEC') or die;
 
 /**
- * The HTML Menus Menu Item View.
+ * The Class For IJoomeradvViewMenu which will Extends JViewLegacy
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.view
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvViewMenu extends JViewLegacy
 {
 	protected $form;
+
 	protected $item;
+
 	protected $state;
+
 	protected $views;
+
 	protected $menuitems;
 
 	/**
-	 * Display the view
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -42,6 +50,8 @@ class IjoomeradvViewMenu extends JViewLegacy
 	 * Add the page title and toolbar.
 	 *
 	 * @since    1.6
+	 *
+	 * @return void
 	 */
 	protected function addToolbar()
 	{

@@ -10,25 +10,37 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Types table
+ * The Class For IJoomeradvTableReport which will Extends JTable
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.table
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvTableReport extends JTable
 {
 	var $id = null;
+
 	var $message = null;
+
 	var $created_by = null;
+
 	var $created = null;
+
 	var $extension = null;
+
 	var $status = null;
+
 	var $params = null;
 
+	/**
+	 * The Function For The IJoomeradvTableReport
+	 *
+	 * @param   &  &$db  &$db
+	 *
+	 * @return void
+	 */
 	function IjoomeradvTableReport(& $db)
 	{
 		parent::__construct('#__ijoomeradv_report', 'id', $db);
 	}
 }
-

@@ -11,14 +11,21 @@ defined('_JEXEC') or die;
 
 
 /**
- * The HTML Menus Menu Item View.
+ * The Class For IJoomeradvViewijoomeradv which will Extends JViewLegacy
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.view
- * @since       1.6
+ * @since       1.0
  */
-class ijoomeradvViewijoomeradv extends JViewLegacy
+class IjoomeradvViewijoomeradv extends JViewLegacy
 {
+	/**
+	 * The Function For Display
+	 *
+	 * @param   [type]  $tmpl  $tmpl
+	 *
+	 * @return  void
+	 */
 	function display($tmpl = null)
 	{
 		$document = JFactory::getDocument();

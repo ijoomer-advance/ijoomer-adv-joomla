@@ -12,27 +12,46 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.model');
 
 /**
- * Menu Types table
+ * The Class For TableExtensions which will Extends JTable
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.table
- * @since       1.6
+ * @since       1.0
  */
 
 class TableExtensions extends JTable
 {
 	var $id = null;
+
 	var $name = null;
+
 	var $classname = null;
+
 	var $option = null;
+
 	var $published = null;
 
+	/**
+	 * The Function TableExtensions
+	 *
+	 * @param   &  &$db  $db
+	 *
+	 * @return void
+	 */
 	function TableExtensions(& $db)
 	{
 		$this->_table_prefix = '#__ijoomeradv_';
 		parent::__construct($this->_table_prefix . 'extensions', 'id', $db);
 	}
 
+	/**
+	 * The Function Bind
+	 *
+	 * @param   [type]  $array   $array
+	 * @param   string  $ignore  $ignore
+	 *
+	 * @return  returns the parent
+	 */
 	function bind($array, $ignore = '')
 	{
 		if (key_exists('params', $array) && is_array($array['params']))
@@ -41,6 +60,7 @@ class TableExtensions extends JTable
 			$registry->loadArray($array['params']);
 			$array['params'] = $registry->toString();
 		}
+
 		return parent::bind($array, $ignore);
 	}
 }

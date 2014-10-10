@@ -11,15 +11,21 @@ defined('_JEXEC') or die;
 
 
 /**
- * The HTML Menus Menu Item View.
+ * The Class For IJoomeradvViewExtensions which will Extends JViewLegacy
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.view
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvViewExtensions extends JViewLegacy
 {
-
+	/**
+	 * The Function For The Display
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
+	 */
 	function display($tpl = null)
 	{
 		global $context;
@@ -38,7 +44,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			JToolBarHelper::title(JText::_('COM_IJOOMERADV_EXTENSIONS_INSTALL_TITLE'), 'extensions_48');
 			JToolBarHelper::cancel();
 		}
-		else if (JRequest::getVar('layout') == 'manage')
+		else if ( JRequest::getVar('layout') == 'manage')
 		{
 			JToolBarHelper::title(JText::_('COM_IJOOMERADV_EXTENSIONS_MANAGE_TITLE'), 'extensionmanager_48');
 			JToolBarHelper::custom('home', 'home', '', JText::_('COM_IJOOMERADV_HOME'), false, false);
@@ -61,7 +67,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			$this->assignRef('extensions', $extensions);
 			$this->assignRef('pagination', $pagination);
 		}
-		else if (JRequest::getVar('layout') == 'detail')
+		else if ( JRequest::getVar('layout') == 'detail')
 		{
 			$extension = $this->get('ExtensionData');
 
@@ -80,10 +86,12 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			require_once JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/helpers/helper.php';
 			$ijoomerHelper = new ijoomeradvAdminHelper;
 			$orig_comp_avail = $ijoomerHelper->getComponent($extension->option);
+
 			if (!$orig_comp_avail)
 			{
 				$mainframe->redirect('index.php?option=com_ijoomeradv&view=extensions', JText::sprintf('COM_IJOOMERADV_MAIN_COMPONENT_NOT_FOUND', $extension->option, $extension->option));
 			}
+
 			$model = $this->getModel();
 
 			$groups = $this->get('ExtGroups');
@@ -98,7 +106,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 				${$value . 'Config'} = $model->getExtConfig($value);
 				$ijoomerHelper->prepareHTML(${$value . 'Config'});
 
-				//assign variable to template
+				// Assign variable to template
 				$this->assignRef($value . 'Config', ${$value . 'Config'});
 			}
 
@@ -115,7 +123,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			JToolBarHelper::addNew();
 			JToolBarHelper::custom('extensionmanage', 'options', 'options', 'Extension Management', false);
 
-			//Code for add submenu for joomla version 1.6 and 1.7
+			// Code for add submenu for joomla version 1.6 and 1.7
 			JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS'), 'index.php?option=com_ijoomeradv&view=extensions', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') != 'manage'));
 			JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS_MANAGER'), 'index.php?option=com_ijoomeradv&view=extensions&layout=manage', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') == 'manage'));
 			JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_GLOBAL_CONFIGURATION'), 'index.php?option=com_ijoomeradv&view=config', JRequest::getVar('view') == 'config');

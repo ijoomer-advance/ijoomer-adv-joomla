@@ -10,18 +10,24 @@
 defined('_JEXEC') or die;
 
 /**
- * The HTML Menus Menu Item View.
+ * The Class For IJoomeradvViewconfig which will Extends JViewLegacy
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.view
- * @since       1.6
+ * @since       1.0
  */
 
-class ijoomeradvViewconfig extends JViewLegacy
+class IjoomeradvViewconfig extends JViewLegacy
 {
+	/**
+	 * The Function Display
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
+	 */
 	function display($tpl = null)
 	{
-
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_CONFIGURATION'));
 
@@ -57,7 +63,6 @@ class ijoomeradvViewconfig extends JViewLegacy
 		$encryption = $model->getConfig('encryption');
 		$this->prepareHTML($encryption);
 
-
 		$this->assignRef('globalConfig', $globalConfig);
 		$this->assignRef('themeConfig', $themeConfig);
 		$this->assignRef('pushConfigIphone', $pushConfigIphone);
@@ -68,6 +73,13 @@ class ijoomeradvViewconfig extends JViewLegacy
 		parent::display($tpl);
 	}
 
+	/**
+	 * The Function PrepareHTML
+	 *
+	 * @param   [type]  &$config  &$config
+	 *
+	 * @return voi
+	 */
 	function prepareHTML(&$config)
 	{
 		foreach ($config as $key => $value)
@@ -75,17 +87,20 @@ class ijoomeradvViewconfig extends JViewLegacy
 			$config[$key]->caption = JText::_($value->caption);
 			$config[$key]->description = JText::_($value->description);
 			$input = null;
+
 			switch ($value->type)
 			{
 				case 'select':
 					$input .= '<select name="' . $value->name . '" id="' . $value->name . '">';
 					$options = explode(';;', $value->options);
+
 					foreach ($options as $val)
 					{
 						$option = explode('::', $val);
 						$selected = ($option[0] === $value->value) ? 'selected="selected"' : '';
 						$input .= '<option value="' . $option[0] . '" ' . $selected . '>' . $option[1] . '</option>';
 					}
+
 					$input .= '</select>';
 					break;
 
@@ -108,8 +123,8 @@ class ijoomeradvViewconfig extends JViewLegacy
 
 					break;
 			}
+
 			$config[$key]->html = $input;
 		}
 	}
-
 }
