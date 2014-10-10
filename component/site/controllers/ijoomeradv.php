@@ -10,20 +10,26 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Item Controller
+ * The Class For IJoomerControllerijoomeradv which will extends JControllerLegacy
  *
  * @package     IJoomer.Frontend
  * @subpackage  com_ijoomeradv.controller
- * @since       1.6
+ * @since       1.0
  */
 
-class ijoomeradvControllerijoomeradv extends JControllerLegacy
+class IjoomeradvControllerijoomeradv extends JControllerLegacy
 {
-
 	private $mainframe;
+
 	private $session_pass = 0;
+
 	private $IJUserID = null;
 
+/**
+ * Constructor
+ *
+ * @param   array  $default  $default
+ */
 	function __construct($default = array())
 	{
 		$this->mainframe = JFactory::getApplication();
@@ -32,13 +38,17 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
-	 * @uses defines ijoomeradv application configuration
+	 * defines ijoomeradv application configuration
 	 *
+	 * @return  void
 	 */
 	private function defineApplicationConfig()
 	{
 		$model = $this->getModel('ijoomeradv');
-		$result = $model->getApplicationConfig(); // get application config
+
+		// Get application config
+		$result = $model->getApplicationConfig();
+
 		foreach ($result as $value)
 		{
 			defined($value->name) or define($value->name, $value->value);
@@ -46,13 +56,19 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
-	 * @uses defines extension configuration
+	 * defines extension configuration
 	 *
+	 * @param   [type]  $extName  $extName
+	 *
+	 * @return  void
 	 */
 	private function defineExtensionConfig($extName)
 	{
 		$model = $this->getModel('ijoomeradv');
-		$result = $model->getExtensionConfig($extName); // get extension config
+
+		// Get extension config
+		$result = $model->getExtensionConfig($extName);
+
 		foreach ($result as $value)
 		{
 			defined($value->name) or define($value->name, $value->value);
@@ -60,26 +76,40 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
-	 * @uses Generates and displays JSON output with JSON mime type
+	 * Generates and displays JSON output with JSON mime type
 	 *
+	 * @param   [type]  $jsonarray  $jsonarray
+	 *
+	 * @return  void
 	 */
 	private function outputJSON($jsonarray)
 	{
-		//set all warning/notice in json response
+		// Set all warning/notice in json response
 		$jsonarray['php_server_error'] = ($_SESSION['ijoomeradv_error']) ? $_SESSION['ijoomeradv_error'] : '';
 		unset($_SESSION['ijoomeradv_error']);
 
-		header("content-type: application/json"); // set the header content type to JSON format
-		require_once IJ_HELPER . '/helper.php'; // import ijoomeradv helper file
-		$IJHelperObj = new ijoomeradvHelper; // create hepler object
+		// Set the header content type to JSON format
+		header("content-type: application/json");
+
+		// Import ijoomeradv helper file
+		require_once IJ_HELPER . '/helper.php';
+
+		// Create hepler object
+		$IJHelperObj = new ijoomeradvHelper;
+
 		$encryption = $IJHelperObj->getencryption_config();
+
 		if ($encryption == 1)
 		{
-			$json = json_encode($jsonarray);// output the JSON encoded string
-			// add  code for replace back slases to forward slases.
+			// Output the JSON encoded string
+			$json = json_encode($jsonarray);
+
+			// Add  code for replace back slases to forward slases.
 			$json = str_replace('\\\\', '/', $json);
+
 			require_once IJ_SITE . '/encryption/MCrypt.php';
 			$RSA = new MCrypt;
+
 			$encoded = $RSA->encrypt($json);
 			echo $encoded;
 			exit;
@@ -87,11 +117,13 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		else
 		{
 			echo json_encode(str_replace("\\\\", "/", $jsonarray));
+
 			if (!empty($jsonarray['pushNotificationData']))
 			{
 				$db = JFactory::getDBO();
 
 				$memberlist = $jsonarray['pushNotificationData']['to'];
+
 				if ($memberlist)
 				{
 					$query = "SELECT userid,`jomsocial_params`,`device_token`,`device_type`
@@ -102,7 +134,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 					foreach ($puserlist as $puser)
 					{
-						//check config allow for jomsocial
+						// Check config allow for jomsocial
+
 						if (!empty($jsonarray['pushNotificationData']['configtype']) and $jsonarray['pushNotificationData']['configtype'] != '')
 						{
 							$ijparams = json_decode($puser->jomsocial_params);
@@ -117,7 +150,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 						{
 							if (IJOOMER_PUSH_ENABLE_IPHONE == 1 && $puser->device_type == 'iphone')
 							{
-
 								$options = array();
 								$options['device_token'] = $puser->device_token;
 								$options['live'] = intval(IJOOMER_PUSH_DEPLOYMENT_IPHONE);
@@ -139,21 +171,30 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 						}
 					}
 				}
+
 				unset($jsonarray['pushNotificationData']);
 			}
-			exit; // output the JSON encoded string
+
+			// Output the JSON encoded string
+			exit;
 		}
 	}
 
 	/**
-	 * @uses this function is used to check session
+	 * This function is used to check session
 	 *
+	 * @param   [type]  $whiteListTask  $whiteListTask
+	 *
+	 * @return  boolean returns true or false
 	 */
 	private function checkSession($whiteListTask)
 	{
-		$extTask = IJReq::getExtTask(); // get requested extension task (function inside view file)
-		$extView = IJReq::getExtView(); // get requested extension view (file name of extension)
-		$my =  JFactory::getUser();
+		// Get requested extension task (function inside view file)
+		$extTask = IJReq::getExtTask();
+
+		// Get requested extension view (file name of extension)
+		$extView = IJReq::getExtView();
+		$my = JFactory::getUser();
 
 		if ($my->id > 0)
 		{
@@ -169,6 +210,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$this->mainframe->setUserState('com_ijoomeradv.IJUserID', null);
 			unset($_SESSION['IJUserID']);
 		}
+
 		if ((IJOOMER_GC_LOGIN_REQUIRED && $this->session_pass == 1) || (in_array($extView . '.' . $extTask, $whiteListTask)) || !IJOOMER_GC_LOGIN_REQUIRED)
 		{
 			return true;
@@ -180,17 +222,21 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
-	 * @uses    this function will be used to any other request which is part of the installed extension
+	 * The Ping Function
+	 *
+	 * @uses   this function will be used to any other request which is part of the installed extension
 	 * @example the json string will be like, :
 	 *    {
 	 *        "task":"ping"
 	 *    }
 	 *
+	 * @return void
 	 */
 	function ping()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$results = $model->getExtensions();
+
 		if (count($results) > 0)
 		{
 			$jsonarray['code'] = 200;
@@ -200,14 +246,18 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['code'] = 204;
 			$this->outputJSON($jsonarray);
 		}
+
 		foreach ($results as $result)
 		{
 			$jsonarray['extensions'][] = $result->name;
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The GetUrlContent Function
+	 *
 	 * @uses    this function will be used to get url params from url to send data in pushnotification from admin side by passing url
 	 * @example the json string will be like, :
 	 *    {
@@ -217,6 +267,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function getUrlContent()
 	{
@@ -225,10 +276,11 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		$router = JApplication::getRouter('site', $options);
 		$results = $router->parse(JURI::getInstance($url));
 
-		//define('JROUTER_MODE_SEF',1);
+		// Define('JROUTER_MODE_SEF',1);
 		$model = $this->getModel('ijoomeradv');
 		$extensions = $model->getExtensions();
 		$isExtAvail = false;
+
 		foreach ($extensions as $extension)
 		{
 			if ($extension->option == $results['option'])
@@ -238,7 +290,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			}
 		}
 
-		//set url as external weblink if component not found
+		// Set url as external weblink if component not found
 		if (!$isExtAvail)
 		{
 			$jsonarray['itemview'] = 'Web';
@@ -268,6 +320,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
+	 * The Display Function
+	 *
 	 * @uses    this function will be used to any other request which is part of the installed extension
 	 * @example the json string will be like, :
 	 *    {
@@ -280,78 +334,121 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function display()
 	{
-		$model = $this->getModel('ijoomeradv'); // get ijoomeradv model object
+		// Get ijoomeradv model object
+		$model = $this->getModel('ijoomeradv');
 
-		$menuid = IJReq::getTaskData('menuId', ''); // get requested extension task (function inside view file)
-		//Set request variable from manu
+		// Get requested extension task (function inside view file)
+		$menuid = IJReq::getTaskData('menuId', '');
+
+		// Set request variable from manu
 		if (!empty($menuid))
 		{
 			$model->setMenuRequest($menuid);
 		}
 
-		$extName = IJReq::getExtName(); // get requested extension name
-		$extView = IJReq::getExtView(); // get requested extension view (file name of extension)
-		$extTask = IJReq::getExtTask(); // get requested extension task (function inside view file)
+		// Get requested extension name
+		$extName = IJReq::getExtName();
+
+		// Get requested extension view (file name of extension)
+		$extView = IJReq::getExtView();
+
+		// Get requested extension task (function inside view file)
+		$extTask = IJReq::getExtTask();
 
 		$jsonarray = array();
+
 		if (!$model->checkIJExtension($extName))
-		{ // check ijoomeradv extension and related component status from extension name passed in the request
+		{
+			// Check ijoomeradv extension and related component status from extension name passed in the request
 			$jsonarray['code'] = IJReq::getResponseCode();
+
 			$jsonarray['message'] = IJReq::getResponseMessage();
+
 			$this->outputJSON($jsonarray);
 		}
 
-		$extensionmain = IJ_EXTENSION . '/' . $extName . '/' . $extName . ".php"; // main existance file
-		$extensionview = IJ_EXTENSION . '/' . $extName . '/' . $extView . ".php"; // extension view file
+		// Main existance file
+
+		$extensionmain = IJ_EXTENSION . '/' . $extName . '/' . $extName . ".php";
+
+		// Extension view file
+		$extensionview = IJ_EXTENSION . '/' . $extName . '/' . $extView . ".php";
+
 		if (!file_exists($extensionview) or !file_exists($extensionmain))
 		{
 			$jsonarray['code'] = 404;
-			$jsonarray['message'] = NULL; //'Extension File Not Found.';
+
+			// Extension File Not Found.';
+			$jsonarray['message'] = NULL;
 			$this->outputJSON($jsonarray);
 		}
 
-		$this->defineExtensionConfig($extName); // define extension configuration so it can be directly used
+		// Define extension configuration so it can be directly used
+		$this->defineExtensionConfig($extName);
 
-		include_once $extensionmain; // include main extension file
-		$extMainObj = new $extName(); // create main extension class object
+		// Include main extension file
+		include_once $extensionmain;
+
+		// Create main extension class object
+		$extMainObj = new $extName;
 
 		if (!$this->checkSession($extMainObj->sessionWhiteList))
-		{ // checkSession checks the session sent in task data and if session found it will all needed data.
+		{
+			// CheckSession checks the session sent in task data and if session found it will all needed data.
 			$jsonarray['code'] = 704;
-			$jsonarray['message'] = NULL; //'Method Not Found.';
+
+			// Method Not Found.';
+			$jsonarray['message'] = NULL;
+
 			$this->outputJSON($jsonarray);
 		}
 
 		if (method_exists($extMainObj, 'init'))
-		{ // check if initialization method exists
-			$extMainObj->init(); // call init method
+		{
+			// Check if initialization method exists
+			$extMainObj->init();
+
+			// Call init method
 		}
 
 		include_once $extensionview;
-		$extObj = new $extView();
+		$extObj = new $extView;
+
 		if (!method_exists($extObj, $extTask))
-		{ // check if method exists
+		{
+			// Check if method exists
 			$jsonarray['code'] = 404;
-			$jsonarray['message'] = NULL; //'Method Not Found.';
+
+			// Method Not Found.';
+			$jsonarray['message'] = NULL;
+
 			$this->outputJSON($jsonarray);
 		}
 
 		$jsonarray = $extObj->$extTask();
+
 		if (!$jsonarray)
-		{ // if anything goes wrong; return error code and message in response
+		{
+			// If anything goes wrong; return error code and message in response
 			$jsonarray['code'] = IJReq::getResponseCode();
+
 			$jsonarray['message'] = IJReq::getResponseMessage();
 
-			// edd exception to log file
+			// Edd exception to log file
 			IJException::addLog();
 		}
-		$this->outputJSON($jsonarray); // send data array to create jason string and output
+
+		// Send data array to create jason string and output
+		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The Function ApplicationConfig
+	 *
 	 * @uses    this function is used to fetch application (global) config.
 	 * @example the json string will be like, :
 	 *    {
@@ -362,18 +459,26 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return theamarray
 	 */
 	function applicationConfig()
 	{
 		$model = $this->getModel('ijoomeradv');
-		$result = $model->getApplicationConfig(); // get application config
+
+		// Get application config
+		$result = $model->getApplicationConfig();
+
 		$jsonarray = array();
+
 		if ($result)
 		{
-			$jsonarray['code'] = 200; // response ok
+			// Response ok
+			$jsonarray['code'] = 200;
+
 			foreach ($result as $value)
 			{
 				$jsonarray['configuration']['globalconfig'][$value->name] = $value->value;
+
 				if ($value->name == 'IJOOMER_GC_REGISTRATION')
 				{
 					switch ($value->value)
@@ -400,17 +505,21 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		}
 		else
 		{
-			$jsonarray['code'] = 204; // No data
+			// No data
+			$jsonarray['code'] = 204;
 			$jsonarray['message'] = JText::_('COM_IJOOMERADV_NO_CONFIGURATION_FOUND');
 		}
 
-		// get all extension config
+		// Get all extension config
 		$results = $model->getExtensions();
+
 		foreach ($results as $result)
 		{
 			require_once IJ_EXTENSION . '/' . $result->classname . '/' . $result->classname . ".php";
-			$classobj = new $result->classname();
+
+			$classobj = new $result->classname;
 			$extconfig = $classobj->getconfig();
+
 			foreach ($extconfig as $key => $value)
 			{
 				$jsonarray['configuration']['extentionconfig'][$result->classname][$key] = $value;
@@ -422,6 +531,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		$jsonarray['configuration']['globalconfig']['offsetLocation'] = date_default_timezone_get();
 
 		$homeMenu = $model->getHomeMenu();
+
 		if ($homeMenu)
 		{
 			$homeMenuobj = new stdClass;
@@ -436,12 +546,13 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$homeMenuobj->itemdata = $remotedata;
 			$jsonarray['configuration']['globalconfig']['default_landing_screen'] = $homeMenuobj;
 		}
+
 		else
 		{
 			$jsonarray['configuration']['globalconfig']['default_landing_screen'] = '';
 		}
 
-		// application get extension version info
+		// Application get extension version info
 
 		if (file_exists(JPATH_COMPONENT_SITE . '/extensions/jomsocial/' . "helper.php") && file_exists(JPATH_SITE . '/components/com_community/' . "community.php"))
 		{
@@ -451,17 +562,21 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['configuration']['versioninfo']["jomsocial"] = $jomsocial_version;
 		}
 
-		// application theme list
+		// Application theme list
 		$jsonarray['configuration']['theme'] = $this->statictheme();
 
-		// application menu list
+		// Application menu list
 		$jsonarray['configuration']['menus'] = $model->getMenus();
 
-		$this->outputJSON($jsonarray); // send data array to create jason string and output
+		// Send data array to create jason string and output
+		$this->outputJSON($jsonarray);
 	}
 
-
-	// calls from applicationConfig()
+	/**
+	 * The StaticTheme Function
+	 *
+	 * @return  returns TheamArray
+	 */
 	private function statictheme()
 	{
 		$device = IJReq::getTaskData('device');
@@ -472,7 +587,6 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		if ($device == 'android')
 		{
 			$device_type = IJReq::getTaskData('type', 'hdpi');
-
 		}
 		elseif ($device == 'iphone')
 		{
@@ -480,6 +594,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		}
 
 		$i = 0;
+
 		foreach ($viewnames as $key => $value)
 		{
 			foreach ($value as $ky => $val)
@@ -546,6 +661,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		$i++;
 
 		$customView = $model->getCustomView();
+
 		foreach ($customView as $key => $value)
 		{
 			$viewname = explode('.', $value->views);
@@ -560,6 +676,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
+	 * The Login Function
+	 *
 	 * @uses    this function is used to log into the application
 	 * @example the json string will be like, :
 	 *    {
@@ -573,19 +691,28 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function login()
 	{
 		if (!IJReq::getTaskData('username') or !IJReq::getTaskData('password'))
-		{ // check if username or password not blank
+		{
+			// Check if username or password not blank
 			$jsonarray['code'] = 400;
+
 			$jsonarray['message'] = NULL;
-			$this->outputJSON($jsonarray); // send data array to create jason string and output
+
+			// Send data array to create jason string and output
+			$this->outputJSON($jsonarray);
 		}
 
 		$credentials = array();
-		$credentials['username'] = IJReq::getTaskData('username'); // get username
-		$credentials['password'] = IJReq::getTaskData('password'); // get password
+
+		// Get username
+		$credentials['username'] = IJReq::getTaskData('username');
+
+		// Get password
+		$credentials['password'] = IJReq::getTaskData('password');
 
 		if ($this->mainframe->login($credentials) == '1')
 		{
@@ -597,36 +724,49 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['code'] = 401;
 			$jsonarray['message'] = JText::_('COM_IJOOMERADV_UNABLE_TO_AUTHENTICATE');
 		}
-		$this->outputJSON($jsonarray); // send data array to create jason string and output
+
+		// Send data array to create jason string and output
+		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The Logout Function
+	 *
 	 * @uses    this function will use to log out of the application
 	 * @example the json string will be like, :
 	 *    {
 	 *        "task":"logout"
 	 *    }
 	 *
+	 * @return void
 	 */
 	function logout()
 	{
-		$my =  JFactory::getUser();
+		$my = JFactory::getUser();
+
 		if (!$my->id)
 		{
-			$jsonarray['code'] = 400; // if userid not passed or null
+			// If userid not passed or null
+			$jsonarray['code'] = 400;
+
 			$jsonarray['message'] = NULL;
+
 			$this->outputJSON($jsonarray);
 		}
 
 		if ($this->mainframe->logout($my->id))
 		{
 			ob_end_clean();
-			$jsonarray['code'] = 200; // logout success
+
+			// Logout success
+			$jsonarray['code'] = 200;
+
 			$jsonarray['message'] = NULL;
 		}
 		else
 		{
-			$jsonarray['code'] = 500; // logout unsuccess
+			// Logout unsuccess
+			$jsonarray['code'] = 500;
 			$jsonarray['message'] = JText::_('COM_IJOOMERADV_UNABLE_LOGOUT');
 		}
 
@@ -634,6 +774,8 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	}
 
 	/**
+	 * The GetPushNotification
+	 *
 	 * @uses    this function will use to get pushnotification from id
 	 * @example the json string will be like, :
 	 *    {
@@ -643,6 +785,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *                   }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function getPushNotification()
 	{
@@ -656,6 +799,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 		$db->setQuery($pushDataQuery);
 		$pushData = $db->loadObject();
+
 		if (!empty($pushData))
 		{
 			$query = "UPDATE #__ijoomeradv_push_notification_data
@@ -673,10 +817,13 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		{
 			$jsonarray['code'] = 204;
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The FBLogin Function
+	 *
 	 * @uses    this function used to log in with Facebook
 	 * @example the json string will be like, :
 	 *    {
@@ -695,21 +842,26 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function fblogin()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->fblogin();
+
 		if (!$jsonarray)
 		{
 			$jsonarray['code'] = IJReq::getResponseCode();
 			$jsonarray['message'] = IJReq::getResponseMessage();
 			$this->outputJSON($jsonarray);
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The Registration Function
+	 *
 	 * @uses    this function is used to register new user
 	 * @example the json string will be like, :
 	 *    {
@@ -724,22 +876,26 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function registration()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->registration();
+
 		if (!$jsonarray)
 		{
 			$jsonarray['code'] = IJReq::getResponseCode();
 			$jsonarray['message'] = IJReq::getResponseMessage();
 			$this->outputJSON($jsonarray);
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
-
 	/**
+	 * The ResetPassword Function
+	 *
 	 * @uses    this function is used to retrive password
 	 * @example the json string will be like, :
 	 *    {
@@ -755,11 +911,13 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function resetPassword()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$step = IJReq::getTaskData('step', 1, 'int');
+
 		switch ($step)
 		{
 			case 3:
@@ -773,17 +931,20 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 				$jsonarray = $model->retriveToken();
 				break;
 		}
+
 		if (!$jsonarray)
 		{
 			$jsonarray['code'] = IJReq::getResponseCode();
 			$jsonarray['message'] = IJReq::getResponseMessage();
 			$this->outputJSON($jsonarray);
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
-
 	/**
+	 * The RetriveUserName Function
+	 *
 	 * @uses    this function is use to retrive username
 	 * @example the json string will be like, :
 	 *    {
@@ -793,21 +954,30 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 	function retriveUsername()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->retriveUsername();
+
 		if (!$jsonarray)
-		{ // if return value is false
-			$jsonarray['code'] = IJReq::getResponseCode(); // get response code
-			$jsonarray['message'] = IJReq::getResponseMessage(); // get response message
+		{
+			// If return value is false
+			// get response code
+			$jsonarray['code'] = IJReq::getResponseCode();
+
+			// Get response message
+			$jsonarray['message'] = IJReq::getResponseMessage();
 			$this->outputJSON($jsonarray);
 		}
+
 		$this->outputJSON($jsonarray);
 	}
 
 	/**
+	 * The ContactUs Function
+	 *
 	 * @uses    this function is use to mail of contactUs Form
 	 * @example the json string will be like, :
 	 *    {
@@ -823,6 +993,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return void
 	 */
 
 	function contactUs()
@@ -849,6 +1020,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$row = $db->loadObject();
 
 			$count = count($row);
+
 			if ($count <= 0)
 			{
 				$jsonarray['code'] = 204;
@@ -877,31 +1049,37 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['contact']['image'] = ($serverUse->showMiscImage == 1) ? JURI::base() . $row->image : "";
 
 			$decodeParams = json_decode($row->params);
+
 			if ($decodeParams->linka_name || $decodeParams->linka)
 			{
 				$jsonarray['contact']['links'][0]['caption'] = $decodeParams->linka_name;
 				$jsonarray['contact']['links'][0]['url'] = $decodeParams->linka;
 			}
+
 			if ($decodeParams->linkb_name || $decodeParams->linkb)
 			{
 				$jsonarray['contact']['links'][1]['caption'] = $decodeParams->linkb_name;
 				$jsonarray['contact']['links'][1]['url'] = $decodeParams->linkb;
 			}
+
 			if ($decodeParams->linkc_name || $decodeParams->linkc)
 			{
 				$jsonarray['contact']['links'][2]['caption'] = $decodeParams->linkc_name;
 				$jsonarray['contact']['links'][2]['url'] = $decodeParams->linkc;
 			}
+
 			if ($decodeParams->linkd_name || $decodeParams->linkd)
 			{
 				$jsonarray['contact']['links'][3]['caption'] = $decodeParams->linkd_name;
 				$jsonarray['contact']['links'][3]['url'] = $decodeParams->linkd;
 			}
+
 			if ($decodeParams->linke_name || $decodeParams->linke)
 			{
 				$jsonarray['contact']['links'][4]['caption'] = $decodeParams->linke_name;
 				$jsonarray['contact']['links'][4]['url'] = $decodeParams->linke;
 			}
+
 			$this->outputJSON($jsonarray);
 		}
 		else
@@ -917,6 +1095,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 			$data['contact_email'] = $email;
 			$data['contact_subject'] = $subject;
 			$data['contact_message'] = $message;
+
 			if ($sendCopy == 'on')
 			{
 				$data['contact_email_copy'] = $sendCopy;
@@ -931,6 +1110,7 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 			// Send the email
 			$sent = false;
+
 			if (!$params->get('custom_reply'))
 			{
 				$sent = $this->_sendEmail($data, $contact);
@@ -941,18 +1121,27 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 
 			return true;
 		}
-
 	}
 
+	/**
+	 * The SendEmail Function
+	 *
+	 * @param   [type]  $data     $data
+	 * @param   [type]  $contact  $contact
+	 *
+	 * @return  it will return $sent
+	 */
 	function _sendEmail($data, $contact)
 	{
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_contact');
+
 		if ($contact->email_to == '' && $contact->user_id != 0)
 		{
 			$contact_user = JUser::getInstance($contact->user_id);
 			$contact->email_to = $contact_user->get('email');
 		}
+
 		$mailfrom = $app->getCfg('mailfrom');
 		$fromname = $app->getCfg('fromname');
 		$sitename = $app->getCfg('sitename');
@@ -975,11 +1164,10 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		$mail->setBody($body);
 		$sent = $mail->Send();
 
-		//If we are supposed to copy the sender, do so.
-		// check whether email copy function activated
+		// If we are supposed to copy the sender, do so.
+		// Check whether email copy function activated
 		if (array_key_exists('contact_email_copy', $data))
 		{
-
 			$copytext = JText::sprintf('COM_IJOOMERADV_COPYTEXT_OF', $contact->name, $sitename);
 			$copytext .= "\r\n\r\n" . $body;
 			$copysubject = JText::sprintf('COM_IJOOMERADV_COPYSUBJECT_OF', $subject);
@@ -996,6 +1184,11 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		return $sent;
 	}
 
+	/**
+	 * The Verbose Function
+	 *
+	 * @return  void
+	 */
 	function verbose()
 	{
 		echo '<b>iJoomer Advance : <b>';
@@ -1003,10 +1196,12 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 		echo '<br/><br/>Extensions:<br/>';
 		$model = $this->getModel('ijoomeradv');
 		$extensions = $model->getExtensions();
+
 		foreach ($extensions as $extension)
 		{
 			echo '<br/>&nbsp;&nbsp;&nbsp;' . $extension->name . ' : ';
 			$mainXML = JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $extension->classname . '.xml';
+
 			if (is_file($mainXML))
 			{
 				if ($xml = simplexml_load_file($mainXML))
@@ -1015,16 +1210,19 @@ class ijoomeradvControllerijoomeradv extends JControllerLegacy
 					$version = (double) $version[0][0];
 				}
 			}
+
 			echo $version;
+
 			if ($extension->name != 'ICMS')
 			{
-				$db =  JFactory::getDBO();
+				$db = JFactory::getDBO();
 				$query = "SELECT `manifest_cache`
 						FROM #__extensions
 						WHERE `element`='{$extension->option}'";
 				$db->setQuery($query);
 				$extension = $db->loadResult($query);
 				$extension = json_decode($extension);
+
 				if ($extension->version)
 				{
 					echo ' / ' . $extension->version;

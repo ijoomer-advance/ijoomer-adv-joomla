@@ -10,17 +10,27 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Item Controller
+ * The Class Default_Menu
  *
  * @package     IJoomer.Frontend
  * @subpackage  com_ijoomeradv.controller
- * @since       1.6
+ * @since       1.0
  */
 class default_menu
 {
+	/**
+	 * The Function GetReuiredInput
+	 *
+	 * @param   [type]  $extension    $extension
+	 * @param   [type]  $extTask      $extTask
+	 * @param   [type]  $menuoptions  $menuoptions
+	 *
+	 * @return  it will return $html
+	 */
 	public function getRequiredInput($extension, $extTask, $menuoptions)
 	{
 		$menuoptions = json_decode($menuoptions, true);
+
 		switch ($extTask)
 		{
 			case 'web':
@@ -34,10 +44,12 @@ class default_menu
 
 			case 'custom':
 				$str = '';
+
 				if (isset($menuoptions['remoteUse']))
 				{
 					$str = json_encode($menuoptions['remoteUse']);
 				}
+
 				$customactivityname = JText::_('COM_IJOOMERADV_CUSTOM_ACTIVITY_NAME');
 				$html = '<fieldset class="panelform">
 							<label title="" class="hasTip required" for="jform_request_actname" id="jform_request_actname-lbl" aria-invalid="false">' . $customactivityname . '
@@ -277,9 +289,22 @@ class default_menu
 				</fieldset>';
 				break;
 		}
+
 		return $html;
 	}
 
+	/**
+	 * The SetRequiredInput Function
+	 *
+	 * @param   [type]  $extension    $extension
+	 * @param   [type]  $extView      $extView
+	 * @param   [type]  $extTask      $extTask
+	 * @param   [type]  $remoteTask   $remoteTask
+	 * @param   [type]  $menuoptions  $menuoptions
+	 * @param   [type]  $data         $data
+	 *
+	 * @return void
+	 */
 	public function setRequiredInput($extension, $extView, $extTask, $remoteTask, $menuoptions, $data)
 	{
 		$db = JFactory::getDBO();
@@ -294,10 +319,12 @@ class default_menu
 
 			case 'custom':
 				$params = $menuoptions['actparam'];
+
 				if (!$params)
 				{
 					$params = '""';
 				}
+
 				$options = '{"serverUse":"","remoteUse":' . $params . '}';
 				break;
 
@@ -346,6 +373,13 @@ class default_menu
 		}
 	}
 
+	/**
+	 * GetOptions
+	 *
+	 * @param   [type]  $selectedValue  [description]
+	 *
+	 * @return  it will returns the $options
+	 */
 	function getOptions($selectedValue)
 	{
 		if ($selectedValue == 1)
@@ -356,6 +390,7 @@ class default_menu
 		{
 			$options = '<option value="0" selected="selected">Hide</option><option value="1">Show</option>';
 		}
+
 		return $options;
 	}
 }
