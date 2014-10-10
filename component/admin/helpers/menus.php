@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Menus component helper.
+ * The Class For IJoomerHelper
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.Helper
+ * @since       1.0
  */
 class IjoomeradvHelper
 {
@@ -26,7 +26,9 @@ class IjoomeradvHelper
 	/**
 	 * Configure the Linkbar.
 	 *
-	 * @param    string    The name of the active view.
+	 * @param   string  $vName  The name of the active view.
+	 *
+	 * @return void
 	 */
 	public static function addSubmenu($vName)
 	{
@@ -45,10 +47,9 @@ class IjoomeradvHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param    int        The menu ID.
+	 * @param   integer  $parentId  The menu ID.
 	 *
-	 * @return    JObject
-	 * @since    1.6
+	 * @return  JObject
 	 */
 	public static function getActions($parentId = 0)
 	{
@@ -81,6 +82,13 @@ class IjoomeradvHelper
 	 *
 	 * @return    mixed    A link in standard option-view-layout form, or false if the supplied response is invalid.
 	 */
+	/**
+	 * Gets a standard form of a link for lookups.
+	 *
+	 * @param   mixed  $request  A link string or array of request variables.
+	 *
+	 * @return  mixed  A link in standard option-view-layout form, or false if the supplied response is invalid.
+	 */
 	public static function getLinkKey($request)
 	{
 		if (empty($request))
@@ -92,6 +100,7 @@ class IjoomeradvHelper
 		if (is_string($request))
 		{
 			$args = array();
+
 			if (strpos($request, 'index.php') === 0)
 			{
 				parse_str(parse_url(htmlspecialchars_decode($request), PHP_URL_QUERY), $args);
@@ -100,6 +109,7 @@ class IjoomeradvHelper
 			{
 				parse_str($request, $args);
 			}
+
 			$request = $args;
 		}
 
@@ -121,23 +131,26 @@ class IjoomeradvHelper
 	/**
 	 * Get the menu list for create a menu module
 	 *
-	 * @return        array    The menu array list
-	 * @since        1.6
+	 * @return  array  The menu array list.
 	 */
 	public static function getMenuTypes()
 	{
 		$db = JFactory::getDbo();
 		$db->setQuery('SELECT a.menutype FROM #__ijoomeradv_menu_types AS a');
+
 		return $db->loadColumn();
 	}
 
 	/**
 	 * Get a list of menu links for one or all menus.
 	 *
-	 * @param    string     An option menu to filter the list on, otherwise all menu links are returned as a grouped array.
-	 * @param    int        An optional parent ID to pivot results around.
-	 * @param    int        An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
-	 * @param    array      An optional array of states
+	 * @param   string   $menuType   An option menu to filter the list on, otherwise all menu links are returned as a grouped array.
+	 * @param   integer  $parentId   An optional parent ID to pivot results around.
+	 * @param   integer  $mode       An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
+	 * @param   array    $published  An optional array of states
+	 * @param   array    $languages  [description]
+	 *
+	 * @return  boolean returns the falue in true or false.
 	 */
 	public static function getMenuLinks($menuType = null, $parentId = 0, $mode = 0, $published = array(), $languages = array())
 	{
@@ -170,12 +183,13 @@ class IjoomeradvHelper
 			{
 				$languages = '(' . implode(',', array_map(array($db, 'quote'), $languages)) . ')';
 			}
+
 			$query->where('a.language IN ' . $languages);
 		}
 
 		if (!empty($published))
 		{
-			if (is_array($published)) $published = '(' . implode(',', $published) . ')';
+			if ( is_array($published)) $published = '(' . implode(',', $published) . ')';
 			$query->where('a.published IN ' . $published);
 		}
 
@@ -192,6 +206,7 @@ class IjoomeradvHelper
 		if ($error = $db->getErrorMsg())
 		{
 			JError::raiseWarning(500, $error);
+
 			return false;
 		}
 
@@ -217,11 +232,13 @@ class IjoomeradvHelper
 			if ($error = $db->getErrorMsg())
 			{
 				JError::raiseWarning(500, $error);
+
 				return false;
 			}
 
 			// Create a reverse lookup and aggregate the links.
 			$rlu = array();
+
 			foreach ($menuTypes as &$type)
 			{
 				$rlu[$type->menutype] = $type;
@@ -248,6 +265,13 @@ class IjoomeradvHelper
 		}
 	}
 
+	/**
+	 * The Function For Getting The Associations
+	 *
+	 * @param   [type]  $pk  [description]
+	 *
+	 * @return  [type]       [description]
+	 */
 	static public function getAssociations($pk)
 	{
 		$associations = array();
@@ -261,16 +285,20 @@ class IjoomeradvHelper
 		$query->select('m2.language, m2.id');
 		$db->setQuery($query);
 		$menuitems = $db->loadObjectList('language');
+
 		// Check for a database error.
 		if ($error = $db->getErrorMsg())
 		{
 			JError::raiseWarning(500, $error);
+
 			return false;
 		}
+
 		foreach ($menuitems as $tag => $item)
 		{
 			$associations[$tag] = $item->id;
 		}
+
 		return $associations;
 	}
 }

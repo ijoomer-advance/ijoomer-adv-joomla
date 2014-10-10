@@ -13,6 +13,13 @@ jimport('joomla.installer.installer');
 jimport('joomla.installer.helper');
 jimport('joomla.filesystem.file');
 
+/**
+ * Menu Item Model for Menus.
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.6
+ */
 class IjoomeradvModelPushnotif extends JModelLegacy
 {
 	private $_data = null;

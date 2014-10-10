@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * The HTML Menus Menu Menus View.
+ * The HTML Menus Menu Item View.
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @version        1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.6
  */
 class IjoomeradvViewMenus extends JViewLegacy
 {

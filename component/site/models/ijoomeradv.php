@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * The Menu Item Model
+ *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.model
+ * @since       1.6
+ */
 class ijoomeradvModelijoomeradv extends JModelLegacy
 {
 

@@ -11,15 +11,22 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Item Controller
+ * The Class For Ijoomeradvcontrolleritem which will Extends JControllerForm
  *
- * @package     Joomla.Administrator
- * @subpackage  com_ijoomer
- * @since       1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
  */
 class IjoomeradvControllerItem extends JControllerForm
 {
-
+	/**
+	 * The Display Function
+	 *
+	 * @param   boolean  $cachable   [description]
+	 * @param   boolean  $urlparams  [description]
+	 *
+	 * @return  void
+	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 		JControllerLegacy::display();
@@ -55,7 +62,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to run batch operations.
 	 *
-	 * @param   object $model The model.
+	 * @param   object  $model  The  model.
 	 *
 	 * @return  boolean     True if successful, false otherwise and internal error is set.
 	 *
@@ -77,11 +84,11 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to cancel an edit.
 	 *
-	 * @param   string $key The name of the primary key of the URL variable.
+	 * @param   [string]  $key  The name of the primary key of the URL variable.
 	 *
-	 * @return  boolean  True if access level checks pass, false otherwise.
+	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	public function cancel($key = null)
 	{
@@ -97,11 +104,10 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to edit an existing record.
 	 *
-	 * @param   string $key    The name of the primary key of the URL variable.
-	 * @param   string $urlVar The name of the URL variable if different from the primary key
-	 *                         (sometimes required to avoid router collisions).
+	 * @param   [string]  $key     The name of the primary key of the URL variable.
+	 * @param   [string]  $urlVar  The name of the URL variable if different from the primary key.
 	 *
-	 * @return  boolean  True if access level check and checkout passes, false otherwise.
+	 * @return  [boolean]           True if access level check and checkout passes, false otherwise.
 	 *
 	 * @since   1.6
 	 */
@@ -124,12 +130,12 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * Method to save a record.
 	 *
-	 * @param   string $key    The name of the primary key of the URL variable.
-	 * @param   string $urlVar The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
+	 * @param   [string]  $key     The name of the primary key of the URL variable.
+	 * @param   [string]  $urlVar  The name of the URL variable if different from the primary key (sometimes required to avoid router collisions).
 	 *
-	 * @return  boolean  True if successful, false otherwise.
+	 * @return  [boolean]           True if successful, false otherwise.
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	public function save($key = null, $urlVar = null)
 	{
@@ -176,20 +182,19 @@ class IjoomeradvControllerItem extends JControllerForm
 
 		if ($position == 1 or $position == 2)
 		{
-			if ($itemimagedata['name']['imageicon'] && $itemimagedata['error']['imageicon'] <= 0 && $itemimagedata['size']['imageicon'] > 0)
+			if ( $itemimagedata['name']['imageicon'] && $itemimagedata['error']['imageicon'] <= 0 && $itemimagedata['size']['imageicon'] > 0)
 			{
-
 				$imagetype = $itemimagedata['type']['imageicon'];
 
-				if ($imagetype == 'image/jpg' || $imagetype == 'image/jpeg')
+				if ( $imagetype == 'image/jpg' || $imagetype == 'image/jpeg')
 				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if ($imagetype == 'image/png')
+				else if ( $imagetype == 'image/png')
 				{
 					$image = imagecreatefrompng($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if ($imagetype == 'image/gif')
+				else if ( $imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imageicon']);
 				}
@@ -245,7 +250,6 @@ class IjoomeradvControllerItem extends JControllerForm
 		{
 			if ($itemimagedata['name']['imagetab'] && $itemimagedata['error']['imagetab'] <= 0 && $itemimagedata['size']['imagetab'] > 0)
 			{
-
 				$imagetype = $itemimagedata['type']['imagetab'];
 				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
 				{
@@ -280,17 +284,20 @@ class IjoomeradvControllerItem extends JControllerForm
 					{
 						imageAntiAlias($imageResized, true);
 					}
+
 					imagealphablending($imageResized, false);
 					if (function_exists("imagesavealpha"))
 					{
 						imagesavealpha($imageResized, true);
 					}
+
 					if (function_exists("imagecolorallocatealpha"))
 					{
 						$transparent = imagecolorallocatealpha($imageResized, 255, 255, 255, 127);
 					}
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
+
 					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab);
@@ -384,6 +391,7 @@ class IjoomeradvControllerItem extends JControllerForm
 			{
 				// Check-in failed, go back to the item and display a notice.
 				$this->setMessage(JText::sprintf('JLIB_APPLICATION_ERROR_CHECKIN_FAILED', $model->getError()), 'warning');
+
 				return false;
 			}
 

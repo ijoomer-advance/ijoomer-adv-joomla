@@ -9,6 +9,14 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * The Menu Item Controller
+ *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.6
+ */
+
 class MCrypt
 {
 	private $iv = 'fedcba9876543210'; #Same as in JAVA

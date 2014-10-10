@@ -10,15 +10,32 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvAdminHelper
+/**
+ * The Class For IJoomeradvAdminHelper
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.Helper
+ * @since       1.0
+ */
+class IjoomeradvAdminHelper
 {
 	protected $db;
 
+	/**
+	 * The Construct Function
+	 */
 	function __construct()
 	{
 		$this->db = JFactory::getDBO();
 	}
 
+	/**
+	 * The Function For Getting The Component
+	 *
+	 * @param   [type]  $option  [description]
+	 *
+	 * @return  boolean  true or false value
+	 */
 	function getComponent($option)
 	{
 		$version = new JVersion;
@@ -34,9 +51,17 @@ class ijoomeradvAdminHelper
 		{
 			return true;
 		}
+
 		return false;
 	}
 
+	/**
+	 * The Function For Getting The Plugin
+	 *
+	 * @param   [type]  $option  [description]
+	 *
+	 * @return  boolean  true or false value
+	 */
 	function getPlugin($option)
 	{
 		$query = "SELECT count(*)
@@ -48,17 +73,22 @@ class ijoomeradvAdminHelper
 		return ($plugins) ? 1 : 0;
 	}
 
+	/**
+	 * The Function For Getting The JomSocialVersion
+	 *
+	 * @return  boolean  true or false value
+	 */
 	function getJomSocialVersion()
 	{
 		JHTML::_('behavior.tooltip', '.hasTip');
-		$parser =  JFactory::getXMLParser('Simple');
+		$parser = JFactory::getXMLParser('Simple');
 		$xml = JPATH_ADMINISTRATOR . '/components/com_community/community.xml';
 
 		if (file_exists($xml))
 		{
 			$parser->loadFile($xml);
-			$doc =  $parser->document;
-			$element =  $doc->getElementByPath('version');
+			$doc = $parser->document;
+			$element = $doc->getElementByPath('version');
 			$version = $element->data();
 
 			$cv = explode('.', $version);
@@ -66,10 +96,15 @@ class ijoomeradvAdminHelper
 
 			return $cversion;
 		}
+
 		return true;
 	}
 
-	//function to define global config
+	/**
+	 * The Function For Getting The Global Config
+	 *
+	 * @return  boolean  true or false value
+	 */
 	function getglobalconfig()
 	{
 		$query = "SELECT *
@@ -85,6 +120,13 @@ class ijoomeradvAdminHelper
 		return true;
 	}
 
+	/**
+	 * The Function For Preparing The HTML
+	 *
+	 * @param   [type]  &$config  The  Config  Variable
+	 *
+	 * @return  boolean  true or false value
+	 */
 	function prepareHTML(&$config)
 	{
 		foreach ($config as $key => $value)
@@ -93,17 +135,20 @@ class ijoomeradvAdminHelper
 			$config[$key]->description = JText::_($value->description);
 
 			$input = null;
+
 			switch ($value->type)
 			{
 				case 'select':
 					$input .= '<select name="' . $value->name . '" id="' . $value->name . '">';
 					$options = explode(';;', $value->options);
+
 					foreach ($options as $val)
 					{
 						$option = explode('::', $val);
 						$selected = ($option[0] === $value->value) ? 'selected="selected"' : '';
 						$input .= '<option value="' . $option[0] . '" ' . $selected . '>' . $option[1] . '</option>';
 					}
+
 					$input .= '</select>';
 					break;
 
@@ -129,6 +174,7 @@ class ijoomeradvAdminHelper
 
 					$input .= '<select name="' . $value->name . '" id="' . $value->name . '">';
 					$input .= '<option value="">Select Field...</option>';
+
 					if ($fields)
 					{
 						foreach ($fields as $field)
@@ -137,10 +183,11 @@ class ijoomeradvAdminHelper
 							$input .= '<option value="' . $field->id . '" ' . $selected . '>' . $field->name . '</option>';
 						}
 					}
+
 					$input .= '</select>';
 					break;
-
 			}
+
 			$config[$key]->html = $input;
 		}
 	}

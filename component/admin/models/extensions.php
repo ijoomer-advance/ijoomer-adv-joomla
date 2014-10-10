@@ -13,21 +13,34 @@ jimport('joomla.installer.installer');
 jimport('joomla.installer.helper');
 jimport('joomla.filesystem.file');
 
+/**
+ * The Class For IJoomeradvModelExtension which will Extends JModelLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
+ */
 class IjoomeradvModelExtensions extends JModelLegacy
 {
 	var $_data = null;
+
 	var $_total = null;
+
 	var $_pagination = null;
+
 	var $_table_prefix = null;
+
 	var $_all_list = false;
 
+/**
+ * Function Construct description
+ */
 	function __construct()
 	{
 		parent::__construct();
 
 		global $context;
 		$mainframe = JFactory::getApplication();
-		//$context='id';
 		$this->_table_prefix = '#__ijoomeradv_';
 		$limit = $mainframe->getUserStateFromRequest($context . 'limit', 'limit', $mainframe->getCfg('list_limit'), 0);
 		$limitstart = $mainframe->getUserStateFromRequest($context . 'limitstart', 'limitstart', 0);
@@ -36,6 +49,11 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$this->setState('limitstart', $limitstart);
 	}
 
+	/**
+	 * Function Get Data For Grtting The Data
+	 *
+	 * @return  it will return Data.
+	 */
 	function getData()
 	{
 		if (empty($this->_data))
@@ -43,9 +61,16 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			$query = $this->_buildQuery();
 			$this->_data = $this->_getList($query, $this->getState('limitstart'), $this->getState('limit'));
 		}
+
 		return $this->_data;
 	}
 
+	/**
+	 * The Function GetExtensionData
+	 * Fir Getting The Extension Data
+	 *
+	 * @return  it will return Data.
+	 */
 	function getExtensionData()
 	{
 		$extId = JRequest::getVar('cid', array(0), '', 'array');
@@ -56,33 +81,55 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$db = JFactory::getDbo();
 		$db->setQuery($query);
 		$this->_data = $db->loadObject();
+
 		return $this->_data;
 	}
 
+	/**
+	 * Function GetExtGroups
+	 *
+	 * @return  loadColumn
+	 */
 	function getExtGroups()
 	{
-		$db = JFactory:: getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT DISTINCT `group`
 				FROM #__ijoomeradv_" . $this->_data->classname . "_config";
 
 		$db->setQuery($query);
+
 		return $db->loadColumn();
 	}
 
+	/**
+	 * The Function GetExtensionConfig
+	 *
+	 * @param   [type]  $group  [description]
+	 *
+	 * @return  it will return loadobjectlist-name
+	 */
 	function getExtConfig($group)
 	{
-		$db = JFactory:: getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT *
 				FROM #__ijoomeradv_" . $this->_data->classname . "_config
 				WHERE `group`='$group'";
 
 		$db->setQuery($query);
+
 		return $db->loadObjectlist('name');
 	}
 
+	/**
+	 * The Function SetExtensionConfig
+	 *
+	 * @param   [type]  $data  [description]
+	 *
+	 * @return  boolean it will return a value in true or false
+	 */
 	function setExtConfig($data)
 	{
-		$row =  $this->getTable();
+		$row = $this->getTable();
 		$row->load($data['extid']);
 
 		include_once JPATH_COMPONENT_SITE . '/extensions/' . $row->classname . '/' . $row->classname . '.php';
@@ -96,9 +143,15 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		{
 			return false;
 		}
+
 		return true;
 	}
 
+	/**
+	 * The Function GetTotal For Getting The Total
+	 *
+	 * @return  returns the Total
+	 */
 	function getTotal()
 	{
 		if (empty($this->_total))
@@ -107,9 +160,15 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			$this->_total = $this->_getListCount($query);
 			$this->_total = $this->_total ? $this->_total : 0;
 		}
+
 		return $this->_total;
 	}
 
+	/**
+	 * The Function GetPagination For Getting The Pagination
+	 *
+	 * @return  it will returns the the sum of digit
+	 */
 	function getPagination()
 	{
 		if (empty($this->_pagination))
@@ -117,9 +176,15 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			jimport('joomla.html.pagination');
 			$this->_pagination = new JPagination($this->getTotal(), $this->getState('limitstart'), $this->getState('limit'));
 		}
+
 		return $this->_pagination;
 	}
 
+	/**
+	 * The Function BuildQuery
+	 *
+	 * @return  query
+	 */
 	function _buildQuery()
 	{
 		$orderby = $this->_buildContentOrderBy();
@@ -127,9 +192,15 @@ class IjoomeradvModelExtensions extends JModelLegacy
 				FROM {$this->_table_prefix}extensions AS p
 				WHERE p.classname!='iuser'
 				{$orderby}";
+
 		return $query;
 	}
 
+	/**
+	 * The Function BuildContentOrderBy
+	 *
+	 * @return $orderby
+	 */
 	function _buildContentOrderBy()
 	{
 		global $context;
@@ -137,9 +208,15 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$filter_order = $mainframe->getUserStateFromRequest($context . 'filter_order', 'filter_order', 'id');
 		$filter_order_Dir = $mainframe->getUserStateFromRequest($context . 'filter_order_Dir', 'filter_order_Dir', '');
 		$orderby = ' ORDER BY p.' . $filter_order . ' ' . $filter_order_Dir;
+
 		return $orderby;
 	}
 
+	/**
+	 * The Function Install
+	 *
+	 * @return  boolean it will return a value in true or false
+	 */
 	function install()
 	{
 		$mainframe = JFactory::getApplication();
@@ -149,15 +226,18 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		if ($package['type'] != 'extensions')
 		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('COM_IJOOMERADV_INVALID_PACKAGE'));
+
 			return false;
 		}
 
-		$installer =  JInstaller::getInstance();
+		$installer = JInstaller::getInstance();
+
 		if (!$installer->install($package['dir']))
 		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION_ERROR', JText::_($package['type']), JText::_('COM_IJOOMERADV_ERROR'));
 			$result = false;
 		}
+
 		else
 		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION', JText::_($package['type']), JText::_('COM_IJOOMERADV_SUCCESS'));
@@ -173,7 +253,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		// Cleanup the install files
 		if (!is_file($package['packagefile']))
 		{
-			$config =  JFactory::getConfig();
+			$config = JFactory::getConfig();
 			$package['packagefile'] = $config->getValue('config.tmp_path') . '/' . $package['packagefile'];
 		}
 
@@ -183,7 +263,12 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	}
 
 	/**
-	 * @param string The class name for the installer
+	 * @param   string The class name for the installer
+	 */
+	/**
+	 * The Function GetPackageFromUpload
+	 *
+	 * @return  boolean it will returns a value in true or false
 	 */
 	function _getPackageFromUpload()
 	{
@@ -194,6 +279,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		if (!(bool) ini_get('file_uploads'))
 		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLFILE'));
+
 			return false;
 		}
 
@@ -201,6 +287,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		if (!extension_loaded('zlib'))
 		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLZLIB'));
+
 			return false;
 		}
 
@@ -208,6 +295,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		if (!is_array($userfile))
 		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('NO_FILE_SELECTED'));
+
 			return false;
 		}
 
@@ -215,11 +303,12 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		if ($userfile['error'] || $userfile['size'] < 1)
 		{
 			JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('WARNINSTALLUPLOADERROR'));
+
 			return false;
 		}
 
 		// Build the appropriate paths
-		$config =  JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$tmp_dest = $config->get('tmp_path') . '/' . $userfile['name'];
 
 		$tmp_src = $userfile['tmp_name'];
@@ -229,9 +318,18 @@ class IjoomeradvModelExtensions extends JModelLegacy
 
 		// Unpack the downloaded package file
 		$package = JInstallerHelper::unpack($tmp_dest);
+
 		return $package;
 	}
 
+	/**
+	 * The Function Publish
+	 *
+	 * @param   array    $cid      [description]
+	 * @param   integer  $publish  [description]
+	 *
+	 * @return  boolean  it will returns a value in true or false
+	 */
 	function publish($cid = array(), $publish = 1)
 	{
 		if (count($cid))
@@ -245,9 +343,11 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			if (!$this->_db->query())
 			{
 				$this->setError($this->_db->getErrorMsg());
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 }
@@ -376,6 +476,7 @@ class JInstaller extends JAdapter
 		{
 			self::$instance = new JInstaller;
 		}
+
 		return self::$instance;
 	}
 
@@ -394,11 +495,9 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the allow overwrite switch
 	 *
-	 * @param   boolean $state Overwrite switch state
+	 * @param   boolean  $state  Overwrite  switch  state
 	 *
-	 * @return  boolean  True it state is set, false if it is not
-	 *
-	 * @since   11.1
+	 * @return $tmp
 	 */
 	public function setOverwrite($state = false)
 	{
@@ -431,7 +530,7 @@ class JInstaller extends JAdapter
 	/**
 	 * Set the redirect location
 	 *
-	 * @param   string $newurl New redirect location
+	 * @param   string  $newurl  New  redirect  location
 	 *
 	 * @return  void
 	 *
@@ -656,6 +755,7 @@ class JInstaller extends JAdapter
 		else
 		{
 			$this->abort(JText::_('JLIB_INSTALLER_ABORT_NOINSTALLPATH'));
+
 			return false;
 		}
 
@@ -775,6 +875,7 @@ class JInstaller extends JAdapter
 						'onExtensionAfterInstall',
 						array('installer' => clone $this, 'eid' => $result)
 					);
+
 					if ($result !== false)
 					{
 						return true;
@@ -959,12 +1060,14 @@ class JInstaller extends JAdapter
 			if (!$this->extension->load($eid))
 			{
 				$this->abort(JText::_('JLIB_INSTALLER_ABORT_LOAD_DETAILS'));
+
 				return false;
 			}
 
 			if ($this->extension->state == -1)
 			{
 				$this->abort(JText::_('JLIB_INSTALLER_ABORT_REFRESH_MANIFEST_CACHE'));
+
 				return false;
 			}
 
@@ -2342,6 +2445,7 @@ class JInstaller extends JAdapter
 	{
 		// Read the file to see if it's a valid component XML file
 		$xml = simplexml_load_file($path);
+
 		if (!$xml)
 		{
 			return false;
@@ -2354,6 +2458,7 @@ class JInstaller extends JAdapter
 		if ($xml->getName() != 'extension' && $xml->getName() != 'metafile')
 		{
 			unset($xml);
+
 			return false;
 		}
 

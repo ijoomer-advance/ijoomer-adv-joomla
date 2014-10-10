@@ -12,8 +12,11 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.folder');
 
 /**
- * @uses this class is the base ijoomer helper class
+ * This Class Is The Base Ijoomer Helper Class
  *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.6
  */
 class ijoomeradvHelper
 {

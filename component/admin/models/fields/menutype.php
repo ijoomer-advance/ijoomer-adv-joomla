@@ -14,9 +14,9 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class JFormFieldMenutype extends JFormFieldList
 {
@@ -32,6 +32,7 @@ class JFormFieldMenutype extends JFormFieldList
 	 * Method to get the field input markup.
 	 *
 	 * @return    string    The field input markup.
+	 *
 	 * @since    1.6
 	 */
 	protected function getInput()

@@ -11,6 +11,14 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 
+/**
+ * Menu Types table
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.table
+ * @since       1.6
+ */
+
 class TableExtensions extends JTable
 {
 	var $id = null;

@@ -16,11 +16,11 @@ jimport('joomla.tablenested');
 require_once JPATH_COMPONENT . '/helpers/menus.php';
 
 /**
- * Menu Item Model for Menus.
+ * The Class For IJoomeradvModelItem which will Extends The JModelAdmin
  *
- * @package     Joomla.Administrator
- * @subpackage  com_ijoomer
- * @since       1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class IjoomeradvModelItem extends JModelAdmin
 {
@@ -51,10 +51,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
-	 * @param    object    A record object.
+	 * @param   [type]  $record  A record object
 	 *
-	 * @return    boolean    True if allowed to delete the record. Defaults to the permission set in the component.
-	 * @since    1.6
+	 * @return  boolean True if allowed to delete the record. Defaults to the permission set in the component.
 	 */
 	protected function canDelete($record)
 	{
@@ -64,6 +63,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				return;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete', 'com_ijoomeradv.item.' . (int) $record->id);
@@ -73,10 +73,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to test whether a record can have its state edited.
 	 *
-	 * @param    object    A record object.
+	 * @param   [type]  $record  record
 	 *
-	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 * @since    1.6
+	 * @return  boolean  True if allowed to change the state of the record. Defaults to the permission set in the component.
 	 */
 	protected function canEditState($record)
 	{
@@ -96,13 +95,11 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to perform batch operations on an item or a set of items.
 	 *
-	 * @param   array $commands An array of commands to perform.
-	 * @param   array $pks      An array of item ids.
-	 * @param   array $contexts An array of item contexts.
+	 * @param   [type]  $commands  An  array  of  commands  to  perform.
+	 * @param   [type]  $pks       An array of item ids.
+	 * @param   [type]  $contexts  An array of item contexts.
 	 *
-	 * @return  boolean  Returns true on success, false on failure.
-	 *
-	 * @since   1.6
+	 * @return   boolean  Returns true on success, false on failure.
 	 */
 	public function batch($commands, $pks, $contexts)
 	{
@@ -119,6 +116,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (empty($pks))
 		{
 			$this->setError(JText::_('COM_IJOOMERADV_NO_ITEM_SELECTED'));
+
 			return false;
 		}
 
@@ -131,6 +129,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if ($cmd == 'c')
 			{
 				$result = $this->batchCopy($commands['menu_id'], $pks, $contexts);
+
 				if (is_array($result))
 				{
 					$pks = $result;
@@ -144,6 +143,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				return false;
 			}
+
 			$done = true;
 		}
 
@@ -170,6 +170,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$done)
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+
 			return false;
 		}
 
@@ -179,9 +180,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Batch copy menu items to a new menu or parent.
 	 *
-	 * @param   integer $value    The new menu or sub-item.
-	 * @param   array   $pks      An array of row IDs.
-	 * @param   array   $contexts An array of item contexts.
+	 * @param   integer  $value     The new menu or sub-item.
+	 * @param   array    $pks       An array of row IDs.
+	 * @param   array    $contexts  An array of item contexts.
 	 *
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
@@ -208,6 +209,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -225,15 +227,18 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$parentId = $table->getRootId())
 			{
 				$this->setError($db->getErrorMsg());
+
 				return false;
 			}
 		}
 
 		// Check that user has create permission for menus
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_ijoomer'))
 		{
 			$this->setError(JText::_('COM_IJOOMERADV_BATCH_MENU_ITEM_CANNOT_CREATE'));
+
 			return false;
 		}
 
@@ -249,6 +254,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if ($error = $db->getErrorMsg())
 		{
 			$this->setError($error);
+
 			return false;
 		}
 
@@ -267,6 +273,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -311,7 +318,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$table->setLocation($table->parent_id, 'last-child');
 
 			// TODO: Deal with ordering?
-			//$table->ordering	= 1;
+			// $table->ordering	= 1;
 			$table->level = null;
 			$table->lft = null;
 			$table->rgt = null;
@@ -326,12 +333,15 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
+
 			// Store the row.
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -351,6 +361,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->rebuild())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -358,6 +369,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->rebuildPath($table->id))
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -370,13 +382,11 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Batch move menu items to a new menu or parent.
 	 *
-	 * @param   integer $value    The new menu or sub-item.
-	 * @param   array   $pks      An array of row IDs.
-	 * @param   array   $contexts An array of item contexts.
+	 * @param   [type]  $value     The new menu or sub-item.
+	 * @param   [type]  $pks       An array of row IDs.
+	 * @param   [type]  $contexts  An array of item contexts.
 	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since   1.6
+	 * @return  boolean it will returns the value in true or false
 	 */
 	protected function batchMove($value, $pks, $contexts)
 	{
@@ -401,6 +411,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 					return false;
 				}
+
 				else
 				{
 					// Non-fatal error
@@ -412,15 +423,19 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		// Check that user has create and edit permission for menus
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_ijoomeradv'))
+
 		{
 			$this->setError(JText::_('COM_IJOOMERADV_BATCH_MENU_ITEM_CANNOT_CREATE'));
+
 			return false;
 		}
 
 		if (!$user->authorise('core.edit', 'com_ijoomer'))
 		{
 			$this->setError(JText::_('COM_IJOOMERADV_BATCH_MENU_ITEM_CANNOT_EDIT'));
+
 			return false;
 		}
 
@@ -437,6 +452,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
+
 					return false;
 				}
 				else
@@ -469,6 +485,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$table->check())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -476,6 +493,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$table->store())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 
@@ -483,6 +501,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$table->rebuildPath())
 			{
 				$this->setError($table->getError());
+
 				return false;
 			}
 		}
@@ -506,6 +525,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if ($db->getErrorNum())
 			{
 				$this->setError($db->getErrorMsg());
+
 				return false;
 			}
 		}
@@ -519,11 +539,10 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to check if you can save a record.
 	 *
-	 * @param    array  $data An array of input data.
-	 * @param    string $key  The name of the key for the primary key.
+	 * @param   array   $data  An array of input data.
+	 * @param   string  $key   The name of the key for the primary key.
 	 *
-	 * @return    boolean
-	 * @since    1.6
+	 * @return  boolean
 	 */
 	protected function canSave($data = array(), $key = 'id')
 	{
@@ -533,29 +552,29 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to get the row form.
 	 *
-	 * @param    array   $data     Data for the form.
-	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return    mixed    A JForm object on success, false on failure
-	 * @since    1.6
+	 * @return  mixed               A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
-			$item = $this->getItem();
 			// The type should already be set.
+			$item = $this->getItem();
 		}
+
 		else
 		{
 			$this->setState('item.link', JArrayHelper::getValue($data, 'link'));
 			$this->setState('item.type', JArrayHelper::getValue($data, 'type'));
 		}
+
 		// Get the form.
 		$form = $this->loadForm('com_ijoomeradv.item', 'item', array('control' => 'jform', 'load_data' => $loadData), true);
-		//saurin
-		//echo '<pre>';print_r($form);exit;
+
 		if (empty($form))
 		{
 			return false;
@@ -580,8 +599,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return    mixed    The data for the form.
-	 * @since    1.6
+	 * @return  mixed  The data for the form.
 	 */
 	protected function loadFormData()
 	{
@@ -593,8 +611,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Get the necessary data to load an item help screen.
 	 *
-	 * @return    object    An object with key, url, and local properties for loading the item help screen.
-	 * @since    1.6
+	 * @return  object  An object with key, url, and local properties for loading the item help screen.
 	 */
 	public function getHelp()
 	{
@@ -624,6 +641,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if ($error = $table->getError())
 		{
 			$this->setError($error);
+
 			return false;
 		}
 
@@ -688,6 +706,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 		$result->menuordering = $pk;
+
 		return $result;
 	}
 
@@ -715,6 +734,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				$value->checked = false;
 			}
 		}
+
 		return $result;
 	}
 
@@ -726,6 +746,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			WHERE id=' . $menuid;
 
 		$db->setQuery($sql);
+
 		return $db->loadResult();
 	}
 
@@ -761,6 +782,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if ($db->getErrorNum())
 		{
 			$this->setError($db->getErrorMsg());
+
 			return false;
 		}
 
@@ -928,6 +950,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				{
 					//Now check for a component manifest file
 					$path = JPath::clean($base . '/metadata.xml');
+
 					if (JFile::exists($path))
 					{
 						$formFile = $path;
@@ -954,6 +977,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Get the help data from the XML file if present.
 			$help = $xml->xpath('/metadata/layout/help');
+
 			if (!empty($help))
 			{
 				$helpKey = trim((string) $help[0]['key']);
@@ -990,6 +1014,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		// Association menu items
 		$app = JFactory::getApplication();
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
+
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');
@@ -1001,6 +1026,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$fieldset->addAttribute('name', 'item_associations');
 			$fieldset->addAttribute('description', 'COM_MENUS_ITEM_ASSOCIATIONS_FIELDSET_DESC');
 			$add = false;
+
 			foreach ($languages as $tag => $language)
 			{
 				if ($tag != $data['language'])
@@ -1016,6 +1042,7 @@ class IjoomeradvModelItem extends JModelAdmin
 					$option->addAttribute('value', '');
 				}
 			}
+
 			if ($add)
 			{
 				$form->load($addform, false);
@@ -1030,6 +1057,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * Method rebuild the entire nested set tree.
 	 *
 	 * @return    boolean    False on failure or error, true otherwise.
+	 *
 	 * @since    1.6
 	 */
 	public function rebuild()
@@ -1041,6 +1069,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->rebuild())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -1056,6 +1085,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if ($error = $db->getErrorMsg())
 		{
 			$this->setError($error);
+
 			return false;
 		}
 
@@ -1070,6 +1100,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				' SET params = ' . $db->quote($params) .
 				' WHERE id = ' . (int) $item->id
 			);
+
 			if (!$db->query())
 			{
 				$this->setError($error);
@@ -1118,6 +1149,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$table->load($pk);
 			$isNew = false;
 		}
+
 		if (!$isNew && $table->menutype == $data['menutype'])
 		{
 			if ($table->parent_id == $data['parent_id'])
@@ -1163,6 +1195,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$homecount && $data['home'] == 0)
 		{
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENU_CANNOT_UNSET_DEFAULT_DEFAULT'));
+
 			return false;
 		}
 
@@ -1171,6 +1204,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			//set the error
 			//return false
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENU_CANNOT_UNSET_DEFAULT_DEFAULT'));
+
 			return false;
 		}
 
@@ -1187,6 +1221,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if ($error = $db->getErrorMsg())
 			{
 				$this->setError($error);
+
 				return false;
 			}
 		}
@@ -1195,6 +1230,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->bind($data))
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -1216,6 +1252,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->check())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -1223,6 +1260,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->store())
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 
@@ -1236,6 +1274,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		{
 			// Adding self to the association
 			$associations = $data['associations'];
+
 			foreach ($associations as $tag => $id)
 			{
 				if (empty($id))
@@ -1246,6 +1285,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Detecting all item menus
 			$all_language = $table->language == '*';
+
 			if ($all_language && !empty($associations))
 			{
 				JError::raiseNotice(403, JText::_('COM_IJOOMERADV_ERROR_ALL_LANGUAGE_ASSOCIATED'));
@@ -1261,9 +1301,11 @@ class IjoomeradvModelItem extends JModelAdmin
 			$query->where('id IN (' . implode(',', $associations) . ')');
 			$db->setQuery($query);
 			$db->query();
+
 			if ($error = $db->getErrorMsg())
 			{
 				$this->setError($error);
+
 				return false;
 			}
 
@@ -1273,15 +1315,18 @@ class IjoomeradvModelItem extends JModelAdmin
 				$key = md5(json_encode($associations));
 				$query->clear();
 				$query->insert('#__associations');
+
 				foreach ($associations as $tag => $id)
 				{
 					$query->values($id . ',' . $db->quote('com_ijoomeradv.item') . ',' . $db->quote($key));
 				}
 				$db->setQuery($query);
 				$db->query();
+
 				if ($error = $db->getErrorMsg())
 				{
 					$this->setError($error);
+
 					return false;
 				}
 			}
@@ -1322,6 +1367,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		if (!$table->saveorder($idArray, $lft_array))
 		{
 			$this->setError($table->getError());
+
 			return false;
 		}
 

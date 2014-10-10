@@ -12,9 +12,9 @@ defined('_JEXEC') or die;
 /**
  * Menu Types table
  *
- * @package     Joomla.Platform
- * @subpackage  Table
- * @since       11.1
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.table
+ * @since       1.6
  */
 class JTableIjmenuType extends JTable
 {

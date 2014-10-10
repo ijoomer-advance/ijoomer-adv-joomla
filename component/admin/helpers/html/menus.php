@@ -13,8 +13,11 @@ defined('_JEXEC') or die;
 JLoader::register('IjoomeradvHelper', JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/helpers/menus.php');
 
 /**
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
+ * The Menu Item Helper
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.Helper
+ * @since       1.6
  */
 abstract class MenusHtmlMenus
 {

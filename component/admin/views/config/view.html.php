@@ -9,6 +9,14 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * The HTML Menus Menu Item View.
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.6
+ */
+
 class ijoomeradvViewconfig extends JViewLegacy
 {
 	function display($tpl = null)

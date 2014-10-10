@@ -11,22 +11,21 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Type Controller
+ * The Class For IjoomeradvcontrollerMenu which Will Extends JControllerForm
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.6
  */
 class IjoomeradvControllerMenu extends JControllerForm
 {
 	/**
 	 * Dummy method to redirect back to standard controller
 	 *
-	 * @param    boolean            If true, the view output will be cached
-	 * @param    array              An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cachable   [description]
+	 * @param   boolean  $urlparams  [description]
 	 *
-	 * @return    JController        This object to support chaining.
-	 * @since    1.5
+	 * @return  JController           This object to support chaining.
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
@@ -36,7 +35,10 @@ class IjoomeradvControllerMenu extends JControllerForm
 	/**
 	 * Method to save a menu item.
 	 *
-	 * @return    void
+	 * @param   [type]  $key     [description]
+	 * @param   [type]  $urlVar  [description]
+	 *
+	 * @return  void
 	 */
 	public function save($key = null, $urlVar = null)
 	{
@@ -152,6 +154,11 @@ class IjoomeradvControllerMenu extends JControllerForm
 		}
 	}
 
+	/**
+	 * The SetType Function
+	 *
+	 * @return [type] [description]
+	 */
 	function setType()
 	{
 		// Initialise variables.
@@ -184,12 +191,18 @@ class IjoomeradvControllerMenu extends JControllerForm
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit' . $reqid, false));
 	}
 
+	/**
+	 * The Cancle Function
+	 *
+	 * @param   [type]  $key  [description]
+	 *
+	 * @return  [boolean]      returns false value.
+	 */
 	public function cancel($key = null)
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		//$app = JFactory::getApplication();
 		$context = 'com_ijoomeradv.edit.menu';
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menus', false));
 	}

@@ -10,13 +10,30 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvControllerExtensions extends JControllerLegacy
+/**
+ * The Class For IJoomer Controller Extension which will extends JControllerLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
+ */
+class IjoomeradvControllerExtensions extends JControllerLegacy
 {
+	/**
+	 * Home Function For Redirecting To Home
+	 *
+	 * @return  void
+	 */
 	public function home()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv', null);
 	}
 
+	/**
+	 * Add Function
+	 *
+	 * @return  void
+	 */
 	function add()
 	{
 		JFactory::getApplication()->input->set('layout', 'install');
@@ -24,6 +41,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Detail Function
+	 *
+	 * @return  void
+	 */
 	function detail()
 	{
 		$app = JFactory::getApplication();
@@ -33,6 +55,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Save Function
+	 *
+	 * @return  void
+	 */
 	function save()
 	{
 		$app = JFactory::getApplication();
@@ -52,6 +79,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions', $msg);
 	}
 
+	/**
+	 * Apply Function For Applying The Latest Changes
+	 *
+	 * @return  void
+	 */
 	function apply()
 	{
 		$app = JFactory::getApplication();
@@ -71,6 +103,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $post['extid'], $msg);
 	}
 
+	/**
+	 * Install Function For installing The Extension
+	 *
+	 * @return  void
+	 */
 	function install()
 	{
 		$app = JFactory::getApplication();
@@ -84,11 +121,21 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Uninstall Function For uninstalling The Extension
+	 *
+	 * @return  void
+	 */
+
 	function uninstall()
 	{
-
 	}
 
+	/**
+	 * Extensionmanage Function For Managing The Extension
+	 *
+	 * @return  void
+	 */
 	function extensionmanage()
 	{
 		$app = JFactory::getApplication();
@@ -97,6 +144,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Publish Function For Publishing The Extension
+	 *
+	 * @return  void
+	 */
 	function publish()
 	{
 		$app = JFactory::getApplication();
@@ -120,6 +172,11 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * Unpublish Function For unpublishing The Extension
+	 *
+	 * @return  void
+	 */
 	function unpublish()
 	{
 		$app = JFactory::getApplication();

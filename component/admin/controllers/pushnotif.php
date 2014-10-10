@@ -10,13 +10,31 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvControllerPushnotif extends JControllerLegacy
+/**
+ * The Class For IJoomeradvControllerPushnotifiaction which will extends JControllerLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
+ */
+
+class IjoomeradvControllerPushnotif extends JControllerLegacy
 {
+	/**
+	 * The Home Function For Redirectiong To Home.
+	 *
+	 * @return  boolean  returns the link to Home.
+	 */
 	public function home()
 	{
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true), null);
 	}
 
+	/**
+	 * The Add Function
+	 *
+	 * @return boolean  returns the value in true or false
+	 */
 	function add()
 	{
 		$app = JFactory::getApplication();
@@ -26,6 +44,11 @@ class ijoomeradvControllerPushnotif extends JControllerLegacy
 		parent::display();
 	}
 
+	/**
+	 * The Apply Function
+	 *
+	 * @return boolean  returns the value in true or false
+	 */
 	function apply()
 	{
 		$model = $this->getModel('pushnotif');
@@ -44,6 +67,11 @@ class ijoomeradvControllerPushnotif extends JControllerLegacy
 		$this->setRedirect($link, $msg);
 	}
 
+	/**
+	 * The SendPushNotification Function
+	 *
+	 * @return  boolean  returns the value in true or false
+	 */
 	function sendPushNotification()
 	{
 		$model = $this->getModel('pushnotif');

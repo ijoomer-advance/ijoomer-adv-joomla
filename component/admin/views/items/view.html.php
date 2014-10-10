@@ -12,12 +12,13 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 
+
 /**
- * The HTML Menus Menu Items View.
+ * The HTML Menus Menu Item View.
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @version        1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.6
  */
 class IjoomeradvViewItems extends JViewLegacy
 {

@@ -9,6 +9,14 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * The Menu Item Controller
+ *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.6
+ */
+
 class ijoomeradvControllerijoomeradv extends JControllerLegacy
 {
 

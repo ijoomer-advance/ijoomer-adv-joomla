@@ -7,9 +7,15 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-
 defined('_JEXEC') or die;
 
-class ijoomeradvControllerijoomeradv extends JControllerLegacy
+/**
+ * The Class For Ijoomeradvcontrollerijoomeradv whill will extends JControllerLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
+ */
+class IjoomeradvControllerijoomeradv extends JControllerLegacy
 {
 }

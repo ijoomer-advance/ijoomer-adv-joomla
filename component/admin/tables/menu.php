@@ -10,8 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
+ * Menu Types table
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.table
+ * @since       1.6
  */
 class IjoomeradvTableMenu extends JTable
 {

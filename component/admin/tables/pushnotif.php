@@ -9,6 +9,14 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Menu Types table
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.table
+ * @since       1.6
+ */
+
 class TablePushnotif extends JTable
 {
 	var $id = null;

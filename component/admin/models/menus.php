@@ -10,10 +10,10 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu List Model for Menus.
+ * Menu Item Model for Menus.
  *
- * @package     Joomla.Administrator
- * @subpackage  com_ijoomer
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
  * @since       1.6
  */
 class IjoomeradvModelMenus extends JModelList

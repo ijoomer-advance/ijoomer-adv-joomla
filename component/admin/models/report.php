@@ -9,6 +9,13 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Menu Item Model for Menus.
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.6
+ */
 class IjoomeradvModelReport extends JModelList
 {
 	var $db;
