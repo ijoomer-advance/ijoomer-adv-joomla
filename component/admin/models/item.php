@@ -621,10 +621,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to get a menu item.
 	 *
-	 * @param    integer $pk An optional id of the object to get, otherwise the id from the model state is used.
+	 * @param   [type]  $pk  An optional id of the object to get, otherwise the id from the model state is used.
 	 *
-	 * @return    mixed    Menu item data object on success, false on failure.
-	 * @since    1.6
+	 * @return  mixed    Menu item data object on success, false on failure.
 	 */
 	public function getItem($pk = null)
 	{
@@ -651,6 +650,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		{
 			$table->type = $type;
 		}
+
 		if (empty($table->id))
 		{
 			$table->parent_id = $this->getState('item.parent_id');
@@ -702,7 +702,6 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		// Load associated menu items
 		$app = JFactory::getApplication();
-		//echo '<pre>';print_r($app);exit;
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 		$result->menuordering = $pk;
@@ -738,6 +737,13 @@ class IjoomeradvModelItem extends JModelAdmin
 		return $result;
 	}
 
+	/**
+	 * The GetMenuPosition Function For Getting The Menu Position.
+	 *
+	 * @param   [type]  $menuid  it will contain menuid
+	 *
+	 * @return  returns loadresults
+	 */
 	public function getMenuPostion($menuid)
 	{
 		$db = $this->getDbo();
@@ -754,6 +760,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * Get the list of modules not in trash.
 	 *
 	 * @return    mixed    An array of module records (id, title, position), or false on error.
+	 *
 	 * @since    1.6
 	 */
 	public function getModules()
@@ -761,9 +768,11 @@ class IjoomeradvModelItem extends JModelAdmin
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 
-		// Join on the module-to-menu mapping table.
-		// We are only interested if the module is displayed on ALL or THIS menu item (or the inverse ID number).
-		//sqlsrv changes for modulelink to menu manager
+		/**
+		 * Join on the module-to-menu mapping table.
+		 * We are only interested if the module is displayed on ALL or THIS menu item (or the inverse ID number).
+		 * sqlsrv changes for modulelink to menu manager
+		 */
 		$query->select('a.id, a.title, a.position, a.published, map.menuid');
 		$query->from('#__modules AS a');
 		$query->join('LEFT', sprintf('#__modules_menu AS map ON map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $this->getState('item.id')));
@@ -793,25 +802,24 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * A protected method to get the where clause for the reorder
 	 * This ensures that the row will be moved relative to a row with the same menutype
 	 *
-	 * @param    JTableMenu $table instance
+	 * @param   [type]  $table  [description]
 	 *
-	 * @return    array    An array of conditions to add to add to ordering queries.
-	 * @since    1.6
+	 * @return  array    An array of conditions to add to add to ordering queries.
 	 */
 	protected function getReorderConditions($table)
 	{
-		return '';//'menutype = ' . $this->_db->Quote($table->menutype);
+		// 'menutype = ' . $this->_db->Quote($table->menutype);
+		return '';
 	}
 
 	/**
 	 * Returns a Table object, always creating it
 	 *
-	 * @param    type   $type   The table type to instantiate
-	 * @param    string $prefix A prefix for the table class name. Optional.
-	 * @param    array  $config Configuration array for model. Optional.
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return    JTable    A database object
-	 * @since    1.6
+	 * @return  JTable    A database object
 	 */
 	public function getTable($type = 'Menu', $prefix = 'IjoomeradvTable', $config = array())
 	{
@@ -824,6 +832,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * Note. Calling getState in this method will result in recursion.
 	 *
 	 * @return    void
+	 *
 	 * @since    1.6
 	 */
 	protected function populateState()
@@ -838,21 +847,26 @@ class IjoomeradvModelItem extends JModelAdmin
 		{
 			$parentId = JRequest::getInt('parent_id');
 		}
+
 		$this->setState('item.parent_id', $parentId);
 
 		$menuType = $app->getUserState('com_ijoomeradv.edit.item.menutype');
+
 		if (JRequest::getCmd('menutype', false))
 		{
 			$menuType = JRequest::getCmd('menutype', 'mainmenu');
 		}
+
 		$this->setState('item.menutype', $menuType);
 
 		if (!($type = $app->getUserState('com_ijoomeradv.edit.item.type')))
 		{
 			$type = JRequest::getCmd('type');
+
 			// Note a new menu item will have no field type.
 			// The field is required so the user has to change it.
 		}
+
 		$this->setState('item.type', $type);
 
 		if ($views = $app->getUserState('com_ijoomeradv.edit.item.views'))
@@ -866,16 +880,18 @@ class IjoomeradvModelItem extends JModelAdmin
 	}
 
 	/**
-	 * @param    object $form A form object.
-	 * @param    mixed  $data The data expected for the form.
+	 * Function PreprocessForm
 	 *
-	 * @return    void
-	 * @since    1.6
-	 * @throws    Exception if there is an error in the form event.
+	 * @param   JForm   $form   A form object.
+	 * @param   [type]  $data   The data expected for the form.
+	 * @param   string  $group  [description]
+	 *
+	 * @return   void
+	 *
+	 * @throws   Exception if there is an error in the form event.
 	 */
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
-
 		// Initialise variables.
 		$link = $this->getState('item.link');
 		$type = $this->getState('item.type');
@@ -884,7 +900,6 @@ class IjoomeradvModelItem extends JModelAdmin
 		// Initialise form with component view params if available.
 		if ($type == 'component')
 		{
-
 			$link = htmlspecialchars_decode($link);
 
 			// Parse the link arguments.
@@ -894,6 +909,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			// Confirm that the option is defined.
 			$option = '';
 			$base = '';
+
 			if (isset($args['option']))
 			{
 				// The option determines the base path to work with.
@@ -903,6 +919,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Confirm a view is defined.
 			$formFile = false;
+
 			if (isset($args['view']))
 			{
 				$view = $args['view'];
@@ -921,17 +938,20 @@ class IjoomeradvModelItem extends JModelAdmin
 
 				// Check for the layout XML file. Use standard xml file if it exists.
 				$path = JPath::clean($base . '/views/' . $view . '/tmpl/' . $layout . '.xml');
+
 				if (JFile::exists($path))
 				{
 					$formFile = $path;
 				}
 
-				// if custom layout, get the xml file from the template folder
+				// If custom layout, get the xml file from the template folder
 				// template folder is first part of file name -- template:folder
+
 				if (!$formFile && (strpos($layout, ':') > 0))
 				{
 					$temp = explode(':', $layout);
 					$templatePath = JPATH::clean(JPATH_SITE . '/templates/' . $temp[0] . '/html/' . $option . '/' . $view . '/' . $temp[1] . '.xml');
+
 					if (JFile::exists($templatePath))
 					{
 						$formFile = $templatePath;
@@ -939,7 +959,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				}
 			}
 
-			//Now check for a view manifest file
+			// Now check for a view manifest file
 			if (!$formFile)
 			{
 				if (isset($view) && JFile::exists($path = JPath::clean($base . '/views/' . $view . '/metadata.xml')))
@@ -948,7 +968,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				}
 				else
 				{
-					//Now check for a component manifest file
+					// Now check for a component manifest file
 					$path = JPath::clean($base . '/metadata.xml');
 
 					if (JFile::exists($path))
@@ -988,7 +1008,6 @@ class IjoomeradvModelItem extends JModelAdmin
 				$this->helpURL = $helpURL ? $helpURL : $this->helpURL;
 				$this->helpLocal = (($helpLoc == 'true') || ($helpLoc == '1') || ($helpLoc == 'local')) ? true : false;
 			}
-
 		}
 
 		// Now load the component params.
@@ -1082,6 +1101,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		);
 
 		$items = $db->loadObjectList();
+
 		if ($error = $db->getErrorMsg())
 		{
 			$this->setError($error);
@@ -1104,6 +1124,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			if (!$db->query())
 			{
 				$this->setError($error);
+
 				return false;
 			}
 
@@ -1116,13 +1137,18 @@ class IjoomeradvModelItem extends JModelAdmin
 		return true;
 	}
 
-	/*
+	/**
 	 * Rorder items order
+	 *
+	 * @param   [type]  $ids  contains id
+	 * @param   [type]  $inc  menutype
+	 *
+	 * @return  void
 	 */
 	public function reorder($ids, $inc)
 	{
 		$menutype = JRequest::getVar('menutype');
-		$table =  $this->getTable();
+		$table = $this->getTable();
 		$table->load($ids[0]);
 		$table->move($inc, 'menutype=' . $menutype);
 	}
@@ -1130,10 +1156,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param    array $data The form data.
+	 * @param   [type]  $data  The form data.
 	 *
-	 * @return    boolean    True on success.
-	 * @since    1.6
+	 * @return  boolean    True on success.
 	 */
 	public function save($data)
 	{
@@ -1154,7 +1179,6 @@ class IjoomeradvModelItem extends JModelAdmin
 		{
 			if ($table->parent_id == $data['parent_id'])
 			{
-
 				// If first is chosen make the item the first child of the selected parent.
 				if ($data['menuordering'] == -1)
 				{
@@ -1181,7 +1205,6 @@ class IjoomeradvModelItem extends JModelAdmin
 			else
 			{
 				$table->setLocation($data['parent_id'], 'last-child');
-
 			}
 		}
 
@@ -1201,8 +1224,8 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		if ($table->home == 1 && $data['home'] == 0)
 		{
-			//set the error
-			//return false
+			// Set the error
+			// Return false
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENU_CANNOT_UNSET_DEFAULT_DEFAULT'));
 
 			return false;
@@ -1210,7 +1233,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 		if ($table->home == 0 && $data['home'] == 1)
 		{
-			//Write query to set home value in other menu items as 0
+			// Write query to set home value in other menu items as 0
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->update('#__ijoomeradv_menu');
@@ -1218,6 +1241,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$query->set('home=0');
 			$db->setQuery($query);
 			$db->query();
+
 			if ($error = $db->getErrorMsg())
 			{
 				$this->setError($error);
@@ -1270,6 +1294,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		// Load associated menu items
 		$app = JFactory::getApplication();
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
+
 		if ($assoc)
 		{
 			// Adding self to the association
@@ -1320,6 +1345,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				{
 					$query->values($id . ',' . $db->quote('com_ijoomeradv.item') . ',' . $db->quote($key));
 				}
+
 				$db->setQuery($query);
 				$db->query();
 
@@ -1353,11 +1379,10 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * First we save the new order values in the lft values of the changed ids.
 	 * Then we invoke the table rebuild to implement the new ordering.
 	 *
-	 * @param    array $idArray   id's of rows to be reordered
-	 * @param    array $lft_array lft values of rows to be reordered
+	 * @param   [type]  $idArray    [description]
+	 * @param   [type]  $lft_array  [description]
 	 *
-	 * @return    boolean false on failuer or error, true otherwise
-	 * @since    1.6
+	 * @return  boolean false on failuer or error, true otherwise
 	 */
 	public function saveorder($idArray = null, $lft_array = null)
 	{
@@ -1380,11 +1405,10 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to change the home state of one or more items.
 	 *
-	 * @param    array $pks   A list of the primary keys to change.
-	 * @param    int   $value The value of the home state.
+	 * @param   [type]   &$pks   A list of the primary keys to change.
+	 * @param   integer  $value  $value The value of the home state.
 	 *
-	 * @return    boolean    True on success.
-	 * @since    1.6
+	 * @return boolean    True on success.
 	 */
 	function setHome(&$pks, $value = 1)
 	{
@@ -1414,6 +1438,7 @@ class IjoomeradvModelItem extends JModelAdmin
 					else
 					{
 						$table->home = $value;
+
 						if ($table->language == '*')
 						{
 							$table->published = 1;
@@ -1442,6 +1467,7 @@ class IjoomeradvModelItem extends JModelAdmin
 				else
 				{
 					unset($pks[$i]);
+
 					if (!$onehome)
 					{
 						$onehome = true;
@@ -1460,11 +1486,10 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to change the published state of one or more records.
 	 *
-	 * @param    array $pks   A list of the primary keys to change.
-	 * @param    int   $value The value of the published state.
+	 * @param   [type]   &$pks   A list of the primary keys to change.
+	 * @param   integer  $value  The value of the published state.
 	 *
-	 * @return    boolean    True on success.
-	 * @since    1.6
+	 * @return  boolean    True on success.
 	 */
 	function publish(&$pks, $value = 1)
 	{
@@ -1496,18 +1521,17 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Method to change the title & alias.
 	 *
-	 * @param   integer $parent_id The id of the parent.
-	 * @param   string  $alias     The alias.
-	 * @param   string  $title     The title.
+	 * @param   [type]  $parent_id  The id of the parent.
+	 * @param   [type]  $alias      The alias.
+	 * @param   [type]  $title      The title.
 	 *
 	 * @return  array  Contains the modified title and alias.
-	 *
-	 * @since    1.6
 	 */
 	protected function generateNewTitle($parent_id, $alias, $title)
 	{
 		// Alter the title & alias
 		$table = $this->getTable();
+
 		while ($table->load(array('alias' => $alias, 'parent_id' => $parent_id)))
 		{
 			$title = JString::increment($title);
@@ -1520,7 +1544,10 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Custom clean cache method
 	 *
-	 * @since    1.6
+	 * @param   [type]   $group      [description]
+	 * @param   integer  $client_id  [description]
+	 *
+	 * @return  void
 	 */
 	protected function cleanCache($group = null, $client_id = 0)
 	{

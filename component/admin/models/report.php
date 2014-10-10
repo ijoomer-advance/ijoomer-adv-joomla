@@ -10,21 +10,25 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Item Model for Menus.
+ * The Class For IJoomeradvModelReport which will Extends The JModelList
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.models
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvModelReport extends JModelList
 {
 	var $db;
 
+/**
+ * Constructor
+ */
 	function __construct()
 	{
 		$this->db = JFactory::getDBO();
 
 		$config = null;
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
@@ -33,31 +37,53 @@ class IjoomeradvModelReport extends JModelList
 				'status', 'a.status'
 			);
 		}
+
 		parent::__construct($config);
 	}
 
+	/**
+	 * The Function For Getting The Report
+	 *
+	 * @return  it will returns the loadobjectList
+	 */
 	function getReports()
 	{
 		$sql = "SELECT *
 				FROM #__ijoomeradv_report";
 		$this->db->setQuery($sql);
+
 		return $this->db->loadObjectList();
 	}
 
+	/**
+	 * The Function For Getting The Extension
+	 *
+	 * @return  it will returns the loadobjectList
+	 */
 	function getExtensions()
 	{
 		$sql = "SELECT name,classname
 				FROM #__ijoomeradv_extensions
 				Where published=1";
 		$this->db->setQuery($sql);
+
 		return $this->db->loadObjectList();
 	}
 
+	/**
+	 * The Function For PopulateState
+	 *
+	 * @param   [type]  $ordering   [description]
+	 * @param   [type]  $direction  [description]
+	 *
+	 * @return  void
+	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication('administrator');
 
 		$extension = JRequest::getVar('extensiontype', null);
+
 		if (!empty($extension))
 		{
 			$app->setUserState($this->context . '.extensiontype', $extension);
@@ -70,31 +96,47 @@ class IjoomeradvModelReport extends JModelList
 		parent::populateState('id', 'asc');
 	}
 
+	/**
+	 * The Function For The Delete
+	 *
+	 * @return  boolean it will returns the value in true or false
+	 */
 	function delete()
 	{
 		$cids = JRequest::getVar('cid', array());
 		$table = $this->getTable('report', 'IjoomeradvTable');
+
 		foreach ($cids as $cid)
 		{
 			if (!$table->delete($cid))
 			{
 				$this->setError($table->getErrorMsg());
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 
+	/**
+	 * The Function For The Ignore
+	 *
+	 * @return  boolean it will returns the value in true or false
+	 */
 	function ignore()
 	{
 		$cid = JRequest::getInt('cid', 0);
+
 		if ($cid)
 		{
 			$table = $this->getTable('report', 'IjoomeradvTable');
 			$table->load($cid);
+
 			if ($table->status != 1)
 			{
 				$table->status = 2;
+
 				if ($table->store())
 				{
 					return true;
@@ -115,10 +157,16 @@ class IjoomeradvModelReport extends JModelList
 		}
 	}
 
+	/**
+	 * The Function Deletereport is used for Deleting The Report
+	 *
+	 * @return  void
+	 */
 	function deletereport()
 	{
 		$cid = JRequest::getInt('cid', 0);
 		$result = false;
+
 		if ($cid)
 		{
 			$table = $this->getTable('report', 'IjoomeradvTable');
@@ -130,18 +178,19 @@ class IjoomeradvModelReport extends JModelList
 			if ($extension == 'jomsocial')
 			{
 				require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php';
+
 				switch ($params->type)
 				{
 					case 'activity':
 						CFactory::load('libraries', 'activities');
-						$activity =  JTable::getInstance('Activity', 'CTable');
+						$activity = JTable::getInstance('Activity', 'CTable');
 						$activity->load($params->content->id);
 						$jomparams = json_decode($activity->params);
 
 						switch ($activity->app)
 						{
 							case 'profile':
-								$profile =  JTable::getInstance('Profile', 'CTable');
+								$profile = JTable::getInstance('Profile', 'CTable');
 								$profile->load($activity->actor);
 								$profile->status = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 
@@ -156,7 +205,7 @@ class IjoomeradvModelReport extends JModelList
 								$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($activity->store()) ? true : false;
 
-								$wall =  JTable::getInstance('Wall', 'CTable');
+								$wall = JTable::getInstance('Wall', 'CTable');
 								$wall->load($jomparams->wallid);
 								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								break;
@@ -165,7 +214,7 @@ class IjoomeradvModelReport extends JModelList
 								if ($jomparams->action == 'upload')
 								{
 									$activity->title = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$photo =  JTable::getInstance('Photo', 'CTable');
+									$photo = JTable::getInstance('Photo', 'CTable');
 									$photo->load($jomparams->photoid);
 									$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$photo->store();
@@ -173,11 +222,12 @@ class IjoomeradvModelReport extends JModelList
 								else
 								{
 									$activity->content = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
-									$wall =  JTable::getInstance('Wall', 'CTable');
+									$wall = JTable::getInstance('Wall', 'CTable');
 									$wall->load($jomparams->wallid);
 									$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 									$wall->store();
 								}
+
 								$result = ($activity->store()) ? true : false;
 								break;
 
@@ -201,7 +251,7 @@ class IjoomeradvModelReport extends JModelList
 							case 'albums':
 							case 'groups.wall':
 							case 'events.wall':
-								$wall =  JTable::getInstance('Wall', 'CTable');
+								$wall = JTable::getInstance('Wall', 'CTable');
 								$wall->load($params->content->id);
 								$wall->comment = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 								$result = ($wall->store()) ? true : false;
@@ -210,7 +260,7 @@ class IjoomeradvModelReport extends JModelList
 						break;
 
 					case 'photos':
-						$photo =  JTable::getInstance('Photo', 'CTable');
+						$photo = JTable::getInstance('Photo', 'CTable');
 						$photo->load($params->content->id);
 						$photo->caption = JText::_('COM_IJOOMERADV_REPORT_REMOVED_TEXT');
 						$result = ($photo->store()) ? true : false;
@@ -222,12 +272,13 @@ class IjoomeradvModelReport extends JModelList
 				}
 			}
 
-			//Set status in report table
+			// Set status in report table
 			if ($result)
 			{
 				$table = $this->getTable('report', 'IjoomeradvTable');
 				$table->load($cid);
 				$table->status = 1;
+
 				if ($table->store())
 				{
 					return true;
@@ -241,10 +292,14 @@ class IjoomeradvModelReport extends JModelList
 			{
 				return false;
 			}
-
 		}
 	}
 
+	/**
+	 * The Function GetListQuery
+	 *
+	 * @return  it will returns the query
+	 */
 	protected function getListQuery()
 	{
 		// Create a new query object.
@@ -255,15 +310,16 @@ class IjoomeradvModelReport extends JModelList
 		$where = 'WHERE 1 ';
 		$groupby = '';
 
-
-		//filter by extension type
+		// Filter by extension type
 		$extensiontype = $this->getState('filter.extensiontype');
+
 		if (!empty($extensiontype) && $extensiontype != 'default')
 		{
 			$where .= "AND extension='$extensiontype' ";
 		}
 
 		$cid = JRequest::getVar('cid', 0);
+
 		if ($cid)
 		{
 			$where .= 'AND a.params=(SELECT params FROM #__ijoomeradv_report WHERE id=' . $cid . ')';

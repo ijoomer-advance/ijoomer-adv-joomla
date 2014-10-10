@@ -10,11 +10,11 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Item Model for Menus.
+ * The Class For IJoomeradvModelMenustypes which will Extends The JModelLegacy
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.models
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvModelMenutypes extends JModelLegacy
 {
@@ -28,8 +28,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 	/**
 	 * Method to get the reverse lookup of the base link URL to Title
 	 *
-	 * @return    array    Array of reverse lookup of the base link URL to Title
-	 * @since    1.6
+	 * @return  array    Array of reverse lookup of the base link URL to Title
 	 */
 	public function getReverseLookup()
 	{
@@ -37,6 +36,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		{
 			$this->getTypeOptions();
 		}
+
 		return $this->rlu;
 	}
 
@@ -44,6 +44,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 	 * Method to get the available menu item type options.
 	 *
 	 * @return    array    Array of groups with menu item types.
+	 *
 	 * @since    1.6
 	 */
 	public function getTypeOptions()
@@ -82,6 +83,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				foreach ($default as $key => $value)
 				{
 					$keys = $key;
+
 					foreach ($value as $screens)
 					{
 						$defaults[] = $keys . '.' . $screens;
@@ -123,6 +125,11 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		return $list;
 	}
 
+	/**
+	 * The Function For The Getting MenuItems
+	 *
+	 * @return  it will returns the result
+	 */
 	public function getMenuitems()
 	{
 		$id = JRequest::getInt('recordId');
@@ -162,9 +169,18 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 
 			$result1[] = $o;
 		}
+
 		return $result1;
 	}
 
+	/**
+	 * The Function of Getting Option by Component
+	 *
+	 * @param   [type]  $component  contain some value
+	 * @param   [type]  $defaults   contains some defailt value
+	 *
+	 * @return  it will return some options
+	 */
 	protected function getTypeOptionsByComponent($component, $defaults)
 	{
 		// Initialise variables.
@@ -185,6 +201,15 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		return $options;
 	}
 
+/**
+ * The Function For The Getting The TypeOptionsFromXML
+ *
+ * @param   [type]  $file       [description]
+ * @param   [type]  $component  [description]
+ * @param   [type]  $defaults   [description]
+ *
+ * @return  it will return some options
+ */
 	protected function getTypeOptionsFromXML($file, $component, $defaults)
 	{
 		$options = array();
@@ -197,7 +222,6 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 			{
 				foreach ($views[0]->view as $key => $value)
 				{
-
 					$o = new JObject;
 					$o->caption = (string) $value->caption;
 					$o->view = (string) $value->extView;
@@ -220,6 +244,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 					{
 						$checked = false;
 					}
+
 					$o->checked = $checked;
 					$options[] = $o;
 				}
@@ -229,7 +254,13 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		return $options;
 	}
 
-
+	/**
+	 * The Function For The Getting The TypeOptionFromMVC
+	 *
+	 * @param   [type]  $component  [description]
+	 *
+	 * @return  it will return some value in true or false
+	 */
 	protected function getTypeOptionsFromMVC($component)
 	{
 		// Initialise variables.
@@ -312,9 +343,9 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 								$options = array_merge($options, (array) $this->getTypeOptionsFromLayouts($component, $view));
 							}
 						}
+
 						unset($xml);
 					}
-
 				}
 				else
 				{
@@ -326,6 +357,14 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		return $options;
 	}
 
+	/**
+	 * The Function For The Getting The TypeOptionsFromLayouts
+	 *
+	 * @param   [type]  $component  [description]
+	 * @param   [type]  $view       [description]
+	 *
+	 * @return  it will return some options
+	 */
 	protected function getTypeOptionsFromLayouts($component, $view)
 	{
 		// Initialise variables.
@@ -337,6 +376,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 
 		// Get the layouts from the view folder.
 		$path = JPATH_SITE . '/components/' . $component . '/views/' . $view . '/tmpl';
+
 		if (JFolder::exists($path))
 		{
 			$layouts = array_merge($layouts, JFolder::files($path, '.xml$', false, true));
@@ -346,23 +386,26 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 			return $options;
 		}
 
-		// build list of standard layout names
+		// Build list of standard layout names
 		foreach ($layouts as $layout)
 		{
 			// Ignore private layouts.
 			if (strpos(JFile::getName($layout), '_') === false)
 			{
 				$file = $layout;
+
 				// Get the layout name.
 				$layoutNames[] = JFile::stripext(JFile::getName($layout));
 			}
 		}
 
-		// get the template layouts
+		// Get the template layouts
 		// @TODO: This should only search one template -- the current template for this item (default of specified)
 		$folders = JFolder::folders(JPATH_SITE . '/templates', '', false, true);
+
 		// Array to hold association between template file names and templates
 		$templateName = array();
+
 		foreach ($folders as $folder)
 		{
 			if (JFolder::exists($folder . '/html/' . $component . '/' . $view))
@@ -378,13 +421,15 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				foreach ($templateLayouts as $layout)
 				{
 					$file = $layout;
+
 					// Get the layout name.
 					$templateLayoutName = JFile::stripext(JFile::getName($layout));
 
-					// add to the list only if it is not a standard layout
+					// Add to the list only if it is not a standard layout
 					if (array_search($templateLayoutName, $layoutNames) === false)
 					{
 						$layouts[] = $layout;
+
 						// Set template name array so we can get the right template for the layout
 						$templateName[$layout] = JFile::getName($folder);
 					}
@@ -399,6 +444,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 			if (strpos(JFile::getName($layout), '_') === false)
 			{
 				$file = $layout;
+
 				// Get the layout name.
 				$layout = JFile::stripext(JFile::getName($layout));
 
@@ -451,6 +497,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 				$options[] = $o;
 			}
 		}
+
 		return $options;
 	}
 }

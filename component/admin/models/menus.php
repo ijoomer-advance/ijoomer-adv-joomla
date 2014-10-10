@@ -10,25 +10,23 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Item Model for Menus.
+ * The Class For IJoomeradvModelMenus which will Extends The JModelList
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.models
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvModelMenus extends JModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param   array    An optional associative array of configuration settings.
-	 *
-	 * @see        JController
-	 * @since      1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
 		$config = null;
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
@@ -139,7 +137,6 @@ class IjoomeradvModelMenus extends JModelList
 		$query->select($this->getState('list.select', 'a.*'));
 		$query->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a');
 
-
 		$query->group('a.id, a.title, a.description');
 
 		// Add the list ordering clause.
@@ -153,8 +150,8 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string $ordering  An optional ordering field.
-	 * @param   string $direction An optional direction (asc|desc).
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
 	 *
