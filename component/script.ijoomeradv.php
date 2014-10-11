@@ -37,39 +37,38 @@ class com_ijoomeradvInstallerScript
 	/**
 	 * Constructor
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  contains the value of adapter
+	 *
+	 * @return  void
 	 */
 	public function __constructor(JAdapterInstance $adapter)
 	{
-
 	}
 
 	/**
 	 * Called after any type of action
 	 *
-	 * @param   string           $route   Which action is happening (install|uninstall|discover_install)
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   [type]            $route    Which action is happening (install|uninstall|discover_install)
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
-	 * @return  boolean  True on success
+	 * @return  [type]                      [description]
 	 */
 	public function postflight($route, JAdapterInstance $adapter)
 	{
-
 	}
 
 	/**
 	 * Called on installation
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 */
 	public function install(JAdapterInstance $adapter)
 	{
-
 		$db = JFactory::getDBO();
 
-		// set default menu items if no menu present
+		// Set default menu items if no menu present
 		$query = "SELECT count(*)
 				FROM #__ijoomeradv_menu";
 		$db->setQuery($query);
@@ -92,7 +91,7 @@ class com_ijoomeradvInstallerScript
 			$db->Query();
 		}
 
-		// set default menu types if not installed
+		// Set default menu types if not installed
 		$query = "SELECT count(*)
 				FROM #__ijoomeradv_menu_types";
 		$db->setQuery($query);
@@ -220,25 +219,26 @@ class com_ijoomeradvInstallerScript
 	/**
 	 * Called on update
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 */
 	public function update(JAdapterInstance $adapter)
 	{
-
 	}
 
 	/**
 	 * Called on uninstallation
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  void
 	 */
 	public function uninstall(JAdapterInstance $adapter)
 	{
 		$db = JFactory::getDBO();
 
-		//Delete plugin config
+		// Delete plugin config
 		$query = "SELECT *
 				FROM #__ijoomeradv_extensions";
 		$db->setQuery($query);

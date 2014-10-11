@@ -22,8 +22,8 @@ class IjoomeradvControllerMenu extends JControllerForm
 	/**
 	 * Dummy method to redirect back to standard controller
 	 *
-	 * @param   boolean  $cachable   [description]
-	 * @param   boolean  $urlparams  [description]
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   boolean  $urlparams  $urlparams
 	 *
 	 * @return  JController           This object to support chaining.
 	 */
@@ -157,7 +157,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 	/**
 	 * The SetType Function
 	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	function setType()
 	{
@@ -196,7 +196,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 	 *
 	 * @param   [type]  $key  [description]
 	 *
-	 * @return  [boolean]      returns false value.
+	 * @return  boolean returns false value.
 	 */
 	public function cancel($key = null)
 	{

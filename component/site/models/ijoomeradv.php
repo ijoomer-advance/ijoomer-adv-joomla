@@ -10,18 +10,21 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Item Model
+ * The Class For The IJoomeradvModelijoomeradv which will extends JModelLegacy
  *
  * @package     IJoomer.Frontend
  * @subpackage  com_ijoomeradv.model
- * @since       1.6
+ * @since       1.0
  */
-class ijoomeradvModelijoomeradv extends JModelLegacy
+class IjoomeradvModelijoomeradv extends JModelLegacy
 {
-
 	private $db;
+
 	private $mainframe;
 
+	/**
+	 * Constructor
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -30,18 +33,23 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 	}
 
 	/**
-	 * @uses fetches ijoomeradv global config
+	 * fetches ijoomeradv global config
+	 *
+	 * @return  it will return loadobjectlist
 	 */
 	function getApplicationConfig()
 	{
 		$query = "SELECT `name`,`value`
 				FROM #__ijoomeradv_config";
 		$this->db->setQuery($query);
+
 		return $this->db->loadObjectList();
 	}
 
 	/**
-	 * @uses fetches all published extensions
+	 * Fetches All Published Extensions
+	 *
+	 * @return  it will return the value of components
 	 */
 	public function getExtensions()
 	{
@@ -50,13 +58,15 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				  WHERE published=1';
 		$this->db->setQuery($query);
 		$components = $this->db->loadObjectList();
+
 		return $components;
 	}
 
 	/**
 	 * Method to get the available viewnames.
 	 *
-	 * @return    array    Array of viewnames.
+	 * @return   array    Array of viewnames.
+	 *
 	 * @since    1.6
 	 */
 	public function getViewNames()
@@ -68,16 +78,22 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		foreach ($components as $component)
 		{
 			$mainXML = JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $component->classname . '.xml';
+
 			if (is_file($mainXML))
 			{
 				$options[$component->classname] = $this->getTypeOptionsFromXML($mainXML);
 			}
 		}
+
 		return $options;
 	}
 
 	/**
+	 * Get Type Options FromXML
 	 *
+	 * @param   [type]  $file  [description]
+	 *
+	 * @return  array  $options
 	 */
 	private function getTypeOptionsFromXML($file)
 	{
@@ -95,11 +111,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				}
 			}
 		}
+
 		return $options;
 	}
 
 	/**
-	 * @uses fetches ijoomeradv Menu items
+	 * Fetches ijoomeradv Menu items
+	 *
+	 * @return array it will return Menu Array
 	 */
 	function getMenus()
 	{
@@ -107,6 +126,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$positionScreens = array();
 		$user = JFactory::getUser();
 		$device = IJReq::getTaskData('device');
+
 		if ($device == 'android')
 		{
 			$menudevice = 2;
@@ -116,11 +136,13 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		{
 			$menudevice = 3;
 			$device_type = IJReq::getTaskData('type', '3');
+
 			if ($device_type == 5)
 			{
 				$device_type = 4;
 			}
 		}
+
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		$query = 'SELECT *
@@ -130,6 +152,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$menus = $this->db->loadObjectList();
 
 		$i = 0;
+
 		if (!empty($menus))
 		{
 			foreach ($menus as $value)
@@ -142,6 +165,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					$screens = json_decode($value->screen);
 					$screennames = array();
+
 					if ($screens)
 					{
 						foreach ($screens as $val)
@@ -164,9 +188,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						"screens" => $screennames
 					);
 
-
-					//Add IF condition for if menuitem for specific device avail or not
-					//if global selected then check avaibility in menu
+					// Add IF condition for if menuitem for specific device avail or not
+					// if global selected then check avaibility in menu
 					$query = "SELECT *
 							FROM #__ijoomeradv_menu
 							WHERE menutype=$value->id
@@ -179,6 +202,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 					$k = 0;
 					$menuArray[$i]["menuitem"] = array();
+
 					if (!empty($menuitems))
 					{
 						foreach ($menuitems as $value1)
@@ -186,6 +210,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							$viewname = explode('.', $value1->views);
 
 							$remotedata = json_decode($value1->menuoptions);
+
 							if ($remotedata)
 							{
 								$remotedata = $remotedata->remoteUse;
@@ -201,7 +226,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 								"itemdata" => $remotedata
 							);
 
-							if (($value->position == 1 or $value->position == 2) && ($value1->itemimage))
+							if (( $value->position == 1 or $value->position == 2) && ( $value1->itemimage))
 							{
 								$menuArray[$i]["menuitem"][$k]["icon"] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/custom/' . $device . '/' . $device_type . '/' . $value1->itemimage . '_icon.png';
 							}
@@ -214,16 +239,21 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							$k++;
 						}
 					}
+
 					$i++;
 				}
 			}
 		}
+
 		return $menuArray;
 	}
 
 	/**
-	 * @uses Set request variable from menu id
+	 * Set request variable from menu id
 	 *
+	 * @param   [type]  $menuid  contains menu id
+	 *
+	 * @return boolean it will return a value in true or false
 	 */
 	function setMenuRequest($menuid)
 	{
@@ -237,37 +267,45 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 		if ($menuobject)
 		{
-			//Set reqObject as per menuid request
+			// Set reqObject as per menuid request
 			$views = explode('.', $menuobject->views);
 			$mainframe->IJObject->reqObject->extName = $views[0];
 			$mainframe->IJObject->reqObject->extView = $views[1];
 			$mainframe->IJObject->reqObject->extTask = $views[2];
 
-			//Set required data for menu request
+			// Set required data for menu request
 			$menuoptions = json_decode($menuobject->menuoptions);
+
 			foreach ($menuoptions->remoteUse as $key => $value)
 			{
 				$mainframe->IJObject->reqObject->taskData->$key = $value;
 			}
 		}
+
 		return true;
 	}
 
 	/**
-	 * @uses fetches ijoomeradv global config
+	 * Fetches IJoomeradv Global Config
 	 *
+	 * @param   [type]  $extName  contains the ExtName
+	 *
+	 * @return  it will return loadobjectlist
 	 */
 	function getExtensionConfig($extName)
 	{
 		$query = "SELECT `name`,`value`
 				FROM #__ijoomeradv_{$extName}_config";
 		$this->db->setQuery($query);
-		return $this->db->loadObjectList(); // return config list
+
+		// Return config list
+		return $this->db->loadObjectList();
 	}
 
 	/**
-	 * @uses fetches ijoomeradv custom views detail
+	 * Fetches IJoomeradv Custom Views Detail
 	 *
+	 * @return  it will return the value of $customeView
 	 */
 	public function getCustomView()
 	{
@@ -282,8 +320,9 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 	}
 
 	/**
-	 * @uses fetches ijoomeradv default home views
+	 * Fetches IJoomeradv Default Home Views
 	 *
+	 * @return  it will return loadobject
 	 */
 	public function getHomeMenu()
 	{
@@ -292,11 +331,16 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				  WHERE published=1
 				  AND home=1";
 		$this->db->setQuery($query);
+
 		return $this->db->loadObject();
 	}
 
 	/**
-	 * @uses check ioomer extension and related joomla component if installed and enabled
+	 * Check Ioomer Extension And Related Joomla Component If Installed And Enabled
+	 *
+	 * @param   [type]  $extName  [description]
+	 *
+	 * @return  boolean it will return the value in true or false
 	 */
 	function checkIJExtension($extName)
 	{
@@ -304,25 +348,37 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				FROM `#__ijoomeradv_extensions`
 				WHERE `classname`='{$extName}'";
 		$this->db->setQuery($query);
-		$option = $this->db->loadResult(); // get component name from the extension name
+
+		// Get component name from the extension name
+		$option = $this->db->loadResult();
+
 		if (!$option)
 		{
 			IJReq::setResponseCode(404);
+
 			return false;
 		}
 		else
 		{
-			$IJHelperObj = new ijoomeradvHelper; // create hepler object
+			// Create hepler object
+			$IJHelperObj = new ijoomeradvHelper;
+
 			if (!$IJHelperObj->getComponent($option))
 			{
 				IJReq::setResponseCode(404);
+
 				return false;
 			}
 		}
+
 		return true;
 	}
 
-
+	/**
+	 * The LoginProccess Function
+	 *
+	 * @return  array it will return jsson array
+	 */
 	function loginProccess()
 	{
 		$data['latitude'] = IJReq::getTaskData('lat');
@@ -330,7 +386,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$data['device_token'] = IJReq::getTaskData('devicetoken');
 		$data['device_type'] = IJReq::getTaskData('type');
 
-		$my = JFactory::getUser(); //get current user
+		// Get current user
+		$my = JFactory::getUser();
 
 		// @TODO : extension levels default params
 		$defaultParams = '{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_friends_request_connection":"1","pushnotif_friends_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
@@ -352,6 +409,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$query = "INSERT INTO `#__ijoomeradv_users` (`userid`,`jomsocial_params`,`device_token`,`device_type`)
 					VALUES ('{$my->id}','{$defaultParams}','{$data['device_token']}','{$data['device_type']}')";
 		}
+
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -361,7 +419,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'jomsocial' && file_exists(JPATH_ROOT . '/components/com_community/libraries/core.php'))
 		{
 			require_once JPATH_ROOT . '/components/com_community/libraries/core.php';
-			// update jomsocial latitude & longitude if not 0
+
+			// Update jomsocial latitude & longitude if not 0
 			if ($data['latitude'] != 0 && $data['longitude'] != 0)
 			{
 				$query = "UPDATE #__community_users
@@ -372,8 +431,9 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			}
 		}
 
-		//change for id based push notification
+		// Change for id based push notification
 		$component = JComponentHelper::getComponent('com_community');
+
 		if (!empty($component->id) && $component->enabled == 1)
 		{
 			$friendsModel = CFactory::getModel('friends');
@@ -386,6 +446,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$obj->detail = $pushOptions;
 			$obj->tocount = count($friends);
 			$this->db->insertObject('#__ijoomeradv_push_notification_data', $obj, 'id');
+
 			if ($obj->id)
 			{
 				$jsonarray['pushNotificationData']['id'] = $obj->id;
@@ -395,13 +456,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				$jsonarray['pushNotificationData']['configtype'] = '';
 			}
 		}
+
 		return $jsonarray;
 	}
 
-
 	/**
-	 * @uses this function is use to log into with facebook
+	 * This Function is Use to Log Into with facebook
 	 *
+	 * @return it will return false value otherwise jasson array
 	 */
 	function fblogin()
 	{
@@ -415,8 +477,10 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$reg_opt = IJReq::getTaskData('regopt', 0, 'int');
 		$fbid = IJReq::getTaskData('fbid');
 		$time = time();
+
 		if ($reg_opt === 0)
-		{// first check if fbuser in db logged in
+		{
+			// First check if fbuser in db logged in
 			$query = "SELECT u.id,u.username
 					FROM #__users AS u,#__community_connect_users AS cu
 					WHERE u.id = cu.userid
@@ -438,34 +502,41 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 				$usersipass['username'] = $userinfo->username;
 				$usersipass['password'] = $password_set . $time;
+
 				if ($this->mainframe->login($usersipass) == '1')
 				{
 					$jsonarray = $this->loginProccess();
+
 					return $jsonarray;
 				}
 				else
 				{
 					IJReq::setResponseCode(401);
 					IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_UNABLE_TO_AUTHENTICATE'));
+
 					return false;
 				}
 			}
 			else
 			{
-				IJReq::setResponseCode(703); // Facebook user not found, need to create new user
+				// Facebook user not found, need to create new user
+				IJReq::setResponseCode(703);
+
 				return false;
 			}
 		}
 		else if ($reg_opt === 1)
-		{//registration option 1 if already user
+		{
+			// Registration option 1 if already user
 			$credentials = array();
 			$credentials['username'] = $data['user_nm'];
 			$credentials['password'] = $password_set;
 
 			if ($this->mainframe->login($credentials) == '1' && $fbid != "")
 			{
-				// connect fb user to site user...
+				// Connect fb user to site user...
 				$user = JFactory::getUser();
+
 				if (strtolower(IJOOMER_GC_REGISTRATION) === 'community' && file_exists(JPATH_ROOT . '/components/com_community/libraries/core.php'))
 				{
 					require_once JPATH_ROOT . '/components/com_community/libraries/core.php';
@@ -484,21 +555,24 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					$this->db->setQuery($query);
 					$this->db->Query();
 
-					// store user image...
+					// Store user image...
 					CFactory::load('libraries', 'facebook');
 					$facebook = new CFacebook;
-					// edited by Salim (Date: 08-09-2011)
+
+					// Edited by Salim (Date: 08-09-2011)
 					$data['pic_big'] = str_replace('profile.cc.fbcdn', 'profile.ak.fbcdn', $data['pic_big']);
 					$data['pic_big'] = str_replace('hprofile-cc-', 'hprofile-ak-', $data['pic_big']);
 
 					$facebook->mapAvatar($data['pic_big'], $user->id, $config->get('fbwatermark'));
 				}
+
 				$jsonarray = $this->loginProccess();
 			}
 			else
 			{
 				IJReq::setResponseCode(401);
 				IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_UNABLE_TO_AUTHENTICATE'));
+
 				return false;
 			}
 		}
@@ -511,17 +585,20 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$uid = $this->db->loadResult();
 
 			if ($uid > 0)
-			{ // if user exists with email address send email id already exists
+			{
+				// If user exists with email address send email id already exists
 				$query = "SELECT u.id
 						FROM #__users AS u,#__community_connect_users AS cu
 						WHERE u.id = cu.userid AND u.`email`='{$data['email']}'
 						AND cu.`connectid`='{$password_set}'";
 				$this->db->setQuery($query);
 				$uid = $this->db->loadResult();
+
 				if (empty($uid))
 				{
 					IJReq::setResponseCode(702);
 					IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_EMAIL_ALREADY_EXIST'));
+
 					return false;
 				}
 			}
@@ -536,6 +613,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			{
 				IJReq::setResponseCode(701);
 				IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_USERNAME_ALREADY_EXIST'));
+
 				return false;
 			}
 			else
@@ -551,13 +629,17 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				$data['longitude'] = IJReq::getTaskData('long');
 
 				$user->bind($data);
+
 				if (!$user->save())
 				{
 					IJReq::setResponseCode(500);
+
 					return false;
 				}
+
 				$aclval = $user->id;
-				// store usegroup for user...
+
+				// Store usegroup for user...
 				$query = "INSERT INTO #__user_usergroup_map
 						SET group_id='2',user_id='{$aclval}'";
 				$this->db->setQuery($query);
@@ -570,18 +652,21 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
 					$this->db->setQuery($query);
 					$this->db->Query();
-					$config =  CFactory::getConfig();
-					// store user image...
+
+					$config = CFactory::getConfig();
+
+					// Store user image...
 					CFactory::load('libraries', 'facebook');
 					$facebook = new CFacebook;
 
-					// edited by Salim (Date: 08-09-2011)
+					// Edited by Salim (Date: 08-09-2011)
 					$data['pic_big'] = str_replace('profile.cc.fbcdn', 'profile.ak.fbcdn', $data['pic_big']);
 					$data['pic_big'] = str_replace('hprofile-cc-', 'hprofile-ak-', $data['pic_big']);
 
 					$facebook->mapAvatar($data['pic_big'], $aclval, $config->get('fbwatermark'));
 				}
-				// update password again...
+
+				// Update password again...
 				$salt = JUserHelper::genRandomPassword(32);
 				$crypt = JUserHelper::getCryptedPassword($password_set . $time, $salt);
 				$data['password'] = $crypt . ':' . $salt;
@@ -594,76 +679,85 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 				$usersipass['username'] = trim(str_replace("\n", "", $data['user_nm']));
 				$usersipass['password'] = trim(str_replace("\n", "", $password_set . $time));
+
 				if ($this->mainframe->login($usersipass) == '1')
 				{
 					if ($jsonarray = $this->loginProccess())
 					{
 						$this->fbFieldSet($aclval);
+
 						return $jsonarray;
 					}
 					else
 					{
 						return false;
 					}
-
 				}
 				else
 				{
 					IJReq::setResponseCode(401);
 					IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_UNABLE_TO_AUTHENTICATE'));
+
 					return false;
 				}
 			}
 		}
+
 		return $jsonarray;
 	}
 
-
+/**
+ * The Function FB Field Set
+ *
+ * @param   [type]  $userid  contains the userid
+ *
+ * @return  void
+ */
 	private function fbFieldSet($userid)
 	{
 		$fb = IJReq::getTaskData('fb');
-		$fieldConnection = array('FB_USERID' => (isset($fb->uid)) ? number_format($fb->uid, 0, '', '') : NULL,
-			'FB_USERNAME' => (isset($fb->username)) ? $fb->username : NULL,
-			'FB_3PARTY_ID' => (isset($fb->third_party_id)) ? $fb->third_party_id : NULL,
-			'FB_FNAME' => (isset($fb->first_name)) ? $fb->first_name : NULL,
-			'FB_MNAME' => (isset($fb->middle_name)) ? $fb->middle_name : NULL,
-			'FB_LNAME' => (isset($fb->last_name)) ? $fb->last_name : NULL,
-			'FB_PIC' => (isset($fb->pic)) ? $fb->pic : NULL,
-			'FB_PIC_SMALL' => (isset($fb->pic_small)) ? $fb->pic_small : NULL,
-			'FB_PIC_COVER' => (isset($fb->pic_cover->source)) ? $fb->pic_cover->source : NULL,
-			'FB_VERIFIED' => (isset($fb->verified)) ? $fb->verified : NULL,
-			'FB_SEX' => (isset($fb->sex)) ? $fb->sex : NULL,
-			'FB_BIRTH_DATE' => (isset($fb->birthday_date)) ? $fb->birthday_date : NULL,
-			'FB_STATUS' => (isset($fb->status->message)) ? $fb->status->message : NULL,
-			'FB_ABOUT_ME' => (isset($fb->about_me)) ? $fb->about_me : NULL,
-			'FB_TIMEZONE' => (isset($fb->timezone)) ? $fb->timezone : NULL,
-			'FB_ISMINOR' => (isset($fb->is_minor)) ? $fb->is_minor : NULL,
-			'FB_POLITICAL' => (isset($fb->political)) ? $fb->political : NULL,
-			'FB_QUOTES' => (isset($fb->quotes)) ? $fb->quotes : NULL,
-			'FB_RELATION_STATUS' => (isset($fb->relationship_status)) ? $fb->relationship_status : NULL,
-			'FB_RELIGION' => (isset($fb->religion)) ? $fb->religion : NULL,
-			'FB_TV_SHOW' => (isset($fb->tv)) ? $fb->tv : NULL,
-			'FB_SPORTS' => (isset($fb->sports[0]->name)) ? $fb->sports[0]->name : NULL,
-			'FB_WORK' => (isset($fb->work[0])) ? $fb->work[0] : NULL,
-			'FB_EDUCATION' => (isset($fb->education[0]->school)) ? $fb->education[0]->school : NULL,
-			'FB_EMAIL' => (isset($fb->email)) ? $fb->email : NULL,
-			'FB_WEBSITE' => (isset($fb->website)) ? $fb->website : NULL,
-			'FB_CURRENT_STREET' => (isset($fb->current_address->street)) ? $fb->current_address->street : NULL,
-			'FB_CURRENT_CITY' => (isset($fb->current_address->city)) ? $fb->current_address->city : NULL,
-			'FB_CURRENT_STATE' => (isset($fb->current_address->state)) ? $fb->current_address->state : NULL,
-			'FB_CURRENT_COUNTRY' => (isset($fb->current_address->country)) ? $fb->current_address->country : NULL,
-			'FB_CURRENT_ZIP' => (isset($fb->current_address->zip)) ? $fb->current_address->zip : NULL,
-			'FB_CURRENT_LATITUDE' => (isset($fb->current_address->latitude)) ? $fb->current_address->latitude : NULL,
-			'FB_CURRENT_LONGITUDE' => (isset($fb->current_address->longitude)) ? $fb->current_address->longitude : NULL,
-			'FB_CURRENT_LOCATION_NAME' => (isset($fb->current_address->name)) ? $fb->current_address->name : NULL,
-			'FB_HOMETOWN_STREET' => (isset($fb->hometown_location->street)) ? $fb->hometown_location->street : NULL,
-			'FB_HOMETOWN_CITY' => (isset($fb->hometown_location->city)) ? $fb->hometown_location->city : NULL,
-			'FB_HOMETOWN_STATE' => (isset($fb->hometown_location->state)) ? $fb->hometown_location->state : NULL,
-			'FB_HOMETOWN_COUNTRY' => (isset($fb->hometown_location->country)) ? $fb->hometown_location->country : NULL,
-			'FB_HOMETOWN_ZIP' => (isset($fb->hometown_location->zip)) ? $fb->hometown_location->zip : NULL,
-			'FB_HOMETOWN_LATITUDE' => (isset($fb->hometown_location->latitude)) ? $fb->hometown_location->latitude : NULL,
-			'FB_HOMETOWN_LONGITUDE' => (isset($fb->hometown_location->longitude)) ? $fb->hometown_location->longitude : NULL,
-			'FB_HOMETOWN_LOCATION_NAME' => (isset($fb->hometown_location->name)) ? $fb->hometown_location->name : NULL,
+		$fieldConnection = array('FB_USERID' => (isset($fb->uid)) ? number_format($fb->uid, 0, '', '') : null,
+			'FB_USERNAME' => (isset($fb->username)) ? $fb->username : null,
+			'FB_3PARTY_ID' => (isset($fb->third_party_id)) ? $fb->third_party_id : null,
+			'FB_FNAME' => (isset($fb->first_name)) ? $fb->first_name : null,
+			'FB_MNAME' => (isset($fb->middle_name)) ? $fb->middle_name : null,
+			'FB_LNAME' => (isset($fb->last_name)) ? $fb->last_name : null,
+			'FB_PIC' => (isset($fb->pic)) ? $fb->pic : null,
+			'FB_PIC_SMALL' => (isset($fb->pic_small)) ? $fb->pic_small : null,
+			'FB_PIC_COVER' => (isset($fb->pic_cover->source)) ? $fb->pic_cover->source : null,
+			'FB_VERIFIED' => (isset($fb->verified)) ? $fb->verified : null,
+			'FB_SEX' => (isset($fb->sex)) ? $fb->sex : null,
+			'FB_BIRTH_DATE' => (isset($fb->birthday_date)) ? $fb->birthday_date : null,
+			'FB_STATUS' => (isset($fb->status->message)) ? $fb->status->message : null,
+			'FB_ABOUT_ME' => (isset($fb->about_me)) ? $fb->about_me : null,
+			'FB_TIMEZONE' => (isset($fb->timezone)) ? $fb->timezone : null,
+			'FB_ISMINOR' => (isset($fb->is_minor)) ? $fb->is_minor : null,
+			'FB_POLITICAL' => (isset($fb->political)) ? $fb->political : null,
+			'FB_QUOTES' => (isset($fb->quotes)) ? $fb->quotes : null,
+			'FB_RELATION_STATUS' => (isset($fb->relationship_status)) ? $fb->relationship_status : null,
+			'FB_RELIGION' => (isset($fb->religion)) ? $fb->religion : null,
+			'FB_TV_SHOW' => (isset($fb->tv)) ? $fb->tv : null,
+			'FB_SPORTS' => (isset($fb->sports[0]->name)) ? $fb->sports[0]->name : null,
+			'FB_WORK' => (isset($fb->work[0])) ? $fb->work[0] : null,
+			'FB_EDUCATION' => (isset($fb->education[0]->school)) ? $fb->education[0]->school : null,
+			'FB_EMAIL' => (isset($fb->email)) ? $fb->email : null,
+			'FB_WEBSITE' => (isset($fb->website)) ? $fb->website : null,
+			'FB_CURRENT_STREET' => (isset($fb->current_address->street)) ? $fb->current_address->street : null,
+			'FB_CURRENT_CITY' => (isset($fb->current_address->city)) ? $fb->current_address->city : null,
+			'FB_CURRENT_STATE' => (isset($fb->current_address->state)) ? $fb->current_address->state : null,
+			'FB_CURRENT_COUNTRY' => (isset($fb->current_address->country)) ? $fb->current_address->country : null,
+			'FB_CURRENT_ZIP' => (isset($fb->current_address->zip)) ? $fb->current_address->zip : null,
+			'FB_CURRENT_LATITUDE' => (isset($fb->current_address->latitude)) ? $fb->current_address->latitude : null,
+			'FB_CURRENT_LONGITUDE' => (isset($fb->current_address->longitude)) ? $fb->current_address->longitude : null,
+			'FB_CURRENT_LOCATION_NAME' => (isset($fb->current_address->name)) ? $fb->current_address->name : null,
+			'FB_HOMETOWN_STREET' => (isset($fb->hometown_location->street)) ? $fb->hometown_location->street : null,
+			'FB_HOMETOWN_CITY' => (isset($fb->hometown_location->city)) ? $fb->hometown_location->city : null,
+			'FB_HOMETOWN_STATE' => (isset($fb->hometown_location->state)) ? $fb->hometown_location->state : null,
+			'FB_HOMETOWN_COUNTRY' => (isset($fb->hometown_location->country)) ? $fb->hometown_location->country : null,
+			'FB_HOMETOWN_ZIP' => (isset($fb->hometown_location->zip)) ? $fb->hometown_location->zip : null,
+			'FB_HOMETOWN_LATITUDE' => (isset($fb->hometown_location->latitude)) ? $fb->hometown_location->latitude : null,
+			'FB_HOMETOWN_LONGITUDE' => (isset($fb->hometown_location->longitude)) ? $fb->hometown_location->longitude : null,
+			'FB_HOMETOWN_LOCATION_NAME' => (isset($fb->hometown_location->name)) ? $fb->hometown_location->name : null,
 		);
 
 		foreach ($fieldConnection as $key => $value)
@@ -692,11 +786,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				else
 				{
 					$query = "INSERT INTO `#__community_fields_values` (`id`,`user_id`,`field_id`,`value`,`access`)
-							VALUES (NULL, '{$userid}', '{$fieldid}', '{$value}', 0)";
+							VALUES (null, '{$userid}', '{$fieldid}', '{$value}', 0)";
 				}
+
 				$this->db->setQuery($query);
 				$this->db->Query();
-
 			}
 		}
 
@@ -708,7 +802,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 	}
 
 	/**
-	 * @uses    this function is use to register a new user
+	 * This function is use to register a new user
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "task":"registration",
@@ -722,6 +817,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 	 *        }
 	 *    }
 	 *
+	 * @return it will return false value otherwise jsson array
 	 */
 	function registration()
 	{
@@ -731,13 +827,15 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$post['email'] = IJReq::getTaskData('email');
 		$post['type'] = IJReq::getTaskData('type', 0, 'int');
 		$Full_flag = IJReq::getTaskData('full', 0, 'int');
-		$lang =  JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_users');
 
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'no')
-		{ // if registration not allowed
+		{
+			// If registration not allowed
 			IJReq::setResponseCode(401);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_REGISTRATION_NOT_ALLOW'));
+
 			return false;
 		}
 
@@ -745,10 +843,13 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				FROM `#__users`
 				WHERE username='" . str_replace("\n", "", trim($post['username'])) . "'";
 		$this->db->setQuery($query);
-		if ($this->db->loadResult() > 0)
-		{ // check if user already exist
+
+		if ( $this->db->loadResult() > 0)
+		{
+			// Check if user already exist
 			IJReq::setResponseCode(701);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_USERNAME_ALREADY_EXIST'));
+
 			return false;
 		}
 
@@ -756,16 +857,20 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				FROM `#__users`
 				WHERE email='" . str_replace("\n", "", trim($post['email'])) . "'";
 		$this->db->setQuery($query);
+
 		if ($this->db->loadResult() > 0)
-		{ // check if email id already exist
+		{
+			// Check if email id already exist
 			IJReq::setResponseCode(702);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_EMAIL_ALREADY_EXIST'));
+
 			return false;
 		}
 
 		if ($Full_flag != 1 && strtolower(IJOOMER_GC_REGISTRATION) === 'jomsocial' && file_exists(JPATH_ROOT . '/components/com_community/libraries/' . 'core.php'))
 		{
-			require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php'; // include jomsocial core file from library
+			// Include jomsocial core file from library
+			require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php';
 
 			if ($post['type'] > 0)
 			{
@@ -785,11 +890,13 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						WHERE published=1 and registration=1
 						order by `ordering`";
 			}
+
 			$this->db->setQuery($query);
 			$fields = $this->db->loadObjectList();
 
 			$inc = -1;
 			$incj = null;
+
 			if (count($fields) > 0)
 			{
 				$jsonarray['code'] = 200;
@@ -809,6 +916,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						{
 							$incj = 0;
 						}
+
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['id'] = $field->id;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['caption'] = $field->name;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['required'] = $field->required;
@@ -840,14 +948,17 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						}
 
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['type'] = $field->type;
+
 						if (isset($field->options) and !empty($field->options))
 						{
 							$option = explode("\n", $field->options);
+
 							foreach ($option as $i => $val)
 							{
 								$jsonarray['fields']['group'][$inc]['field'][$incj]['options'][$i]['value'] = JText::_($val);
 							}
 						}
+
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['privacy']['value'] = 0;
 						$jsonarray['fields']['group'][$inc]['field'][$incj]['privacy']['options'] = array(
 							0 => array('value' => 0, 'caption' => 'Public'),
@@ -857,6 +968,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						$incj++;
 					}
 				}
+
 				return $jsonarray;
 			}
 		}
@@ -866,30 +978,36 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$useractivation = $params->get('useractivation');
 		$sendpassword = $params->get('sendpassword', 1);
 
-		$user = new JUser; // Initialise the table with JUser.
+		// Initialise the table with JUser.
+		$user = new JUser;
 		$post['name'] = trim(str_replace("\n", "", $post['relname']));
 		$post['username'] = trim(str_replace("\n", "", $post['username']));
 		$post['password'] = $post['password1'] = $post['password2'] = trim(str_replace("\n", "", $post['password']));
 		$post['email'] = $post['email1'] = $post['email2'] = trim(str_replace("\n", "", $post['email']));
 		$post['groups'][0] = $system;
+
 		// Check if the user needs to activate their account.
 		if (($useractivation == 1) || ($useractivation == 2))
 		{
 			$post['activation'] = JApplication::getHash(JUserHelper::genRandomPassword());
 			$post['block'] = 1;
 		}
+
 		$user->bind($post);
 
 		if (!$user->save())
 		{
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
 		$aclval = $user->id;
+
 		if (!$aclval)
 		{
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
@@ -995,7 +1113,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		// Send the registration email.
 		$return = JFactory::getMailer()->sendMail($data['mailfrom'], $data['fromname'], $data['email'], $emailSubject, $emailBody);
 
-		//Send Notification mail to administrators
+		// Send Notification mail to administrators
 		if (($params->get('useractivation') < 2) && ($params->get('mail_to_admin') == 1))
 		{
 			$emailSubject = JText::sprintf(
@@ -1011,7 +1129,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				$data['siteurl']
 			);
 
-			// get all admin users
+			// Get all admin users
 			$query = 'SELECT name, email, sendEmail
 					FROM #__users
 					WHERE sendEmail=1';
@@ -1028,6 +1146,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(500);
 					IJReq::setResponseMessage(JText::_('COM_USERS_REGISTRATION_ACTIVATION_NOTIFY_SEND_MAIL_FAILED'));
+
 					return false;
 				}
 			}
@@ -1043,9 +1162,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					AND sendEmail = 1";
 			$this->db->setQuery($query);
 			$sendEmail = $this->db->loadColumn();
+
 			if (count($sendEmail) > 0)
 			{
 				$jdate = new JDate;
+
 				// Build the query to add the messages
 				$query = "INSERT INTO {$this->db->quoteName('#__messages')} ({$this->db->quoteName('user_id_from')}, {$this->db->quoteName('user_id_to')}, {$this->db->quoteName('date_time')}, {$this->db->quoteName('subject')}, {$this->db->quoteName('message')}) VALUES ";
 				$messages = array();
@@ -1054,19 +1175,22 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					$messages[] = "({$userid}, {$userid}, '{$jdate->toSql()}', '" . JText::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT') . "', '" . JText::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username']) . "')";
 				}
+
 				$query .= implode(',', $messages);
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
+
 			IJReq::setResponseCode(500);
 			IJReq::setResponseMessage(JText::_('COM_USERS_REGISTRATION_SEND_MAIL_FAILED'));
+
 			return false;
 		}
 
-		//if community installed
+		// If community installed
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'jomsocial' && file_exists(JPATH_ROOT . '/components/com_community/libraries/core.php'))
 		{
-			//require_once JPATH_ROOT. '/components/com_community/helpers/'. 'image.php';
+			// Require_once JPATH_ROOT. '/components/com_community/helpers/'. 'image.php';
 			jimport('joomla.filesystem.file');
 			jimport('joomla.utilities.utility');
 			CFactory::load('helpers', 'image');
@@ -1086,6 +1210,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(416);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
+
 					return false;
 				}
 
@@ -1093,14 +1218,15 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(415);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+
 					return false;
 				}
-
 
 				if (!cValidImage($file['tmp_name']))
 				{
 					IJReq::setResponseCode(415);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+
 					return false;
 				}
 				else
@@ -1108,7 +1234,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					// @todo: configurable width?
 					$imageMaxWidth = 160;
 
-					$lang =  JFactory::getLanguage();
+					$lang = JFactory::getLanguage();
 					$lang->load('com_community');
 
 					$profileType = isset($post['type']) ? $post['type'] : 0;
@@ -1128,6 +1254,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					if (!cImageResizePropotional($file['tmp_name'], $storageImage, $file['type'], $imageMaxWidth))
 					{
 						IJReq::setResponseCode(500);
+
 						return false;
 					}
 
@@ -1135,6 +1262,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					if (!cImageCreateThumb($file['tmp_name'], $storageThumbnail, $file['type']))
 					{
 						IJReq::setResponseCode(500);
+
 						return false;
 					}
 
@@ -1161,6 +1289,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							WHERE published=1
 							AND registration=1";
 				}
+
 				$this->db->setQuery($query);
 				$fields = $this->db->loadObjectList();
 
@@ -1174,6 +1303,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					$this->db->query();
 				}
 			}
+
 			else
 			{
 				// @rule: Limit image size based on the maximum upload allowed.
@@ -1181,6 +1311,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(416);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_VIDEOS_IMAGE_FILE_SIZE_EXCEEDED'));
+
 					return false;
 				}
 
@@ -1188,6 +1319,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(416);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+
 					return false;
 				}
 
@@ -1195,6 +1327,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				{
 					IJReq::setResponseCode(416);
 					IJReq::setResponseMessage(JText::_('COM_COMMUNITY_IMAGE_FILE_NOT_SUPPORTED'));
+
 					return false;
 				}
 				else
@@ -1219,6 +1352,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					{
 						IJReq::setResponseCode(500);
 						IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE', $storageImage));
+
 						return false;
 					}
 
@@ -1227,6 +1361,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					{
 						IJReq::setResponseCode(500);
 						IJReq::setResponseMessage(JText::sprintf('COM_COMMUNITY_ERROR_MOVING_UPLOADED_FILE', $storageImage));
+
 						return false;
 					}
 
@@ -1252,19 +1387,22 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 						// The original image file will be removed from the system once it generates a new watermark image.
 						CImageHelper::addWatermark($storageImage, $watermarkImage, 'image/jpg', $watermarkPath, $avatarPosition->x, $avatarPosition->y);
 
-						//Thumbnail Properties
+						// Thumbnail Properties
 						$thumbPosition = CImageHelper::getPositions($multiprofile->watermark_location, $thumbWidth, $thumbHeight, $watermarkWidth, $watermarkHeight);
 
 						// The original thumbnail file will be removed from the system once it generates a new watermark image.
 						CImageHelper::addWatermark($storageThumbnail, $watermarkThumbnail, 'image/jpg', $watermarkPath, $thumbPosition->x, $thumbPosition->y);
 
 						$my->set('_watermark_hash', $multiprofile->watermark_hash);
+
 						if (!$my->save())
 						{
 							IJReq::setResponseCode(500);
+
 							return false;
 						}
 					}
+
 					$userModel->setImage($userid, $image, 'avatar');
 					$userModel->setImage($userid, $thumbnail, 'thumb');
 
@@ -1288,6 +1426,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 							WHERE published=1
 							AND registration=1";
 				}
+
 				$this->db->setQuery($query);
 				$fields = $this->db->loadObjectList();
 
@@ -1303,7 +1442,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			}
 		}
 
-		// store kunena profile in kunena table...
+		// Store kunena profile in kunena table...
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'kunena')
 		{
 			$file = JRequest::getVar('image', '', 'files', 'array');
@@ -1315,12 +1454,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			if (JFile::upload($file['tmp_name'], $commanpath . $filename))
 			{
 				$image = new SimpleImage;
+
 				foreach ($thumbArray AS $path => $size)
 				{
 					copy($commanpath . $filename, $commanpath . $path . $filename);
 					$image->load($commanpath . $path . $filename);
 					$width = $image->getWidth();
 					$height = $image->getheight();
+
 					if ($width > $height)
 					{
 						$image->resizeToWidth($size);
@@ -1329,6 +1470,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 					{
 						$image->resizeToHeight($size);
 					}
+
 					$image->save($commanpath . $path . $filename);
 				}
 			}
@@ -1340,12 +1482,14 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		}
 
 		$jsonarray['code'] = 200;
+
 		return $jsonarray;
 	}
 
 	/**
-	 * @uses function to request token to reset password
+	 * Function To Request Token To Reset Password
 	 *
+	 * @return  it will return a false value otherwise jsson array
 	 */
 	function retriveToken()
 	{
@@ -1355,9 +1499,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		jimport('joomla.user.helper');
 
 		if (!JMailHelper::isEmailAddress($email))
-		{ // Make sure the e-mail address is valid
+		{
+			// Make sure the e-mail address is valid
 			IJReq::setResponseCode(400);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_INVALID_EMAIL'));
+
 			return false;
 		}
 
@@ -1366,21 +1512,26 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				WHERE email={$this->db->Quote($email)}
 				AND block=0";
 		$this->db->setQuery($query);
+
 		if (!($id = $this->db->loadResult()))
-		{ // check if user exist of given email
+		{
+			// Check if user exist of given email
 			IJReq::setResponseCode(401);
+
 			return false;
 		}
 
 		if (IJ_JOOMLA_VERSION === 1.5)
 		{
-			$token = JApplication::getHash(JUserHelper::genRandomPassword()); // Generate a new token
+			// Generate a new token
+			$token = JApplication::getHash(JUserHelper::genRandomPassword());
 			$salt = JUserHelper::getSalt('crypt-md5');
 			$hashedToken = md5($token . $salt) . ':' . $salt;
 		}
 		else
 		{
-			$token = JApplication::getHash(JUserHelper::genRandomPassword()); // Set the confirmation token.
+			// Set the confirmation token.
+			$token = JApplication::getHash(JUserHelper::genRandomPassword());
 			$salt = JUserHelper::getSalt('crypt-md5');
 			$hashedToken = md5($token . $salt) . ':' . $salt;
 		}
@@ -1389,25 +1540,32 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				SET activation={$this->db->Quote($hashedToken)}
 				WHERE id={$id} AND block = 0";
 		$this->db->setQuery($query);
+
 		if (!$this->db->query())
-		{ // Save the token
+		{
+			// Save the token
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
 		if (!$this->_sendConfirmationMail($email, $token))
-		{ // Send the token to the user via e-mail
+		{
+			// Send the token to the user via e-mail
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
 		$jsonarray['code'] = 200;
+
 		return $jsonarray;
 	}
 
 	/**
-	 * @uses function to validate token against username
+	 * Function To Validate Token Against Username
 	 *
+	 * @return  it will return the false value otherwise Jasson Array
 	 */
 	function validateToken()
 	{
@@ -1420,6 +1578,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		{
 			IJReq::setResponseCode(400);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_INVALID_TOKEN'));
+
 			return false;
 		}
 
@@ -1428,10 +1587,13 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				WHERE block = 0
 				AND username = ' . $this->db->Quote($username);
 		$this->db->setQuery($query);
+
 		if (!($row = $this->db->loadObject()))
-		{ // Verify the token
+		{
+			// Verify the token
 			IJReq::setResponseCode(400);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_INVALID_TOKEN'));
+
 			return false;
 		}
 
@@ -1441,14 +1603,18 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		if (!isset($parts[1]))
 		{
 			IJReq::setResponseCode(401);
+
 			return false;
 		}
+
 		$salt = $parts[1];
 		$testcrypt = JUserHelper::getCryptedPassword($token, $salt);
+
 		// Verify the token
 		if (!($crypt == $testcrypt))
 		{
 			IJReq::setResponseCode(401);
+
 			return false;
 		}
 
@@ -1456,12 +1622,18 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$jsonarray['code'] = 200;
 		$jsonarray['userid'] = $row->id;
 		$jsonarray['crypt'] = $crypt . ':' . $salt;
+
 		return $jsonarray;
 	}
 
 	/**
-	 * @uses function is used to reset password
+	 * @uses
 	 *
+	 */
+	/**
+	 * Function Is Used To Reset Password
+	 *
+	 * @return  it will return a value in false or JssonArray
 	 */
 	function resetPassword()
 	{
@@ -1473,6 +1645,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		if (!$token || !$userid || !$password1)
 		{
 			IJReq::setResponseCode(400);
+
 			return false;
 		}
 
@@ -1483,10 +1656,12 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$crypt = JUserHelper::getCryptedPassword($password1, $salt);
 		$password = $crypt . ':' . $salt;
 
-		$user = new JUser($userid); // Get the user object
+		// Get the user object
+		$user = new JUser($userid);
 
-		JPluginHelper::importPlugin('user'); // Fire the onBeforeStoreUser trigger
-		$dispatcher =  JDispatcher::getInstance();
+		// Fire the onBeforeStoreUser trigger
+		JPluginHelper::importPlugin('user');
+		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeStoreUser', array($user->getProperties(), false));
 
 		$query = "UPDATE #__users
@@ -1495,9 +1670,12 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 				AND activation={$this->db->Quote($token)}
 				AND block = 0";
 		$this->db->setQuery($query);
-		if (!$result = $this->db->query())
-		{ // Save the password
+
+		if ( !$result = $this->db->query())
+		{
+			// Save the password
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
@@ -1508,28 +1686,34 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 		if (IJ_JOOMLA_VERSION === 1.5)
 		{
-			$dispatcher->trigger('onAfterStoreUser', array($user->getProperties(), false, $result, '')); // Fire the onAfterStoreUser trigger
+			// Fire the onAfterStoreUser trigger
+			$dispatcher->trigger('onAfterStoreUser', array($user->getProperties(), false, $result, ''));
 		}
 		else
 		{
 			$app = JFactory::getApplication();
-			if (!$user->save(true))
+
+			if ( !$user->save(true))
 			{
 				IJReq::setResponseCode(500);
+
 				return false;
 			}
+
 			// Flush the user data from the session.
 			$app->setUserState('com_users.reset.token', null);
 			$app->setUserState('com_users.reset.user', null);
 		}
 
 		$jsonarray['code'] = 200;
+
 		return $jsonarray;
 	}
 
 	/**
-	 * @uses function use to retrive userid
+	 * Function Use to Retrive Userid
 	 *
+	 * @return  it will return a false value or Jsson Array
 	 */
 	function retriveUsername()
 	{
@@ -1543,6 +1727,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		{
 			IJReq::setResponseCode(400);
 			IJReq::setResponseMessage(JText::_('COM_IJOOMERADV_INVALID_TOKEN'));
+
 			return false;
 		}
 
@@ -1555,7 +1740,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$user = $this->db->loadObject();
 
 		// Set the e-mail parameters
-		$lang =  JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_users');
 		$config = JFactory::getConfig();
 
@@ -1564,7 +1749,8 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		$itemid = UsersHelperRoute::getLoginRoute();
 		$itemid = $itemid !== null ? '&Itemid=' . $itemid : '';
 		$link = 'index.php?option=com_users&view=login' . $itemid;
-		$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
+
+		$mode = $config->get('force_ssl', 0) == 2 ? 1 : - 1;
 
 		$data = JArrayHelper::fromObject($user);
 		$fromname = $config->get('fromname');
@@ -1577,16 +1763,27 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 		// Send the token to the user via e-mail
 		$return = JFactory::getMailer()->sendMail($mailfrom, $fromname, $email, $subject, $body);
-		if (!$return)
+
+		if ( !$return)
 		{
 			IJReq::setResponseCode(500);
+
 			return false;
 		}
 
 		$jsonarray['code'] = 200;
+
 		return $jsonarray;
 	}
 
+	/**
+	 * The Send Confirmation Mail Function
+	 *
+	 * @param   [type]  $email  Contains The Email
+	 * @param   [type]  $token  Contains The Token
+	 *
+	 * @return  boolean Returns The Value in True or False
+	 */
 	function _sendConfirmationMail($email, $token)
 	{
 		$config = JFactory::getConfig();
@@ -1597,7 +1794,7 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 			$sitename = $config->getValue('sitename');
 
 			// Set the e-mail parameters
-			$lang =  JFactory::getLanguage();
+			$lang = JFactory::getLanguage();
 			$lang->load('com_user');
 
 			$from = $config->getValue('mailfrom');
@@ -1614,12 +1811,11 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 		else
 		{
 			// Set the e-mail parameters
-			$lang =  JFactory::getLanguage();
+			$lang = JFactory::getLanguage();
 			$lang->load('com_users');
 			include_once JPATH_ROOT . '/components/com_users/helpers/route.php';
 
-
-			$mode = $config->get('force_ssl', 0) == 2 ? 1 : -1;
+			$mode = $config->get('force_ssl', 0) == 2 ? 1 : - 1;
 			$itemid = UsersHelperRoute::getLoginRoute();
 			$itemid = $itemid !== null ? '&Itemid=' . $itemid : '';
 			$link = 'index.php?option=com_users&view=reset&layout=confirm' . $itemid;
@@ -1634,11 +1830,13 @@ class ijoomeradvModelijoomeradv extends JModelLegacy
 
 			// Send the password reset request email.
 			$return = JFactory::getMailer()->sendMail($mailfrom, $fromname, $email, $subject, $body);
-			if (!$return)
+
+			if ( !$return)
 			{
 				return false;
 			}
 		}
+
 		return true;
 	}
 }
