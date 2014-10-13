@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  com_ijoomeradv.controller
  * @since       1.0
  */
-class default_menu
+class Default_Menu
 {
 	/**
 	 * The Function GetReuiredInput

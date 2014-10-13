@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.0
  */
-class icms_helper
+class Icms_Helper
 {
 	private $db_helper;
 

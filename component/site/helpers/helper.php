@@ -747,7 +747,7 @@ class SimpleImage
  *
  * @since  1.0
  */
-class img_opt
+class Img_Opt
 {
 	private $max_width;
 

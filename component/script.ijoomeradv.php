@@ -32,31 +32,8 @@ defined('_JEXEC') or die;
  * @subpackage  com_ijoomeradv
  * @since       1.0
  */
-class com_ijoomeradvInstallerScript
+class Com_IjoomeradvInstallerScript
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   JAdapterInstance  $adapter  contains the value of adapter
-	 *
-	 * @return  void
-	 */
-	public function __constructor(JAdapterInstance $adapter)
-	{
-	}
-
-	/**
-	 * Called after any type of action
-	 *
-	 * @param   [type]            $route    Which action is happening (install|uninstall|discover_install)
-	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
-	 *
-	 * @return  void
-	 */
-	public function postflight($route, JAdapterInstance $adapter)
-	{
-	}
-
 	/**
 	 * Called on installation
 	 *
