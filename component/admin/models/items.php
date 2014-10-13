@@ -65,8 +65,8 @@ class IjoomeradvModelItems extends JModelList
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * @param   [type]  $ordering   [description]
-	 * @param   [type]  $direction  [description]
+	 * @param   [type]  $ordering   contains the value of ordering
+	 * @param   [type]  $direction  contains the value of direction
 	 *
 	 * @return  void
 	 */
@@ -129,7 +129,7 @@ class IjoomeradvModelItems extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param   string  $id  [description]
+	 * @param   string  $id  contains the value of id
 	 *
 	 * @return  string        A store id.
 	 */

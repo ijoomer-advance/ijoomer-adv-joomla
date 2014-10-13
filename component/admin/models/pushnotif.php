@@ -337,7 +337,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	/**
 	 * iphone push notification
 	 *
-	 * @param   [type]  $options  [description]
+	 * @param   [type]  $options  contains the value of options
 	 *
 	 * @return  it will return a value
 	 */
@@ -373,7 +373,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	/**
 	 * android push notification
 	 *
-	 * @param   [type]  $options  [description]
+	 * @param   [type]  $options  contains the value of options
 	 *
 	 * @return  void
 	 */
@@ -405,7 +405,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 		// Execute post
 		$result = curl_exec($ch);
 
-		if ($result === FALSE)
+		if ( $result === false)
 		{
 			die('Curl failed: ' . curl_error($ch));
 		}

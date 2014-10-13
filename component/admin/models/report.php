@@ -73,8 +73,8 @@ class IjoomeradvModelReport extends JModelList
 	/**
 	 * The Function For PopulateState
 	 *
-	 * @param   [type]  $ordering   [description]
-	 * @param   [type]  $direction  [description]
+	 * @param   [type]  $ordering   contains the value of ordering
+	 * @param   [type]  $direction  contains the value of directions
 	 *
 	 * @return  void
 	 */

@@ -21,7 +21,10 @@ $published = $this->state->get('filter.published');
 	<?php echo JHtml::_('batch.access'); ?>
 	<?php echo JHtml::_('batch.language'); ?>
 
-	<?php if ($published >= 0) : ?>
+	<?php
+		if ( $published >= 0)
+		{
+	?>
 		<label id="batch-choose-action-lbl" for="batch-choose-action">
 			<?php echo JText::_('COM_IJOOMERADV_BATCH_MENU_LABEL'); ?>
 		</label>
@@ -32,7 +35,9 @@ $published = $this->state->get('filter.published');
 			</select>
 			<?php echo JHtml::_('select.radiolist', $options, 'batch[move_copy]', '', 'value', 'text', 'm'); ?>
 		</fieldset>
-	<?php endif; ?>
+	<?php
+		}
+	?>
 
 	<button type="submit" onclick="Joomla.submitbutton('item.batch');">
 		<?php echo JText::_('JGLOBAL_BATCH_PROCESS'); ?>

@@ -135,7 +135,7 @@ class IJReq
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getTask($default = NULL)
+	public static function getTask($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -163,11 +163,11 @@ class IJReq
 	/**
 	 * To Get Requested Extension Name
 	 *
-	 * @param   [type]  $default  [description]
+	 * @param   [type]  $default  contains the value of default extension
 	 *
-	 * @return  [type]            [description]
+	 * @return  it will returns the value of mainframe
 	 */
-	public static function getExtName($default = NULL)
+	public static function getExtName($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -181,7 +181,7 @@ class IJReq
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getExtView($default = NULL)
+	public static function getExtView($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -199,7 +199,7 @@ class IJReq
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getExtTask($default = NULL)
+	public static function getExtTask($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -214,7 +214,7 @@ class IJReq
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getVar($name, $default = NULL)
+	public static function getVar($name, $default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -230,7 +230,7 @@ class IJReq
 	 *
 	 * @return  it will return $data
 	 */
-	public static function getTaskData($name, $default = NULL, $dataType = 'str')
+	public static function getTaskData($name, $default = null, $dataType = 'str')
 	{
 		$mainframe = JFactory::getApplication();
 		$data = (isset($mainframe->IJObject->reqObject->taskData->$name) && $mainframe->IJObject->reqObject->taskData->$name) ? $mainframe->IJObject->reqObject->taskData->$name : $default;
@@ -246,9 +246,9 @@ class IJReq
 				break;
 
 			case 'bool':
-				if ($default === TRUE or $default === FALSE or strtolower($default) === 'true' or strtolower($default) === 'false')
+				if ($default === true or $default === false or strtolower($default) === 'true' or strtolower($default) === 'false')
 				{
-					return (isset($data) && !empty($data) && strtoupper($data) === "TRUE") ? TRUE : FALSE;
+					return (isset($data) && !empty($data) && strtoupper($data) === "true") ? true : false;
 				}
 				else
 				{
@@ -270,7 +270,7 @@ class IJReq
 	 *
 	 * @return  void
 	 */
-	public static function setResponse($code = NULL, $message = NULL)
+	public static function setResponse($code = null, $message = null)
 	{
 		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->code = intval($code);
@@ -288,7 +288,7 @@ class IJReq
 	 *
 	 * @return void
 	 */
-	public static function setResponseCode($default = NULL)
+	public static function setResponseCode($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->code = intval($default);
@@ -297,11 +297,11 @@ class IJReq
 	/**
 	 * To Get Response Code
 	 *
-	 * @param   [type]  $default  [description]
+	 * @param   [type]  $default  contains the value of default
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getResponseCode($default = NULL)
+	public static function getResponseCode($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -319,7 +319,7 @@ class IJReq
 	 *
 	 * @return void
 	 */
-	public static function setResponseMessage($default = NULL)
+	public static function setResponseMessage($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 		$mainframe->IJObject->response->message = $default;
@@ -328,11 +328,11 @@ class IJReq
 	/**
 	 * To Get Response Message
 	 *
-	 * @param   [type]  $default  [description]
+	 * @param   [type]  $default  contains the value of default
 	 *
 	 * @return  it will return a value
 	 */
-	public static function getResponseMessage($default = NULL)
+	public static function getResponseMessage($default = null)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -396,7 +396,7 @@ class IJPushNotif
 	 *
 	 * @param   [type]  $options  Contains The Options
 	 *
-	 * @return  [type]            [description]
+	 * @return  void
 	 */
 	public static function sendAndroidPushNotification($options)
 	{
@@ -426,7 +426,7 @@ class IJPushNotif
 		// Execute post
 		$result = curl_exec($ch);
 
-		if ($result === FALSE)
+		if ($result === false)
 		{
 			die('Curl failed: ' . curl_error($ch));
 		}
@@ -474,11 +474,11 @@ class IJException
 		$mainframe = JFactory::getApplication();
 
 		$error = new stdClass;
-		$error->class = ($mainframe->IJObject->response->errClass) ? $mainframe->IJObject->response->errClass : NULL;
-		$error->file = ($mainframe->IJObject->response->errFile) ? $mainframe->IJObject->response->errFile : NULL;
-		$error->function = ($mainframe->IJObject->response->errFunction) ? $mainframe->IJObject->response->errFunction : NULL;
-		$error->method = ($mainframe->IJObject->response->errMethod) ? $mainframe->IJObject->response->errMethod : NULL;
-		$error->line = ($mainframe->IJObject->response->errLine) ? $mainframe->IJObject->response->errLine : NULL;
+		$error->class = ($mainframe->IJObject->response->errClass) ? $mainframe->IJObject->response->errClass : null;
+		$error->file = ($mainframe->IJObject->response->errFile) ? $mainframe->IJObject->response->errFile : null;
+		$error->function = ($mainframe->IJObject->response->errFunction) ? $mainframe->IJObject->response->errFunction : null;
+		$error->method = ($mainframe->IJObject->response->errMethod) ? $mainframe->IJObject->response->errMethod : null;
+		$error->line = ($mainframe->IJObject->response->errLine) ? $mainframe->IJObject->response->errLine : null;
 
 		return $error;
 	}
@@ -596,11 +596,11 @@ class SimpleImage
 		{
 			$this->image = imagecreatefromjpeg($filename);
 		}
-		else if ($this->image_type == IMAGETYPE_GIF)
+		elseif ($this->image_type == IMAGETYPE_GIF)
 		{
 			$this->image = imagecreatefromgif($filename);
 		}
-		else if ($this->image_type == IMAGETYPE_PNG)
+		elseif ($this->image_type == IMAGETYPE_PNG)
 		{
 			$this->image = imagecreatefrompng($filename);
 		}
@@ -622,11 +622,11 @@ class SimpleImage
 		{
 			imagejpeg($this->image, $filename, $compression);
 		}
-		else if ($image_type == IMAGETYPE_GIF)
+		elseif ($image_type == IMAGETYPE_GIF)
 		{
 			imagegif($this->image, $filename);
 		}
-		else if ($image_type == IMAGETYPE_PNG)
+		elseif ($image_type == IMAGETYPE_PNG)
 		{
 			imagepng($this->image, $filename);
 		}
@@ -650,11 +650,11 @@ class SimpleImage
 		{
 			imagejpeg($this->image);
 		}
-		else if ($image_type == IMAGETYPE_GIF)
+		elseif ($image_type == IMAGETYPE_GIF)
 		{
 			imagegif($this->image);
 		}
-		else if ($image_type == IMAGETYPE_PNG)
+		elseif ($image_type == IMAGETYPE_PNG)
 		{
 			imagepng($this->image);
 		}
@@ -725,8 +725,8 @@ class SimpleImage
 	/**
 	 * The Resize Function
 	 *
-	 * @param   [type]  $width   [description]
-	 * @param   [type]  $height  [description]
+	 * @param   [type]  $width   contains the value of width
+	 * @param   [type]  $height  contains the value of height
 	 *
 	 * @return  void
 	 */
@@ -868,7 +868,7 @@ class img_opt
 		{
 			$case = 'first';
 		}
-		else if ($this->width > $this->height)
+		elseif ($this->width > $this->height)
 		{
 			$case = 'second';
 		}
@@ -881,7 +881,7 @@ class img_opt
 		{
 			$cond = 'first';
 		}
-		else if ($this->width > $this->max_width && $this->height <= $this->max_height)
+		elseif ($this->width > $this->max_width && $this->height <= $this->max_height)
 		{
 			$cond = 'first';
 		}

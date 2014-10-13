@@ -36,7 +36,7 @@ class MCrypt
 	/**
 	 * The hex2bin Function
 	 *
-	 * @param   [type]  $hexdata  [description]
+	 * @param   [type]  $hexdata  contains the value of hexdata
 	 *
 	 * @return  it will return $bindata
 	 */
@@ -55,7 +55,7 @@ class MCrypt
 	/**
 	 * The Encrtyption Function
 	 *
-	 * @param   [type]  $input  [description]
+	 * @param   [type]  $input  contains the value of input
 	 *
 	 * @return  it will return $data
 	 */
@@ -111,8 +111,8 @@ class MCrypt
 	/**
 	 * The Pkcs5_pad Function
 	 *
-	 * @param   [type]  $text       [description]
-	 * @param   [type]  $blocksize  [description]
+	 * @param   [type]  $text       contains the value of text
+	 * @param   [type]  $blocksize  contains the value of block Size
 	 *
 	 * @return  returns the $text value
 	 */
@@ -126,7 +126,7 @@ class MCrypt
 	/**
 	 * The Function Pkcs5_unpad
 	 *
-	 * @param   [type]  $text  [description]
+	 * @param   [type]  $text  contains the value of text
 	 *
 	 * @return  returns the substr
 	 */
@@ -134,9 +134,13 @@ class MCrypt
 	{
 		$pad = ord($text{strlen($text) - 1});
 
-		if ( $pad > strlen($text)) return false;
+		if ( $pad > strlen($text))
+		{
+			return false;
+		}
 
-		if ( strspn($text, chr($pad), strlen($text) - $pad) != $pad) return false;
+		if ( strspn($text, chr($pad), strlen($text) - $pad) != $pad)
+			return false;
 
 		return substr($text, 0, -1 * $pad);
 	}

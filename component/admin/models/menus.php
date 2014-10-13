@@ -44,7 +44,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
 	 *
-	 * @since   1.6.1
+	 * @since   1.0
 	 */
 	public function getItems()
 	{
@@ -125,7 +125,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  string  An SQL query
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	protected function getListQuery()
 	{
@@ -155,7 +155,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -171,7 +171,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  integer
 	 *
-	 * @since   2.5
+	 * @since   1.0
 	 */
 	public function getModMenuId()
 	{

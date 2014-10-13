@@ -22,7 +22,7 @@ class IjoomeradvViewconfig extends JViewLegacy
 	/**
 	 * The Function Display
 	 *
-	 * @param   [type]  $tpl  $tpl
+	 * @param   [type]  $tpl  contains the value of tpl
 	 *
 	 * @return  void
 	 */

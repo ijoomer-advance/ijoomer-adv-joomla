@@ -33,9 +33,15 @@ JHTML::_('behavior.tooltip');
 		});
 
 		var months = [
-			<?php for($i=0;$i<count($this->users);$i++) { ?>
+			<?php
+
+			for ($i = 0; $i < count($this->users); $i++)
+			{
+			?>
 			'<?php echo $this->users[$i]; ?>',
-			<?php } ?>
+			<?php
+			}
+		?>
 		];
 
 		$("#send_to_username").autocomplete(months, {
@@ -140,6 +146,7 @@ JHTML::_('behavior.tooltip');
 						<tbody>
 						<?php
 						$k = 0;
+
 						if (!empty($this->pushNotifications))
 						{
 							foreach ($this->pushNotifications as $key => $value)
@@ -155,6 +162,7 @@ JHTML::_('behavior.tooltip');
 								</tr>
 							<?php
 							}
+
 							$k = 1 - $k;
 						}
 						else

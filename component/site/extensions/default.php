@@ -376,7 +376,7 @@ class default_menu
 	/**
 	 * GetOptions
 	 *
-	 * @param   [type]  $selectedValue  [description]
+	 * @param   [type]  $selectedValue  contains the value of selected value
 	 *
 	 * @return  it will returns the $options
 	 */

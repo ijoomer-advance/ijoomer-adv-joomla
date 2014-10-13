@@ -21,7 +21,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Function Construct
 	 *
-	 * @param   array  $config  [description]
+	 * @param   array  $config  contains the value of $config
 	 */
 	public function __construct($config = array())
 	{
@@ -33,8 +33,8 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * The Display Function
 	 *
-	 * @param   boolean  $cachable   [description]
-	 * @param   boolean  $urlparams  [description]
+	 * @param   boolean  $cachable   contains the value of $cachable
+	 * @param   boolean  $urlparams  contains the value of urlparams
 	 *
 	 * @return  boolean  return value
 	 */
@@ -66,7 +66,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Edit Function
 	 *
-	 * @return  [boolean]  returns the value in true or false
+	 * @return  boolean  returns the value in true or false
 	 */
 	function edit()
 	{
@@ -78,11 +78,11 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Get Model Function
 	 *
-	 * @param   string  $name    [description]
-	 * @param   string  $prefix  [description]
-	 * @param   array   $config  [description]
+	 * @param   string  $name    contains the value of Model Name
+	 * @param   string  $prefix  contains the value of Model Prefix
+	 * @param   array   $config  contains the value of Model Config
 	 *
-	 * @return  boolean
+	 * @return  it will return a value
 	 */
 	function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
 	{
@@ -92,7 +92,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Rebuild the nested set tree.
 	 *
-	 * @return  [boolean]  False on failure or error, true on success.
+	 * @return  boolean  False on failure or error, true on success.
 	 */
 	public function rebuild()
 	{
@@ -122,7 +122,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Save order Function For Saving The order
 	 *
-	 * @return  [type]  [description]
+	 * @return  boolean  it will return the true value
 	 */
 	public function saveorder()
 	{
@@ -151,9 +151,9 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Method to set the home property for a list of items
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 *
-	 * @return [type] [description]
+	 * @return  void
 	 */
 	function setDefault()
 	{

@@ -80,7 +80,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 			{
 				$item->menutype = JText::_('IJHOME');
 			}
-			else if ($item->position == 2)
+			elseif ($item->position == 2)
 			{
 				$item->menutype = JText::_('IJSLIDE');
 			}
@@ -118,7 +118,9 @@ $modMenuId = (int) $this->get('ModMenuId');
 					<?php echo $item->id; ?>
 				</td>
 			</tr>
-		<?php endforeach; ?>
+		<?php
+endforeach;
+		?>
 		</tbody>
 	</table>
 

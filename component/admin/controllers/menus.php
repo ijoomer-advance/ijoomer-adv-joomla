@@ -42,7 +42,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	/**
 	 * Edit Function
 	 *
-	 * @return  [boolean]  returns the value in true or false
+	 * @return  boolean  returns the value in true or false
 	 */
 	function edit()
 	{
@@ -53,11 +53,11 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	/**
 	 * Get Model Function
 	 *
-	 * @param   string  $name    [description]
-	 * @param   string  $prefix  [description]
-	 * @param   array   $config  [description]
+	 * @param   string  $name    contains Name
+	 * @param   string  $prefix  contains prefix
+	 * @param   array   $config  contains config
 	 *
-	 * @return  boolean
+	 * @return  the value of model
 	 */
 	public function getModel($name = 'Menu', $prefix = 'IjoomeradvModel', $config = array('ignore_request' => true))
 	{

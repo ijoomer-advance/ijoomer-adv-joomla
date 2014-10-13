@@ -67,7 +67,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return   array    Array of viewnames.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	public function getViewNames()
 	{
@@ -91,7 +91,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	/**
 	 * Get Type Options FromXML
 	 *
-	 * @param   [type]  $file  [description]
+	 * @param   [type]  $file  contains the value of file
 	 *
 	 * @return  array  $options
 	 */
@@ -230,7 +230,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 							{
 								$menuArray[$i]["menuitem"][$k]["icon"] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/custom/' . $device . '/' . $device_type . '/' . $value1->itemimage . '_icon.png';
 							}
-							else if ($value->position == 3 && $value1->itemimage)
+							elseif ($value->position == 3 && $value1->itemimage)
 							{
 								$menuArray[$i]["menuitem"][$k]["tab"] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/custom/' . $device . '/' . $device_type . '/' . $value1->itemimage . '_tab.png';
 								$menuArray[$i]["menuitem"][$k]["tab_active"] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/custom/' . $device . '/' . $device_type . '/' . $value1->itemimage . '_tab_active.png';
@@ -338,7 +338,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	/**
 	 * Check Ioomer Extension And Related Joomla Component If Installed And Enabled
 	 *
-	 * @param   [type]  $extName  [description]
+	 * @param   [type]  $extName  contains the value of Extension Name
 	 *
 	 * @return  boolean it will return the value in true or false
 	 */
@@ -525,7 +525,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				return false;
 			}
 		}
-		else if ($reg_opt === 1)
+		elseif ($reg_opt === 1)
 		{
 			// Registration option 1 if already user
 			$credentials = array();

@@ -148,7 +148,7 @@ class IjoomeradvHelper
 	 * @param   integer  $parentId   An optional parent ID to pivot results around.
 	 * @param   integer  $mode       An optional mode. If parent ID is set and mode=2, the parent and children are excluded from the list.
 	 * @param   array    $published  An optional array of states
-	 * @param   array    $languages  [description]
+	 * @param   array    $languages  contains the value of language
 	 *
 	 * @return  boolean returns the falue in true or false.
 	 */
@@ -189,8 +189,12 @@ class IjoomeradvHelper
 
 		if (!empty($published))
 		{
-			if ( is_array($published)) $published = '(' . implode(',', $published) . ')';
-			$query->where('a.published IN ' . $published);
+			if ( is_array($published))
+			{
+				$published = '(' . implode(',', $published) . ')';
+
+				$query->where('a.published IN ' . $published);
+			}
 		}
 
 		$query->where('a.published != -2');
@@ -268,9 +272,9 @@ class IjoomeradvHelper
 	/**
 	 * The Function For Getting The Associations
 	 *
-	 * @param   [type]  $pk  [description]
+	 * @param   [type]  $pk  contains the value of Pk
 	 *
-	 * @return  [type]       [description]
+	 * @return  array $associations
 	 */
 	static public function getAssociations($pk)
 	{

@@ -22,7 +22,7 @@ class JInstallerExtensions extends JObject
 	/**
 	 * The Construct Function
 	 *
-	 * @param   [type]  &$parent  [description]
+	 * @param   [type]  &$parent  contains the value of $parent
 	 */
 	function __construct(&$parent)
 	{
@@ -430,7 +430,7 @@ class JInstallerExtensions extends JObject
 	/**
 	 * The function RecurseDir
 	 *
-	 * @param   [type]  $dir  [description]
+	 * @param   [type]  $dir  contains the value of dir
 	 *
 	 * @return  void
 	 */
@@ -451,10 +451,10 @@ class JInstallerExtensions extends JObject
 	/**
 	 * The Uninstall Function
 	 *
-	 * @param   [type]  $id        [description]
-	 * @param   [type]  $clientId  [description]
+	 * @param   [type]  $id        contains the value of Id
+	 * @param   [type]  $clientId  contains the value of Client_Id
 	 *
-	 * @return  [type]             [description]
+	 * @return  it will returns the value in false or $retval
 	 */
 	function uninstall($id, $clientId)
 	{
@@ -519,7 +519,7 @@ class JInstallerExtensions extends JObject
 	/**
 	 * The Function For Rollbackplugin
 	 *
-	 * @param   [type]  $arg  [description]
+	 * @param   [type]  $arg  contains the value of $arg
 	 *
 	 * @return  boolean returns the values in true or false
 	 */

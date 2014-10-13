@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.controller
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvControllerMenutypes extends JControllerLegacy
 {

@@ -29,7 +29,7 @@ class IjoomeradvViewMenus extends JViewLegacy
 	/**
 	 * The Display Function
 	 *
-	 * @param   [type]  $tpl  [description]
+	 * @param   [type]  $tpl  contains the value of tpl
 	 *
 	 * @return  void
 	 */
@@ -55,7 +55,7 @@ class IjoomeradvViewMenus extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 *
 	 * @return void
 	 */

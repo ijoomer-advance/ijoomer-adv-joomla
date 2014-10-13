@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  *
  * @package     IJoomer.Backdend
  * @subpackage  com_ijoomeradv.controller
- * @since       1.6
+ * @since       1.0
  */
 class IjoomeradvControllerMenu extends JControllerForm
 {
@@ -35,8 +35,8 @@ class IjoomeradvControllerMenu extends JControllerForm
 	/**
 	 * Method to save a menu item.
 	 *
-	 * @param   [type]  $key     [description]
-	 * @param   [type]  $urlVar  [description]
+	 * @param   [type]  $key     contains the value of key
+	 * @param   [type]  $urlVar  contains the value of urlvariable
 	 *
 	 * @return  void
 	 */
@@ -194,7 +194,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 	/**
 	 * The Cancle Function
 	 *
-	 * @param   [type]  $key  [description]
+	 * @param   [type]  $key  contains the value of key
 	 *
 	 * @return  boolean returns false value.
 	 */

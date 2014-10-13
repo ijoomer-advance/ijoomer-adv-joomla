@@ -20,7 +20,8 @@ jimport('joomla.html.pane');
 				<td valign="top">
 					<table cellpadding="15" cellspacing="10" width="100%">
 						<?php for ($i = 0, $n = count($this->extensions); $i < $n; $i += 7)
-						{ ?>
+						{
+						?>
 							<tr>
 								<?php for ($j = 0; $j < 7; $j++)
 								{
@@ -28,8 +29,9 @@ jimport('joomla.html.pane');
 									{
 										$row = $this->extensions [$i + $j];
 
-										//get version
+										// Get version
 										$mainXML = JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $row->classname . '.xml';
+
 										if (is_file($mainXML))
 										{
 											if ($xml = simplexml_load_file($mainXML))
@@ -39,8 +41,9 @@ jimport('joomla.html.pane');
 											}
 										}
 
-										//get images
+										// Get images
 										$link = JRoute::_('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $row->id);
+
 										if (file_exists("components/com_ijoomeradv/assets/images/" . $row->classname . ".png"))
 										{
 											$plg_img = "components/com_ijoomeradv/assets/images/" . $row->classname . ".png";
@@ -56,13 +59,16 @@ jimport('joomla.html.pane');
 												<img src="<?php echo $plg_img ?>" alt="<?php echo $row->name; ?>"/>
 											</a><br/>
 											<?php if (basename($plg_img) == "default.png")
-											{ ?>
+											{
+											?>
 												<span style="font-size: 10px;"
-												      title="<?php echo JText::_('COM_IJOOMERADV_EXTENSION_EDIT'); ?>::<?php echo $row->name; ?>">
-											<a href="<?php echo $link; ?>"><?php echo $row->name; ?></a>
+												      title="<?php echo JText::_('COM_IJOOMERADV_EXTENSION_EDIT'); ?>::
+												      <?php echo $row->name; ?>">
+											<a href="<?php echo $link; ?>">
+											<?php echo $row->name; ?></a>
 										</span>
 											<?php
-											}
+}
 											?>
 											<span
 												style="color:#333; font-size:9px; width:60px; margin-left:-3px; padding:3px;display:block; background-color:#DDD">ver - <?php echo $version; ?></span>
@@ -71,10 +77,12 @@ jimport('joomla.html.pane');
 									}
 									else
 										echo "<td>&nbsp;</td>";
-								}
+}
 								?>
 							</tr>
-						<?php } ?>
+						<?php
+}
+						?>
 					</table>
 				</td>
 

@@ -45,7 +45,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 	 *
 	 * @return    array    Array of groups with menu item types.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	public function getTypeOptions()
 	{
@@ -204,9 +204,9 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 /**
  * The Function For The Getting The TypeOptionsFromXML
  *
- * @param   [type]  $file       [description]
- * @param   [type]  $component  [description]
- * @param   [type]  $defaults   [description]
+ * @param   [type]  $file       contains the value of file
+ * @param   [type]  $component  contains the value of component
+ * @param   [type]  $defaults   contains the value of defaults
  *
  * @return  it will return some options
  */
@@ -257,7 +257,7 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 	/**
 	 * The Function For The Getting The TypeOptionFromMVC
 	 *
-	 * @param   [type]  $component  [description]
+	 * @param   [type]  $component  contains the value of component
 	 *
 	 * @return  it will return some value in true or false
 	 */
@@ -360,8 +360,8 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 	/**
 	 * The Function For The Getting The TypeOptionsFromLayouts
 	 *
-	 * @param   [type]  $component  [description]
-	 * @param   [type]  $view       [description]
+	 * @param   [type]  $component  contains the value of component
+	 * @param   [type]  $view       contains the value of view
 	 *
 	 * @return  it will return some options
 	 */

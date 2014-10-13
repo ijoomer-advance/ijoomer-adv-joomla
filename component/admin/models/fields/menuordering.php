@@ -24,7 +24,7 @@ class JFormFieldMenuOrdering extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var        string
-	 * @since    1.7
+	 * @since    1.0
 	 */
 	protected $type = 'MenuOrdering';
 

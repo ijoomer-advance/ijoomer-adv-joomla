@@ -27,7 +27,7 @@ class IjoomeradvTableMenu extends JTable
 	 * @return  boolean  True on success.
 	 *
 	 * @see     http://docs.joomla.org/JTableNested/delete
-	 * @since   2.5
+	 * @since   1.0
 	 */
 
 	var $id = null;

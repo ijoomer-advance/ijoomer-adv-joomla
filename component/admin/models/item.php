@@ -26,25 +26,25 @@ class IjoomeradvModelItem extends JModelAdmin
 {
 	/**
 	 * @var        string    The prefix to use with controller messages.
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $text_prefix = 'COM_IJOOMERADV_ITEM';
 
 	/**
 	 * @var        string    The help screen key for the menu item.
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $helpKey = 'JHELP_MENUS_MENU_ITEM_MANAGER_EDIT';
 
 	/**
 	 * @var        string    The help screen base URL for the menu item.
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $helpURL;
 
 	/**
 	 * @var        boolean    True to use local lookup for the help screen.
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $helpLocal = false;
 
@@ -186,7 +186,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	protected function batchCopy($value, $pks, $contexts)
 	{
@@ -761,7 +761,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return    mixed    An array of module records (id, title, position), or false on error.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	public function getModules()
 	{
@@ -802,7 +802,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * A protected method to get the where clause for the reorder
 	 * This ensures that the row will be moved relative to a row with the same menutype
 	 *
-	 * @param   [type]  $table  [description]
+	 * @param   [type]  $table  contains the value of table
 	 *
 	 * @return  array    An array of conditions to add to add to ordering queries.
 	 */
@@ -833,7 +833,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return    void
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected function populateState()
 	{
@@ -884,7 +884,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @param   JForm   $form   A form object.
 	 * @param   [type]  $data   The data expected for the form.
-	 * @param   string  $group  [description]
+	 * @param   string  $group  contains the value of group
 	 *
 	 * @return   void
 	 *
@@ -1077,7 +1077,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return    boolean    False on failure or error, true otherwise.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	public function rebuild()
 	{
@@ -1379,8 +1379,8 @@ class IjoomeradvModelItem extends JModelAdmin
 	 * First we save the new order values in the lft values of the changed ids.
 	 * Then we invoke the table rebuild to implement the new ordering.
 	 *
-	 * @param   [type]  $idArray    [description]
-	 * @param   [type]  $lft_array  [description]
+	 * @param   [type]  $idArray    contains the value of id_Array
+	 * @param   [type]  $lft_array  contains the value of lft_array
 	 *
 	 * @return  boolean false on failuer or error, true otherwise
 	 */
@@ -1544,8 +1544,8 @@ class IjoomeradvModelItem extends JModelAdmin
 	/**
 	 * Custom clean cache method
 	 *
-	 * @param   [type]   $group      [description]
-	 * @param   integer  $client_id  [description]
+	 * @param   [type]   $group      contains the value of group
+	 * @param   integer  $client_id  contains the value of client_id
 	 *
 	 * @return  void
 	 */

@@ -20,7 +20,7 @@ class IjoomeradvModelMenu extends JModelForm
 {
 	/**
 	 * @var        string    The prefix to use with controller messages.
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $text_prefix = 'COM_IJOOMERADV_MENU';
 
@@ -78,7 +78,7 @@ class IjoomeradvModelMenu extends JModelForm
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 *
 	 * @return void
 	 */
@@ -192,7 +192,7 @@ class IjoomeradvModelMenu extends JModelForm
 	 *
 	 * @return    mixed    The data for the form.
 	 *
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected function loadFormData()
 	{
@@ -210,7 +210,7 @@ class IjoomeradvModelMenu extends JModelForm
 	/**
 	 * Method to save the form data.
 	 *
-	 * @param   [type]  $data  [description]
+	 * @param   [type]  $data  contains the value of data
 	 *
 	 * @return  boolean    True on success.
 	 */
@@ -330,8 +330,8 @@ class IjoomeradvModelMenu extends JModelForm
 	/**
 	 * Custom clean cache method
 	 *
-	 * @param   [type]   $group      [description]
-	 * @param   integer  $client_id  [description]
+	 * @param   [type]   $group      contains group value
+	 * @param   integer  $client_id  contains id of client
 	 *
 	 * @return  void
 	 */

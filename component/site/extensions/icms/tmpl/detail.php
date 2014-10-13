@@ -18,6 +18,7 @@ JHTML::_('behavior.tooltip');
 			<td width="50%" valign="top">
 				<?php
 				$i = 0;
+
 				foreach ($this->groups as $group)
 				{
 					if ($i == 3)
@@ -43,7 +44,9 @@ JHTML::_('behavior.tooltip');
 										<?php echo $value->html; ?>
 									</td>
 								</tr>
-							<?php } ?>
+							<?php
+							}
+							?>
 						</table>
 					</fieldset>
 					<?php
@@ -51,6 +54,7 @@ JHTML::_('behavior.tooltip');
 					{
 						echo '<td>';
 					}
+
 					$i++;
 				}?>
 			</td>

@@ -23,7 +23,7 @@ class JTableIjmenuType extends JTable
 	 *
 	 * @param   JDatabase  &$db  A database connector object.
 	 *
-	 * @since  11.1
+	 * @since  1.0
 	 */
 	public function __construct(&$db)
 	{
@@ -36,7 +36,7 @@ class JTableIjmenuType extends JTable
 	 * @return  boolean  True on success, false on failure
 	 *
 	 * @see     JTable::check
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function check()
 	{
@@ -82,7 +82,7 @@ class JTableIjmenuType extends JTable
 	 * @return  boolean  True on success.
 	 *
 	 * @link    http://docs.joomla.org/JTable/delete
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function delete($pk = null)
 	{

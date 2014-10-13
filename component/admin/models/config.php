@@ -33,9 +33,9 @@ class IjoomeradvModelconfig extends JModelLegacy
 	/**
 	 * Function
 	 *
-	 * @param   [type]  $filter  [description]
+	 * @param   [type]  $filter  contains the value of filter
 	 *
-	 * @return  [type]           [description]
+	 * @return  it will return loadobjectlist
 	 */
 	function getConfig($filter = null)
 	{
@@ -74,7 +74,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 					return false;
 				}
 			}
-			else if ($value->type != 'button')
+			elseif ($value->type != 'button')
 			{
 				$query = "UPDATE `#__ijoomeradv_config`
 						SET `value` = '{$setvalue}'
@@ -94,8 +94,8 @@ class IjoomeradvModelconfig extends JModelLegacy
 	/**
 	 * The Function Check Option Avail
 	 *
-	 * @param   [type]  $selectvalue  [description]
-	 * @param   [type]  $availvalue   [description]
+	 * @param   [type]  $selectvalue  contains the value of selectvalue
+	 * @param   [type]  $availvalue   contains the value of availvalue
 	 *
 	 * @return  boolean it will returns the value in true or false.
 	 */

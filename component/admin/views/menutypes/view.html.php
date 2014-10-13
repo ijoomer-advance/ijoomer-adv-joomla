@@ -21,7 +21,7 @@ class IjoomeradvViewMenutypes extends JViewLegacy
 	/**
 	 * The Display Function
 	 *
-	 * @param   [type]  $tpl  [description]
+	 * @param   [type]  $tpl  contains the value of tpl
 	 *
 	 * @return  void
 	 */

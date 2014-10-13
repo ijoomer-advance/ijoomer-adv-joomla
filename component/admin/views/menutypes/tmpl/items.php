@@ -35,26 +35,37 @@ defined('_JEXEC') or die;
 
 	<h2 class="modal-title"><?php echo JText::_('COM_IJOOMERADV_ITEM_CHOOSE'); ?></h2>
 	<ul class="menu_types">
-		<?php foreach ($this->menuitems as $name => $list): ?>
+		<?php
+			foreach ($this->menuitems as $name => $list):
+		?>
 			<li>
 				<dl class="menu_type">
 					<dt><?php echo JText::_('Menu : ' . $name); ?></dt>
 					<dd>
 						<ul>
-							<?php foreach ($list as $item): ?>
+							<?php
+								foreach ($list as $item):
+							?>
 								<li class="menu-link">
 									<input type="checkbox" <?php if ($item->checked)
 									{
 										echo 'checked="checked"';
-									} ?> id="<?php echo $item->itemid; ?>" value="<?php echo $item->itemid; ?>"
+}
+							?>id="<?php echo $item->itemid; ?>" value=
+							"<?php echo $item->itemid; ?>"
 									       name="menuitems[]" class="chkbox chk-menulink-2">
-									<label for="<?php echo $item->itemid; ?>">- <?php echo $item->itemtitle; ?></label>
+									<label for="<?php echo $item->itemid; ?>">-
+									<?php echo $item->itemtitle; ?></label>
 								</li>
-							<?php endforeach; ?>
+							<?php
+								endforeach;
+							?>
 						</ul>
 					</dd>
 				</dl>
 			</li>
-		<?php endforeach; ?>
+		<?php
+			endforeach;
+		?>
 	</ul>
 </form>

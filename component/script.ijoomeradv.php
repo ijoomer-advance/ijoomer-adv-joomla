@@ -30,7 +30,7 @@ defined('_JEXEC') or die;
  *
  * @package     IJoomer.Frontend
  * @subpackage  com_ijoomeradv
- * @since       1.6
+ * @since       1.0
  */
 class com_ijoomeradvInstallerScript
 {
@@ -51,7 +51,7 @@ class com_ijoomeradvInstallerScript
 	 * @param   [type]            $route    Which action is happening (install|uninstall|discover_install)
 	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
-	 * @return  [type]                      [description]
+	 * @return  void
 	 */
 	public function postflight($route, JAdapterInstance $adapter)
 	{

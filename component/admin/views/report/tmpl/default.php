@@ -66,11 +66,12 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 					<?php
+
 					if ($value->status == 0)
 					{
 						echo JText::_('COM_IJOOMERADV_REPORT_PENDING');
 					}
-					else if ($value->status == 1)
+					elseif ($value->status == 1)
 					{
 						echo JText::_('COM_IJOOMERADV_REPORT_DELETED');
 					}
@@ -82,11 +83,13 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 				</td>
 				<td class="center">
 						<span>
-							<a href="<?php echo JRoute::_($this->request_url) . '&task=action&action=deletereport&cid=' . $value->id; ?>"><?php echo JText::_('COM_IJOOMERADV_REPORT_DELETE_ACTION'); ?></a>
+							<a href="<?php echo JRoute::_($this->request_url) . '&task=action&action=deletereport&cid=' . $value->id; ?>">
+							<?php echo JText::_('COM_IJOOMERADV_REPORT_DELETE_ACTION'); ?></a>
 						</span>
 					<?php echo ' | '; ?>
 					<span>
-							<a href="<?php echo JRoute::_($this->request_url) . '&task=action&action=ignore&cid=' . $value->id; ?>"><?php echo JText::_('COM_IJOOMERADV_REPORT_IGNORE_ACTION'); ?></a>
+							<a href="<?php echo JRoute::_($this->request_url) . '&task=action&action=ignore&cid=' . $value->id; ?>">
+							<?php echo JText::_('COM_IJOOMERADV_REPORT_IGNORE_ACTION'); ?></a>
 						</span>
 				</td>
 				<td class="center">

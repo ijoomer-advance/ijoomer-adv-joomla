@@ -32,7 +32,7 @@ class IjoomeradvAdminHelper
 	/**
 	 * The Function For Getting The Component
 	 *
-	 * @param   [type]  $option  [description]
+	 * @param   [type]  $option  contains the value of option
 	 *
 	 * @return  boolean  true or false value
 	 */
@@ -58,7 +58,7 @@ class IjoomeradvAdminHelper
 	/**
 	 * The Function For Getting The Plugin
 	 *
-	 * @param   [type]  $option  [description]
+	 * @param   [type]  $option  contains the value of option
 	 *
 	 * @return  boolean  true or false value
 	 */

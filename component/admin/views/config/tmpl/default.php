@@ -20,8 +20,12 @@ $options = array(
 		description.setStyle("display", "none");
 		title.addClass("closed").removeClass("open");
 	}',
-	'startOffset' => 0, // 0 starts on the first tab, 1 starts the second, etc...
-	'useCookie' => true, // this must not be a string. Don't use quotes.
+
+	// 0 starts on the first tab, 1 starts the second, etc...
+	'startOffset' => 0,
+
+	// This must not be a string. Don't use quotes.
+	'useCookie' => true,
 );
 ?>
 <script type="text/javascript">
@@ -67,17 +71,22 @@ $options = array(
 				<div class="row-fluid">
 					<div class="span12">
 						<table class="paramlist admintable" width="50%">
-							<?php foreach ($this->globalConfig as $key => $value): ?>
+							<?php
+								foreach ( $this->globalConfig as $key => $value):
+							?>
 								<tr>
 									<td class="paramlist_key" width="40%">
 										<span class="hasTip"
-										      title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+										      title="<?php echo $value->caption; ?>::
+										      <?php echo $value->description; ?>">
 											<?php echo $value->caption; ?>
 										</span>
 									</td>
 									<td><?php echo $value->html; ?></td>
 								</tr>
-							<?php endforeach; ?>
+							<?php
+								endforeach;
+							?>
 						</table>
 					</div>
 				</div>
@@ -87,17 +96,22 @@ $options = array(
 				<div class="row-fluid">
 					<div class="span12">
 						<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
-							<?php foreach ($this->themeConfig as $key => $value): ?>
+							<?php
+								foreach ($this->themeConfig as $key => $value):
+							?>
 								<tr>
 									<td class="paramlist_key" width="40%">
 										<span class="hasTip"
-										      title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+										      title="<?php echo $value->caption; ?>::
+										      <?php echo $value->description; ?>">
 											<?php echo $value->caption; ?>
 										</span>
 									</td>
 									<td><?php echo $value->html; ?></td>
 								</tr>
-							<?php endforeach; ?>
+							<?php
+								endforeach;
+							?>
 						</table>
 					</div>
 				</div>
@@ -115,13 +129,16 @@ $options = array(
 									<tr>
 										<td class="paramlist_key" width="40%">
 												<span class="hasTip"
-												      title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+												      title="<?php echo $value->caption; ?>::
+												      <?php echo $value->description; ?>">
 													<?php echo $value->caption; ?>
 												</span>
 										</td>
 										<td><?php echo $value->html; ?></td>
 									</tr>
-								<?php endforeach; ?>
+								<?php
+								endforeach;
+								?>
 							</table>
 						</fieldset>
 						<br/>
@@ -134,13 +151,16 @@ $options = array(
 									<tr>
 										<td class="paramlist_key" width="40%">
 												<span class="hasTip"
-												      title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+												      title="<?php echo $value->caption; ?>::
+												      <?php echo $value->description; ?>">
 													<?php echo $value->caption; ?>
 												</span>
 										</td>
 										<td><?php echo $value->html; ?></td>
 									</tr>
-								<?php endforeach; ?>
+								<?php
+								endforeach;
+								?>
 							</table>
 						</fieldset>
 					</div>
@@ -152,11 +172,13 @@ $options = array(
 					<div class="span12">
 						<table class="paramlist admintable" width="50%">
 							<?php
-							foreach ($this->encryption as $key => $value):?>
+							foreach ($this->encryption as $key => $value):
+							?>
 							<tr>
 								<td class="paramlist_key" width="40%">
 							<span class="hasTip"
-							      title="<?php echo $value->caption; ?>::<?php echo $value->description; ?>">
+							      title="<?php echo $value->caption; ?>::
+							      <?php echo $value->description; ?>">
 								<?php echo $value->caption; ?>
 							</span>
 								</td>
@@ -164,10 +186,11 @@ $options = array(
 
 								<?php
 								$keyval = $value->value;
-								endforeach;
+							endforeach;
 								?>
 								<?php if ($keyval == '')
-								{ ?>
+								{
+								?>
 									<td>
 										<form>
 											<label for="length" style="display:none;">Length: </label>
@@ -183,7 +206,9 @@ $options = array(
 											</button>
 										</form>
 									</td>
-								<?php } ?>
+								<?php
+}
+								?>
 							</tr>
 						</table>
 					</div>

@@ -383,7 +383,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['code'] = 404;
 
 			// Extension File Not Found.';
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 			$this->outputJSON($jsonarray);
 		}
 
@@ -402,7 +402,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['code'] = 704;
 
 			// Method Not Found.';
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 
 			$this->outputJSON($jsonarray);
 		}
@@ -424,7 +424,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['code'] = 404;
 
 			// Method Not Found.';
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 
 			$this->outputJSON($jsonarray);
 		}
@@ -700,7 +700,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			// Check if username or password not blank
 			$jsonarray['code'] = 400;
 
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 
 			// Send data array to create jason string and output
 			$this->outputJSON($jsonarray);
@@ -749,7 +749,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			// If userid not passed or null
 			$jsonarray['code'] = 400;
 
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 
 			$this->outputJSON($jsonarray);
 		}
@@ -761,7 +761,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			// Logout success
 			$jsonarray['code'] = 200;
 
-			$jsonarray['message'] = NULL;
+			$jsonarray['message'] = null;
 		}
 		else
 		{
@@ -1036,7 +1036,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			$jsonarray['contact']['name'] = ($serverUse->showName == 1) ? $row->name : "";
 			$jsonarray['contact']['position'] = ($serverUse->showPosition == 1) ? $row->con_position : "";
 			$jsonarray['contact']['address'] = ($serverUse->showStreet == 1) ? $row->address : "";
-			$jsonarray['contact']['state'] = ($serverUse->showState == 1) ? $row->state : "";;
+			$jsonarray['contact']['state'] = ($serverUse->showState == 1) ? $row->state : "";
 			$jsonarray['contact']['country'] = ($serverUse->showCountry == 1) ? $row->country : "";
 			$jsonarray['contact']['postcode'] = ($serverUse->showPostalCode == 1) ? $row->postcode : "";
 			$jsonarray['contact']['city'] = ($serverUse->showCity == 1) ? $row->suburb : "";

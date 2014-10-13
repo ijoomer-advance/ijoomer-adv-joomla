@@ -43,7 +43,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 	/**
 	 * Save Function
 	 *
-	 * @return  [type]  void
+	 * @return  void
 	 */
 	function cancel()
 	{

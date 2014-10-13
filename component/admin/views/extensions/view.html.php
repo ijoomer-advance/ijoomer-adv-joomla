@@ -44,7 +44,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			JToolBarHelper::title(JText::_('COM_IJOOMERADV_EXTENSIONS_INSTALL_TITLE'), 'extensions_48');
 			JToolBarHelper::cancel();
 		}
-		else if ( JRequest::getVar('layout') == 'manage')
+		elseif ( JRequest::getVar('layout') == 'manage')
 		{
 			JToolBarHelper::title(JText::_('COM_IJOOMERADV_EXTENSIONS_MANAGE_TITLE'), 'extensionmanager_48');
 			JToolBarHelper::custom('home', 'home', '', JText::_('COM_IJOOMERADV_HOME'), false, false);
@@ -67,7 +67,7 @@ class IjoomeradvViewExtensions extends JViewLegacy
 			$this->assignRef('extensions', $extensions);
 			$this->assignRef('pagination', $pagination);
 		}
-		else if ( JRequest::getVar('layout') == 'detail')
+		elseif ( JRequest::getVar('layout') == 'detail')
 		{
 			$extension = $this->get('ExtensionData');
 

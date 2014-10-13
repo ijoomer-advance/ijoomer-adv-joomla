@@ -22,8 +22,8 @@ class IjoomeradvControllerItem extends JControllerForm
 	/**
 	 * The Display Function
 	 *
-	 * @param   boolean  $cachable   [description]
-	 * @param   boolean  $urlparams  [description]
+	 * @param   boolean  $cachable   contains the value of cachable
+	 * @param   boolean  $urlparams  contains the value of urlparams
 	 *
 	 * @return  void
 	 */
@@ -37,7 +37,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	 *
 	 * @return  mixed  True if the record can be added, a JError object if not.
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	public function add()
 	{
@@ -66,7 +66,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	 *
 	 * @return  boolean     True if successful, false otherwise and internal error is set.
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	public function batch($model = null)
 	{
@@ -109,7 +109,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	 *
 	 * @return  [boolean]           True if access level check and checkout passes, false otherwise.
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	public function edit($key = null, $urlVar = null)
 	{
@@ -190,11 +190,11 @@ class IjoomeradvControllerItem extends JControllerForm
 				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if ( $imagetype == 'image/png')
+				elseif ( $imagetype == 'image/png')
 				{
 					$image = imagecreatefrompng($itemimagedata['tmp_name']['imageicon']);
 				}
-				else if ( $imagetype == 'image/gif')
+				elseif ( $imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imageicon']);
 				}
@@ -219,6 +219,7 @@ class IjoomeradvControllerItem extends JControllerForm
 					{
 						imageAntiAlias($imageResized, true);
 					}
+
 					imagealphablending($imageResized, false);
 
 					if (function_exists("imagesavealpha"))
@@ -251,15 +252,16 @@ class IjoomeradvControllerItem extends JControllerForm
 			if ($itemimagedata['name']['imagetab'] && $itemimagedata['error']['imagetab'] <= 0 && $itemimagedata['size']['imagetab'] > 0)
 			{
 				$imagetype = $itemimagedata['type']['imagetab'];
+
 				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
 				{
 					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetab']);
 				}
-				else if ($imagetype == "image/png")
+				elseif ($imagetype == "image/png")
 				{
 					$image = imagecreatefrompng($itemimagedata['tmp_name']['imagetab']);
 				}
-				else if ($imagetype == 'image/gif')
+				elseif ($imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetab']);
 				}
@@ -286,6 +288,7 @@ class IjoomeradvControllerItem extends JControllerForm
 					}
 
 					imagealphablending($imageResized, false);
+
 					if (function_exists("imagesavealpha"))
 					{
 						imagesavealpha($imageResized, true);
@@ -319,11 +322,11 @@ class IjoomeradvControllerItem extends JControllerForm
 				{
 					$image1 = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetabactive']);
 				}
-				else if ($imagetype == "image/png")
+				elseif ($imagetype == "image/png")
 				{
 					$image1 = imagecreatefrompng($itemimagedata['tmp_name']['imagetabactive']);
 				}
-				else if ($imagetype == 'image/gif')
+				elseif ($imagetype == 'image/gif')
 				{
 					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetabactive']);
 				}
@@ -413,10 +416,10 @@ class IjoomeradvControllerItem extends JControllerForm
 			return false;
 		}
 
-		$menuoptions = (isset($data['request'])) ? $data['request'] : Null;
+		$menuoptions = (isset($data['request'])) ? $data['request'] : null;
 		$data = $model->validate($form, $data);
 
-		//changes for custom menu type
+		// Changes for custom menu type
 		$chcustom = explode('.', $data['views']);
 
 		if ($chcustom[2] == 'custom')
@@ -438,8 +441,7 @@ class IjoomeradvControllerItem extends JControllerForm
 			$data['link'] = 'index.php?' . urldecode(http_build_query($args, '', '&'));
 			unset($data['request']);
 		}
-		//saurin
-		//echo '<pre>';print_r($data);exit;
+
 		// Check for validation errors.
 		if ($data === false)
 		{
@@ -514,7 +516,7 @@ class IjoomeradvControllerItem extends JControllerForm
 				}
 
 				$extClass = $extension . '_menu';
-				$extClass = new $extClass();
+				$extClass = new $extClass;
 
 				if ($data['id'] <= 0)
 				{
@@ -581,7 +583,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	function setType()
 	{
@@ -628,7 +630,7 @@ class IjoomeradvControllerItem extends JControllerForm
 		$data['views'] = $views;
 		$data['requiredField'] = $requiredField;
 
-		//Save the data in the session.
+		// Save the data in the session.
 		$app->setUserState('com_ijoomeradv.edit.item.data', $data);
 
 		$this->type = $type;
