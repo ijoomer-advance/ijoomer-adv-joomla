@@ -24,7 +24,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 	/**
 	 * Function Construct
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 		parent::__construct();
@@ -37,7 +37,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 	 *
 	 * @return  it will return loadobjectlist
 	 */
-	function getConfig($filter = null)
+	public function getConfig($filter = null)
 	{
 		$where = ($filter) ? "WHERE `group`= '" . $filter . "'" : '';
 		$query = "SELECT *
@@ -53,7 +53,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 	 *
 	 * @return  boolean it will returns the value in true or false.
 	 */
-	function store()
+	public function store()
 	{
 		$config = $this->getConfig();
 		$post = JRequest::get('post');
@@ -99,7 +99,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 	 *
 	 * @return  boolean it will returns the value in true or false.
 	 */
-	function checkOptionAvail($selectvalue, $availvalue)
+	public function checkOptionAvail($selectvalue, $availvalue)
 	{
 		$availvalue = explode(';;', $availvalue);
 

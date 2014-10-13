@@ -23,7 +23,7 @@ class IjoomeradvModelReport extends JModelList
 /**
  * Constructor
  */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 
@@ -46,7 +46,7 @@ class IjoomeradvModelReport extends JModelList
 	 *
 	 * @return  it will returns the loadobjectList
 	 */
-	function getReports()
+	public function getReports()
 	{
 		$sql = "SELECT *
 				FROM #__ijoomeradv_report";
@@ -60,7 +60,7 @@ class IjoomeradvModelReport extends JModelList
 	 *
 	 * @return  it will returns the loadobjectList
 	 */
-	function getExtensions()
+	public function getExtensions()
 	{
 		$sql = "SELECT name,classname
 				FROM #__ijoomeradv_extensions
@@ -101,7 +101,7 @@ class IjoomeradvModelReport extends JModelList
 	 *
 	 * @return  boolean it will returns the value in true or false
 	 */
-	function delete()
+	public function delete()
 	{
 		$cids = JRequest::getVar('cid', array());
 		$table = $this->getTable('report', 'IjoomeradvTable');
@@ -124,7 +124,7 @@ class IjoomeradvModelReport extends JModelList
 	 *
 	 * @return  boolean it will returns the value in true or false
 	 */
-	function ignore()
+	public function ignore()
 	{
 		$cid = JRequest::getInt('cid', 0);
 
@@ -162,7 +162,7 @@ class IjoomeradvModelReport extends JModelList
 	 *
 	 * @return  void
 	 */
-	function deletereport()
+	public function deletereport()
 	{
 		$cid = JRequest::getInt('cid', 0);
 		$result = false;

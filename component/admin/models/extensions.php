@@ -35,7 +35,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 /**
  * Function Construct description
  */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -54,7 +54,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  it will return Data.
 	 */
-	function getData()
+	public function getData()
 	{
 		if (empty($this->_data))
 		{
@@ -71,7 +71,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  it will return Data.
 	 */
-	function getExtensionData()
+	public function getExtensionData()
 	{
 		$extId = JRequest::getVar('cid', array(0), '', 'array');
 		$query = "SELECT *
@@ -90,7 +90,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  loadColumn
 	 */
-	function getExtGroups()
+	public function getExtGroups()
 	{
 		$db = JFactory::getDBO();
 		$query = "SELECT DISTINCT `group`
@@ -108,7 +108,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  it will return loadobjectlist-name
 	 */
-	function getExtConfig($group)
+	public function getExtConfig($group)
 	{
 		$db = JFactory::getDBO();
 		$query = "SELECT *
@@ -127,7 +127,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  boolean it will return a value in true or false
 	 */
-	function setExtConfig($data)
+	public function setExtConfig($data)
 	{
 		$row = $this->getTable();
 		$row->load($data['extid']);
@@ -152,7 +152,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  returns the Total
 	 */
-	function getTotal()
+	public function getTotal()
 	{
 		if (empty($this->_total))
 		{
@@ -169,7 +169,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  it will returns the the sum of digit
 	 */
-	function getPagination()
+	public function getPagination()
 	{
 		if (empty($this->_pagination))
 		{
@@ -185,7 +185,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  query
 	 */
-	function _buildQuery()
+	public function _buildQuery()
 	{
 		$orderby = $this->_buildContentOrderBy();
 		$query = "SELECT p.*
@@ -201,7 +201,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return $orderby
 	 */
-	function _buildContentOrderBy()
+	public function _buildContentOrderBy()
 	{
 		global $context;
 		$mainframe = JFactory::getApplication();
@@ -217,7 +217,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  boolean it will return a value in true or false
 	 */
-	function install()
+	public function install()
 	{
 		$mainframe = JFactory::getApplication();
 		$this->setState('action', 'install');
@@ -270,7 +270,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  boolean it will returns a value in true or false
 	 */
-	function _getPackageFromUpload()
+	public function _getPackageFromUpload()
 	{
 		// Get the uploaded file information
 		$userfile = JRequest::getVar('install_extension', null, 'files', 'array');
@@ -330,7 +330,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 *
 	 * @return  boolean  it will returns a value in true or false
 	 */
-	function publish($cid = array(), $publish = 1)
+	public function publish($cid = array(), $publish = 1)
 	{
 		if (count($cid))
 		{

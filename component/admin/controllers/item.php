@@ -585,7 +585,7 @@ class IjoomeradvControllerItem extends JControllerForm
 	 *
 	 * @since   1.0
 	 */
-	function setType()
+	public function setType()
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();

@@ -1410,7 +1410,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return boolean    True on success.
 	 */
-	function setHome(&$pks, $value = 1)
+	public function setHome(&$pks, $value = 1)
 	{
 		// Initialise variables.
 		$table = $this->getTable();
@@ -1491,7 +1491,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 *
 	 * @return  boolean    True on success.
 	 */
-	function publish(&$pks, $value = 1)
+	public function publish(&$pks, $value = 1)
 	{
 		// Initialise variables.
 		$table = $this->getTable();

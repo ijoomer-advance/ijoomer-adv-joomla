@@ -35,7 +35,7 @@ class IjoomeradvControllerPushnotif extends JControllerLegacy
 	 *
 	 * @return boolean  returns the value in true or false
 	 */
-	function add()
+	public function add()
 	{
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'detail');
@@ -49,7 +49,7 @@ class IjoomeradvControllerPushnotif extends JControllerLegacy
 	 *
 	 * @return boolean  returns the value in true or false
 	 */
-	function apply()
+	public function apply()
 	{
 		$model = $this->getModel('pushnotif');
 
@@ -72,7 +72,7 @@ class IjoomeradvControllerPushnotif extends JControllerLegacy
 	 *
 	 * @return  boolean  returns the value in true or false
 	 */
-	function sendPushNotification()
+	public function sendPushNotification()
 	{
 		$model = $this->getModel('pushnotif');
 

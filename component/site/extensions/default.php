@@ -380,7 +380,7 @@ class default_menu
 	 *
 	 * @return  it will returns the $options
 	 */
-	function getOptions($selectedValue)
+	public function getOptions($selectedValue)
 	{
 		if ($selectedValue == 1)
 		{

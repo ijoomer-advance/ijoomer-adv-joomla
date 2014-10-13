@@ -23,7 +23,7 @@ class Articles
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 	}
@@ -43,7 +43,7 @@ class Articles
 	 *
 	 * @return array jsonarray
 	 */
-	function archive()
+	public function archive()
 	{
 		include_once JPATH_SITE . '/components/com_content/models/archive.php';
 		$ContentModelArchive = new ContentModelArchive;
@@ -76,7 +76,7 @@ class Articles
 	 *
 	 * @return array  jssonarray
 	 */
-	function featured()
+	public function featured()
 	{
 		$pageNO = IJReq::getTaskData('pageNO', 1, 'int');
 

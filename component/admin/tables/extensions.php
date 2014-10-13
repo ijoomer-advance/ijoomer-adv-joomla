@@ -38,7 +38,7 @@ class TableExtensions extends JTable
 	 *
 	 * @return void
 	 */
-	function TableExtensions(& $db)
+	public function TableExtensions(& $db)
 	{
 		$this->_table_prefix = '#__ijoomeradv_';
 		parent::__construct($this->_table_prefix . 'extensions', 'id', $db);
@@ -52,7 +52,7 @@ class TableExtensions extends JTable
 	 *
 	 * @return  returns the parent
 	 */
-	function bind($array, $ignore = '')
+	public function bind($array, $ignore = '')
 	{
 		if (key_exists('params', $array) && is_array($array['params']))
 		{

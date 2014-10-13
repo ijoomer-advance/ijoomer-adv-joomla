@@ -34,7 +34,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	 *
 	 * @return boolean  returns the value in true or false
 	 */
-	function add()
+	public function add()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit', null);
 	}
@@ -44,7 +44,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 	 *
 	 * @return  boolean  returns the value in true or false
 	 */
-	function edit()
+	public function edit()
 	{
 		$id = JFactory::getApplication()->input->getArray('cid', array());
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit&id=' . $id[0], null);

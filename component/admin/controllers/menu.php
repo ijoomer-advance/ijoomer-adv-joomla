@@ -159,7 +159,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 	 *
 	 * @return void
 	 */
-	function setType()
+	public function setType()
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();

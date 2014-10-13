@@ -24,7 +24,7 @@ class JInstallerExtensions extends JObject
 	 *
 	 * @param   [type]  &$parent  contains the value of $parent
 	 */
-	function __construct(&$parent)
+	public function __construct(&$parent)
 	{
 		$this->parent = $parent;
 		$this->tbl_prefix = '#__ijoomeradv_';
@@ -35,7 +35,7 @@ class JInstallerExtensions extends JObject
  *
  * @return  boolean returns the value in true or false
  */
-	function install()
+	public function install()
 	{
 		// Get a database connector object
 		$db = $this->parent->getDBO();
@@ -456,7 +456,7 @@ class JInstallerExtensions extends JObject
 	 *
 	 * @return  it will returns the value in false or $retval
 	 */
-	function uninstall($id, $clientId)
+	public function uninstall($id, $clientId)
 	{
 		// Initialize variables
 		$row = null;
@@ -523,7 +523,7 @@ class JInstallerExtensions extends JObject
 	 *
 	 * @return  boolean returns the values in true or false
 	 */
-	function _rollback_plugin($arg)
+	public function _rollback_plugin($arg)
 	{
 		// Get database connector object
 		$db = $this->parent->getDBO();

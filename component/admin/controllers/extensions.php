@@ -34,7 +34,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function add()
+	public function add()
 	{
 		JFactory::getApplication()->input->set('layout', 'install');
 
@@ -46,7 +46,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function detail()
+	public function detail()
 	{
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'detail');
@@ -60,7 +60,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function save()
+	public function save()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->get('post');
@@ -84,7 +84,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function apply()
+	public function apply()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->get('post');
@@ -108,7 +108,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function install()
+	public function install()
 	{
 		$app = JFactory::getApplication();
 		$model = $this->getModel('extensions');
@@ -127,7 +127,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 * @return  void
 	 */
 
-	function uninstall()
+	public function uninstall()
 	{
 	}
 
@@ -136,7 +136,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function extensionmanage()
+	public function extensionmanage()
 	{
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'manage');
@@ -149,7 +149,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function publish()
+	public function publish()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->getArray('post', array());
@@ -177,7 +177,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function unpublish()
+	public function unpublish()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->getArray('post', array());

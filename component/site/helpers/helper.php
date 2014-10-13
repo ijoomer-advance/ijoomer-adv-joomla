@@ -27,7 +27,7 @@ class IjoomeradvHelper
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 		$this->mainframe = JFactory::getApplication();
@@ -931,7 +931,7 @@ class IjoomeradvError
 	 *
 	 * @return  boolean it will return a value in true or false
 	 */
-	function ijErrorHandler($errno, $errstr, $errfile, $errline)
+	public function ijErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		if (!(error_reporting() & $errno))
 		{

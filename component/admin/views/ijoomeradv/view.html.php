@@ -26,7 +26,7 @@ class IjoomeradvViewijoomeradv extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tmpl = null)
+	public function display($tmpl = null)
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_TITLE'));

@@ -61,7 +61,7 @@ JHTML::_('behavior.tooltip');
 
 <script language="javascript" type="text/javascript">
 
-	function changeVal() {
+	public function changeVal() {
 
 		if (document.adminForm.send_to_username.value == "") {
 			alert("Please select User Name");

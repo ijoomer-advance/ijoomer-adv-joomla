@@ -30,7 +30,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
  *
  * @param   array  $default  $default
  */
-	function __construct($default = array())
+	public function __construct($default = array())
 	{
 		$this->mainframe = JFactory::getApplication();
 		parent::__construct($default);
@@ -232,7 +232,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function ping()
+	public function ping()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$results = $model->getExtensions();
@@ -269,7 +269,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function getUrlContent()
+	public function getUrlContent()
 	{
 		$url = IJReq::getTaskData('url');
 		$options['mode'] = 1;
@@ -336,7 +336,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function display()
+	public function display()
 	{
 		// Get ijoomeradv model object
 		$model = $this->getModel('ijoomeradv');
@@ -461,7 +461,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return theamarray
 	 */
-	function applicationConfig()
+	public function applicationConfig()
 	{
 		$model = $this->getModel('ijoomeradv');
 
@@ -693,7 +693,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function login()
+	public function login()
 	{
 		if (!IJReq::getTaskData('username') or !IJReq::getTaskData('password'))
 		{
@@ -740,7 +740,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function logout()
+	public function logout()
 	{
 		$my = JFactory::getUser();
 
@@ -787,7 +787,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function getPushNotification()
+	public function getPushNotification()
 	{
 		$id = IJReq::getTaskData('id', 0);
 		$user = JFactory::getUser();
@@ -844,7 +844,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function fblogin()
+	public function fblogin()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->fblogin();
@@ -878,7 +878,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function registration()
+	public function registration()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->registration();
@@ -913,7 +913,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function resetPassword()
+	public function resetPassword()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$step = IJReq::getTaskData('step', 1, 'int');
@@ -956,7 +956,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	function retriveUsername()
+	public function retriveUsername()
 	{
 		$model = $this->getModel('ijoomeradv');
 		$jsonarray = $model->retriveUsername();
@@ -996,7 +996,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 * @return void
 	 */
 
-	function contactUs()
+	public function contactUs()
 	{
 		$form = IJReq::getTaskData('form');
 		$toID = IJReq::getTaskData('toID');
@@ -1131,7 +1131,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return  it will return $sent
 	 */
-	function _sendEmail($data, $contact)
+	public function _sendEmail($data, $contact)
 	{
 		$app = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_contact');
@@ -1189,7 +1189,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function verbose()
+	public function verbose()
 	{
 		echo '<b>iJoomer Advance : <b>';
 		echo IJADV_VERSION;

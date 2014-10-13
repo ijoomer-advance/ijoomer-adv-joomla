@@ -21,7 +21,7 @@ class Categories
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 	}

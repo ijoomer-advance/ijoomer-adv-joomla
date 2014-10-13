@@ -33,7 +33,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function save()
+	public function save()
 	{
 		$model = $this->getModel('config');
 		$config = $model->store();
@@ -45,7 +45,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function cancel()
+	public function cancel()
 	{
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));
 	}

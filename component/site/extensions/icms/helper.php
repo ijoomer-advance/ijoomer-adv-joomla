@@ -21,7 +21,7 @@ class icms_helper
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db_helper = JFactory::getDBO();
 	}

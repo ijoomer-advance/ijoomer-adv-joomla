@@ -25,7 +25,7 @@ class Icms
 	 *
 	 * @return  void
 	 */
-	function init()
+	public function init()
 	{
 		include_once JPATH_SITE . '/components/com_content/models/category.php';
 		include_once JPATH_SITE . '/components/com_content/models/archive.php';
@@ -44,7 +44,7 @@ class Icms
 	 *
 	 * @return  array   $jassonarray
 	 */
-	function write_configuration(&$d)
+	public function write_configuration(&$d)
 	{
 		$db = JFactory::getDbo();
 		$query = 'SELECT *
@@ -70,7 +70,7 @@ class Icms
 	 *
 	 * @return  array $jsonarray
 	 */
-	function getconfig()
+	public function getconfig()
 	{
 		$jsonarray = array();
 
@@ -84,7 +84,7 @@ class Icms
 	 *
 	 * @return  void
 	 */
-	function prepareHTML(&$Config)
+	public function prepareHTML(&$Config)
 	{
 		// @TODO : Prepare custom html for ICMS
 	}

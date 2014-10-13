@@ -39,7 +39,7 @@ class IjoomeradvTableReport extends JTable
 	 *
 	 * @return void
 	 */
-	function IjoomeradvTableReport(& $db)
+	public function IjoomeradvTableReport(& $db)
 	{
 		parent::__construct('#__ijoomeradv_report', 'id', $db);
 	}

@@ -26,7 +26,7 @@ class IjoomeradvViewPushnotif extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		global $context;
 

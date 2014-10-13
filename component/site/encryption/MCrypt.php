@@ -28,7 +28,7 @@ class MCrypt
 	/**
 	 * Constructtor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->_db = JFactory::getDBO();
 	}
@@ -59,7 +59,7 @@ class MCrypt
 	 *
 	 * @return  it will return $data
 	 */
-	function encrypt($input)
+	public function encrypt($input)
 	{
 		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
@@ -88,7 +88,7 @@ class MCrypt
 	 *
 	 * @return  void
 	 */
-	function decrypt($code)
+	public function decrypt($code)
 	{
 		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
@@ -116,7 +116,7 @@ class MCrypt
 	 *
 	 * @return  returns the $text value
 	 */
-	function pkcs5_pad($text, $blocksize)
+	public function pkcs5_pad($text, $blocksize)
 	{
 		$pad = $blocksize - (strlen($text) % $blocksize);
 
@@ -130,7 +130,7 @@ class MCrypt
 	 *
 	 * @return  returns the substr
 	 */
-	function pkcs5_unpad($text)
+	public function pkcs5_unpad($text)
 	{
 		$pad = ord($text{strlen($text) - 1});
 

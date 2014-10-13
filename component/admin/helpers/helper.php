@@ -24,7 +24,7 @@ class IjoomeradvAdminHelper
 	/**
 	 * The Construct Function
 	 */
-	function __construct()
+	public function __construct()
 	{
 		$this->db = JFactory::getDBO();
 	}
@@ -36,7 +36,7 @@ class IjoomeradvAdminHelper
 	 *
 	 * @return  boolean  true or false value
 	 */
-	function getComponent($option)
+	public function getComponent($option)
 	{
 		$version = new JVersion;
 
@@ -62,7 +62,7 @@ class IjoomeradvAdminHelper
 	 *
 	 * @return  boolean  true or false value
 	 */
-	function getPlugin($option)
+	public function getPlugin($option)
 	{
 		$query = "SELECT count(*)
 				FROM #__ijoomeradv_extensions
@@ -78,7 +78,7 @@ class IjoomeradvAdminHelper
 	 *
 	 * @return  boolean  true or false value
 	 */
-	function getJomSocialVersion()
+	public function getJomSocialVersion()
 	{
 		JHTML::_('behavior.tooltip', '.hasTip');
 		$parser = JFactory::getXMLParser('Simple');
@@ -105,7 +105,7 @@ class IjoomeradvAdminHelper
 	 *
 	 * @return  boolean  true or false value
 	 */
-	function getglobalconfig()
+	public function getglobalconfig()
 	{
 		$query = "SELECT *
 				FROM #__ijoomeradv_config";
@@ -127,7 +127,7 @@ class IjoomeradvAdminHelper
 	 *
 	 * @return  boolean  true or false value
 	 */
-	function prepareHTML(&$config)
+	public function prepareHTML(&$config)
 	{
 		foreach ($config as $key => $value)
 		{

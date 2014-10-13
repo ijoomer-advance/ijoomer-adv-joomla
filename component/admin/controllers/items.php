@@ -58,7 +58,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	 *
 	 * @return boolean  returns the value in true or false
 	 */
-	function add()
+	public function add()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit', null);
 	}
@@ -68,7 +68,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	 *
 	 * @return  boolean  returns the value in true or false
 	 */
-	function edit()
+	public function edit()
 	{
 		$app = JFactory::getApplication();
 		$id = $app->input->getArray('cid', array());
@@ -84,7 +84,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	 *
 	 * @return  it will return a value
 	 */
-	function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
+	public function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
 	{
 		return parent::getModel($name, $prefix, array('ignore_request' => true));
 	}
@@ -155,7 +155,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	 *
 	 * @return  void
 	 */
-	function setDefault()
+	public function setDefault()
 	{
 		// Check for request forgeries
 		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));

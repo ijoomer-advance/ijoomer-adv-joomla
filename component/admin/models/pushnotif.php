@@ -35,7 +35,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -56,7 +56,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 *
 	 * @return  User
 	 */
-	function getUsers()
+	public function getUsers()
 	{
 		$db = JFactory::getDBO();
 		$query = "SELECT `username`
@@ -73,7 +73,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 *
 	 * @return  it will returns the pushnotification
 	 */
-	function getPushNotifications()
+	public function getPushNotifications()
 	{
 		$db = JFactory::getDBO();
 		$query = "SELECT *
@@ -90,7 +90,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 *
 	 * @return  void
 	 */
-	function store()
+	public function store()
 	{
 		$row = $this->getTable();
 		$data = JRequest::get('post');
@@ -341,7 +341,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 *
 	 * @return  it will return a value
 	 */
-	function sendIphonePushNotification($options)
+	public function sendIphonePushNotification($options)
 	{
 		$server = ($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
 		$keyCertFilePath = JPATH_SITE . '/components/com_ijoomer/certificates/certificates.pem';
@@ -377,7 +377,7 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 *
 	 * @return  void
 	 */
-	function sendAndroidPushNotification($options)
+	public function sendAndroidPushNotification($options)
 	{
 		$url = 'https://android.googleapis.com/gcm/send';
 		$options['data']['badge'] = (isset($options['data']['badge']) && !empty($options['data']['badge'])) ? $options['data']['badge'] : 1;

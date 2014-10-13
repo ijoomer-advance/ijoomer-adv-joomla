@@ -55,7 +55,7 @@ class IjoomeradvTableMenu extends JTable
 	 *
 	 * @return void
 	 */
-	function IjoomeradvTableMenu(& $db)
+	public function IjoomeradvTableMenu(& $db)
 	{
 		parent::__construct('#__ijoomeradv_menu', 'id', $db);
 	}

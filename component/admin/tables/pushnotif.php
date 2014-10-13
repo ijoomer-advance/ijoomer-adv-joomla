@@ -38,7 +38,7 @@ class TablePushnotif extends JTable
 	 *
 	 * @return void
 	 */
-	function TablePushnotif(& $db)
+	public function TablePushnotif(& $db)
 	{
 		$this->_table_prefix = '#__ijoomeradv_';
 		parent::__construct($this->_table_prefix . 'push_notification', 'id', $db);

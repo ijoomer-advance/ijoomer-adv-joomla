@@ -25,7 +25,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	/**
 	 * Constructor
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$this->db = JFactory::getDBO();
@@ -37,7 +37,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return loadobjectlist
 	 */
-	function getApplicationConfig()
+	public function getApplicationConfig()
 	{
 		$query = "SELECT `name`,`value`
 				FROM #__ijoomeradv_config";
@@ -120,7 +120,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return array it will return Menu Array
 	 */
-	function getMenus()
+	public function getMenus()
 	{
 		$menuArray = array();
 		$positionScreens = array();
@@ -255,7 +255,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return boolean it will return a value in true or false
 	 */
-	function setMenuRequest($menuid)
+	public function setMenuRequest($menuid)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -292,7 +292,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return loadobjectlist
 	 */
-	function getExtensionConfig($extName)
+	public function getExtensionConfig($extName)
 	{
 		$query = "SELECT `name`,`value`
 				FROM #__ijoomeradv_{$extName}_config";
@@ -342,7 +342,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  boolean it will return the value in true or false
 	 */
-	function checkIJExtension($extName)
+	public function checkIJExtension($extName)
 	{
 		$query = "SELECT `option`
 				FROM `#__ijoomeradv_extensions`
@@ -379,7 +379,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  array it will return jsson array
 	 */
-	function loginProccess()
+	public function loginProccess()
 	{
 		$data['latitude'] = IJReq::getTaskData('lat');
 		$data['longitude'] = IJReq::getTaskData('long');
@@ -465,7 +465,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return it will return false value otherwise jasson array
 	 */
-	function fblogin()
+	public function fblogin()
 	{
 		jimport('joomla.user.helper');
 
@@ -819,7 +819,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return it will return false value otherwise jsson array
 	 */
-	function registration()
+	public function registration()
 	{
 		$post['relname'] = IJReq::getTaskData('name');
 		$post['username'] = IJReq::getTaskData('username');
@@ -1491,7 +1491,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return a false value otherwise jsson array
 	 */
-	function retriveToken()
+	public function retriveToken()
 	{
 		$email = IJReq::getTaskData('email');
 
@@ -1567,7 +1567,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return the false value otherwise Jasson Array
 	 */
-	function validateToken()
+	public function validateToken()
 	{
 		$token = IJReq::getTaskData('token');
 		$username = IJReq::getTaskData('username');
@@ -1635,7 +1635,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return a value in false or JssonArray
 	 */
-	function resetPassword()
+	public function resetPassword()
 	{
 		$token = IJReq::getTaskData('crypt');
 		$userid = IJReq::getTaskData('userid', 0, 'int');
@@ -1715,7 +1715,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  it will return a false value or Jsson Array
 	 */
-	function retriveUsername()
+	public function retriveUsername()
 	{
 		$email = IJReq::getTaskData('email');
 
@@ -1784,7 +1784,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 *
 	 * @return  boolean Returns The Value in True or False
 	 */
-	function _sendConfirmationMail($email, $token)
+	public function _sendConfirmationMail($email, $token)
 	{
 		$config = JFactory::getConfig();
 

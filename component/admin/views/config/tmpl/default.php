@@ -29,7 +29,7 @@ $options = array(
 );
 ?>
 <script type="text/javascript">
-	function randomString() {
+	public function randomString() {
 		var gencode = document.getElementById('IJOOMER_ENC_KEY'),
 			length = document.getElementById('length').value,
 			chars = document.getElementById('chars').value,

@@ -33,7 +33,7 @@ class IjoomeradvControllerReport extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function delete()
+	public function delete()
 	{
 		$model = $this->getModel('report');
 
@@ -54,7 +54,7 @@ class IjoomeradvControllerReport extends JControllerLegacy
 	 *
 	 * @return  void
 	 */
-	function action()
+	public function action()
 	{
 		$action = JFactory::getApplication()->input->getString('action', '');
 		$model = $this->getModel('report');

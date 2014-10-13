@@ -26,7 +26,7 @@ class IjoomeradvViewconfig extends JViewLegacy
 	 *
 	 * @return  void
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_CONFIGURATION'));
@@ -80,7 +80,7 @@ class IjoomeradvViewconfig extends JViewLegacy
 	 *
 	 * @return voi
 	 */
-	function prepareHTML(&$config)
+	public function prepareHTML(&$config)
 	{
 		foreach ($config as $key => $value)
 		{
