@@ -31,7 +31,7 @@ class PlgSystemIjoomeradvVoice extends JPlugin
 	 *
 	 * @return void
 	 */
-	function OnBeforeRender()
+	public function OnBeforeRender()
 	{
 		$siteUrl = JURI::root(true);
 		$pluginLivePath = $siteUrl . '/plugins/system/' . $this->plg_name;
