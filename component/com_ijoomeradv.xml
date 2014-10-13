@@ -2,7 +2,7 @@
 <!DOCTYPE install SYSTEM "http://www.joomla.org/xml/dtd/1.5/component-install.dtd">
 <extension type="component" version="3.0"  method="upgrade">
 	<name>ijoomeradv</name>
-	<creationDate>22-Apr-2013</creationDate>   
+	<creationDate>22-Apr-2013</creationDate>
 	<author>Tailored Solutions</author>
 	<authorEmail>testing.tasol@gmail.com</authorEmail>
 	<authorUrl>www.tasolglobal.com</authorUrl>
@@ -12,8 +12,8 @@
 	<description>
 	iJoomerAdv component has been successfully installed.
 	</description>
-	
-	<scriptfile>script.ijoomeradv.php</scriptfile>
+
+	<scriptfile>install.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">install.mysql.utf8.sql</file>
@@ -24,7 +24,7 @@
 			<file driver="mysql" charset="utf8">uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
-	
+
 	<administration>
 		<menu img="components/com_ijoomeradv/assets/images/ijoomeradv_16.png" >COM_IJOOMERADV_TITLE</menu>
 		<submenu>
@@ -34,17 +34,17 @@
 			<menu img="components/com_ijoomeradv/assets/images/menumanager_16.png" view="menus">COM_IJOOMERADV_MENUS</menu>
 			<menu img="components/com_ijoomeradv/assets/images/pushnotification_16.png" view="pushnotif">COM_IJOOMERADV_PUSH_NOTIFICATION</menu>
 			<menu img="components/com_ijoomeradv/assets/images/report_16.png" view="report">COM_IJOOMERADV_REPORT</menu>
-		</submenu>	
+		</submenu>
 		<files folder="admin">
 			<folder>assets</folder>
 			<folder>controllers</folder>
 			<folder>helpers</folder>
 			<folder>logs</folder>
 			<folder>models</folder>
-			<folder>tables</folder>	
-			<folder>views</folder>	
+			<folder>tables</folder>
+			<folder>views</folder>
 			<folder>theme</folder>
-			<filename>index.html</filename>	
+			<filename>index.html</filename>
 			<filename>ijoomeradv.php</filename>
 			<filename>install.mysql.utf8.sql</filename>
 			<filename>uninstall.mysql.utf8.sql</filename>
@@ -54,7 +54,7 @@
 			<language tag="en-GB">en-GB.com_ijoomeradv.sys.ini</language>
 		</languages>
 	</administration>
-	
+
 	<files folder="site">
 		<folder>assets</folder>
 		<folder>controllers</folder>
@@ -64,7 +64,7 @@
 		<folder>models</folder>
 		<folder>views</folder>
 		<folder>certificates</folder>
-		<filename>index.html</filename>	
+		<filename>index.html</filename>
 		<filename>ijoomeradv.php</filename>
 	</files>
 	<languages folder="site/languages">
