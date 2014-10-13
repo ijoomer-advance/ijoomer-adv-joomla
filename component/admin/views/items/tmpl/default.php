@@ -23,7 +23,9 @@ $ordering = ($listOrder == 'a.ordering');
 $canOrder = $user->authorise('core.edit.state', 'com_ijoomeradv');
 $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 ?>
-<?php //Set up the filter bar. ?>
+<?php
+	// Set up the filter bar.
+?>
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=items'); ?>" method="post" name="adminForm"
       id="adminForm">
 	<div id="filter-bar" class="btn-toolbar">
@@ -52,7 +54,9 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 		</div>
 	</div>
 	<div class="clr"></div>
-	<?php //Set up the grid heading. ?>
+	<?php
+		// Set up the grid heading.
+	?>
 	<table class="adminlist table table-striped">
 		<thead>
 		<tr>
@@ -68,10 +72,13 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 			</th>
 			<th class="center" width="20px">
 				<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.id', $listDirn, $listOrder); ?>
-				<?php if (count($this->items) > 1)
+
+				<?php
+				if (count($this->items) > 1)
 				{
 					echo JHtml::_('grid.order', $this->items, 'filesave.png', 'saveorder');
-				} ?>
+				}
+				?>
 			</th>
 			<th class="nowrap left" width="50px">
 				<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
@@ -93,8 +100,10 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 		<?php
 		$originalOrders = array();
 		$inc = 1;
+
 		foreach ($this->items as $i => $item) :
-			$orderkey = $item->ordering;//array_search($item->id, $this->ordering[$item->id]);
+			// Array_search($item->id, $this->ordering[$item->id]);
+			$orderkey = $item->ordering;
 			$canCreate = $user->authorise('core.create', 'com_ijoomeradv');
 			$canEdit = $user->authorise('core.edit', 'com_ijoomeradv');
 			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
@@ -106,12 +115,21 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php if ($canEdit) : ?>
+					<?php
+						if ($canEdit)
+						{
+					?>
 						<a href="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=item&task=edit&id=' . (int) $item->id); ?>">
 							<?php echo $this->escape($item->title); ?></a>
-					<?php else : ?>
+					<?php
+						}
+						else
+						{
+					?>
 						<?php echo $this->escape($item->title); ?>
-					<?php endif; ?>
+					<?php
+						}
+					?>
 				</td>
 				<td class="center" width="20px">
 					<?php echo JHtml::_('grid.published', $item->published, $i); ?>

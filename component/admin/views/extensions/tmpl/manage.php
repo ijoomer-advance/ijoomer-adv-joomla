@@ -40,6 +40,7 @@ defined('_JEXEC') or die;
 			<tbody>
 			<?php
 			$k = 0;
+
 			foreach ($this->extensions as $key => $value)
 			{
 				$task = ($value->published) ? "unpublish" : "publish";
@@ -61,8 +62,10 @@ defined('_JEXEC') or die;
 					</td>
 					<td align="center" width="20px">
 						<?php
-						//get version
+
+						// Get version
 						$mainXML = JPATH_SITE . '/components/com_ijoomeradv/extensions/' . $value->classname . '.xml';
+
 						if (is_file($mainXML))
 						{
 							if ($xml = simplexml_load_file($mainXML))

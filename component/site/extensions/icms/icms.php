@@ -9,30 +9,49 @@
 
 defined('_JEXEC') or die;
 
-class icms
+/**
+ * The Class For The Icms
+ *
+ * @since  1.0
+ */
+class Icms
 {
 	public $classname = "icms";
+
 	public $sessionWhiteList = array('articles.archive', 'articles.featured', 'articles.singleArticle', 'articles.articleDetail', 'categories.allCategories', 'categories.singleCategory', 'categories.category', 'categories.categoryBlog');
 
-	function init()
+	/**
+	 * The Init Function
+	 *
+	 * @return  void
+	 */
+	public function init()
 	{
 		include_once JPATH_SITE . '/components/com_content/models/category.php';
 		include_once JPATH_SITE . '/components/com_content/models/archive.php';
 		include_once JPATH_SITE . '/components/com_content/helpers/query.php';
 
-		$lang =  JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$lang->load('com_content');
 		$plugin_path = JPATH_COMPONENT_SITE . '/extensions';
 		$lang->load('icms', $plugin_path . '/icms', $lang->getTag(), true);
 	}
 
-	function write_configuration(&$d)
+	/**
+	 * The Write_Configuration Function
+	 *
+	 * @param   [type]  &$d  it will contain the value of d
+	 *
+	 * @return  array   $jassonarray
+	 */
+	public function write_configuration(&$d)
 	{
 		$db = JFactory::getDbo();
 		$query = 'SELECT *
 				  FROM #__ijoomeradv_icms_config';
 		$db->setQuery($query);
 		$my_config_array = $db->loadObjectList();
+
 		foreach ($my_config_array as $ke => $val)
 		{
 			if (isset($d[$val->name]))
@@ -46,23 +65,51 @@ class icms
 		}
 	}
 
-	function getconfig()
+	/**
+	 * The Get Config Function
+	 *
+	 * @return  array $jsonarray
+	 */
+	public function getconfig()
 	{
 		$jsonarray = array();
+
 		return $jsonarray;
 	}
 
-	function prepareHTML(&$Config)
+	/**
+	 * The Prepare HTML Function
+	 *
+	 * @param   [type]  &$Config  contains the value of config
+	 *
+	 * @return  void
+	 */
+	public function prepareHTML(&$Config)
 	{
 		// @TODO : Prepare custom html for ICMS
 	}
 }
 
+/**
+ * The Class For The Icms_Menu
+ *
+ * @since  1.0
+ */
 class icms_menu
 {
+	/**
+	 * The Get Required Input Function
+	 *
+	 * @param   [type]  $extension    contains the value of extension
+	 * @param   [type]  $extView      contains the value of extview
+	 * @param   [type]  $menuoptions  contains the value of menuoptions
+	 *
+	 * @return  it will returns the value of $html
+	 */
 	public function getRequiredInput($extension, $extView, $menuoptions)
 	{
 		$menuoptions = json_decode($menuoptions, true);
+
 		switch ($extView)
 		{
 			case 'categoryBlog':
@@ -80,22 +127,29 @@ class icms_menu
 							</label>';
 
 				$html .= '<select name="jform[request][id]" id="jform_request_id">';
+
 				foreach ($items as $key1 => $value1)
 				{
 					$selected = '';
+
 					if ($selvalue == $value1->id)
 					{
 						$selected = 'selected';
 					}
+
 					$level = '';
+
 					for ($i = 1; $i < $value1->level; $i++)
 					{
 						$level .= '-';
 					}
+
 					$html .= '<option value="' . $value1->id . '" ' . $selected . '>' . $level . $value1->title . '</option>';
 				}
+
 				$html .= '</select>';
 				$html .= '</fieldset>';
+
 				return $html;
 				break;
 
@@ -114,22 +168,29 @@ class icms_menu
 							</label>';
 
 				$html .= '<select name="jform[request][id]" id="jform_request_id">';
+
 				foreach ($items as $key1 => $value1)
 				{
 					$selected = '';
+
 					if ($selvalue == $value1->id)
 					{
 						$selected = 'selected';
 					}
+
 					$level = '';
+
 					for ($i = 1; $i < $value1->level; $i++)
 					{
 						$level .= '-';
 					}
+
 					$html .= '<option value="' . $value1->id . '" ' . $selected . '>' . $level . $value1->title . '</option>';
 				}
+
 				$html .= '</select>';
 				$html .= '</fieldset>';
+
 				return $html;
 				break;
 
@@ -140,6 +201,7 @@ class icms_menu
 						WHERE id=" . $selvalue;
 				$db->setQuery($sql);
 				$result = $db->loadResult();
+
 				if ($result)
 				{
 					$title = $result;
@@ -161,6 +223,7 @@ class icms_menu
 
 				// Add the script to the document head.
 				JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
+
 				// Setup variables for display.
 				$html = array();
 				$link = 'index.php?option=com_content&amp;view=articles&amp;layout=modal&amp;tmpl=component&amp;function=jSelectArticle_jform_request_id';
@@ -182,10 +245,23 @@ class icms_menu
 		}
 	}
 
+	/**
+	 * The Set Required Input Function
+	 *
+	 * @param   [type]  $extension    contains The Value of $extension
+	 * @param   [type]  $extView      contains The Value of $extview
+	 * @param   [type]  $extTask      contains The Value of $exttask
+	 * @param   [type]  $remoteTask   contains The Value of $remotetask
+	 * @param   [type]  $menuoptions  contains The Value of $menuoption
+	 * @param   [type]  $data         contains The Value of $data
+	 *
+	 * @return  void
+	 */
 	public function setRequiredInput($extension, $extView, $extTask, $remoteTask, $menuoptions, $data)
 	{
 		$db = JFactory::getDBO();
 		$options = null;
+
 		switch ($extTask)
 		{
 			case 'categoryBlog':

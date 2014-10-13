@@ -10,16 +10,20 @@
 defined('_JEXEC') or die;
 
 /**
- * The HTML Menus Menu Item TYpes View.
+ * The Class For IJoomeradvViewMenuTypes which will Extends JViewLegacy
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
  */
 class IjoomeradvViewMenutypes extends JViewLegacy
 {
 	/**
-	 * Display the view
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  contains the value of tpl
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{

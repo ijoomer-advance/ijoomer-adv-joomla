@@ -11,18 +11,26 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.helper');
 
-class articles
+/**
+ * The Class Articles
+ *
+ * @since  1.0
+ */
+class Articles
 {
-
 	private $db;
 
-	function __construct()
+	/**
+	 * Constructor
+	 */
+	public function __construct()
 	{
-		$this->db =  JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 	}
 
 	/**
-	 * @uses    to fetch archive article list
+	 * To fetch archive article list
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "extName":"icms",
@@ -33,24 +41,29 @@ class articles
 	 *        }
 	 *    }
 	 *
+	 * @return array jsonarray
 	 */
-	function archive()
+	public function archive()
 	{
 		include_once JPATH_SITE . '/components/com_content/models/archive.php';
 		$ContentModelArchive = new ContentModelArchive;
 		$items = $ContentModelArchive->getItems();
 
 		$total = count($items);
+
 		if ($total <= 0)
 		{
 			$jsonarray['code'] = 204;
+
 			return $jsonarray;
 		}
+
 		return $this->getArticleList($items, $total);
 	}
 
 	/**
-	 * @uses    to fetch archive article list
+	 * To fetch archive article list
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "extName":"icms",
@@ -61,13 +74,14 @@ class articles
 	 *        }
 	 *    }
 	 *
+	 * @return array  jssonarray
 	 */
-	function featured()
+	public function featured()
 	{
 		$pageNO = IJReq::getTaskData('pageNO', 1, 'int');
 
 		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
-		$model =  JModelLegacy::getInstance('Featured', 'ContentModel', array('ignore_request' => true));
+		$model = JModelLegacy::getInstance('Featured', 'ContentModel', array('ignore_request' => true));
 
 		$appParams = JComponentHelper::getParams('com_content');
 		$model->setState('params', $appParams);
@@ -83,11 +97,13 @@ class articles
 		}
 
 		$user = JFactory::getUser();
+
 		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
 		{
-			// filter on published for those who do not have edit or edit.state rights.
+			// Filter on published for those who do not have edit or edit.state rights.
 			$model->setState('filter.published', 1);
 		}
+
 		else
 		{
 			$model->setState('filter.published', array(0, 1, 2));
@@ -95,22 +111,31 @@ class articles
 
 		$items = $model->getItems();
 		$total = count($items);
+
 		if ($total <= 0)
 		{
 			$jsonarray['code'] = 204;
+
 			return $jsonarray;
 		}
+
 		return $this->getArticleList($items, $total);
 	}
 
+	/**
+	 * The Search Function
+	 *
+	 * @return  array  jssonarray
+	 */
 	public function search()
 	{
 		$keyword = IJReq::getTaskData('key', '');
 
 		JModel::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
-		$model =  JModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
+		$model = JModel::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 		$appParams = JComponentHelper::getParams('com_content');
-		//set search type
+
+		// Set search type
 		$appParams->set('filter_field', 'title');
 
 		$model->setState('params', $appParams);
@@ -126,37 +151,44 @@ class articles
 		}
 
 		$user = JFactory::getUser();
+
 		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
 		{
-			// filter on published for those who do not have edit or edit.state rights.
+			// Filter on published for those who do not have edit or edit.state rights.
 			$model->setState('filter.published', 1);
 		}
+
 		else
 		{
 			$model->setState('filter.published', array(0, 1, 2));
 		}
 
-		//set search keyword
+		// Set search keyword
 		$model->setState('list.filter', $keyword);
 
 		$items = $model->getItems();
 		$total = count($result);
 
 		$total = count($items);
+
 		if ($total <= 0)
 		{
 			$jsonarray['code'] = 204;
+
 			return $jsonarray;
 		}
+
 		return $this->getArticleList($items, $total);
 	}
 
-
 	/**
-	 * @uses To provide welformed list of articles
-	 * params : $articles = Object of articles
-	 *            $total      = Total article counts
+	 * To provide welformed list of articles
 	 *
+	 * @param   [type]   $articles     Object of articles
+	 * @param   [type]   $total        Total article counts
+	 * @param   boolean  $applayLimit  contains the value of apply limit
+	 *
+	 * @return  array    jssonarray
 	 */
 	public function getArticleList($articles, $total, $applayLimit = true)
 	{
@@ -204,6 +236,7 @@ class articles
 				if ($articles[$inc]->images)
 				{
 					$articlesimages = json_decode($articles[$inc]->images);
+
 					if ($articlesimages->image_intro)
 					{
 						$jsonarray['articles'][$i]['image'] = $this->formatImageUri($articlesimages->image_intro);
@@ -231,13 +264,14 @@ class articles
 				$jsonarray['articles'][$i]['parent_title'] = $articles[$inc]->parent_title;
 				$jsonarray['articles'][$i]['shareLink'] = JURI::base() . "index.php?option=com_content&view=article&id={$articles[$inc]->id}:{$articles[$inc]->alias}&catid={$articles[$inc]->catid}";
 			}
-			//$jsonarray['articles'][$inc]['hits'] 		= $items[$inc]->hits;
 		}
+
 		return $jsonarray;
 	}
 
 	/**
-	 * @uses    to fetch archive article list
+	 * To fetch archive article list
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "extName":"icms",
@@ -246,15 +280,18 @@ class articles
 	 *        "taskData":""
 	 *    }
 	 *
+	 * @return  it will return getarticledetail
 	 */
 	public function singleArticle()
 	{
 		$id = ICMS_SINGLE_ARTICLE_ID;
+
 		return $this->getarticleDetail($id);
 	}
 
 	/**
-	 * @uses    to fetch archive article list
+	 * To fetch archive article list
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "extName":"icms",
@@ -263,17 +300,21 @@ class articles
 	 *        "taskData":""
 	 *    }
 	 *
+	 * @return array  getarticledetail
 	 */
 	public function articleDetail()
 	{
 		$id = IJReq::getTaskData('id', null, 'int');
+
 		return $this->getarticleDetail($id);
 	}
 
-	/*
+	/**
 	 * Function for get article detail
-	 * params : article id
 	 *
+	 * @param   [type]  $id  article id
+	 *
+	 * @return  void
 	 */
 	private function getarticleDetail($id)
 	{
@@ -284,6 +325,7 @@ class articles
 		if ($items->params->get('access-view'))
 		{
 			preg_match_all('/<img[^>]+>/i', $items->introtext, $result);
+
 			foreach ($result[0] as $key => $value)
 			{
 				preg_match_all('/src="[^"]+"/', $value, $imgpath);
@@ -293,19 +335,22 @@ class articles
 			}
 
 			preg_match_all('/<img[^>]+>/i', $items->fulltext, $result);
+
 			foreach ($result[0] as $key => $value)
 			{
 				preg_match_all('/src="[^"]+"/', $value, $imgpath);
 				$imgpath = str_replace(array('src="', '"'), "", $imgpath[0][0]);
 				$imgpath = $this->formatImageUri($imgpath);
-				//echo $imgpath;exit;
+
 				$items->fulltext = str_replace($value, '<img src="' . $imgpath . '">', $items->fulltext);
 			}
 
 			preg_match_all('#<a\s+href=[\'"]([^\'"]+)[\'"]\s*(?:title=[\'"]([^\'"]+)[\'"])?\s*>((?:(?!</a>).)*)</a>#i', $items->introtext, $anchors);
+
 			foreach ($anchors[0] as $key => $value)
 			{
 				preg_match_all('/href="[^"]+"/', $value, $hrefPath);
+
 				if ($hrefPath[0])
 				{
 					preg_match('/href="(.+)"/', $hrefPath[0][0], $match);
@@ -328,9 +373,11 @@ class articles
 						$uri = JURI::getInstance($link);
 						$router = JApplication::getRouter();
 						$result = $router->parse($uri);
+
 						if ($result['option'] == 'com_content')
 						{
 							$view = $result['view'];
+
 							if (array_key_exists('id', $result))
 							{
 								$id = '&id=' . $result['id'];
@@ -339,6 +386,7 @@ class articles
 							{
 								$id = '';
 							}
+
 							$Itemid = $result['Itemid'];
 
 							$text = $anchors[3][$key];
@@ -350,9 +398,11 @@ class articles
 			}
 
 			preg_match_all('#<a\s+href=[\'"]([^\'"]+)[\'"]\s*(?:title=[\'"]([^\'"]+)[\'"])?\s*>((?:(?!</a>).)*)</a>#i', $items->fulltext, $anchors);
+
 			foreach ($anchors[0] as $key => $value)
 			{
 				preg_match_all('/href="[^"]+"/', $value, $hrefPath);
+
 				if ($hrefPath[0])
 				{
 					preg_match('/href="(.+)"/', $hrefPath[0][0], $match);
@@ -375,9 +425,11 @@ class articles
 						$uri = JURI::getInstance($link);
 						$router = JApplication::getRouter();
 						$result = $router->parse($uri);
+
 						if ($result['option'] == 'com_content')
 						{
 							$view = $result['view'];
+
 							if (array_key_exists('id', $result))
 							{
 								$id = '&id=' . $result['id'];
@@ -386,6 +438,7 @@ class articles
 							{
 								$id = '';
 							}
+
 							$Itemid = $result['Itemid'];
 
 							$text = $anchors[3][$key];
@@ -413,10 +466,12 @@ class articles
 			$jsonarray['article']['publish_down'] = $items->publish_down;
 
 			$itemsimages = json_decode($items->images);
+
 			if (isset($itemsimages->image_intro))
 			{
 				$itemsimages->image_intro = $this->formatImageUri($itemsimages->image_intro);
 			}
+
 			if (isset($itemsimages->image_fulltext))
 			{
 				$itemsimages->image_fulltext = $this->formatImageUri($itemsimages->image_fulltext);
@@ -428,30 +483,32 @@ class articles
 			$itemsurls = json_decode($items->urls);
 			$jsonarray['article']['urls'] = array();
 			$i = 0;
+
 			if (isset($itemsurls->urla) && !empty($itemsurls->urla))
 			{
 				$jsonarray['article']['urls'][$i]['url'] = $itemsurls->urla;
 				$jsonarray['article']['urls'][$i]['urltext'] = $itemsurls->urlatext;
 				$i++;
-
 			}
+
 			if (isset($itemsurls->urlb) && !empty($itemsurls->urlb))
 			{
 				$jsonarray['article']['urls'][$i]['url'] = $itemsurls->urlb;
 				$jsonarray['article']['urls'][$i]['urltext'] = $itemsurls->urlbtext;
 				$i++;
 			}
+
 			if (isset($itemsurls->urlc) && !empty($itemsurls->urlc))
 			{
 				$jsonarray['article']['urls'][$i]['url'] = $itemsurls->urlc;
 				$jsonarray['article']['urls'][$i]['urltext'] = $itemsurls->urlctext;
 				$i++;
 			}
+
 			unset($i);
 			$jsonarray['article']['created'] = $items->created;
 			$jsonarray['article']['author'] = $items->author;
 			$jsonarray['article']['shareLink'] = JURI::base() . "index.php?option=com_content&view=article&id={$items->id}:{$items->alias}&catid={$items->catid}";
-
 		}
 		else
 		{
@@ -461,13 +518,22 @@ class articles
 		return $jsonarray;
 	}
 
+	/**
+	 * The Format Image Uri Function
+	 *
+	 * @param   [type]  $imagepath  contains the value of image path
+	 *
+	 * @return  it will imagepath
+	 */
 	private function formatImageUri($imagepath)
 	{
 		$image_properties = parse_url($imagepath);
+
 		if (empty($image_properties['host']))
 		{
 			$imagepath = JUri::base() . $imagepath;
 		}
+
 		return $imagepath;
 	}
 }

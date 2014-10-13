@@ -9,9 +9,24 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvViewijoomeradv extends JViewLegacy
+
+/**
+ * The Class For IJoomeradvViewijoomeradv which will Extends JViewLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
+ */
+class IjoomeradvViewijoomeradv extends JViewLegacy
 {
-	function display($tmpl = null)
+	/**
+	 * The Function For Display
+	 *
+	 * @param   [type]  $tmpl  $tmpl
+	 *
+	 * @return  void
+	 */
+	public function display($tmpl = null)
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_TITLE'));

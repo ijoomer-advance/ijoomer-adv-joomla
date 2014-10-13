@@ -9,14 +9,20 @@
 
 defined('_JEXEC') or die;
 
-class icms_helper
+/**
+ * The Class For The Icms_Helper
+ *
+ * @since  1.0
+ */
+class Icms_Helper
 {
-
 	private $db_helper;
 
-	function __construct()
+	/**
+	 * Constructor
+	 */
+	public function __construct()
 	{
-		$this->db_helper =  JFactory::getDBO();
+		$this->db_helper = JFactory::getDBO();
 	}
-
 }

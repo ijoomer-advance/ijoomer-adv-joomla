@@ -29,7 +29,8 @@ if (JRequest::getVar('ajax'))
 
 	$db->setQuery($sql);
 	$position = $db->loadResult();
-	if ($position == 1 or $position == 2)
+
+	if ( $position == 1 or $position == 2)
 	{
 		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">114x114 px</font>';
 	}
@@ -37,6 +38,7 @@ if (JRequest::getVar('ajax'))
 	{
 		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">64x64 px</font>';
 	}
+
 	$response['text'] = $text;
 	$response['position'] = $position;
 	echo json_encode($response);
@@ -134,13 +136,20 @@ if (JRequest::getVar('ajax'))
 								</td>
 							</tr>
 
-							<?php if ($this->item->type == 'url'): ?>
-								<?php $this->form->setFieldAttribute('link', 'readonly', 'false'); ?>
+							<?php
+								if ( $this->item->type == 'url')
+								{
+							?>
+								<?php
+									$this->form->setFieldAttribute('link', 'readonly', 'false');
+								?>
 								<tr>
 									<td><?php echo $this->form->getLabel('link'); ?></td>
 									<td><?php echo $this->form->getInput('link'); ?></td>
 								</tr>
-							<?php endif; ?>
+							<?php
+								}
+							?>
 
 							<tr>
 								<td><?php echo $this->form->getLabel('menudevice'); ?></td>
@@ -200,7 +209,8 @@ if (JRequest::getVar('ajax'))
 					</td>
 					<td width="300px">
 						<?php if ($this->form->getValue('requiredField') == 1)
-						{ ?>
+						{
+						?>
 							<div class="">
 								<?php echo JHtml::_('sliders.start', 'menu-sliders-' . $this->item->id); ?>
 
@@ -215,13 +225,16 @@ if (JRequest::getVar('ajax'))
 										$extension = $view[0];
 										$extView = $view[2];
 										$menuoptions = $this->form->getValue('menuoptions');
+
 										if ($extView == 'custom')
 										{
 											$menuoptions = json_decode($menuoptions, true);
+
 											if ($this->form->getValue('id'))
 											{
 												$menuoptions['remotetask'] = $view[3];
 											}
+
 											$menuoptions = json_encode($menuoptions);
 										}
 
@@ -235,7 +248,7 @@ if (JRequest::getVar('ajax'))
 										}
 
 										$extClass = $extension . '_menu';
-										$extClass = new $extClass();
+										$extClass = new $extClass;
 										echo $extClass->getRequiredInput($extension, $extView, $menuoptions);
 									}
 									?>
@@ -244,7 +257,9 @@ if (JRequest::getVar('ajax'))
 								<?php echo JHtml::_('sliders.end'); ?>
 
 							</div>
-						<?php } ?>
+						<?php
+}
+						?>
 					</td>
 				</tr>
 			</table>

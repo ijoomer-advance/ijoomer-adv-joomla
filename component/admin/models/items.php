@@ -10,25 +10,23 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Item List Model for Menus.
+ * The Class For IJoomeradvModelItems which will Extends The JModelList
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class IjoomeradvModelItems extends JModelList
 {
 	/**
-	 * Constructor.
+	 * Constructor
 	 *
-	 * @param    array    An optional associative array of configuration settings.
-	 *
-	 * @see        JController
-	 * @since      1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
 		$config = null;
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
@@ -38,6 +36,7 @@ class IjoomeradvModelItems extends JModelList
 				'published', 'a.published',
 				'ordering', 'a.ordering'
 			);
+
 			if (JFactory::getApplication()->input->get('menu_associations', 0))
 			{
 				$config['filter_fields'][] = 'association';
@@ -47,7 +46,11 @@ class IjoomeradvModelItems extends JModelList
 		parent::__construct($config);
 	}
 
-
+	/**
+	 * The Function For Getting The Menus
+	 *
+	 * @return  [type]  returns The loadobjectlist
+	 */
 	public function getMenus()
 	{
 		$db = $this->getDbo();
@@ -55,16 +58,17 @@ class IjoomeradvModelItems extends JModelList
 				FROM #__ijoomeradv_menu_types AS a';
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
+
 		return $result;
 	}
 
 	/**
 	 * Method to auto-populate the model state.
 	 *
-	 * Note. Calling getState in this method will result in recursion.
+	 * @param   [type]  $ordering   contains the value of ordering
+	 * @param   [type]  $direction  contains the value of direction
 	 *
-	 * @return    void
-	 * @since    1.6
+	 * @return  void
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -86,6 +90,7 @@ class IjoomeradvModelItems extends JModelList
 		$this->setState('filter.level', $level);
 
 		$menuType = JRequest::getVar('menutype', null);
+
 		if ($menuType)
 		{
 			if ($menuType != $app->getUserState($this->context . '.filter.menutype'))
@@ -124,10 +129,9 @@ class IjoomeradvModelItems extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param    string $id A prefix for the store id.
+	 * @param   string  $id  contains the value of id
 	 *
-	 * @return    string        A store id.
-	 * @since    1.6
+	 * @return  string        A store id.
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -146,7 +150,8 @@ class IjoomeradvModelItems extends JModelList
 	 * In the absence of better information, this is the first menu ordered by title.
 	 *
 	 * @return    string    The default menu type
-	 * @since    1.6
+	 *
+	 * @since    1.0
 	 */
 	protected function getDefaultMenuType()
 	{
@@ -192,6 +197,7 @@ class IjoomeradvModelItems extends JModelList
 
 		// Select all fields from the table.
 		$menutype = $this->getState('filter.menutype');
+
 		if (is_numeric($menutype))
 		{
 			$sql = 'SELECT id FROM `#__ijoomeradv_menu_types` WHERE id=' . $menutype;
@@ -218,6 +224,7 @@ class IjoomeradvModelItems extends JModelList
 				  LEFT JOIN #__viewlevels AS ag ON ag.id = a.access' .
 			$where .
 			'ORDER BY ' . $this->getState('list.ordering', 'menutype') . ' ' . $this->getState('list.direction', 'ASC');
+
 		return $query;
 	}
 }

@@ -10,25 +10,23 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu List Model for Menus.
+ * The Class For IJoomeradvModelMenus which will Extends The JModelList
  *
- * @package     Joomla.Administrator
- * @subpackage  com_ijoomer
- * @since       1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class IjoomeradvModelMenus extends JModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param   array    An optional associative array of configuration settings.
-	 *
-	 * @see        JController
-	 * @since      1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
 		$config = null;
+
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
@@ -46,7 +44,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
 	 *
-	 * @since   1.6.1
+	 * @since   1.0
 	 */
 	public function getItems()
 	{
@@ -127,7 +125,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  string  An SQL query
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	protected function getListQuery()
 	{
@@ -138,7 +136,6 @@ class IjoomeradvModelMenus extends JModelList
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'));
 		$query->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a');
-
 
 		$query->group('a.id, a.title, a.description');
 
@@ -153,12 +150,12 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string $ordering  An optional ordering field.
-	 * @param   string $direction An optional direction (asc|desc).
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
 	 *
-	 * @since   1.6
+	 * @since   1.0
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -174,7 +171,7 @@ class IjoomeradvModelMenus extends JModelList
 	 *
 	 * @return  integer
 	 *
-	 * @since   2.5
+	 * @since   1.0
 	 */
 	public function getModMenuId()
 	{

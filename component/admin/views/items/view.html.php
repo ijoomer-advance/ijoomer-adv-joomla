@@ -12,24 +12,34 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 
+
 /**
- * The HTML Menus Menu Items View.
+ * The Class For IJoomeradvViewItems which will Extends JViewLegacy
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @version        1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
  */
 class IjoomeradvViewItems extends JViewLegacy
 {
 	protected $f_levels;
+
 	protected $items;
+
 	protected $pagination;
+
 	protected $state;
+
 	protected $menus;
+
 	protected $menuOptions;
 
 	/**
-	 * Display the view
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -47,7 +57,7 @@ class IjoomeradvViewItems extends JViewLegacy
 			$this->ordering[$item->id][] = $item->id;
 		}
 
-		//menu filter
+		// Menu filter
 		$menuOptionsList = array();
 
 		foreach ($this->menus as $menus)
@@ -79,7 +89,9 @@ class IjoomeradvViewItems extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since    1.6
+	 * @since    1.0
+	 *
+	 * @return void
 	 */
 	protected function addToolbar()
 	{
@@ -100,11 +112,11 @@ class IjoomeradvViewItems extends JViewLegacy
 
 		JToolBarHelper::divider();
 
-
 		if ($this->state->get('filter.published') == -2)
 		{
 			JToolBarHelper::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
+
 		JToolBarHelper::trash('trash');
 	}
 }

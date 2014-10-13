@@ -10,21 +10,43 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvControllerExtensions extends JControllerLegacy
+/**
+ * The Class For IJoomer Controller Extension which will extends JControllerLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
+ */
+class IjoomeradvControllerExtensions extends JControllerLegacy
 {
+	/**
+	 * Home Function For Redirecting To Home
+	 *
+	 * @return  void
+	 */
 	public function home()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv', null);
 	}
 
-	function add()
+	/**
+	 * Add Function
+	 *
+	 * @return  void
+	 */
+	public function add()
 	{
 		JFactory::getApplication()->input->set('layout', 'install');
 
 		parent::display();
 	}
 
-	function detail()
+	/**
+	 * Detail Function
+	 *
+	 * @return  void
+	 */
+	public function detail()
 	{
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'detail');
@@ -33,7 +55,12 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
-	function save()
+	/**
+	 * Save Function
+	 *
+	 * @return  void
+	 */
+	public function save()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->get('post');
@@ -52,7 +79,12 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions', $msg);
 	}
 
-	function apply()
+	/**
+	 * Apply Function For Applying The Latest Changes
+	 *
+	 * @return  void
+	 */
+	public function apply()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->get('post');
@@ -71,7 +103,12 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $post['extid'], $msg);
 	}
 
-	function install()
+	/**
+	 * Install Function For installing The Extension
+	 *
+	 * @return  void
+	 */
+	public function install()
 	{
 		$app = JFactory::getApplication();
 		$model = $this->getModel('extensions');
@@ -84,12 +121,22 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
-	function uninstall()
-	{
+	/**
+	 * Uninstall Function For uninstalling The Extension
+	 *
+	 * @return  void
+	 */
 
+	public function uninstall()
+	{
 	}
 
-	function extensionmanage()
+	/**
+	 * Extensionmanage Function For Managing The Extension
+	 *
+	 * @return  void
+	 */
+	public function extensionmanage()
 	{
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'manage');
@@ -97,7 +144,12 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
-	function publish()
+	/**
+	 * Publish Function For Publishing The Extension
+	 *
+	 * @return  void
+	 */
+	public function publish()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->getArray('post', array());
@@ -120,7 +172,12 @@ class ijoomeradvControllerExtensions extends JControllerLegacy
 		parent::display();
 	}
 
-	function unpublish()
+	/**
+	 * Unpublish Function For unpublishing The Extension
+	 *
+	 * @return  void
+	 */
+	public function unpublish()
 	{
 		$app = JFactory::getApplication();
 		$post = $app->input->getArray('post', array());

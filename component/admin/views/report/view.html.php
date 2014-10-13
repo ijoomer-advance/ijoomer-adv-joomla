@@ -9,9 +9,24 @@
 
 defined('_JEXEC') or die;
 
-class ijoomeradvViewReport extends JViewLegacy
+
+/**
+ * The Class For IJoomeradvViewReport which will Extends JViewLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
+ */
+class IjoomeradvViewReport extends JViewLegacy
 {
-	function display($tpl = null)
+	/**
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
+	 */
+	public function display($tpl = null)
 	{
 		global $context;
 
@@ -32,7 +47,7 @@ class ijoomeradvViewReport extends JViewLegacy
 			JToolBarHelper::back();
 		}
 
-		//Code for add submenu for joomla version 1.6 and 1.7
+		// Code for add submenu for joomla version 1.6 and 1.7
 		if (IJ_JOOMLA_VERSION > 1.5)
 		{
 			JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS'), 'index.php?option=com_ijoomeradv&view=extensions', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') != 'manage'));
@@ -49,7 +64,7 @@ class ijoomeradvViewReport extends JViewLegacy
 		$uri = JFactory::getURI()->toString();
 		$this->request_url = $uri;
 
-		//set default list all in extension list
+		// Set default list all in extension list
 		$defaultext = new stdClass;
 		$defaultext->name = JText::_('COM_IJOOMERADV_SELECT_EXTENSION');
 		$defaultext->classname = 'default';

@@ -9,22 +9,30 @@
 
 defined('_JEXEC') or die;
 
+
 /**
- * The HTML Menus Menu Item View.
+ * The Class For IJoomeradvViewItem which will Extends JViewLegacy
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
  */
 class IjoomeradvViewItem extends JViewLegacy
 {
 	protected $form;
+
 	protected $item;
+
 	protected $modules;
+
 	protected $state;
 
 	/**
-	 * Display the view
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -37,7 +45,7 @@ class IjoomeradvViewItem extends JViewLegacy
 		$extention = explode('.', $this->form->getValue('views'));
 		$extention = $extention[0];
 
-		$lang =  JFactory::getLanguage();
+		$lang = JFactory::getLanguage();
 		$base_dir = JPATH_COMPONENT_SITE . '/' . "extensions" . '/' . $extention;
 		$lang->load($extention, $base_dir, null, true);
 
@@ -48,7 +56,9 @@ class IjoomeradvViewItem extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since    1.6
+	 * @since    1.0
+	 *
+	 * @return void
 	 */
 	protected function addToolbar()
 	{

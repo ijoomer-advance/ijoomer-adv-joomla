@@ -10,20 +10,20 @@
 defined('_JEXEC') or die;
 
 /**
- * Menu Types table
+ * The Class For JTableIJMenuType which will Extends JTable
  *
- * @package     Joomla.Platform
- * @subpackage  Table
- * @since       11.1
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.table
+ * @since       1.0
  */
 class JTableIjmenuType extends JTable
 {
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabase &$db A database connector object.
+	 * @param   JDatabase  &$db  A database connector object.
 	 *
-	 * @since  11.1
+	 * @since  1.0
 	 */
 	public function __construct(&$db)
 	{
@@ -36,18 +36,21 @@ class JTableIjmenuType extends JTable
 	 * @return  boolean  True on success, false on failure
 	 *
 	 * @see     JTable::check
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function check()
 	{
 		$this->menutype = JApplication::stringURLSafe($this->menutype);
+
 		if (empty($this->menutype))
 		{
 			$this->setError(JText::_('JLIB_DATABASE_ERROR_MENUTYPE_EMPTY'));
+
 			return false;
 		}
 
 		// Sanitise data.
+
 		if (trim($this->title) == '')
 		{
 			$this->title = $this->menutype;
@@ -64,22 +67,22 @@ class JTableIjmenuType extends JTable
 		if ($this->_db->loadResult())
 		{
 			$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_MENUTYPE_EXISTS', $this->menutype));
+
 			return false;
 		}
 
 		return true;
 	}
 
-
 	/**
 	 * Method to delete a row from the database table by primary key value.
 	 *
-	 * @param   mixed $pk An optional primary key value to delete.  If not set the instance property value is used.
+	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
 	 *
 	 * @return  boolean  True on success.
 	 *
 	 * @link    http://docs.joomla.org/JTable/delete
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function delete($pk = null)
 	{
@@ -104,9 +107,11 @@ class JTableIjmenuType extends JTable
 			$query->where('id=' . $this->_db->quote($table->id));
 
 			$this->_db->setQuery($query);
+
 			if (!$this->_db->execute())
 			{
 				$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+
 				return false;
 			}
 
@@ -117,9 +122,11 @@ class JTableIjmenuType extends JTable
 			if (!$this->_db->execute())
 			{
 				$this->setError(JText::sprintf('JLIB_DATABASE_ERROR_DELETE_FAILED', get_class($this), $this->_db->getErrorMsg()));
+
 				return false;
 			}
 		}
+
 		return parent::delete($pk);
 	}
 }

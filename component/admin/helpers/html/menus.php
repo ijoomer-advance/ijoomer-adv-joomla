@@ -7,19 +7,28 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die;
 
 JLoader::register('IjoomeradvHelper', JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/helpers/menus.php');
 
 /**
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
+ * The Menu Item Helper
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.Helper
+ * @since       1.0
  */
 abstract class MenusHtmlMenus
 {
 	/**
-	 * @param    int $itemid The menu item id
+	 * The Function For Association
+	 *
+	 * @param   int  $itemid  The menu item id
+	 *
+	 * @since  1.0
+	 *
+	 * @return it will return a value in false or JHtml
 	 */
 	static function association($itemid)
 	{
@@ -44,11 +53,13 @@ abstract class MenusHtmlMenus
 		if ($error = $db->getErrorMsg())
 		{
 			JError::raiseWarning(500, $error);
+
 			return false;
 		}
 
 		// Construct html
 		$text = array();
+
 		foreach ($associations as $tag => $associated)
 		{
 			if ($associated != $itemid)
@@ -56,22 +67,23 @@ abstract class MenusHtmlMenus
 				$text[] = JText::sprintf('COM_IJOOMERADV_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->title, $items[$associated]->menu_title);
 			}
 		}
+
 		return JHtml::_('tooltip', implode('<br />', $text), JText::_('COM_IJOOMERADV_TIP_ASSOCIATION'), 'menu/icon-16-links.png');
 	}
 
 	/**
 	 * Returns a published state on a grid
 	 *
-	 * @param   integer $value    The state value.
-	 * @param   integer $i        The row index
-	 * @param   boolean $enabled  An optional setting for access control on the action.
-	 * @param   string  $checkbox An optional prefix for checkboxes.
+	 * @param   integer  $value     The state value.
+	 * @param   integer  $i         The row index
+	 * @param   boolean  $enabled   An optional setting for access control on the action.
+	 * @param   string   $checkbox  An optional prefix for checkboxes.
 	 *
 	 * @return  string        The Html code
 	 *
 	 * @see     JHtmlJGrid::state
 	 *
-	 * @since   1.7.1
+	 * @since   1.0
 	 */
 	public static function state($value, $i, $enabled = true, $checkbox = 'cb')
 	{

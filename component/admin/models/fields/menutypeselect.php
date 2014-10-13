@@ -14,9 +14,9 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class JFormFieldMenutypeselect extends JFormFieldList
 {
@@ -24,7 +24,7 @@ class JFormFieldMenutypeselect extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var        string
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $type = 'menutype';
 
@@ -32,7 +32,8 @@ class JFormFieldMenutypeselect extends JFormFieldList
 	 * Method to get the field input markup.
 	 *
 	 * @return    string    The field input markup.
-	 * @since    1.6
+	 *
+	 * @since    1.0
 	 */
 	protected function getInput()
 	{
@@ -58,6 +59,7 @@ class JFormFieldMenutypeselect extends JFormFieldList
 					$screenname[] = $sname[1];
 				}
 			}
+
 			$screen_list = implode(',', $screenname);
 		}
 		else

@@ -14,9 +14,9 @@ JFormHelper::loadFieldClass('list');
 /**
  * Form Field class for the Joomla Framework.
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
  */
 class JFormFieldMenuParent extends JFormFieldList
 {
@@ -24,15 +24,14 @@ class JFormFieldMenuParent extends JFormFieldList
 	 * The form field type.
 	 *
 	 * @var        string
-	 * @since    1.6
+	 * @since    1.0
 	 */
 	protected $type = 'MenuParent';
 
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return    array    The field option objects.
-	 * @since    1.6
+	 * @return  array  The field option objects.
 	 */
 	protected function getOptions()
 	{

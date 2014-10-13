@@ -9,10 +9,24 @@
 
 defined('_JEXEC') or die;
 
+
+/**
+ * The Class For IJoomeradvViewPushnotif which will Extends JViewLegacy
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
+ */
 class IjoomeradvViewPushnotif extends JViewLegacy
 {
-
-	function display($tpl = null)
+	/**
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  $tpl
+	 *
+	 * @return  void
+	 */
+	public function display($tpl = null)
 	{
 		global $context;
 
@@ -25,7 +39,7 @@ class IjoomeradvViewPushnotif extends JViewLegacy
 		JToolBarHelper::divider();
 		JToolBarHelper::apply();
 
-		//Code for add submenu for joomla version 1.6 and 1.7
+		// Code for add submenu for joomla version 1.6 and 1.7
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS'), 'index.php?option=com_ijoomeradv&view=extensions', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') != 'manage'));
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS_MANAGER'), 'index.php?option=com_ijoomeradv&view=extensions&layout=manage', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') == 'manage'));
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_GLOBAL_CONFIGURATION'), 'index.php?option=com_ijoomeradv&view=config', JRequest::getVar('view') == 'config');

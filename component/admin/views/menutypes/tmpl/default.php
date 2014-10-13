@@ -22,17 +22,28 @@ defined('_JEXEC') or die;
 <?php echo JHtml::_('bootstrap.startAccordion', 'collapseTypes', array('active' => 'slide1')); ?>
 <?php
 $i = 1;
-foreach ($this->types as $name => $list): ?>
-	<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'slide' . $i++); ?>
+
+	foreach ($this->types as $name => $list):
+?>
+	<?php
+		echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'slide' . ($i++));
+	?>
 	<ul>
-		<?php foreach ($list as $item): ?>
+		<?php
+			foreach ($list as $item):
+		?>
 			<li><a class="choose_type" href="#" title="<?php echo JText::_($item->description); ?>"
 			       onclick="javascript:setmenutype('<?php echo base64_encode(json_encode(array('id' => $this->recordId, 'extension' => $name, 'caption' => $item->caption, 'task' => $item->task, 'view' => $item->view, 'remoteTask' => $item->remoteTask, 'requiredField' => $item->requiredField))); ?>')">
 					<?php echo JText::_($item->caption); ?>
 				</a>
 			</li>
-		<?php endforeach; ?>
+		<?php
+			endforeach;
+		?>
 	</ul>
 	<?php echo JHtml::_('bootstrap.endSlide'); ?>
-<?php endforeach; ?>
-<?php echo JHtml::_('bootstrap.endAccordion'); ?>
+<?php
+	endforeach;
+?>
+<?php
+	echo JHtml::_('bootstrap.endAccordion');

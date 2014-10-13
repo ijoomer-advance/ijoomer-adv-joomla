@@ -40,23 +40,31 @@ defined('_JEXEC') or die;
 
 	<?php
 	$i = 0;
-	foreach ($this->types as $name => $list): ?>
-		<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'collapse' . $i++); ?>
+
+	foreach ($this->types as $name => $list):
+	?>
+		<?php echo JHtml::_('bootstrap.addSlide', 'collapseTypes', JText::_($name), 'collapse' . ($i++)); ?>
 		<ul class="nav nav-tabs nav-stacked">
-			<?php foreach ($list as $item): ?>
+			<?php
+				foreach ($list as $item):
+			?>
 				<li>
 					<input type="checkbox" <?php if ($item->checked)
 					{
 						echo 'checked="checked"';
-					} ?>
+} ?>
 					       id="<?php echo $name . '.' . $item->view; ?>"
 					       value="<?php echo $name . '.' . $item->view . '.' . $item->task . '.' . $item->remoteTask; ?>"
 					       name="screen[]" class="chkbox chk-menulink-2">&nbsp;-&nbsp;<?php echo $item->caption; ?>
 				</li>
-			<?php endforeach; ?>
+			<?php
+				endforeach;
+			?>
 		</ul>
 		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php endforeach; ?>
+	<?php
+	endforeach;
+	?>
 	<!-- </ul> -->
 	<?php echo JHtml::_('bootstrap.endAccordion'); ?>
 	<input type="hidden" name="option" value="com_ijoomeradv"/>

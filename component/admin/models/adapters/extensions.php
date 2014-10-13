@@ -10,23 +10,38 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * Form Field class for the Joomla Framework.
+ *
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.models
+ * @since       1.0
+ */
 class JInstallerExtensions extends JObject
 {
-
-	function __construct(&$parent)
+	/**
+	 * The Construct Function
+	 *
+	 * @param   [type]  &$parent  contains the value of $parent
+	 */
+	public function __construct(&$parent)
 	{
-		$this->parent =  $parent;
+		$this->parent = $parent;
 		$this->tbl_prefix = '#__ijoomeradv_';
 	}
 
-
-	function install()
+/**
+ * The Function For Installation
+ *
+ * @return  boolean returns the value in true or false
+ */
+	public function install()
 	{
 		// Get a database connector object
-		$db =  $this->parent->getDBO();
+		$db = $this->parent->getDBO();
 
 		// Get the extension manifest object
-		$this->manifest =  $this->parent->getManifest();
+		$this->manifest = $this->parent->getManifest();
 
 		$query = "SELECT `manifest_cache`
 				FROM #__extensions
@@ -35,7 +50,7 @@ class JInstallerExtensions extends JObject
 		$db->setQuery($query);
 		$extension = json_decode($db->loadResult($query));
 
-		// check version
+		// Check version
 		if (floatval($this->manifest->version) != intval($extension->version))
 		{
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSIONS') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . JText::_('COM_IJOOMERADV_VERSION_NOT_SUPPORTED'));
@@ -48,7 +63,7 @@ class JInstallerExtensions extends JObject
 		 */
 		// Set the extensions name
 		$name = $this->manifest->name;
-		$filter =  JFilterInput::getInstance();
+		$filter = JFilterInput::getInstance();
 		$name = $filter->clean($name, 'string');
 		$this->set('name', $name);
 
@@ -63,13 +78,14 @@ class JInstallerExtensions extends JObject
 		$type = (string) $this->manifest->attributes()->type;
 
 		// Set the installation path
-		$element =  $this->manifest->files;
+		$element = $this->manifest->files;
 		$ename = (string) $element->children()->attributes()->extensions;
 
-		//collect images to $images variable and remove the entry from the files element
+		// Collect images to $images variable and remove the entry from the files element
 		if (is_a($element, 'SimpleXMLElement') && count($element->children()))
 		{
 			$tm = 0;
+
 			foreach ($element->children()->image as $key => $value)
 			{
 				$images[$tm] = (string) $value;
@@ -77,11 +93,11 @@ class JInstallerExtensions extends JObject
 			}
 		}
 
-		//set extension name
+		// Set extension name
 		$extension_classname = (string) $this->manifest->extension_classname;
 		$this->set('extension_classname', $extension_classname);
 
-		// set extension option
+		// Set extension option
 		$extension_option = (string) $this->manifest->extension_option;
 		$this->set('extension_option', $extension_option);
 
@@ -92,6 +108,7 @@ class JInstallerExtensions extends JObject
 		else
 		{
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . JText::_('COM_IJOOMERADV_NO_EXTENSION_FILE_OR_CLASS_NAME_SPECIFIED'));
+
 			return false;
 		}
 
@@ -108,11 +125,13 @@ class JInstallerExtensions extends JObject
 		 */
 		// If the plugin directory does not exist, lets create it
 		$created = false;
+
 		if (!file_exists($this->parent->getPath('extension_root')))
 		{
 			if (!$created = JFolder::create($this->parent->getPath('extension_root')))
 			{
 				$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . JText::_('COM_IJOOMERADV_FAILED_TO_CREATE_DIRECTORY') . ': "' . $this->parent->getPath('extension_root') . '"');
+
 				return false;
 			}
 		}
@@ -132,16 +151,18 @@ class JInstallerExtensions extends JObject
 		{
 			// Install failed, roll back changes
 			$this->parent->abort();
+
 			return false;
 		}
 
-		// copy images to images folder
+		// Copy images to images folder
 		if (count($images))
 		{
 			foreach ($images as $image)
 			{
 				$sorc = IJ_SITE . '/' . "extensions" . '/' . $ename . '/' . $image;
 				$dest = IJ_ASSET . '/' . "images" . '/' . $image;
+
 				if (file_exists($sorc))
 				{
 					copy($sorc, $dest);
@@ -150,31 +171,32 @@ class JInstallerExtensions extends JObject
 			}
 		}
 
-		// theme move to theme folder at admin side
+		// Theme move to theme folder at admin side
 		$folderTree = JFolder::listFolderTree($this->parent->getPath('extension_root') . '/' . $ename . '/theme' . DS, null);
 
 		foreach ($folderTree as $key => $value)
 		{
 			$dir = str_replace($this->parent->getPath('extension_root') . '/' . $ename . '/theme' . DS, '', $value['fullname']);
 			$cdir = explode(DS, $dir);
+
 			if (count($cdir) == 1)
 			{
-				// if theme folder is not there
+				// If theme folder is not there
 				if (!is_dir(IJ_ADMIN . '/theme/' . $dir))
 				{
 					JFolder::create(IJ_ADMIN . '/theme/' . $dir);
 				}
 
-				// if extension theme already installed remove it
+				// If extension theme already installed remove it
 				if (is_dir(IJ_ADMIN . '/theme/' . $dir . '/' . $ename))
 				{
 					JFolder::delete(IJ_ADMIN . '/theme/' . $dir . '/' . $ename);
 				}
 
-				//move theme file
+				// Move theme file
 				JFolder::move($value['fullname'] . '/' . $ename, IJ_ADMIN . '/theme/' . $dir . '/' . $ename);
 
-				// update theme option
+				// Update theme option
 				$query = "SELECT `options`
 						FROM #__ijoomeradv_config
 						WHERE `name`='IJOOMER_THM_SELECTED_THEME'";
@@ -183,6 +205,7 @@ class JInstallerExtensions extends JObject
 				$themeoptions = explode(';;', $themeoptions);
 
 				$top = array();
+
 				foreach ($themeoptions as $value)
 				{
 					$tmp = explode('::', $value);
@@ -193,6 +216,7 @@ class JInstallerExtensions extends JObject
 				{
 					$themeoptions[] = strtolower($dir) . '::' . ucfirst($dir);
 				}
+
 				$themeoptions = implode(';;', $themeoptions);
 				$query = "UPDATE #__ijoomeradv_config
 						SET `options`='{$themeoptions}'
@@ -201,7 +225,6 @@ class JInstallerExtensions extends JObject
 				$db->Query();
 			}
 		}
-
 
 		/**
 		 * ---------------------------------------------------------------------------------------------
@@ -214,11 +237,15 @@ class JInstallerExtensions extends JObject
 				FROM `{$this->tbl_prefix}extensions`
 				WHERE `classname` = " . $db->Quote($extension_classname);
 		$db->setQuery($query);
+
 		if (!$db->Query())
-		{ // Install failed, roll back changes
+		{
+			// Install failed, roll back changes
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . $db->stderr(true));
+
 			return false;
 		}
+
 		$extension_id = $db->loadResult();
 
 		// Was there a module already installed with the same name?
@@ -228,10 +255,11 @@ class JInstallerExtensions extends JObject
 			{
 				// Install failed, roll back changes
 				$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . JText::_('COM_IJOOMERADV_EXTENSION') . ' "' . $ename . '" ' . JText::_('COM_IJOOMERADV_ALREADY_EXISTS'));
+
 				return false;
 			}
 
-			//create config table
+			// Create config table
 			$query = "CREATE TABLE IF NOT EXISTS `#__ijoomeradv_{$this->get('extension_classname')}_config` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `caption` varchar(255) NOT NULL,
@@ -247,20 +275,20 @@ class JInstallerExtensions extends JObject
 			$db->setQuery($query);
 			$db->Query();
 
-			$pconfig =  $this->manifest->config;
+			$pconfig = $this->manifest->config;
 
 			if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children()))
 			{
-				$cfgs =  $pconfig->children();
+				$cfgs = $pconfig->children();
 
 				foreach ($cfgs as $cfg)
 				{
-
 					$cnfg = trim((string) $cfg);
 					$query = "SELECT count(*)
 								FROM `#__ijoomeradv_{$this->get('extension_classname')}_config`
 								WHERE `name`='{$cnfg}'";
 					$db->setQuery($query);
+
 					if (!$db->loadResult())
 					{
 						$query = "INSERT INTO #__ijoomeradv_{$this->get('extension_classname')}_config (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`)
@@ -276,14 +304,12 @@ class JInstallerExtensions extends JObject
 						$db->setQuery($query);
 						$db->query();
 					}
-
 				}
 			}
-
 		}
 		else
 		{
-			$row =  JTable::getInstance('extensions', 'Table');
+			$row = JTable::getInstance('extensions', 'Table');
 			$row->name = $this->get('name');
 			$row->classname = $this->get('extension_classname');
 			$row->option = $this->get('extension_option');
@@ -293,10 +319,11 @@ class JInstallerExtensions extends JObject
 			{
 				// Install failed, roll back changes
 				$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . $db->stderr(true));
+
 				return false;
 			}
 
-			//create config table
+			// Create config table
 			$query = "CREATE TABLE IF NOT EXISTS `#__ijoomeradv_{$row->classname}_config` (
 					  `id` int(11) NOT NULL AUTO_INCREMENT,
 					  `caption` varchar(255) NOT NULL,
@@ -311,21 +338,23 @@ class JInstallerExtensions extends JObject
 					)";
 
 			$db->setQuery($query);
+
 			if (!$db->query())
 			{
 				$this->setError($db->getErrorMsg());
+
 				return false;
 			}
 			else
 			{
-				$pconfig =  $this->manifest->config;
+				$pconfig = $this->manifest->config;
 
 				if (is_a($pconfig, 'SimpleXMLElement') && count($pconfig->children()))
 				{
-					$cfgs =  $pconfig->children();
+					$cfgs = $pconfig->children();
+
 					foreach ($cfgs as $cfg)
 					{
-
 						$query = "INSERT INTO #__ijoomeradv_{$this->get('extension_classname')}_config (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`)
 									VALUES (NULL,
 									'" . trim((string) $cfg->attributes()->caption) . "',
@@ -338,7 +367,6 @@ class JInstallerExtensions extends JObject
 									'" . trim((string) $cfg->attributes()->server) . "')";
 						$db->setQuery($query);
 						$db->query();
-
 					}
 				}
 			}
@@ -346,7 +374,7 @@ class JInstallerExtensions extends JObject
 			$this->parent->pushStep(array('type' => 'extensions', 'id' => $row->id));
 		}
 
-		// check if extension needs to add into registration option
+		// Check if extension needs to add into registration option
 		if ($registration == 1)
 		{
 			$query = "SELECT `options`
@@ -358,7 +386,8 @@ class JInstallerExtensions extends JObject
 			if (preg_match("|" . $extension_classname . "|", $options, $match) == 0)
 			{
 				$options .= ';;' . $extension_classname . '::' . $name;
-				// check if need to set to default registration option
+
+				// Check if need to set to default registration option
 				if ($default_registration == 1)
 				{
 					$query = "UPDATE #__ijoomeradv_config
@@ -374,7 +403,7 @@ class JInstallerExtensions extends JObject
 			}
 			else
 			{
-				// check if need to set to default registration option
+				// Check if need to set to default registration option
 				if ($default_registration == 1)
 				{
 					$query = "UPDATE #__ijoomeradv_config
@@ -382,44 +411,64 @@ class JInstallerExtensions extends JObject
 							WHERE `name`='IJOOMER_GC_REGISTRATION'";
 				}
 			}
+
 			$db->setQuery($query);
 			$db->Query();
 		}
-
 
 		if (!$this->parent->copyManifest(-1))
 		{
 			// Install failed, rollback changes
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSIONS') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . JText::_('COM_IJOOMERADV_COULD_NOT_COPY_SETUP_FILE'));
+
 			return false;
 		}
+
 		return true;
 	}
 
+	/**
+	 * The function RecurseDir
+	 *
+	 * @param   [type]  $dir  contains the value of dir
+	 *
+	 * @return  void
+	 */
 	private function recurseDir($dir)
 	{
 		$dirHandle = opendir($dir);
+
 		while ($file = readdir($dirHandle))
 		{
-			if (is_dir($dir . $file) && $file != '.' && $file != '..')
+			if ( is_dir($dir . $file) && $file != '.' && $file != '..')
 			{
-
-				$count = recurseDirs($main . $file . "/", $count); // Correct call and fixed counting
+				// Correct call and fixed counting
+				$count = recurseDirs($main . $file . "/", $count);
 			}
 		}
 	}
 
-	function uninstall($id, $clientId)
+	/**
+	 * The Uninstall Function
+	 *
+	 * @param   [type]  $id        contains the value of Id
+	 * @param   [type]  $clientId  contains the value of Client_Id
+	 *
+	 * @return  it will returns the value in false or $retval
+	 */
+	public function uninstall($id, $clientId)
 	{
 		// Initialize variables
 		$row = null;
 		$retval = true;
-		$db =  $this->parent->getDBO();
+		$db = $this->parent->getDBO();
 
-		$row =  JTable::getInstance('extensions', 'Table');
+		$row = JTable::getInstance('extensions', 'Table');
+
 		if (!$row->load((int) $clientId))
 		{
 			JError::raiseWarning(100, JText::_('COM_IJOOMERADV_ERROR_UNKOWN_EXTENSION'));
+
 			return false;
 		}
 
@@ -429,19 +478,22 @@ class JInstallerExtensions extends JObject
 
 		if (file_exists($manifestFile))
 		{
-			$xml =  JFactory::getXMLParser('Simple');
+			$xml = JFactory::getXMLParser('Simple');
 
 			// If we cannot load the xml file return null
 			if (!$xml->loadFile($manifestFile))
 			{
 				JError::raiseWarning(100, JText::_('COM_IJOOMERADV_EXTENSIONS') . ' ' . JText::_('COM_IJOOMERADV_UNINSTALL') . ': ' . JText::_('COM_IJOOMERADV_COULD_NOT_LOAD_MANIFEST_FILE'));
+
 				return false;
 			}
 
-			$root =  $xml->document;
+			$root = $xml->document;
+
 			if ($root->name() != 'install' && $root->name() != 'mosinstall')
 			{
 				JError::raiseWarning(100, JText::_('COM_IJOOMERADV_EXTENSIONS') . ' ' . JText::_('COM_IJOOMERADV_UNINSTALL') . ': ' . JText::_('COM_IJOOMERADV_INVALID_MANIFIEST_FILE'));
+
 				return false;
 			}
 
@@ -460,19 +512,28 @@ class JInstallerExtensions extends JObject
 
 		JFolder::delete($this->parent->getPath('extension_root') . '/' . $row->classname);
 		unset ($row);
+
 		return $retval;
 	}
 
-	function _rollback_plugin($arg)
+	/**
+	 * The Function For Rollbackplugin
+	 *
+	 * @param   [type]  $arg  contains the value of $arg
+	 *
+	 * @return  boolean returns the values in true or false
+	 */
+	public function _rollback_plugin($arg)
 	{
 		// Get database connector object
-		$db =  $this->parent->getDBO();
+		$db = $this->parent->getDBO();
 
 		// Remove the entry from the #__plugins table
 		$query = 'DELETE' .
 			' FROM `#__' . TABLE_PREFIX . '_extensions`' .
 			' WHERE `id` =' . (int) $arg['id '];
 		$db->setQuery($query);
+
 		return ($db->query() !== false);
 	}
 }

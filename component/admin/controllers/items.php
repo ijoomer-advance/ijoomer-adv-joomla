@@ -10,14 +10,19 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu Item Controller
+ * The Class For IJoomeradvcontrollerItems which will Extends JControllerAdmin
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
  */
 class IjoomeradvControllerItems extends JControllerAdmin
 {
+	/**
+	 * Function Construct
+	 *
+	 * @param   array  $config  contains the value of $config
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -25,28 +30,45 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		$this->registerTask('unsetDefault', 'setDefault');
 	}
 
+	/**
+	 * The Display Function
+	 *
+	 * @param   boolean  $cachable   contains the value of $cachable
+	 * @param   boolean  $urlparams  contains the value of urlparams
+	 *
+	 * @return  boolean  return value
+	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 		JControllerLegacy::display();
 	}
 
+	/**
+	 * The Home Function
+	 *
+	 * @return boolean  returns the value in true or false
+	 */
 	public function home()
 	{
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true), null);
 	}
 
-	/*
-	 * Add New Menu
+	/**
+	 * The Add Function
+	 *
+	 * @return boolean  returns the value in true or false
 	 */
-	function add()
+	public function add()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit', null);
 	}
 
-	/*
-	 * Edit Menu
+	/**
+	 * Edit Function
+	 *
+	 * @return  boolean  returns the value in true or false
 	 */
-	function edit()
+	public function edit()
 	{
 		$app = JFactory::getApplication();
 		$id = $app->input->getArray('cid', array());
@@ -54,10 +76,15 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	}
 
 	/**
-	 * Proxy for getModel
-	 * @since    1.6
+	 * Get Model Function
+	 *
+	 * @param   string  $name    contains the value of Model Name
+	 * @param   string  $prefix  contains the value of Model Prefix
+	 * @param   array   $config  contains the value of Model Config
+	 *
+	 * @return  it will return a value
 	 */
-	function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
+	public function getModel($name = 'Item', $prefix = 'ijoomeradvModel', $config = array())
 	{
 		return parent::getModel($name, $prefix, array('ignore_request' => true));
 	}
@@ -65,8 +92,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Rebuild the nested set tree.
 	 *
-	 * @return    bool    False on failure or error, true on success.
-	 * @since    1.6
+	 * @return  boolean  False on failure or error, true on success.
 	 */
 	public function rebuild()
 	{
@@ -81,16 +107,23 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		{
 			// Reorder succeeded.
 			$this->setMessage(JText::_('COM_IJOOMERADV_ITEMS_REBUILD_SUCCESS'));
+
 			return true;
 		}
 		else
 		{
 			// Rebuild failed.
 			$this->setMessage(JText::sprintf('COM_IJOOMERADV_ITEMS_REBUILD_FAILED'));
+
 			return false;
 		}
 	}
 
+	/**
+	 * Save order Function For Saving The order
+	 *
+	 * @return  boolean  it will return the true value
+	 */
 	public function saveorder()
 	{
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -110,6 +143,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		{
 			// Nothing to reorder
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list, false));
+
 			return true;
 		}
 	}
@@ -117,9 +151,11 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	/**
 	 * Method to set the home property for a list of items
 	 *
-	 * @since    1.6
+	 * @since    1.0
+	 *
+	 * @return  void
 	 */
-	function setDefault()
+	public function setDefault()
 	{
 		// Check for request forgeries
 		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));

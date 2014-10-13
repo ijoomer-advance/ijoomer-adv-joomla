@@ -1,21 +1,21 @@
 <?php
 /**
- * iJoomer is a mobile platform which provides native applications for 
- * iPhone, Android and BlackBerry and works in real-time sync with Joomla! 
- * You can launch your very own Joomla! Mobile Apps on the respective appStore. 
- * Users of your website will be able to download the Joomla Mobile Application 
+ * iJoomer is a mobile platform which provides native applications for
+ * iPhone, Android and BlackBerry and works in real-time sync with Joomla!
+ * You can launch your very own Joomla! Mobile Apps on the respective appStore.
+ * Users of your website will be able to download the Joomla Mobile Application
  * and install on the device.
  * For more info visit: http://www.ijoomer.com
  * For Technical Support: Forum - http://www.ijoomer.com/Forum/
- * 
- * iJoomer is free software; you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License 2 as published by the 
+ *
+ * iJoomer is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License 2 as published by the
  * Free Software Foundation.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with iJoomer; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * @package     IJoomer
  * @subpackage  com_ijoomeradv
  *
@@ -25,44 +25,27 @@
 
 defined('_JEXEC') or die;
 
-class com_ijoomeradvInstallerScript
+/**
+ * The Menu Item Controller
+ *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv
+ * @since       1.0
+ */
+class Com_IjoomeradvInstallerScript
 {
-	/**
-	 * Constructor
-	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
-	 */
-	public function __constructor(JAdapterInstance $adapter)
-	{
-
-	}
-
-	/**
-	 * Called after any type of action
-	 *
-	 * @param   string           $route   Which action is happening (install|uninstall|discover_install)
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
-	 *
-	 * @return  boolean  True on success
-	 */
-	public function postflight($route, JAdapterInstance $adapter)
-	{
-
-	}
-
 	/**
 	 * Called on installation
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 */
 	public function install(JAdapterInstance $adapter)
 	{
-
 		$db = JFactory::getDBO();
 
-		// set default menu items if no menu present
+		// Set default menu items if no menu present
 		$query = "SELECT count(*)
 				FROM #__ijoomeradv_menu";
 		$db->setQuery($query);
@@ -85,7 +68,7 @@ class com_ijoomeradvInstallerScript
 			$db->Query();
 		}
 
-		// set default menu types if not installed
+		// Set default menu types if not installed
 		$query = "SELECT count(*)
 				FROM #__ijoomeradv_menu_types";
 		$db->setQuery($query);
@@ -213,25 +196,26 @@ class com_ijoomeradvInstallerScript
 	/**
 	 * Called on update
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 *
 	 * @return  boolean  True on success
 	 */
 	public function update(JAdapterInstance $adapter)
 	{
-
 	}
 
 	/**
 	 * Called on uninstallation
 	 *
-	 * @param   JAdapterInstance $adapter The object responsible for running this script
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  void
 	 */
 	public function uninstall(JAdapterInstance $adapter)
 	{
 		$db = JFactory::getDBO();
 
-		//Delete plugin config
+		// Delete plugin config
 		$query = "SELECT *
 				FROM #__ijoomeradv_extensions";
 		$db->setQuery($query);

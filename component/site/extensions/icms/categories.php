@@ -9,18 +9,26 @@
 
 defined('_JEXEC') or die;
 
-class categories
+/**
+ * The Class For The Categories
+ *
+ * @since  1.0
+ */
+class Categories
 {
-
 	private $db;
 
-	function __construct()
+	/**
+	 * Constructor
+	 */
+	public function __construct()
 	{
-		$this->db =  JFactory::getDBO();
+		$this->db = JFactory::getDBO();
 	}
 
 	/**
-	 * @uses    Category list
+	 * Category list
+	 *
 	 * @example the json string will be like, :
 	 *    {
 	 *        "extName":"icms",
@@ -29,12 +37,14 @@ class categories
 	 *        "taskData":{}
 	 *    }
 	 *
+	 * @return it will return some value
 	 */
 
 	public function category()
 	{
 		$id = IJReq::getTaskData('id', 0, 'int');
 		$categories = $this->getCategories($id);
+
 		if ($id <= 0)
 		{
 			$articles = null;
@@ -43,9 +53,17 @@ class categories
 		{
 			$articles = $this->getArticles($id);
 		}
+
 		return $this->prepareObject($articles, $categories);
 	}
 
+	/**
+	 * The Get Categories Function
+	 *
+	 * @param   [type]  $id  it contains the id
+	 *
+	 * @return  it will return $categories
+	 */
 	private function getCategories($id)
 	{
 		JRequest::setVar('id', $id);
@@ -63,9 +81,17 @@ class categories
 			$articles = $ContentModelCategory->getItems();
 			$categories = $ContentModelCategory->getChildren();
 		}
+
 		return (json_decode(json_encode($categories)));
 	}
 
+	/**
+	 * The GetArticles Function
+	 *
+	 * @param   [type]  $id  it contains the value of id
+	 *
+	 * @return  it will returns the value of $articles
+	 */
 	private function getArticles($id)
 	{
 		JRequest::setVar('id', $id);
@@ -82,16 +108,17 @@ class categories
 			$articles = $ContentModelCategory->getItems();
 			$articles = json_decode(json_encode($articles));
 		}
+
 		return (json_decode(json_encode($articles)));
 	}
 
 	/**
 	 * Function for prepare object with list of articles and categories
 	 *
-	 * @param Array $articles
-	 * @param Array $categories
+	 * @param   [type]  $articles    contains the value of $articles
+	 * @param   [type]  $categories  contains the value of $categories
 	 *
-	 * @return Array
+	 * @return  array   $jssonarray
 	 */
 	private function prepareObject($articles, $categories)
 	{
@@ -101,6 +128,7 @@ class categories
 		if ($totalarticles <= 0 && $totalcategories <= 0)
 		{
 			$jsonarray['code'] = 204;
+
 			return $jsonarray;
 		}
 
@@ -126,11 +154,13 @@ class categories
 			$categoryObj = new ContentModelCategory;
 			$inc = 0;
 			$categoryArray = null;
+
 			foreach ($categories as $key => $value)
 			{
 				$subcategory = $this->getCategories($value->id);
 				$subcategorycount = count($subcategory);
 				$ischild = false;
+
 				if ($subcategorycount > 0 or $value->numitems > 0)
 				{
 					$ischild = true;
@@ -139,6 +169,7 @@ class categories
 				{
 					$ischild = $this->getChildCount($value->id);
 				}
+
 				if ($ischild)
 				{
 					$categoryArray['categories'][$inc]['categoryid'] = $value->id;
@@ -148,9 +179,11 @@ class categories
 					$images = array();
 					preg_match_all('/(src)=("[^"]*")/i', $value->description, $images);
 					$imgpath = str_replace(array('src="', '"'), "", $images[0]);
+
 					if (!empty($imgpath[0]))
 					{
 						$image_properties = parse_url($imgpath[0]);
+
 						if (empty($image_properties['host']))
 						{
 							$imgpath[0] = JUri::base() . $imgpath[0];
@@ -171,6 +204,7 @@ class categories
 					$inc++;
 				}
 			}
+
 			if (!$categoryArray)
 			{
 				$categoryArray['categories'] = '';
@@ -186,9 +220,17 @@ class categories
 		return $jsonarray;
 	}
 
+	/**
+	 * The Get Child Count Function
+	 *
+	 * @param   [type]  $id  it will contains the value of id
+	 *
+	 * @return  boolean it will return the value in true or false
+	 */
 	private function getChildCount($id)
 	{
 		$childcategory = $this->getCategories($id);
+
 		foreach ($childcategory as $key => $value)
 		{
 			if ($value->numitems > 0)
@@ -200,6 +242,7 @@ class categories
 				$this->getChildCount($value->id);
 			}
 		}
+
 		return false;
 	}
 }

@@ -11,55 +11,65 @@
 defined('_JEXEC') or die;
 
 /**
- * The Menu List Controller
+ * The Menu Item Controller
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
  */
 class IjoomeradvControllerMenus extends JControllerLegacy
 {
+	/**
+	 * The Home Function For Redirectiong To Home.
+	 *
+	 * @return  boolean  returns the link to Home.
+	 */
 	public function home()
 	{
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true), null);
 	}
 
-	/*
-	 * Add New Menu
+	/**
+	 * The Add Function
+	 *
+	 * @return boolean  returns the value in true or false
 	 */
-	function add()
+	public function add()
 	{
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit', null);
 	}
 
-	/*
-	 * Edit Menu
+	/**
+	 * Edit Function
+	 *
+	 * @return  boolean  returns the value in true or false
 	 */
-	function edit()
+	public function edit()
 	{
-		$id = JFactory::getApplication()->input->getArray('cid', array()); //JRequest::getVar('cid',null,'','array');
+		$id = JFactory::getApplication()->input->getArray('cid', array());
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=menu&layout=edit&id=' . $id[0], null);
 	}
 
 	/**
-	 * Method to get a model object, loading it if required.
+	 * Get Model Function
 	 *
-	 * @param   string $name   The model name. Optional.
-	 * @param   string $prefix The class prefix. Optional.
-	 * @param   array  $config Configuration array for model. Optional.
+	 * @param   string  $name    contains Name
+	 * @param   string  $prefix  contains prefix
+	 * @param   array   $config  contains config
 	 *
-	 * @return  object  The model.
-	 *
-	 * @since   1.6
+	 * @return  the value of model
 	 */
 	public function getModel($name = 'Menu', $prefix = 'IjoomeradvModel', $config = array('ignore_request' => true))
 	{
 		$model = parent::getModel($name, $prefix, $config);
+
 		return $model;
 	}
 
 	/**
-	 * Removes an item
+	 * Delete Function
+	 *
+	 * @return  void
 	 */
 	public function delete()
 	{
@@ -67,7 +77,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid = JFactory::getApplication()->input->getArray('cid', array()); //JRequest::getVar('cid', array(), '', 'array');
+		$cid = JFactory::getApplication()->input->getArray('cid', array());
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
@@ -114,18 +124,23 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 		{
 			// Reorder succeeded.
 			$this->setMessage(JText::_('JTOOLBAR_REBUILD_SUCCESS'));
+
 			return true;
 		}
+
 		else
 		{
 			// Rebuild failed.
 			$this->setMessage(JText::sprintf('JTOOLBAR_REBUILD_FAILED', $model->getMessage()));
+
 			return false;
 		}
 	}
 
 	/**
 	 * Temporary method. This should go into the 1.5 to 1.6 upgrade routines.
+	 *
+	 * @return  boolean  true or false value
 	 */
 	public function resync()
 	{

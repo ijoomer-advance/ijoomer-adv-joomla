@@ -9,13 +9,12 @@
 
 
 defined('_JEXEC') or die;
-
 /**
- * The Menu List Controller
+ * The Menu Item Controller
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @since          1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
  */
 class IjoomeradvControllerMenutypes extends JControllerLegacy
 {

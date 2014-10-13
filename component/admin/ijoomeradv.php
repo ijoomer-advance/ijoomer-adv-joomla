@@ -1,21 +1,21 @@
 <?php
 /**
- * iJoomer is a mobile platform which provides native applications for 
- * iPhone, Android and BlackBerry and works in real-time sync with Joomla! 
- * You can launch your very own Joomla! Mobile Apps on the respective appStore. 
- * Users of your website will be able to download the Joomla Mobile Application 
+ * iJoomer is a mobile platform which provides native applications for
+ * iPhone, Android and BlackBerry and works in real-time sync with Joomla!
+ * You can launch your very own Joomla! Mobile Apps on the respective appStore.
+ * Users of your website will be able to download the Joomla Mobile Application
  * and install on the device.
  * For more info visit: http://www.ijoomer.com
  * For Technical Support: Forum - http://www.ijoomer.com/Forum/
- * 
- * iJoomer is free software; you can redistribute it and/or modify it under 
- * the terms of the GNU General Public License 2 as published by the 
+ *
+ * iJoomer is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License 2 as published by the
  * Free Software Foundation.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with iJoomer; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * @package     IJoomer.Backend
  * @subpackage  com_ijoomeradv
  *
@@ -31,7 +31,7 @@ define('IJADV_VERSION', 1.5);
 jimport('joomla.version');
 $version = new JVersion;
 
-//define joomla version
+// Define joomla version
 defined('IJ_JOOMLA_VERSION') or define('IJ_JOOMLA_VERSION', floatval($version->RELEASE));
 
 defined('IJ_ADMIN') or define('IJ_ADMIN', JPATH_COMPONENT);
@@ -50,6 +50,7 @@ $document->addStyleSheet('components/com_ijoomeradv/assets/css/ijoomeradv.css');
 
 $controller = JRequest::getVar('view', 'ijoomeradv');
 $path = IJ_CONTROLLER . '/' . $controller . '.php';
+
 if (file_exists($path))
 {
 	require_once $path;
@@ -60,7 +61,8 @@ else
 }
 
 $classname = 'ijoomeradvController' . $controller;
-$controller = new $classname();
+
+$controller = new $classname;
 
 // Perform the Request task
 $task = JRequest::getVar('task');

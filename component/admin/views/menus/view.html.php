@@ -10,21 +10,28 @@
 defined('_JEXEC') or die;
 
 /**
- * The HTML Menus Menu Menus View.
+ * The Class For IJoomeradvViewMenus which will Extends JViewLegacy
  *
- * @package        Joomla.Administrator
- * @subpackage     com_ijoomer
- * @version        1.6
+ * @package     IJoomer.Backdend
+ * @subpackage  com_ijoomeradv.view
+ * @since       1.0
  */
 class IjoomeradvViewMenus extends JViewLegacy
 {
 	protected $items;
+
 	protected $modules;
+
 	protected $pagination;
+
 	protected $state;
 
 	/**
-	 * Display the view
+	 * The Display Function
+	 *
+	 * @param   [type]  $tpl  contains the value of tpl
+	 *
+	 * @return  void
 	 */
 	public function display($tpl = null)
 	{
@@ -37,6 +44,7 @@ class IjoomeradvViewMenus extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode("\n", $errors));
+
 			return false;
 		}
 
@@ -47,7 +55,9 @@ class IjoomeradvViewMenus extends JViewLegacy
 	/**
 	 * Add the page title and toolbar.
 	 *
-	 * @since    1.6
+	 * @since    1.0
+	 *
+	 * @return void
 	 */
 	protected function addToolbar()
 	{

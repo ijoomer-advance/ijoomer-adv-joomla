@@ -9,17 +9,37 @@
 
 defined('_JEXEC') or die;
 
+/**
+ * The Class MCrypt
+ *
+ * @package     IJoomer.Frontend
+ * @subpackage  com_ijoomeradv.controller
+ * @since       1.0
+ */
+
 class MCrypt
 {
-	private $iv = 'fedcba9876543210'; #Same as in JAVA
-	private $key = '0123456789abcdef'; #Same as in JAVA
+	// Same as in JAVA
+	private $iv = 'fedcba9876543210';
 
+	// Same as in JAVA
+	private $key = '0123456789abcdef';
 
-	function __construct()
+	/**
+	 * Constructtor
+	 */
+	public function __construct()
 	{
 		$this->_db = JFactory::getDBO();
 	}
 
+	/**
+	 * The hex2bin Function
+	 *
+	 * @param   [type]  $hexdata  contains the value of hexdata
+	 *
+	 * @return  it will return $bindata
+	 */
 	protected function hex2bin($hexdata)
 	{
 		$bindata = '';
@@ -32,10 +52,15 @@ class MCrypt
 		return $bindata;
 	}
 
-	// encryption..
-	function encrypt($input)
+	/**
+	 * The Encrtyption Function
+	 *
+	 * @param   [type]  $input  contains the value of input
+	 *
+	 * @return  it will return $data
+	 */
+	public function encrypt($input)
 	{
-
 		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
 		$key = $this->_db->loadResult();
@@ -44,7 +69,8 @@ class MCrypt
 		$input = $this->pkcs5_pad($input, $size);
 		$iv = '0000000000000000';
 		$td = mcrypt_module_open('rijndael-128', '', 'cbc', '');
-		//$iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
+
+		// $iv = mcrypt_create_iv (mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 		mcrypt_generic_init($td, $key, $iv);
 		$data = mcrypt_generic($td, $input);
 
@@ -55,8 +81,14 @@ class MCrypt
 		return $data;
 	}
 
-	// decryption..
-	function decrypt($code)
+	/**
+	 * The Decrypt Function
+	 *
+	 * @param   [type]  $code  $code
+	 *
+	 * @return  void
+	 */
+	public function decrypt($code)
 	{
 		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
 		$this->_db->setQuery($query);
@@ -72,21 +104,44 @@ class MCrypt
 		mcrypt_generic_deinit($td);
 		mcrypt_module_close($td);
 		$decrypted = $this->pkcs5_unpad($decrypted);
+
 		return $decrypted;
 	}
 
-	function pkcs5_pad($text, $blocksize)
+	/**
+	 * The Pkcs5_pad Function
+	 *
+	 * @param   [type]  $text       contains the value of text
+	 * @param   [type]  $blocksize  contains the value of block Size
+	 *
+	 * @return  returns the $text value
+	 */
+	public function pkcs5_pad($text, $blocksize)
 	{
 		$pad = $blocksize - (strlen($text) % $blocksize);
+
 		return $text . str_repeat(chr($pad), $pad);
 	}
 
-	function pkcs5_unpad($text)
+	/**
+	 * The Function Pkcs5_unpad
+	 *
+	 * @param   [type]  $text  contains the value of text
+	 *
+	 * @return  returns the substr
+	 */
+	public function pkcs5_unpad($text)
 	{
 		$pad = ord($text{strlen($text) - 1});
-		if ($pad > strlen($text)) return false;
-		if (strspn($text, chr($pad), strlen($text) - $pad) != $pad) return false;
+
+		if ( $pad > strlen($text))
+		{
+			return false;
+		}
+
+		if ( strspn($text, chr($pad), strlen($text) - $pad) != $pad)
+			return false;
+
 		return substr($text, 0, -1 * $pad);
 	}
-
 }
