@@ -4,11 +4,11 @@
 	<name>ijoomeradv</name>
 	<creationDate>22-Apr-2013</creationDate>
 	<author>Tailored Solutions</author>
-	<authorEmail>testing.tasol@gmail.com</authorEmail>
-	<authorUrl>www.tasolglobal.com</authorUrl>
-	<copyright>Copyright (C) 2012. All rights reserved.</copyright>
-	<license>GNU/GPL</license>
-	<version>1.5</version>
+	<authorEmail>dave@ijoomer.com</authorEmail>
+	<authorUrl>http://www.ijoomer.com</authorUrl>
+	<copyright>Copyright (C) 2010-2014. All rights reserved.</copyright>
+	<license>GNU/GPLv2</license>
+	<version>1.5.1-dev</version>
 	<description>
 	iJoomerAdv component has been successfully installed.
 	</description>
