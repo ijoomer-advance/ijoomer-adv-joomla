@@ -7,19 +7,30 @@
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-// no direct access
+// No direct access
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
+
 if (version_compare(JVERSION, '1.6.0', 'ge'))
 {
 	jimport('joomla.html.parameter');
 }
 
-class plgSystemIjoomeradvVoice extends JPlugin
+/**
+ * The Plugin System Ijoomeradv voice Function
+ *
+ * @since  1.0
+ */
+class PlgSystemIjoomeradvVoice extends JPlugin
 {
 	public $plg_name = "ijoomeradvVoice";
 
+	/**
+	 * The On Before Render Function
+	 *
+	 * @return void
+	 */
 	function OnBeforeRender()
 	{
 		$siteUrl = JURI::root(true);
