@@ -5,9 +5,11 @@ php:
 
 before_script:
   - pear install PHP_CodeSniffer-1.5.3
+  - pear channel-discover pear.phing.info
+  - pear install phing/phing
   - phpenv config-add .travis.ini
   - phpenv rehash
 
 script:
   - find ./ -name '*.php' -exec php -l {} \;
-  - phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla .
+  - phing -f .travis.xml
