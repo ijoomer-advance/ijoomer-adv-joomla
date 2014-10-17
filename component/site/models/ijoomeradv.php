@@ -932,7 +932,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			'FB_TIMEZONE' => (isset($fb->timezone)) ? $fb->timezone : null,
 			'FB_ISMINOR' => (isset($fb->is_minor)) ? $fb->is_minor : null,
 			'FB_POLITICAL' => (isset($fb->political)) ? $fb->political : null,
-			'FB_qS' => (isset($fb->qs)) ? $fb->qs : null,
+			'FB_QUOTES' => (isset($fb->quotes)) ? $fb->quotes : null,
 			'FB_RELATION_STATUS' => (isset($fb->relationship_status)) ? $fb->relationship_status : null,
 			'FB_RELIGION' => (isset($fb->religion)) ? $fb->religion : null,
 			'FB_TV_SHOW' => (isset($fb->tv)) ? $fb->tv : null,

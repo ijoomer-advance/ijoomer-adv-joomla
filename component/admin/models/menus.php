@@ -160,7 +160,7 @@ class IjoomeradvModelMenus extends JModelList
 
 		// Select all fields from the table.
 		$query->select($this->getState('list.select', 'a.*'))
-			->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a')
+			->from($db->quoteName('#__ijoomeradv_menu_types', 'a'))
 			->group('a.id, a.title, a.description');
 
 		// Add the list ordering clause.
