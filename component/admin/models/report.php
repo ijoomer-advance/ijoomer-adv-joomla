@@ -48,11 +48,23 @@ class IjoomeradvModelReport extends JModelList
 	 */
 	public function getReports()
 	{
-		$sql = "SELECT *
-				FROM #__ijoomeradv_report";
-		$this->db->setQuery($sql);
+		$query = $this->db->getQuery(true);
 
-		return $this->db->loadObjectList();
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_report'));
+
+		// Set the query and load the result.
+		$this->db->setQuery($query);
+
+		try
+		{
+			return $this->db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -62,12 +74,24 @@ class IjoomeradvModelReport extends JModelList
 	 */
 	public function getExtensions()
 	{
-		$sql = "SELECT name,classname
-				FROM #__ijoomeradv_extensions
-				Where published=1";
-		$this->db->setQuery($sql);
+		$query = $this->db->getQuery(true);
 
-		return $this->db->loadObjectList();
+		// Create the base select statement.
+		$query->select('name,classname')
+			->from($this->db->qn('#__ijoomeradv_extensions'))
+			->where($this->db->qn('published') . ' = ' . $this->db->q('1'));
+
+		// Set the query and load the result.
+		$this->db->setQuery($query);
+
+		try
+		{
+			return $this->db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -303,37 +327,48 @@ class IjoomeradvModelReport extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
+		$query = $this->db->getQuery(true);
 
-		$select = 'SELECT a.* ';
-		$where = 'WHERE 1 ';
-		$groupby = '';
+		$query->select('a.*');
 
-		// Filter by extension type
+		//filter by extension type
 		$extensiontype = $this->getState('filter.extensiontype');
 
-		if (!empty($extensiontype) && $extensiontype != 'default')
+		if (!empty($extensiontype) && $extensiontype!='default')
 		{
-			$where .= "AND extension='$extensiontype' ";
+			$query->where($this->db->qn('extension') . ' = ' . $this->db->q($extensiontype));
 		}
 
-		$cid = JRequest::getVar('cid', 0);
+		$cid = JRequest::getVar('cid',0);
 
 		if ($cid)
 		{
-			$where .= 'AND a.params=(SELECT params FROM #__ijoomeradv_report WHERE id=' . $cid . ')';
+			$subQuery = $this->db->getQuery(true);
+
+			$subQuery->select('params')
+					->from($this->db->qn('#__ijoomeradv_report'))
+					->where($this->db->qn('id') . ' = ' . $this->db->q($cid));
+
+			// Set the query and load the result.
+			$this->db->setQuery($subQuery);
+
+			$result = $this->db->loadResult();
+
+			$query->where($this->db->qn('a.params') . ' = ' . $this->db->q($result));
+
 		}
 		else
 		{
-			$select .= ',count(a.id) as itemcount ';
-			$groupby .= 'GROUP BY a.params ';
+			$query->select('count(a.id) as itemcount');
+			$query->group('a.params');
 		}
 
-		$query = $select .
-			'FROM `#__ijoomeradv_report` AS a ' .
-			$where . ' ' .
-			$groupby . 'ORDER BY ' . $this->getState('list.ordering', 'id') . ' ' . $this->getState('list.direction', 'ASC');
+		$query->from($this->db->qn('#__ijoomeradv_report', 'a'));
+
+		// Add the list ordering clause.
+		$orderCol	= $this->state->get('list.ordering', 'id');
+		$orderDirn 	= $this->state->get('list.direction', 'asc');
+		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
 		return $query;
 	}

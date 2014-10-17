@@ -37,24 +37,28 @@ class JFormFieldMenuParent extends JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
+		$db      = JFactory::getDbo();
+		$query   = $db->getQuery(true);
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		$query->select('a.id AS value, a.title AS text');
-		$query->from('#__ijoomeradv_menu AS a');
+<<<<<<< HEAD
+		$query->select('a.id AS value, a.title AS text')
+			->from('#__ijoomeradv_menu', 'a');
+=======
+		$query->select('a.id AS value, a.title AS text')
+			->from('#__ijoomeradv_menu', 'a');
+>>>>>>> d381429... Query updated.
 
 		if ($menuType = $this->form->getValue('menutype'))
 		{
-			$query->where('a.menutype = ' . $db->quote($menuType));
+			$query->where('a.menutype = ' . $db->q($menuType));
 		}
 		else
 		{
-			$query->where('a.menutype != ' . $db->quote(''));
+			$query->where('a.menutype != ' . $db->q(''));
 		}
 
-		$query->where('a.published != -2');
-		$query->group('a.id, a.title, a.menutype, a.published');
+		$query->where('a.published != -2')
+			->group('a.id, a.title, a.menutype, a.published');
 
 		// Get the options.
 		$db->setQuery($query);
