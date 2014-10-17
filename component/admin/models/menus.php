@@ -81,29 +81,54 @@ class IjoomeradvModelMenus extends JModelList
 
 		foreach ($items as $key => $value)
 		{
-			$query = 'SELECT count(id) as countPublished
-				  	  FROM #__ijoomeradv_menu
-				      WHERE published=1
-				      AND menutype IN (' . $value->id . ')';
-			$db->setQuery($query);
-			$count = $db->loadObject();
-			$countPublished[$value->id] = $count->countPublished;
+			$query = $db->getQuery(true);
 
-			$query = 'SELECT count(id) as countUnpublished
-				  	  FROM #__ijoomeradv_menu
-				      WHERE published=0
-				      AND menutype IN (' . $value->id . ')';
-			$db->setQuery($query);
-			$count = $db->loadObject();
-			$countUnpublished[$value->id] = $count->countUnpublished;
+			// Create the base select statement.
+			$query->select('count(id) as countPublished')
+				->from($db->qn('#__ijoomeradv_menu'))
+				->where($db->qn('published') . ' = ' . $db->q('1'))
+				->where($db->qn('menutype') . ' IN (' . $db->q($value->id) . ')');
 
-			$query = 'SELECT count(id) as countTrashed
-				  	  FROM #__ijoomeradv_menu
-				      WHERE published=-2
-				      AND menutype IN (' . $value->id . ')';
+			// Set the query and load the result.
 			$db->setQuery($query);
-			$count = $db->loadObject();
-			$countTrashed[$value->id] = $count->countTrashed;
+
+			try
+			{
+				$count = $db->loadObject();
+
+				$countPublished[$value->id] = $count->countPublished;
+
+				$query = $db->getQuery(true);
+
+				// Create the base select statement.
+				$query->select('count(id) as countUnpublished')
+					->from($db->qn('#__ijoomeradv_menu'))
+					->where($db->qn('published') . ' = ' . $db->q('0'))
+					->where($db->qn('menutype') . ' IN (' . $db->q($value->id) . ')');
+
+				$db->setQuery($query);
+
+				$count = $db->loadObject();
+				$countUnpublished[$value->id] = $count->countUnpublished;
+
+				$query = $db->getQuery(true);
+
+				// Create the base select statement.
+				$query->select('count(id) as countTrashed')
+					->from($db->qn('#__ijoomeradv_menu'))
+					->where($db->qn('published') . ' = ' . $db->q('-2'))
+					->where($db->qn('menutype') . ' IN (' . $db->q($value->id) . ')');
+
+				$db->setQuery($query);
+
+				$count = $db->loadObject();
+				$countTrashed[$value->id] = $count->countTrashed;
+
+			}
+			catch (RuntimeException $e)
+			{
+				throw new RuntimeException($e->getMessage(), $e->getCode());
+			}
 		}
 
 		// Inject the values back into the array.
@@ -134,10 +159,9 @@ class IjoomeradvModelMenus extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select all fields from the table.
-		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a');
-
-		$query->group('a.id, a.title, a.description');
+		$query->select($this->getState('list.select', 'a.*'))
+			->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a')
+			->group('a.id, a.title, a.description');
 
 		// Add the list ordering clause.
 		$query->order($db->escape($this->getState('list.ordering', 'a.id')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
@@ -183,9 +207,17 @@ class IjoomeradvModelMenus extends JModelList
 			->where('e.type = ' . $db->quote('module'))
 			->where('e.element = ' . $db->quote('mod_menu'))
 			->where('e.client_id = 0');
+
 		$db->setQuery($query);
 
-		return $db->loadResult();
+		try
+		{
+			return $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**

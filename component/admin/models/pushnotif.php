@@ -58,12 +58,30 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 */
 	public function getUsers()
 	{
-		$db = JFactory::getDBO();
-		$query = "SELECT `username`
-				FROM `#__users`
-				WHERE `id` in (SELECT `userid` FROM #__ijoomeradv_users)";
+		// Initialiase variables.
+		$db       = JFactory::getDbo();
+		$query    = $db->getQuery(true);
+		$subQuery = $db->getQuery(true);
+
+		$subQuery->select('userid')
+				->from($db->qn('#__ijoomeradv_users'));
+
+		// Create the base select statement.
+		$query->select('username')
+			->from($db->qn('#__users'))
+			->where($db->qn('id') . ' IN (' . $subQuery->__toString() . ')');
+
+		// Set the query and load the result.
 		$db->setQuery($query);
-		$user = $db->loadResultArray();
+
+		try
+		{
+			$user = $db->loadResultArray();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 
 		return $user;
 	}
@@ -75,12 +93,26 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 */
 	public function getPushNotifications()
 	{
-		$db = JFactory::getDBO();
-		$query = "SELECT *
-				FROM `#__ijoomeradv_push_notification`
-				ORDER BY `id` DESC";
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('*')
+			->from($db->qn('#__ijoomeradv_push_notification'))
+			->order($db->qn('id') . ' DESC');
+
+		// Set the query and load the result.
 		$db->setQuery($query);
-		$pushNotifications = $db->loadAssocList();
+
+		try
+		{
+			$pushNotifications = $db->loadAssocList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 
 		return $pushNotifications;
 	}
@@ -92,14 +124,19 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 	 */
 	public function store()
 	{
-		$row = $this->getTable();
-		$data = JRequest::get('post');
-		$db = JFactory::getDBO();
+		$row   = $this->getTable();
+		$data  = JRequest::get('post');
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
-		$query = "SELECT `name`, `value`
-				FROM `#__ijoomeradv_config`
-				WHERE `name` in ('IJOOMER_PUSH_ENABLE_IPHONE','IJOOMER_PUSH_DEPLOYMENT_IPHONE','IJOOMER_PUSH_ENABLE_SOUND_IPHONE','IJOOMER_PUSH_ENABLE_ANDROID','IJOOMER_PUSH_API_KEY_ANDROID')";
+		// Create the base select statement.
+		$query->select('name, value')
+			->from($db->qn('#__ijoomeradv_config'))
+			->where($db->qn('name') . ' IN (IJOOMER_PUSH_ENABLE_IPHONE , IJOOMER_PUSH_DEPLOYMENT_IPHONE, IJOOMER_PUSH_ENABLE_SOUND_IPHONE, IJOOMER_PUSH_ENABLE_ANDROID, IJOOMER_PUSH_API_KEY_ANDROID)');
+
+		// Set the query and load the result.
 		$db->setQuery($query);
+
 		$configvalue = $db->loadAssocList('name');
 
 		if ($data['to_all'] == 1)
@@ -109,10 +146,14 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 				case 'iphone':
 					if (array_key_exists('IJOOMER_PUSH_ENABLE_IPHONE', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_IPHONE']['value'] == 1)
 					{
-						$query = "SELECT `device_token`
-								FROM #__ijoomeradv_users
-								WHERE `device_type`='iphone'
-								ORDER BY `userid` ";
+						$query = $db->getQuery(true);
+
+						// Create the base select statement.
+						$query->select('device_token')
+							->from($db->qn('#__ijoomeradv_users'))
+							->where($db->qn('device_type') . ' = ' . $db->q('iphone'))
+							->order($db->qn('userid') . ' ASC');
+
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
 
@@ -130,10 +171,14 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 				case 'android':
 					if (array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1)
 					{
-						$query = "SELECT `device_token`
-								FROM #__ijoomeradv_users
-								WHERE `device_type`='android'
-								ORDER BY `userid` ";
+						$query = $db->getQuery(true);
+
+						// Create the base select statement.
+						$query->select('device_token')
+							->from($db->qn('#__ijoomeradv_users'))
+							->where($db->qn('device_type') . ' = ' . $db->q('android'))
+							->order($db->qn('userid') . ' ASC');
+
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
 
@@ -158,11 +203,15 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 				case 'both':
 				default:
-					$query = "SELECT `device_token`,`device_type`
-							FROM #__ijoomeradv_users
-							ORDER BY `userid` ";
+					$query = $db->getQuery(true);
+
+					// Create the base select statement.
+					$query->select('device_token, device_type')
+						->from($db->qn('#__ijoomeradv_users'))
+						->order($db->qn('userid') . ' ASC');
+
 					$this->_db->setQuery($query);
-					$users = $this->_db->loadobjectList();
+					$users  = $this->_db->loadobjectList();
 					$dtoken = array();
 
 					foreach ($users as $user)
@@ -198,10 +247,13 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 			foreach ($users as $user)
 			{
-				// Fetch userid and store to array to save
-				$query = "SELECT `id`
-						FROM #__users
-						WHERE `username`='{$user}'";
+				$query = $db->getQuery(true);
+
+				// fetch userid and store to array to save
+				$query->select('id')
+					->from($db->qn('#__users'))
+					->where($db->qn('username') . ' = ' . $user);
+
 				$db->setQuery($query);
 				$uid = $db->loadResult();
 
@@ -218,11 +270,15 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 				case 'iphone':
 					if (array_key_exists('IJOOMER_PUSH_ENABLE_IPHONE', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_IPHONE']['value'] == 1)
 					{
-						$query = "SELECT `device_token`
-								FROM #__ijoomeradv_users
-								WHERE `device_type`='iphone'
-								AND `userid` IN ({$comma_separated})
-								ORDER BY `userid` ";
+						$query = $db->getQuery(true);
+
+						// Create the base select statement.
+						$query->select('device_token')
+							->from($db->qn('#__ijoomeradv_users'))
+							->where($db->qn('device_type') . ' = ' . $db->q('iphone'))
+							->where($db->qn('userid') . ' IN (' . $comma_separated . ')')
+							->order($db->qn('userid') . ' ASC');
+
 						$db->setQuery($query);
 						$users = $db->loadobjectList();
 
@@ -243,13 +299,17 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 				case 'android':
 					if (array_key_exists('IJOOMER_PUSH_ENABLE_ANDROID', $configvalue) && $configvalue['IJOOMER_PUSH_ENABLE_ANDROID']['value'] == 1)
 					{
-						$query = "SELECT `device_token`
-								FROM #__ijoomeradv_users
-								WHERE `device_type`='android'
-								AND `userid` IN ({$comma_separated})
-								ORDER BY `userid` ";
+						$query = $db->getQuery(true);
+
+						// Create the base select statement.
+						$query->select('device_token')
+							->from($db->qn('#__ijoomeradv_users'))
+							->where($db->qn('device_type') . ' = ' . $db->q('android'))
+							->where($db->qn('userid') . ' IN (' . $comma_separated . ')')
+							->order($db->qn('userid') . ' ASC');
+
 						$db->setQuery($query);
-						$users = $db->loadobjectList();
+						$users  = $db->loadobjectList();
 						$dtoken = array();
 
 						foreach ($users as $user)
@@ -268,12 +328,16 @@ class IjoomeradvModelPushnotif extends JModelLegacy
 
 				case 'both':
 				default:
-					$query = "SELECT `device_token`,`device_type`
-							FROM #__ijoomeradv_users
-							AND `userid` IN ({$comma_separated})
-							ORDER BY `userid` ";
+					$query = $db->getQuery(true);
+
+					// Create the base select statement.
+					$query->select('device_token, device_type')
+						->from($db->qn('#__ijoomeradv_users'))
+						->where($db->qn('userid') . ' IN (' . $comma_separated . ')')
+						->order($db->qn('userid') . ' ASC');
+
 					$this->_db->setQuery($query);
-					$users = $this->_db->loadobjectList();
+					$users  = $this->_db->loadobjectList();
 					$dtoken = array();
 
 					foreach ($users as $user)

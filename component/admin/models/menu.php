@@ -163,23 +163,31 @@ class IjoomeradvModelMenu extends JModelForm
  */
 	public function getMenuitems()
 	{
-		$query = 'SELECT m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published,t.id as menuid,t.title as menutitle
-				  FROM #__ijoomeradv_menu_types as t
-				  LEFT JOIN #__ijoomeradv_menu as m ON t.id=m.menutype
-				  WHERE m.published=1';
-		$db = JFactory::getDbo();
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published,t.id as menuid,t.title as menutitle')
+			->from($db->qn('#__ijoomeradv_menu_types', 't'))
+			->where($db->qn('m.published') . ' = ' . $db->q('1'))
+			->join('LEFT', '#__ijoomeradv_menu as m ON t.id=m.menutype');
+
+		// Set the query and load the result.
 		$db->setQuery($query);
+
 		$result = $db->loadObjectList();
+
 		$result1 = array();
 
-		foreach ($result as $key => $value)
+		foreach ($result as $key=>$value)
 		{
-			$o = new stdClass;
-			$o->menuid = $value->menuid;
+			$o            = new stdClass();
+			$o->menuid    = $value->menuid;
 			$o->menutitle = $value->menutitle;
-			$o->itemid = $value->itemid;
+			$o->itemid    = $value->itemid;
 			$o->itemtitle = $value->itemtitle;
-			$o->itemtype = $value->itemtype;
+			$o->itemtype  = $value->itemtype;
 
 			$result1[$value->menutitle][] = $o;
 		}
@@ -298,11 +306,14 @@ class IjoomeradvModelMenu extends JModelForm
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true);
-		$query->from('#__modules as a');
-		$query->select('a.id, a.title, a.params, a.position');
-		$query->where('module = ' . $db->quote('mod_menu'));
-		$query->select('ag.title AS access_title');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		$query->select('a.id, a.title, a.params, a.position')
+			->from($db->qn('#__modules', 'a'))
+			->where($db->qn('a.module') . ' = ' . $db->quote('mod_menu'));
+
+		$query->select('ag.title AS access_title')
+			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
 		$db->setQuery($query);
 
 		$modules = $db->loadObjectList();
