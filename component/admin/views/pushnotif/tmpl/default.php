@@ -10,22 +10,33 @@
 defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
+
+
+$document = JFactory::getdocument();
+$document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.js');
+$document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.autocomplete.js');
+$document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/jquery.autocomplete.css');
+$document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/ijoomeradv.css');
+$fieldsets    = $this->form->getFieldset('notification');
+$msgfieldsets = $this->form->getFieldset('message');
+
 ?>
-<script type="text/javascript"
-        src="<?php echo JURI::root() ?>administrator/components/com_ijoomeradv/assets/js/jquery.js"></script>
-<script type='text/javascript'
-        src="<?php echo JURI::root() ?>administrator/components/com_ijoomeradv/assets/js/jquery.autocomplete.js"></script>
-<link rel="stylesheet" type="text/css"
-      href="<?php echo JURI::root() ?>administrator/components/com_ijoomeradv/assets/css/jquery.autocomplete.css"/>
 <script>
 	$().ready(function () {
 		//$.noConflict();
-		$('input[value="customs"]').click(function () {
-			$('#userid').show(1000);
+		$('#jform_to_user').hide();
+		$('#jform_to_user-lbl').hide();
+
+		$('#jform_customs1').click(function () {
+			$('#userid').show();
+			$('#jform_to_user').show();
+			$('#jform_to_user-lbl').show();
 		});
 
-		$('input[value="1"]').click(function () {
-			$('#userid').hide(100);
+		$('#jform_customs0').click(function () {
+			$('#userid').hide();
+			$('#jform_to_user').hide();
+			$('#jform_to_user-lbl').hide();
 		});
 
 		$('#customs').click(function () {
@@ -33,15 +44,9 @@ JHTML::_('behavior.tooltip');
 		});
 
 		var months = [
-			<?php
-
-			for ($i = 0; $i < count($this->users); $i++)
-			{
-			?>
-			'<?php echo $this->users[$i]; ?>',
-			<?php
-			}
-		?>
+			<?php for ($i = 0; $i < count($this->users); $i++):?>
+				'<?php echo $this->users[$i]; ?>',
+			<?php endfor; ?>
 		];
 
 		$("#send_to_username").autocomplete(months, {
@@ -60,19 +65,17 @@ JHTML::_('behavior.tooltip');
 </script>
 
 <script language="javascript" type="text/javascript">
-
-	public function changeVal() {
-
+	function changeVal() {
 		if (document.adminForm.send_to_username.value == "") {
 			alert("Please select User Name");
 		} else {
-			if (document.adminForm.to_user.value == "") {
-				document.adminForm.to_user.value = document.adminForm.send_to_username.value;
+			if (document.getElementById("jform_to_user").value == "") {
+				document.getElementById("jform_to_user").value = document.adminForm.send_to_username.value;
 			} else {
-				if (document.adminForm.to_user.value.indexOf(document.adminForm.send_to_username.value) != -1) {
+				if (document.getElementById("jform_to_user").value.indexOf(document.adminForm.send_to_username.value) != -1) {
 					alert("User already Exists");
 				} else {
-					document.adminForm.to_user.value += "," + document.adminForm.send_to_username.value;
+					document.getElementById("jform_to_user").value += "," + document.adminForm.send_to_username.value;
 				}
 			}
 		}
@@ -80,116 +83,81 @@ JHTML::_('behavior.tooltip');
 	}
 </script>
 
-
 <form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm"
       enctype="multipart/form-data">
-	<div class="editcell">
-		<table class="adminlist table table-striped" width="100%">
-			<tbody>
-			<tr>
-				<td width="300px" valign="top">
-					<table>
-						<tr>
-							<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE'); ?></td>
-							<td>
-								<!-- <input type='Radio' Name='device_type' value='iphone' /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_IPHONE'); ?>  -->
-								<input type='Radio' Name='device_type'
-								       value='android'/><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_ENDROID'); ?>
-								<!-- <input type='Radio' Name ='device_type' value='both'  /><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE_BOTH'); ?>  -->
-							</td>
-						</tr>
+     <div class="form-horizontal">
+			<div class="span5">
+					<div>
+						<?php foreach ($fieldsets as $field) : ?>
+							<div class="control-group">
+								<div class="control-label"><?php echo $field->label; ?></div>
+								<div class="controls"><?php echo $field->input; ?></div>
+							</div>
+						<?php endforeach; ?>
+					</div>
+					<div style="margin-left: 180px; display:none;" id="userid" class="control-group">
+						<input type="text" name="send_to_username" id="send_to_username" value="" class="control-group"/>
+						<input type="button" name="add_uid" id="add_uid" value="Add User"
+						       onClick="changeVal()"/>&nbsp;&nbsp;
+					</div>
+					<div>
+						<?php foreach ($msgfieldsets as $fields) : ?>
+							<div class="control-group">
+								<div class="control-label"><?php echo $fields->label; ?></div>
+								<div class="controls"><?php echo $fields->input; ?></div>
+							</div>
+						<?php endforeach; ?>
+					</div>
 
-						<tr>
-							<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO'); ?></td>
-							<td>
-								<input type='radio' name="to_all" id="to_all"
-								       value='1'/><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS'); ?>
-								<Input type='radio' name="to_all" value='customs'
-								       id="customs"/><?PHP echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_CUSTOMS'); ?>
-								<div style="display:none" id="userid">
-									<input type="text" name="send_to_username" id="send_to_username" value=""/>&nbsp;&nbsp;
-									<input type="button" name="add_uid" id="add_uid" value="Add User"
-									       onClick="changeVal()"/>&nbsp;&nbsp;
-									<input type="text" name="to_user" id="to_user" value=""/>
-								</div>
-							</td>
-						</tr>
+			</div>
+			<div class="span7">
+				<table class="adminlist table table-striped" width="100%">
+					<thead>
+					<tr>
+						<th ><?php echo JHtml::_('grid.checkall'); ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_ID') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TO_USER') ?></th>
+						<th><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME') ?></th>
+					</tr>
+					</thead>
+					<tbody>
+					<?php
+					$k = 0;
 
-						<tr>
-							<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT'); ?></td>
-							<td>
-								<textarea rows="9" cols="30" name="message" id="message"></textarea>
-							</td>
-						</tr>
+					if (!empty($this->pushNotifications))
+					{
+						foreach ($this->pushNotifications as $key => $value):?>
+							<tr class="row<?php echo $k; ?>">
+								<td><?php echo JHtml::_('grid.id', $key, $value['id']); ?></td>
+								<td><?php echo $value['id']; ?></td>
+								<td><?php echo $value['device_type']; ?></td>
+								<td><?php echo $value['to_user']; ?></td>
+								<td><?php echo $value['to_all']; ?></td>
+								<td><?php echo $value['message']; ?></td>
+								<td><?php echo $value['time']; ?></td>
+							</tr>
+						<?php endforeach;
 
-						<tr>
-							<td class="title"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_LINK'); ?></td>
-							<td>
-								<input type="text" id="link" name="link" size="30"/>
-							</td>
-						</tr>
-					</table>
-				</td>
+						$k = 1 - $k;
+					}
+					else
+					{
+						echo '<tr><td colspan="15" align="center">There is no data to show.</td></tr>';
+					}
+					?>
+					</tbody>
 
-				<td valign="top">
-					<table class="adminlist table table-striped" width="100%">
-						<thead>
-						<tr>
-							<th width="20px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_ID') ?></th>
-							<th width="90px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE') ?></th>
-							<th width="60px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS') ?></th>
-							<th width="90px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TO_USER') ?></th>
-							<th><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT') ?></th>
-							<th width="90px"><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME') ?></th>
-						</tr>
-						</thead>
-						<tbody>
-						<?php
-						$k = 0;
-
-						if (!empty($this->pushNotifications))
-						{
-							foreach ($this->pushNotifications as $key => $value)
-							{
-								?>
-								<tr class="row<?php echo $k; ?>">
-									<td><?php echo $value['id']; ?></td>
-									<td><?php echo $value['device_type']; ?></td>
-									<td><?php echo $value['to_user']; ?></td>
-									<td><?php echo $value['to_all']; ?></td>
-									<td><?php echo $value['message']; ?></td>
-									<td><?php echo $value['time']; ?></td>
-								</tr>
-							<?php
-							}
-
-							$k = 1 - $k;
-						}
-						else
-						{
-							echo '<tr><td colspan="6" align="center">There is no data to show.</td></tr>';
-						}
-						?>
-						</tbody>
-						<tfoot>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						<th>&nbsp;
-						</td>
-						<th>&nbsp;
-						</td>
-						<th>&nbsp;</th>
-						<th>&nbsp;</th>
-						</tfoot>
-					</table>
-				</td>
-			</tr>
-			</tbody>
-		</table>
+					<tr><td colspan="15" align="center"></td></tr>
+			</table>
+		</div>
 	</div>
 	<div class="clr"></div>
 	<input type="hidden" name="option" value="com_ijoomeradv"/>
 	<input type="hidden" name="view" value="pushnotif"/>
 	<input type="hidden" name="task" value=""/>
 	<input type="hidden" name="boxchecked" value=""/>
+	<?php echo Jhtml::_('form.token');?>
 </form>

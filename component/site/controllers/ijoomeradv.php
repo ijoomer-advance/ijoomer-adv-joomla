@@ -120,22 +120,16 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 
 			if (!empty($jsonarray['pushNotificationData']))
 			{
-				$db = JFactory::getDbo();
+				$db = JFactory::getDBO();
 
 				$memberlist = $jsonarray['pushNotificationData']['to'];
 
 				if ($memberlist)
 				{
-					$query = $db->getQuery(true);
-
-					// Create the base select statement.
-					$query->select('userid, jomsocial_params, device_token, device_type')
-						->from($db->qn('#__ijoomeradv_users'))
-						->where($db->qn('userid') . ' = ' . $db->q($memberlist));
-
-					// Set the query and load the result.
+					$query = "SELECT userid,`jomsocial_params`,`device_token`,`device_type`
+							FROM #__ijoomeradv_users
+							WHERE `userid` IN ({$memberlist})";
 					$db->setQuery($query);
-
 					$puserlist = $db->loadObjectList();
 
 					foreach ($puserlist as $puser)
@@ -795,37 +789,27 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 */
 	public function getPushNotification()
 	{
-		$id 	= IJReq::getTaskData('id',0);
-		$user 	= JFactory::getUser();
-		$db     = JFactory::getDbo();
-		$query  = $db->getQuery(true);
+		$id = IJReq::getTaskData('id', 0);
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_push_notification_data'))
-			->where($db->qn('id') . ' = ' . $db->q($id));
+		$pushDataQuery = "SELECT *
+							FROM #__ijoomeradv_push_notification_data
+							WHERE id='{$id}'";
 
-		// Set the query and load the result.
-		$db->setQuery($query);
-
+		$db->setQuery($pushDataQuery);
 		$pushData = $db->loadObject();
 
 		if (!empty($pushData))
 		{
-			$query = $db->getQuery(true);
-
-			// Create the base update statement.
-			$query->update($db->qn('#__ijoomeradv_push_notification_data'))
-				->set($db->qn('readcount') . ' = ' . $db->qn('readcount') . '+1')
-				->where($db->qn('id') . ' = ' . $db->q($id));
-
-			// Set the query and execute the update.
+			$query = "UPDATE #__ijoomeradv_push_notification_data
+						SET readcount=readcount+1
+						WHERE id='{$id}'";
 			$db->setQuery($query);
+			$db->Query();
 
-			$db->execute();
-
-			$pushOptions       = gzuncompress($pushData->detail);
-			$jsonarrayDetail   = json_decode($pushOptions,true);
+			$pushOptions = gzuncompress($pushData->detail);
+			$jsonarrayDetail = json_decode($pushOptions, true);
 			$jsonarray['code'] = 200;
 			$jsonarray['data'] = $jsonarrayDetail['detail'];
 		}
@@ -1014,37 +998,25 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 
 	public function contactUs()
 	{
-		$form   = IJReq::getTaskData('form');
-		$toID   = IJReq::getTaskData('toID');
+		$form = IJReq::getTaskData('form');
+		$toID = IJReq::getTaskData('toID');
 		$menuID = IJReq::getTaskData('menuID');
-		$db     = JFactory::getDbo();
-		$query  = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('menuoptions')
-			->from($db->qn('#__ijoomeradv_menu'))
-			->where($db->qn('id') . ' = ' . $db->q($menuID));
-
-		// Set the query and load the result.
+		$db = JFactory::getDbo();
+		$query = "SELECT menuoptions
+				FROM #__ijoomeradv_menu
+				WHERE id={$menuID}";
 		$db->setQuery($query);
-
-		$options     = $db->loadObjectList();
+		$options = $db->loadObjectList();
 		$menuoptions = json_decode($options[0]->menuoptions);
-		$serverUse   = $menuoptions->serverUse;
-		$remoteUse   = $menuoptions->remoteUse;
+		$serverUse = $menuoptions->serverUse;
+		$remoteUse = $menuoptions->remoteUse;
 
-		if($form == 1)
+		if ($form == 1)
 		{
-			$query  = $db->getQuery(true);
-
-			// Create the base select statement.
-			$query->select('*')
-				->from($db->qn('#__contact_details'))
-				->where($db->qn('id') . ' = ' . $db->q($toID));
-
-			// Set the query and load the result.
+			$query = "SELECT *
+					FROM #__contact_details
+					WHERE id={$toID}";
 			$db->setQuery($query);
-
 			$row = $db->loadObject();
 
 			$count = count($row);
@@ -1243,20 +1215,12 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 
 			if ($extension->name != 'ICMS')
 			{
-				// Initialiase variables.
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				// Create the base select statement.
-				$query->select('manifest_cache')
-					->from($db->qn('#__extensions'))
-					->where($db->qn('element') . ' = ' . $db->q($extension->option));
-
-				// Set the query and load the result.
+				$db = JFactory::getDBO();
+				$query = "SELECT `manifest_cache`
+						FROM #__extensions
+						WHERE `element`='{$extension->option}'";
 				$db->setQuery($query);
-
-				$extension = $db->loadResult();
-
+				$extension = $db->loadResult($query);
 				$extension = json_decode($extension);
 
 				if ($extension->version)

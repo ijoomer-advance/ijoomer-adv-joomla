@@ -74,32 +74,25 @@ class IjoomeradvTableMenu extends JTable
 	}
 
 	/**
-	 * The Function For The GetNextOrder
+	 * Method to get the next ordering value for a group of rows defined by an SQL WHERE clause.
+	 * This is useful for placing a new item last in a group of items in the table.
 	 *
-	 * @return  returns the maxvalue + 1
+	 * @param   string  $where  WHERE clause to use for selecting the MAX(ordering) for the table.
+	 *
+	 * @return  mixed  Boolean false an failure or the next ordering value as an integer.
+	 *
+	 * @since   11.1
+	 * @throws  UnexpectedValueException
 	 */
-	public function getNextOrder()
+	public function getNextOrder($where = '')
 	{
-		$query = $this->_db->getQuery(true);
+		$sql = 'SELECT max(ordering)
+				FROM #__ijoomeradv_menu
+				WHERE menutype=' . $this->menutype;
+		$this->_db->setQuery($sql);
+		$maxvalue = $this->_db->loadResult();
 
-		// Create the base select statement.
-		$query->select('max(ordering)')
-			->from($this->_db->quoteName('#__ijoomeradv_menu'))
-			->where($this->_db->quoteName('menutype') . ' = ' . $this->_db->quote($this->menutype));
-
-		// Set the query and load the result.
-		$this->_db->setQuery($query);
-
-		try
-		{
-			$maxvalue = $this->_db->loadResult();
-
-			return $maxvalue + 1;
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $maxvalue + 1;
 	}
 
 	/**
@@ -118,11 +111,9 @@ class IjoomeradvTableMenu extends JTable
 			{
 				// Do an update to change the lft values in the table for each id
 				$query = $this->_db->getQuery(true);
-
-				$query->update($this->_tbl)
-					->where($this->_tbl_key . ' = ' . (int) $idArray[$i])
-					->set('ordering = ' . (int) $lft_array[$i]);
-
+				$query->update($this->_tbl);
+				$query->where($this->_tbl_key . ' = ' . (int) $idArray[$i]);
+				$query->set('ordering = ' . (int) $lft_array[$i]);
 				$this->_db->setQuery($query);
 
 				// Check for a database error.

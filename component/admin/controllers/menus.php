@@ -77,7 +77,7 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid = JFactory::getApplication()->input->getArray('cid', array());
+		$cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 
 		if (!is_array($cid) || count($cid) < 1)
 		{
@@ -91,6 +91,11 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
 			JArrayHelper::toInteger($cid);
+
+			echo "<pre>";
+			print_r($model->delete());
+			echo "</pre>";
+			die();
 
 			// Remove the items.
 			if (!$model->delete($cid))

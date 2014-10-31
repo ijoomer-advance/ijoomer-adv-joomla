@@ -16,12 +16,12 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$uri = JFactory::getUri();
-$return = base64_encode($uri);
-$user = JFactory::getUser();
-$userId = $user->get('id');
+$uri       = JFactory::getUri();
+$return    = base64_encode($uri);
+$user      = JFactory::getUser();
+$userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn = $this->escape($this->state->get('list.direction'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 $modMenuId = (int) $this->get('ModMenuId');
 ?>
 <script type="text/javascript">
@@ -52,13 +52,13 @@ $modMenuId = (int) $this->get('ModMenuId');
 			</th>
 		</tr>
 		<tr>
-			<th width="10%">
+			<th width="12%">
 				<?php echo JText::_('COM_IJOOMERADV_HEADING_PUBLISHED_ITEMS'); ?>
 			</th>
-			<th width="10%">
+			<th width="12%">
 				<?php echo JText::_('COM_IJOOMERADV_HEADING_UNPUBLISHED_ITEMS'); ?>
 			</th>
-			<th width="10%">
+			<th width="12%">
 				<?php echo JText::_('COM_IJOOMERADV_HEADING_TRASHED_ITEMS'); ?>
 			</th>
 		</tr>
@@ -73,7 +73,7 @@ $modMenuId = (int) $this->get('ModMenuId');
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
 			$canCreate = $user->authorise('core.create', 'com_ijoomeradv');
-			$canEdit = $user->authorise('core.edit', 'com_ijoomeradv');
+			$canEdit   = $user->authorise('core.edit', 'com_ijoomeradv');
 			$canChange = $user->authorise('core.edit.state', 'com_ijoomeradv');
 
 			if ($item->position == 1)

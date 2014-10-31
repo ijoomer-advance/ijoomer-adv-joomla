@@ -49,21 +49,29 @@ class IjoomeradvModelItems extends JModelList
 	/**
 	 * The Function For Getting The Menus
 	 *
-	 * @return  [type]  returns The loadobjectlist
+	 * @return  [array]  returns The loadobjectlist
 	 */
 	public function getMenus()
 	{
-		$db    = $this->getDbo();
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('a.id, a.title')
-			->from($db->qn('#__ijoomeradv_menu_types', 'a'));
+		$query->select('id, title')
+			->from($db->quoteName('#__ijoomeradv_menu_types'));
 
 		// Set the query and load the result.
 		$db->setQuery($query);
 
-		$result = $db->loadObjectList();
+		try
+		{
+			$result = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 
 		return $result;
 	}
@@ -161,16 +169,26 @@ class IjoomeradvModelItems extends JModelList
 	 */
 	protected function getDefaultMenuType()
 	{
-		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
+		// Create the base select statement.
 		$query->select('menutype')
-			->from('#__ijoomeradv_menu_types')
-			->order('title');
+			->from($db->quoteName('#__ijoomeradv_menu_types'))
+			->order($db->quoteName('title') . ' ASC');
 
+		// Set the query and load the result.
 		$db->setQuery($query, 0, 1);
-		$menuType = $db->loadResult();
+
+		try
+		{
+			$menuType = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 
 		return $menuType;
 	}
@@ -183,66 +201,55 @@ class IjoomeradvModelItems extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser();
-		$app	= JFactory::getApplication();
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+		$user  = JFactory::getUser();
+		$app   = JFactory::getApplication();
 
 		$published = $this->getState('filter.published');
 
 		if (is_numeric($published))
 		{
-			$query->where($db->qn('a.published') . ' = ' . $db->q((int) $published));
+			$published = '= ' . (int) $published;
 		}
 		elseif ($published === '')
 		{
-			$query->where($db->qn('a.published') . 'IN (0, 1)');
+			$published = 'IN (0, 1)';
 		}
 		else
 		{
-			$query->where($db->qn('a.published') . 'IN (0, 1, -2)');
+			$published = 'IN (0, 1, -2)';
 		}
 
-		//$menutype = $this->getUserStateFromRequest($this->context.'.filter.menutype', 'filter_menutype', 0, 'int');
 		// Select all fields from the table.
 		$menutype = $this->getState('filter.menutype');
 
 		if (is_numeric($menutype))
 		{
-			$sql = $db->getQuery(true);
-
-			// Create the base select statement.
-			$sql->select('id')
-				->from($db->qn('#__ijoomeradv_menu_types'))
-				->where($db->qn('id') . ' = ' . $db->q($menutype));
-
-			// Set the query and load the result.
+			$sql = 'SELECT id FROM `#__ijoomeradv_menu_types` WHERE id=' . $menutype;
 			$db->setQuery($sql);
-
 			$menutypes = $db->loadResult();
-			$query->where($db->qn('a.menutype') . ' IN (' . $db->q($menutypes) . ')');
+			$menutype = 'AND a.menutype IN (' . $menutypes . ')';
 		}
 		elseif ($menutype === '' || $menutype === '*')
 		{
 			$menutype = $this->getMenus();
-			$query->where($db->qn('a.menutype') . ' IN (' . $db->q($menutype[0]->id) . ')');
+			$menutype = 'AND a.menutype IN (' . $menutype[0]->id . ')';
 		}
 
-		if($search = trim($this->getState('filter.search')))
+		$where = " WHERE a.published $published
+				   $menutype ";
+
+		if ($search = trim($this->getState('filter.search')))
 		{
-			$like = $db->q('%' . $search . '%');
-			$query->where($db->qn('a.title'). ' LIKE ' . $like);
+			$where .= "AND a.title LIKE '%$search%' ";
 		}
 
-		// Create the base select statement.
-		$query->select('a.id, a.title, a.note, a.published as published, a.ordering, ag.title AS access_level')
-			->from($db->qn('#__ijoomeradv_menu', 'a'))
-			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-
-		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'menutype');
-		$orderDirn 	= $this->state->get('list.direction', 'asc');
-		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+		$query = 'SELECT a.id, a.title, a.note, a.published as published,a.ordering,ag.title AS access_level
+				  FROM `#__ijoomeradv_menu` AS a
+				  LEFT JOIN #__viewlevels AS ag ON ag.id = a.access' .
+			$where .
+			'ORDER BY ' . $this->getState('list.ordering', 'menutype') . ' ' . $this->getState('list.direction', 'ASC');
 
 		return $query;
 	}

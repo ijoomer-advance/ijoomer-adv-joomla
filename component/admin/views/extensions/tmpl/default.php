@@ -19,9 +19,7 @@ jimport('joomla.html.pane');
 			<tr>
 				<td valign="top">
 					<table cellpadding="15" cellspacing="10" width="100%">
-						<?php for ($i = 0, $n = count($this->extensions); $i < $n; $i += 7)
-						{
-						?>
+						<?php for ($i = 0, $n = count($this->extensions); $i < $n; $i += 7):?>
 							<tr>
 								<?php for ($j = 0; $j < 7; $j++)
 								{
@@ -44,15 +42,15 @@ jimport('joomla.html.pane');
 										// Get images
 										$link = JRoute::_('index.php?option=com_ijoomeradv&view=extensions&task=detail&cid[]=' . $row->id);
 
-										if (file_exists("components/com_ijoomeradv/assets/images/" . $row->classname . ".png"))
+										if (file_exists(JPATH_SITE . '/media/com_ijoomeradv/images/' . $row->classname . ".png"))
 										{
-											$plg_img = "components/com_ijoomeradv/assets/images/" . $row->classname . ".png";
+											$plg_img = JURI::root() . 'media/com_ijoomeradv/images/' . $row->classname . ".png";
 										}
 										else
 										{
-											$app = JFactory::getApplication();
+											$app      = JFactory::getApplication();
 											$template = $app->getTemplate();
-											$plg_img = JURI::base() . "components" . '/' . "com_ijoomeradv" . '/' . "assets" . '/' . "images" . '/' . "default.png";
+											$plg_img  = JURI::root() . "media" . '/' . "com_ijoomeradv" . '/' . "images" . '/' . "default.png";
 										} ?>
 										<td align="center" width="33%">
 											<a href=<?php echo $link ?>>
@@ -66,7 +64,7 @@ jimport('joomla.html.pane');
 												      <?php echo $row->name; ?>">
 											<a href="<?php echo $link; ?>">
 											<?php echo $row->name; ?></a>
-										</span>
+												</span>
 											<?php
 }
 											?>
@@ -77,12 +75,10 @@ jimport('joomla.html.pane');
 									}
 									else
 										echo "<td>&nbsp;</td>";
-}
+								}
 								?>
 							</tr>
-						<?php
-}
-						?>
+						<?php endfor; ?>
 					</table>
 				</td>
 

@@ -13,6 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.tablenested');
+
 require_once JPATH_COMPONENT . '/helpers/menus.php';
 
 /**
@@ -246,9 +247,8 @@ class IjoomeradvModelItem extends JModelAdmin
 		$parents = array();
 
 		// Calculate the emergency stop count as a precaution against a runaway loop bug
-		$query->select('COUNT(id)')
-			->from($db->qn('#__ijoomeradv_menu'));
-
+		$query->select('COUNT(id)');
+		$query->from($db->quoteName('#__ijoomeradv_menu'));
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -287,12 +287,10 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Copy is a bit tricky, because we also need to copy the children
 			$query->clear();
-
-			$query->select('id')
-				->from($db->qn('#__ijoomeradv_menu'))
-				->where('lft > ' . (int) $table->lft)
-				->where('rgt < ' . (int) $table->rgt);
-
+			$query->select('id');
+			$query->from($db->quoteName('#__ijoomeradv_menu'));
+			$query->where('lft > ' . (int) $table->lft);
+			$query->where('rgt < ' . (int) $table->rgt);
 			$db->setQuery($query);
 			$childIds = $db->loadColumn();
 
@@ -477,11 +475,9 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				// Add the child node ids to the children array.
 				$query->clear();
-
-				$query->select($db->qn('id'))
-					->from($db->qn('#__ijoomeradv_menu'))
-					->where($db->qn('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
-
+				$query->select($db->quoteName('id'));
+				$query->from($db->quoteName('#__ijoomeradv_menu'));
+				$query->where($db->quoteName('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
 				$db->setQuery($query);
 				$children = array_merge($children, (array) $db->loadColumn());
 			}
@@ -520,12 +516,11 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Update the menutype field in all nodes where necessary.
 			$query->clear();
-			$query->update($db->qn('#__ijoomeradv_menu'))
-				->set($db->qn('menutype') . ' = ' . $db->q($menuType))
-				->where($db->qn('id') . ' IN (' . implode(',', $children) . ')');
-
+			$query->update($db->quoteName('#__ijoomeradv_menu'));
+			$query->set($db->quoteName('menutype') . ' = ' . $db->quote($menuType));
+			$query->where($db->quoteName('id') . ' IN (' . implode(',', $children) . ')');
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			// Check for a database error.
 			if ($db->getErrorNum())
@@ -716,40 +711,6 @@ class IjoomeradvModelItem extends JModelAdmin
 	}
 
 	/**
-	 * Get list of available menus...
-	 *
-	 * @return mixed    An array of menus.
-	 */
-	public function getMenutypes()
-	{
-		$db = $this->getDbo();
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('a.id, a.title')
-			->from($db->qn('#__ijoomeradv_menu_types', 'a'));
-
-		// Set the query and load the result.
-		$db->setQuery($query);
-
-		$result = $db->loadObjectList();
-
-		foreach ($result as $key => $value)
-		{
-			if ($this->getItem()->menutype == $value->id)
-			{
-				$value->checked = true;
-			}
-			else
-			{
-				$value->checked = false;
-			}
-		}
-
-		return $result;
-	}
-
-	/**
 	 * The GetMenuPosition Function For Getting The Menu Position.
 	 *
 	 * @param   [type]  $menuid  it will contain menuid
@@ -759,13 +720,13 @@ class IjoomeradvModelItem extends JModelAdmin
 	public function getMenuPostion($menuid)
 	{
 		$db = $this->getDbo();
+		$sql = 'SELECT 	position
+			FROM #__ijoomeradv_menu_types
+			WHERE id=' . $menuid;
 
-		// Create the base select statement.
-		$query->select('position')
-			->from($db->qn('#__ijoomeradv_menu_types'))
-			->where($db->qn('id') . ' = ' . $db->q($menuid));
+		$db->setQuery($sql);
 
-		$db->setQuery($query);
+		$result = $db->loadResult();
 
 		return $db->loadResult();
 	}
@@ -787,17 +748,17 @@ class IjoomeradvModelItem extends JModelAdmin
 		 * We are only interested if the module is displayed on ALL or THIS menu item (or the inverse ID number).
 		 * sqlsrv changes for modulelink to menu manager
 		 */
-		$query->select('a.id, a.title, a.position, a.published, map.menuid')
-			->from('#__modules AS a')
-			->join('LEFT', sprintf('#__modules_menu AS map ON map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $this->getState('item.id')))
-			->select('(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0) AS ' . $db->qn('except'));
+		$query->select('a.id, a.title, a.position, a.published, map.menuid');
+		$query->from('#__modules AS a');
+		$query->join('LEFT', sprintf('#__modules_menu AS map ON map.moduleid = a.id AND map.menuid IN (0, %1$d, -%1$d)', $this->getState('item.id')));
+		$query->select('(SELECT COUNT(*) FROM #__modules_menu WHERE moduleid = a.id AND menuid < 0) AS ' . $db->qn('except'));
 
 		// Join on the asset groups table.
-		$query->select('ag.title AS access_title')
-			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access')
-			->where('a.published >= 0')
-			->where('a.client_id = 0')
-			->order('a.position, a.ordering');
+		$query->select('ag.title AS access_title');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$query->where('a.published >= 0');
+		$query->where('a.client_id = 0');
+		$query->order('a.position, a.ordering');
 
 		$db->setQuery($query);
 		$result = $db->loadObjectList();
@@ -822,7 +783,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		// 'menutype = ' . $this->_db->q($table->menutype);
+		// 'menutype = ' . $this->_db->Quote($table->menutype);
 		return '';
 	}
 
@@ -1053,7 +1014,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$languages = JLanguageHelper::getLanguages('lang_code');
 
 			$addform = new SimpleXMLElement('<form />');
-			$fields = $addform->addChild('fields');
+			$fields  = $addform->addChild('fields');
 			$fields->addAttribute('name', 'associations');
 			$fieldset = $fields->addChild('fieldset');
 			$fieldset->addAttribute('name', 'item_associations');
@@ -1064,7 +1025,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				if ($tag != $data['language'])
 				{
-					$add = true;
+					$add   = true;
 					$field = $fieldset->addChild('field');
 					$field->addAttribute('name', $tag);
 					$field->addAttribute('type', 'menuitem');
@@ -1107,24 +1068,19 @@ class IjoomeradvModelItem extends JModelAdmin
 		}
 
 		// Convert the parameters not in JSON format.
-		$query = $db->getQuery(true);
+		$db->setQuery(
+			'SELECT id, params' .
+			' FROM #__ijoomeradv_menu' .
+			' WHERE params NOT LIKE ' . $db->quote('{%') .
+			'  AND params <> ' . $db->quote('')
+		);
 
-		// Create the base select statement.
-		$query->select('id, params')
-			->from($db->qn('#__ijoomeradv_menu'))
-			->where($db->qn('params') . ' NOT LIKE ' . $db->q('{%'))
-			->where($db->qn('params') . ' != ' . $db->q(''));
+		$items = $db->loadObjectList();
 
-		// Set the query and load the result.
-		$db->setQuery($query);
-
-		try
+		if ($error = $db->getErrorMsg())
 		{
-			$items = $db->loadObjectList();
-		}
-		catch (RuntimeException $e)
-		{
-			$this->setError($e->getMessage());
+			$this->setError($error);
+
 			return false;
 		}
 
@@ -1133,23 +1089,17 @@ class IjoomeradvModelItem extends JModelAdmin
 			$registry = new JRegistry;
 			$registry->loadString($item->params);
 			$params = (string) $registry;
-			$query  = $db->getQuery(true);
 
-			// Create the base update statement.
-			$query->update($db->qn('#__ijoomeradv_menu'))
-				->set($db->qn('params') . ' = ' . $db->q($params))
-				->where($db->qn('id') . ' = ' . $db->q((int) $item->id));
+			$db->setQuery(
+				'UPDATE #__ijoomeradv_menu' .
+				' SET params = ' . $db->quote($params) .
+				' WHERE id = ' . (int) $item->id
+			);
 
-			// Set the query and execute the update.
-			$db->setQuery($query);
-
-			try
+			if (!$db->query())
 			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				$this->setError($e->getMessage());
+				$this->setError($error);
+
 				return false;
 			}
 
@@ -1163,19 +1113,24 @@ class IjoomeradvModelItem extends JModelAdmin
 	}
 
 	/**
-	 * Rorder items order
+	 * Method to adjust the ordering of a row.
 	 *
-	 * @param   [type]  $ids  contains id
-	 * @param   [type]  $inc  menutype
+	 * Returns NULL if the user did not have edit
+	 * privileges for any of the selected primary keys.
 	 *
-	 * @return  void
+	 * @param   integer  $pks    The ID of the primary key to move.
+	 * @param   integer  $delta  Increment, usually +1 or -1
+	 *
+	 * @return  mixed  False on failure or error, true on success, null if the $pk is empty (no items selected).
+	 *
+	 * @since   12.2
 	 */
-	public function reorder($ids, $inc)
+	public function reorder($pks, $delta = 0)
 	{
 		$menutype = JRequest::getVar('menutype');
 		$table = $this->getTable();
-		$table->load($ids[0]);
-		$table->move($inc, 'menutype=' . $menutype);
+		$table->load($pks[0]);
+		$table->move($delta, 'menutype=' . $menutype);
 	}
 
 	/**
@@ -1188,9 +1143,9 @@ class IjoomeradvModelItem extends JModelAdmin
 	public function save($data)
 	{
 		// Initialise variables.
-		$pk = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('item.id');
+		$pk    = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('item.id');
 		$isNew = true;
-		$db = $this->getDbo();
+		$db    = $this->getDbo();
 		$table = $this->getTable();
 
 		// Load the row if saving an existing item.
@@ -1200,7 +1155,7 @@ class IjoomeradvModelItem extends JModelAdmin
 			$isNew = false;
 		}
 
-		if (!$isNew && $table->menutype == $data['menutype'])
+		/*if (!$isNew && $table->menutype == $data['menutype'])
 		{
 			if ($table->parent_id == $data['parent_id'])
 			{
@@ -1231,19 +1186,14 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				$table->setLocation($data['parent_id'], 'last-child');
 			}
-		}
+		}*/
 
-		// Convert the parameters not in JSON format.
-		$query = $db->getQuery(true);
+		$q = 'SELECT count(id)
+				FROM #__ijoomeradv_menu
+				WHERE home=1
+				AND published=1';
 
-		// Create the base select statement.
-		$query->select('count(id)')
-			->from($db->qn('#__ijoomeradv_menu'))
-			->where($db->qn('home') . ' = ' . $db->q(1))
-			->where($db->qn('published') . ' = ' . $db->q(1));
-
-		$db->setQuery($query);
-
+		$db->setQuery($q);
 		$homecount = $db->loadResult();
 
 		if (!$homecount && $data['home'] == 0)
@@ -1265,15 +1215,13 @@ class IjoomeradvModelItem extends JModelAdmin
 		if ($table->home == 0 && $data['home'] == 1)
 		{
 			// Write query to set home value in other menu items as 0
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
-			$query->update('#__ijoomeradv_menu')
-				->set($db->qn('home') . ' = ' . $db->q('0'))
-				->where($db->qn('home') . ' = ' . $db->q('1'));
-
+			$query->update('#__ijoomeradv_menu');
+			$query->where('home=1');
+			$query->set('home=0');
 			$db->setQuery($query);
-
-			$db->execute();
+			$db->query();
 
 			if ($error = $db->getErrorMsg())
 			{
@@ -1325,7 +1273,7 @@ class IjoomeradvModelItem extends JModelAdmin
 		$this->setState('item.menutype', $table->menutype);
 
 		// Load associated menu items
-		$app = JFactory::getApplication();
+		$app   = JFactory::getApplication();
 		$assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 		if ($assoc)
@@ -1352,15 +1300,13 @@ class IjoomeradvModelItem extends JModelAdmin
 			$associations[$table->language] = $table->id;
 
 			// Deleting old association for these items
-			$db = JFactory::getDbo();
+			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
-
-			$query->delete('#__associations')
-				->where($db->qn('context' ) . '=' . $db->q('com_ijoomeradv.item'))
-				->where($db->qn('id') . ' IN (' . implode(',', $associations) . ')');
-
+			$query->delete('#__associations');
+			$query->where('context=' . $db->quote('com_ijoomeradv.item'));
+			$query->where('id IN (' . implode(',', $associations) . ')');
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 
 			if ($error = $db->getErrorMsg())
 			{
@@ -1378,7 +1324,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 				foreach ($associations as $tag => $id)
 				{
-					$query->values($id . ',' . $db->q('com_ijoomeradv.item') . ',' . $db->q($key));
+					$query->values($id . ',' . $db->quote('com_ijoomeradv.item') . ',' . $db->quote($key));
 				}
 
 				$db->setQuery($query);

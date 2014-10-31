@@ -14,18 +14,17 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user = JFactory::getUser();
-$app = JFactory::getApplication();
-$userId = $user->get('id');
+$user      = JFactory::getUser();
+$app       = JFactory::getApplication();
+$userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn = $this->escape($this->state->get('list.direction'));
-$ordering = ($listOrder == 'a.ordering');
-$canOrder = $user->authorise('core.edit.state', 'com_ijoomeradv');
+$listDirn  = $this->escape($this->state->get('list.direction'));
+$ordering  = ($listOrder == 'a.ordering');
+$canOrder  = $user->authorise('core.edit.state', 'com_ijoomeradv');
 $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 ?>
-<?php
-	// Set up the filter bar.
-?>
+
+<!--  Set up the filter bar. -->
 <form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=items'); ?>" method="post" name="adminForm"
       id="adminForm">
 	<div id="filter-bar" class="btn-toolbar">
@@ -54,9 +53,8 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 		</div>
 	</div>
 	<div class="clr"></div>
-	<?php
-		// Set up the grid heading.
-	?>
+
+	<!-- Set up the grid heading. -->
 	<table class="adminlist table table-striped">
 		<thead>
 		<tr>
@@ -95,7 +93,7 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 			</td>
 		</tr>
 		</tfoot>
-		<?php // Grid layout ?>
+		<!-- Grid layout -->
 		<tbody>
 		<?php
 		$originalOrders = array();
@@ -103,12 +101,12 @@ $saveOrder = ($listOrder == 'a.ordering' && $listDirn == 'asc');
 
 		foreach ($this->items as $i => $item) :
 			// Array_search($item->id, $this->ordering[$item->id]);
-			$orderkey = $item->ordering;
-			$canCreate = $user->authorise('core.create', 'com_ijoomeradv');
-			$canEdit = $user->authorise('core.edit', 'com_ijoomeradv');
+			$orderkey   = $item->ordering;
+			$canCreate  = $user->authorise('core.create', 'com_ijoomeradv');
+			$canEdit    = $user->authorise('core.edit', 'com_ijoomeradv');
 			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0;
-			$canChange = $user->authorise('core.edit.state', 'com_ijoomeradv') && $canCheckin;
-			$disabled = 'disabled="disable"';
+			$canChange  = $user->authorise('core.edit.state', 'com_ijoomeradv') && $canCheckin;
+			$disabled   = 'disabled="disable"';
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="nowrap left">

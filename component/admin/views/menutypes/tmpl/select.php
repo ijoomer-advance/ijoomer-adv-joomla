@@ -20,7 +20,7 @@ defined('_JEXEC') or die;
 				k++;
 			}
 		}
-		var strLen = selectedMenu.length;
+		var strLen   = selectedMenu.length;
 		selectedMenu = selectedMenu.slice(0, strLen - 1);
 		selectedMenu += '}]}';
 

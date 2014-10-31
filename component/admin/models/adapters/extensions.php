@@ -43,17 +43,11 @@ class JInstallerExtensions extends JObject
 		// Get the extension manifest object
 		$this->manifest = $this->parent->getManifest();
 
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('manifest_cache')
-			->from($db->qn('#__extensions'))
-			->where($db->qn('name') . ' = ' . $db->q('ijoomeradv'))
-			->where($db->qn('element') . ' = ' . $db->q('com_ijoomeradv'));
-
-		// Set the query and load the result.
+		$query = "SELECT `manifest_cache`
+				FROM #__extensions
+				WHERE `name`='ijoomeradv'
+				AND `element`='com_ijoomeradv'";
 		$db->setQuery($query);
-
 		$extension = json_decode($db->loadResult($query));
 
 		// Check version
@@ -202,15 +196,11 @@ class JInstallerExtensions extends JObject
 				// Move theme file
 				JFolder::move($value['fullname'] . '/' . $ename, IJ_ADMIN . '/theme/' . $dir . '/' . $ename);
 
-				$query = $db->getQuery(true);
-
-				$query->select('options')
-					->from($db->qn('#__ijoomeradv_config'))
-					->where($db->qn('name') . ' = ' . $db->q('IJOOMER_THM_SELECTED_THEME'));
-
-				// Set the query and load the result.
+				// Update theme option
+				$query = "SELECT `options`
+						FROM #__ijoomeradv_config
+						WHERE `name`='IJOOMER_THM_SELECTED_THEME'";
 				$db->setQuery($query);
-
 				$themeoptions = $db->loadResult();
 				$themeoptions = explode(';;', $themeoptions);
 
@@ -228,18 +218,11 @@ class JInstallerExtensions extends JObject
 				}
 
 				$themeoptions = implode(';;', $themeoptions);
-
-				$query = $db->getQuery(true);
-
-				// Create the base update statement.
-				$query->update($db->qn('#__ijoomeradv_config'))
-					->set($db->qn('options') . ' = ' . $db->q($themeoptions))
-					->where($db->qn('name') . ' = ' . $db->q('IJOOMER_THM_SELECTED_THEME'));
-
-				// Set the query and execute the update.
+				$query = "UPDATE #__ijoomeradv_config
+						SET `options`='{$themeoptions}'
+						WHERE `name`='IJOOMER_THM_SELECTED_THEME'";
 				$db->setQuery($query);
-
-				$db->execute();
+				$db->Query();
 			}
 		}
 
@@ -250,27 +233,20 @@ class JInstallerExtensions extends JObject
 		 */
 
 		// Check to see if a plugin by the same name is already installed
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('id')
-			->from($db->qn($this->tbl_prefix . 'extensions'))
-			->where($db->qn('classname') . ' = ' . $db->q($extension_classname))
-			->order($db->qn('ordering') . ' ASC');
-
-		// Set the query and load the result.
+		$query = "SELECT `id`
+				FROM `{$this->tbl_prefix}extensions`
+				WHERE `classname` = " . $db->Quote($extension_classname);
 		$db->setQuery($query);
 
-		try
-		{
-			$extension_id = $db->loadResult();
-		}
-		catch (RuntimeException $e)
+		if (!$db->Query())
 		{
 			// Install failed, roll back changes
 			$this->parent->abort(JText::_('COM_IJOOMERADV_EXTENSION') . ' ' . JText::_('COM_IJOOMERADV_INSTALL') . ': ' . $db->stderr(true));
+
 			return false;
 		}
+
+		$extension_id = $db->loadResult();
 
 		// Was there a module already installed with the same name?
 		if ($extension_id)
@@ -401,19 +377,11 @@ class JInstallerExtensions extends JObject
 		// Check if extension needs to add into registration option
 		if ($registration == 1)
 		{
-			$query = $db->getQuery(true);
-
-			// Create the base select statement.
-			$query->select('options')
-				->from($db->qn('#__ijoomeradv_config'))
-				->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
-
-			// Set the query and load the result.
+			$query = "SELECT `options`
+					FROM `#__ijoomeradv_config`
+					WHERE `name`='IJOOMER_GC_REGISTRATION'";
 			$db->setQuery($query);
-
 			$options = $db->loadResult();
-
-			$query = $db->getQuery(true);
 
 			if (preg_match("|" . $extension_classname . "|", $options, $match) == 0)
 			{
@@ -422,18 +390,15 @@ class JInstallerExtensions extends JObject
 				// Check if need to set to default registration option
 				if ($default_registration == 1)
 				{
-					// Create the base update statement.
-					$query->update($db->qn('#__ijoomeradv_config'))
-						->set($db->qn('options') . ' = ' . $db->q($options))
-						->set($db->qn('value') . ' = ' . $db->q($extension_classname))
-						->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
+					$query = "UPDATE #__ijoomeradv_config
+							SET `options`='{$options}', `value`='{$extension_classname}'
+							WHERE `name`='IJOOMER_GC_REGISTRATION'";
 				}
 				else
 				{
-					// Create the base update statement.
-					$query->update($db->qn('#__ijoomeradv_config'))
-						->set($db->qn('value') . ' = ' . $db->q($extension_classname))
-						->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
+					$query = "UPDATE #__ijoomeradv_config
+							SET `options`='{$options}'
+							WHERE `name`='IJOOMER_GC_REGISTRATION'";
 				}
 			}
 			else
@@ -441,15 +406,14 @@ class JInstallerExtensions extends JObject
 				// Check if need to set to default registration option
 				if ($default_registration == 1)
 				{
-					// Create the base update statement.
-					$query->update($db->qn('#__ijoomeradv_config'))
-						->set($db->qn('value') . ' = ' . $db->q($extension_classname))
-						->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
+					$query = "UPDATE #__ijoomeradv_config
+							SET `value`='{$extension_classname}'
+							WHERE `name`='IJOOMER_GC_REGISTRATION'";
 				}
 			}
 
 			$db->setQuery($query);
-			$db->execute();
+			$db->Query();
 		}
 
 		if (!$this->parent->copyManifest(-1))
@@ -565,23 +529,11 @@ class JInstallerExtensions extends JObject
 		$db = $this->parent->getDBO();
 
 		// Remove the entry from the #__plugins table
-		$query = $db->getQuery(true);
-
-		// Create the base delete statement.
-		$query->delete()
-			->from($db->qn('#__' . TABLE_PREFIX . '_extensions'))
-			->where($db->qn('id') . ' = ' . $db->q((int) $arg['id']));
-
-		// Set the query and execute the delete.
+		$query = 'DELETE' .
+			' FROM `#__' . TABLE_PREFIX . '_extensions`' .
+			' WHERE `id` =' . (int) $arg['id '];
 		$db->setQuery($query);
 
-		try
-		{
-			return ($db->execute() !== false);
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return ($db->query() !== false);
 	}
 }

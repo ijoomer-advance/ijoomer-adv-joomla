@@ -36,7 +36,7 @@ defined('IJ_JOOMLA_VERSION') or define('IJ_JOOMLA_VERSION', floatval($version->R
 
 defined('IJ_ADMIN') or define('IJ_ADMIN', JPATH_COMPONENT);
 defined('IJ_SITE') or define('IJ_SITE', JPATH_ROOT . '/components/com_ijoomeradv');
-defined('IJ_ASSET') or define('IJ_ASSET', IJ_ADMIN . '/assets');
+defined('IJ_MEDIA') or define('IJ_MEDIA', IJ_ADMIN . '/media/com_ijoomeradv');
 defined('IJ_CONTROLLER') or define('IJ_CONTROLLER', IJ_ADMIN . '/controllers');
 defined('IJ_HELPER') or define('IJ_HELPER', IJ_ADMIN . '/helpers');
 defined('IJ_MODEL') or define('IJ_MODEL', IJ_ADMIN . '/models');
@@ -46,7 +46,7 @@ defined('IJ_VIEW') or define('IJ_VIEW', IJ_ADMIN . '/views');
 require_once IJ_HELPER . '/helper.php';
 
 $document = JFactory::getDocument();
-$document->addStyleSheet('components/com_ijoomeradv/assets/css/ijoomeradv.css');
+$document->addStyleSheet(JURI::root() . "media/com_ijoomeradv/css/ijoomeradv.css");
 
 $controller = JRequest::getVar('view', 'ijoomeradv');
 $path = IJ_CONTROLLER . '/' . $controller . '.php';

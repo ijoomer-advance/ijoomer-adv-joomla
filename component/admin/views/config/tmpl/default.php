@@ -29,12 +29,12 @@ $options = array(
 );
 ?>
 <script type="text/javascript">
-	public function randomString() {
-		var gencode = document.getElementById('IJOOMER_ENC_KEY'),
-			length = document.getElementById('length').value,
-			chars = document.getElementById('chars').value,
-			mask = '',
-			result = '';
+	function randomString() {
+			var	gencode = document.getElementById('IJOOMER_ENC_KEY'),
+				length  = document.getElementById('length').value,
+				chars   = document.getElementById('chars').value,
+				mask    = '',
+				result  = '';
 
 		console.log(length, chars);
 

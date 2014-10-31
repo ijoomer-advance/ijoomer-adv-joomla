@@ -45,7 +45,7 @@ defined('IJ_JOOMLA_VERSION') or define('IJ_JOOMLA_VERSION', floatval($version->R
 
 defined('IJ_ADMIN') or define('IJ_ADMIN', JPATH_ROOT . '/administrator/components/com_ijoomeradv');
 defined('IJ_SITE') or define('IJ_SITE', JPATH_COMPONENT);
-defined('IJ_ASSET') or define('IJ_ASSET', IJ_SITE . '/assets');
+defined('IJ_MEDIA') or define('IJ_MEDIA', IJ_SITE . '/media/com_ijoomeradv');
 defined('IJ_CONTROLLER') or define('IJ_CONTROLLER', IJ_SITE . '/controllers');
 defined('IJ_EXTENSION') or define('IJ_EXTENSION', IJ_SITE . '/extensions');
 defined('IJ_HELPER') or define('IJ_HELPER', IJ_SITE . '/helpers');

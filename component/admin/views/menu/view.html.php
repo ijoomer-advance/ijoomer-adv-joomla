@@ -37,9 +37,9 @@ class IjoomeradvViewMenu extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
-		$this->state = $this->get('State');
+		$this->form      = $this->get('Form');
+		$this->item      = $this->get('Item');
+		$this->state     = $this->get('State');
 		$this->menuitems = $this->get('Menuitems');
 
 		parent::display($tpl);
@@ -57,7 +57,7 @@ class IjoomeradvViewMenu extends JViewLegacy
 	{
 		JRequest::setVar('hidemainmenu', true);
 
-		$user = JFactory::getUser();
+		$user  = JFactory::getUser();
 		$isNew = ($this->item->id == 0);
 
 		JToolBarHelper::title(JText::_($isNew ? 'COM_IJOOMERADV_VIEW_NEW_MENU_TITLE' : 'COM_IJOOMERADV_VIEW_EDIT_MENU_TITLE'), 'menu.png');

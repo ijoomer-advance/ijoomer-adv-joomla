@@ -35,7 +35,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 	 */
 	public function save()
 	{
-		$model = $this->getModel('config');
+		$model  = $this->getModel('config');
 		$config = $model->store();
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));
 	}

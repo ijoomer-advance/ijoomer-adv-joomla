@@ -60,13 +60,6 @@ div#frontmenuitem img.disabled{
     background-image: url("../images/home_32.png");
 }
 
-/* hack for joomla 1.6 radion button label */
-
-fieldset label, fieldset span.faux-label {
-	/*clear: none !important;*/
-	margin: 5px 10px 0 0 !important;
-}
-
 .component td {
 	background-color: #f9e9e9 !important;
 }

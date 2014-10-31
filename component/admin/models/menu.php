@@ -113,7 +113,7 @@ class IjoomeradvModelMenu extends JModelForm
 	{
 		// Initialise variables.
 		$itemId = JRequest::getInt('id', 0);
-		$false = false;
+		$false  = false;
 
 		// Get a menu item row instance.
 		$table = $this->getTable();
@@ -130,7 +130,7 @@ class IjoomeradvModelMenu extends JModelForm
 		}
 
 		$properties = $table->getProperties(1);
-		$value = JArrayHelper::toObject($properties, 'JObject');
+		$value      = JArrayHelper::toObject($properties, 'JObject');
 
 		return $value;
 	}
@@ -169,30 +169,35 @@ class IjoomeradvModelMenu extends JModelForm
 
 		// Create the base select statement.
 		$query->select('m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published,t.id as menuid,t.title as menutitle')
-			->from($db->qn('#__ijoomeradv_menu_types', 't'))
-			->where($db->qn('m.published') . ' = ' . $db->q('1'))
-			->join('LEFT', '#__ijoomeradv_menu as m ON t.id=m.menutype');
+			->from($db->quoteName('#__ijoomeradv_menu_types') . 'AS t')
+			->join('LEFT', ' #__ijoomeradv_menu as m ON t.id=m.menutype')
+			->where($db->quoteName('m.published') . ' = ' . $db->quote('1'));
 
 		// Set the query and load the result.
 		$db->setQuery($query);
 
-		$result = $db->loadObjectList();
-
-		$result1 = array();
-
-		foreach ($result as $key=>$value)
+		try
 		{
-			$o            = new stdClass();
+			$menuitems = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
+
+		foreach ($menuitems as $key => $value)
+		{
+			$o            = new stdClass;
 			$o->menuid    = $value->menuid;
 			$o->menutitle = $value->menutitle;
 			$o->itemid    = $value->itemid;
 			$o->itemtitle = $value->itemtitle;
 			$o->itemtype  = $value->itemtype;
 
-			$result1[$value->menutitle][] = $o;
+			$result[$value->menutitle][] = $o;
 		}
 
-		return $result1;
+		return $result;
 	}
 
 	/**
@@ -224,7 +229,7 @@ class IjoomeradvModelMenu extends JModelForm
 	 */
 	public function save($data)
 	{
-		$id = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('menu.id');
+		$id    = (!empty($data['id'])) ? $data['id'] : (int) $this->getState('menu.id');
 		$isNew = true;
 
 		// Get a row instance.
@@ -281,7 +286,6 @@ class IjoomeradvModelMenu extends JModelForm
 		foreach ($itemIds as $itemId)
 		{
 			// @TODO: Delete the menu associations - Menu items and Modules
-
 			if (!$table->delete($itemId))
 			{
 				$this->setError($table->getError());
@@ -306,19 +310,15 @@ class IjoomeradvModelMenu extends JModelForm
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true);
-
-		$query->select('a.id, a.title, a.params, a.position')
-			->from($db->qn('#__modules', 'a'))
-			->where($db->qn('a.module') . ' = ' . $db->quote('mod_menu'));
-
-		$query->select('ag.title AS access_title')
-			->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-
+		$query->from('#__modules as a');
+		$query->select('a.id, a.title, a.params, a.position');
+		$query->where('module = ' . $db->quote('mod_menu'));
+		$query->select('ag.title AS access_title');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
 		$db->setQuery($query);
 
 		$modules = $db->loadObjectList();
-
-		$result = array();
+		$result  = array();
 
 		foreach ($modules as &$module)
 		{

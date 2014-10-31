@@ -9,7 +9,6 @@
 
 defined('_JEXEC') or die;
 
-
 /**
  * The Class For IJoomeradvViewPushnotif which will Extends JViewLegacy
  *
@@ -19,6 +18,8 @@ defined('_JEXEC') or die;
  */
 class IjoomeradvViewPushnotif extends JViewLegacy
 {
+	protected $form;
+
 	/**
 	 * The Display Function
 	 *
@@ -30,14 +31,17 @@ class IjoomeradvViewPushnotif extends JViewLegacy
 	{
 		global $context;
 
-		$mainframe = JFactory::getApplication();
-		$document = JFactory::getDocument();
+		$this->form = $this->get('Form');
+
+		$mainframe  = JFactory::getApplication();
+		$document   = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_IJOOMERADV_TITLE'));
 
 		JToolBarHelper::title(JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TITLE'), 'pushnotification_48');
 		JToolBarHelper::custom('home', 'home', '', JText::_('COM_IJOOMERADV_HOME'), false, false);
 		JToolBarHelper::divider();
-		JToolBarHelper::apply();
+		JToolBarHelper::apply('apply', 'Send');
+		JToolBarHelper::deleteList('', 'delete');
 
 		// Code for add submenu for joomla version 1.6 and 1.7
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_EXTENSIONS'), 'index.php?option=com_ijoomeradv&view=extensions', (JRequest::getVar('view') == 'extensions' && JRequest::getVar('layout') != 'manage'));
@@ -47,7 +51,7 @@ class IjoomeradvViewPushnotif extends JViewLegacy
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION'), 'index.php?option=com_ijoomeradv&view=pushnotif', JRequest::getVar('view') == 'pushnotif');
 		JSubMenuHelper::addEntry(JText::_('COM_IJOOMERADV_REPORT'), 'index.php?option=com_ijoomeradv&view=report', JRequest::getVar('view') == 'report');
 
-		$users = $this->get('Users');
+		$users       = $this->get('Users');
 		$this->users = $users;
 
 		$pushNotifications = $this->get('PushNotifications');

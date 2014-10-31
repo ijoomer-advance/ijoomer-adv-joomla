@@ -68,7 +68,8 @@ class IjoomeradvViewconfig extends JViewLegacy
 		$this->assignRef('pushConfigIphone', $pushConfigIphone);
 		$this->assignRef('pushConfigAndroid', $pushConfigAndroid);
 		$this->assignRef('encryption', $encryption);
-		$this->assignRef('request_url', $uri->toString());
+		$url = $uri->toString();
+		$this->assignRef('request_url', $url);
 
 		parent::display($tpl);
 	}

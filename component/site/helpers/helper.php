@@ -40,16 +40,10 @@ class IjoomeradvHelper
 	 */
 	public function getencryption_config()
 	{
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('value')
-			->from($this->db->qn('#__ijoomeradv_config'))
-			->where($this->db->qn('name') . ' = ' . $this->db->q('IJOOMER_ENC_REQUIRED'));
-
-		// Set the query and load the result.
+		$query = "SELECT `value`
+				FROM #__ijoomeradv_config
+				WHERE `name`='IJOOMER_ENC_REQUIRED' ";
 		$this->db->setQuery($query);
-
 		$encryption = $this->db->loadResult();
 
 		return $encryption;
@@ -90,17 +84,11 @@ class IjoomeradvHelper
 	 */
 	public function getComponent($option)
 	{
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('extension_id AS id, element AS option, params, enabled')
-			->from($this->db->qn('#__extensions'))
-			->where($this->db->qn('type') . ' = ' . $this->db->q('component'))
-			->where($this->db->qn('element') . ' = ' . $this->db->q($option));
-
-		// Set the query and load the result.
+		$query = "SELECT `extension_id` AS `id`, `element` AS `option`, `params`, `enabled`
+				FROM #__extensions
+				WHERE `type`='component'
+				AND `element`='{$option}'";
 		$this->db->setQuery($query);
-
 		$components = $this->db->loadObject();
 
 		return (count($components) > 0 && $components->enabled == 1);

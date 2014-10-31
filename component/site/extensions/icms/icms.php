@@ -46,34 +46,21 @@ class Icms
 	 */
 	public function write_configuration(&$d)
 	{
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_icms_config'));
-
+		$db = JFactory::getDbo();
+		$query = 'SELECT *
+				  FROM #__ijoomeradv_icms_config';
+		$db->setQuery($query);
 		$my_config_array = $db->loadObjectList();
 
 		foreach ($my_config_array as $ke => $val)
 		{
 			if (isset($d[$val->name]))
 			{
-				// Initialiase variables.
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				// Create the base update statement.
-				$query->update($db->qn('#__ijoomeradv_icms_config'))
-					->set($db->qn('value') . ' = ' . $db->q($d[$val->name]))
-					->where($db->qn('name') . ' = ' . $db->q($val->name));
-
-				// Set the query and execute the update.
-				$db->setQuery($query);
-
-				$db->execute();
-
+				$sql = "UPDATE #__ijoomeradv_icms_config
+						SET value='{$d[$val->name]}'
+						WHERE name='{$val->name}'";
+				$db->setQuery($sql);
+				$db->query();
 			}
 		}
 	}
@@ -129,18 +116,9 @@ class icms_menu
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR . '/components/com_categories/models/categories.php';
 
-				// Initialiase variables.
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				// Create the base select statement.
-				$query->select('*')
-					->from($db->qn('#__categories'))
-					->where($db->qn('extension') . ' = ' . $db->q('com_content'));
-
-				// Set the query and load the result.
+				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
-
 				$items = $db->loadObjectList();
 
 				$html = '<fieldset class="panelform">
@@ -179,16 +157,8 @@ class icms_menu
 				$selvalue = $menuoptions['remoteUse']['id'];
 				require_once JPATH_ADMINISTRATOR . '/components/com_categories/models/categories.php';
 
-				// Initialiase variables.
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				// Create the base select statement.
-				$query->select('*')
-					->from($db->qn('#__categories'))
-					->where($db->qn('extension') . ' = ' . $db->q('com_content'));
-
-				// Set the query and load the result.
+				$query = " SELECT * FROM #__categories WHERE `extension` ='com_content' ";
+				$db = JFactory::getDbo();
 				$db->setQuery($query);
 				$items = $db->loadObjectList();
 
@@ -226,19 +196,10 @@ class icms_menu
 
 			case 'singleArticle':
 				$selvalue = (isset($menuoptions['remoteUse']['id'])) ? $menuoptions['remoteUse']['id'] : 0;
-
-				// Initialiase variables.
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
-
-				// Create the base select statement.
-				$query->select('title')
-					->from($db->qn('#__content'))
-					->where($db->qn('id') . ' = ' . $db->q($selvalue));
-
-				// Set the query and load the result.
-				$db->setQuery($query);
-
+				$db = JFactory::getDBO();
+				$sql = "SELECT title FROM #__content
+						WHERE id=" . $selvalue;
+				$db->setQuery($sql);
 				$result = $db->loadResult();
 
 				if ($result)
@@ -321,22 +282,13 @@ class icms_menu
 
 		if ($options)
 		{
-			// Initialiase variables.
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
+			$sql = "UPDATE #__ijoomeradv_menu
+					SET menuoptions = '" . $options . "'
+					WHERE views = '" . $extension . "." . $extView . "." . $extTask . "." . $remoteTask . "'
+					AND id='" . $data['id'] . "'";
 
-			$where = $extension . "." . $extView . "." . $extTask . "." . $remoteTask;
-
-			// Create the base update statement.
-			$query->update($db->qn('#__ijoomeradv_menu'))
-				->set($db->qn('menuoptions') . ' = ' . $db->q($options))
-				->where($db->qn('views') . ' = ' . $db->q($where))
-				->where($db->qn('id') . ' = ' . $db->q($data['id']));
-
-			// Set the query and execute the update.
-			$db->setQuery($query);
-
-			$db->execute();
+			$db->setQuery($sql);
+			$db->query();
 		}
 	}
 }
