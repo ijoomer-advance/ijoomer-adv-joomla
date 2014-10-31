@@ -43,12 +43,15 @@ class Com_IjoomeradvInstallerScript
 	 */
 	public function install(JAdapterInstance $adapter)
 	{
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 
 		// Set default menu items if no menu present
-		$query = "SELECT count(*)
-				FROM #__ijoomeradv_menu";
+		$query->select('count(*)')
+			->from($db->qn('#__ijoomeradv_menu'));
+
+		// Set the query and load the result.
 		$db->setQuery($query);
+
 		$result = $db->loadResult();
 
 		if ($result <= 0)
@@ -69,9 +72,15 @@ class Com_IjoomeradvInstallerScript
 		}
 
 		// Set default menu types if not installed
-		$query = "SELECT count(*)
-				FROM #__ijoomeradv_menu_types";
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('count(*)')
+			->from($db->qn('#__ijoomeradv_menu_types'));
+
+		// Set the query and load the result.
 		$db->setQuery($query);
+
 		$result = $db->loadResult();
 
 		if ($result <= 0)
@@ -213,12 +222,17 @@ class Com_IjoomeradvInstallerScript
 	 */
 	public function uninstall(JAdapterInstance $adapter)
 	{
-		$db = JFactory::getDBO();
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		// Delete plugin config
-		$query = "SELECT *
-				FROM #__ijoomeradv_extensions";
+		$query->select('*')
+			->from($db->qn('#__ijoomeradv_extensions'));
+
+		// Set the query and load the result.
 		$db->setQuery($query);
+
 		$rows = $db->loadObjectlist();
 
 		for ($i = 0, $cnt = count($rows); $i < $cnt; $i++)

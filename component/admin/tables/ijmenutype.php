@@ -58,10 +58,12 @@ class JTableIjmenuType extends JTable
 
 		// Check for unique menutype.
 		$query = $this->_db->getQuery(true);
-		$query->select('COUNT(id)');
-		$query->from($this->_db->quoteName('#__ijoomeradv_menu_types'));
-		$query->where($this->_db->quoteName('menutype') . ' = ' . $this->_db->quote($this->menutype));
-		$query->where($this->_db->quoteName('id') . ' <> ' . (int) $this->id);
+
+		$query->select('COUNT(id)')
+			->from($this->_db->qn('#__ijoomeradv_menu_types'))
+			->where($this->_db->qn('menutype') . ' = ' . $this->_db->q($this->menutype))
+			->where($this->_db->qn('id') . ' <> ' . (int) $this->id);
+
 		$this->_db->setQuery($query);
 
 		if ($this->_db->loadResult())
@@ -102,9 +104,9 @@ class JTableIjmenuType extends JTable
 
 			// Delete the menu items
 			$query = $this->_db->getQuery(true);
-			$query->delete();
-			$query->from('#__ijoomeradv_menu');
-			$query->where('id=' . $this->_db->quote($table->id));
+			$query->delete()
+				->from('#__ijoomeradv_menu')
+				->where('id=' . $this->_db->q($table->id));
 
 			$this->_db->setQuery($query);
 

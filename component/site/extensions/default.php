@@ -84,10 +84,16 @@ class Default_Menu
 
 			case 'contactUs':
 				$ID = (isset($menuoptions['remoteUse']['id'])) ? $menuoptions['remoteUse']['id'] : 0;
-				$db = JFactory::getDbo();
-				$sql = "SELECT c.name
-    					FROM #__contact_details as c
-    					WHERE c.id=" . $ID;
+
+				// Initialiase variables.
+				$db    = JFactory::getDbo();
+				$query = $db->getQuery(true);
+
+				// Create the base select statement.
+				$query->select('c.name')
+					->from($db->qn('#__contact_details','c'))
+					->where($db->qn('c.id') . ' = ' . $db->q($ID));
+
 				$db->setQuery($sql);
 				$contactName = $db->loadResult();
 				$script = array();
@@ -364,12 +370,22 @@ class Default_Menu
 
 		if ($options)
 		{
-			$sql = "UPDATE #__ijoomeradv_menu
-					SET menuoptions = '" . $options . "'
-					WHERE views = '" . $extension . "." . $extView . "." . $extTask . "." . $remoteTask . "'
-					AND id='" . $data['id'] . "'";
-			$db->setQuery($sql);
-			$db->query();
+			// Initialiase variables.
+			$db    = JFactory::getDbo();
+			$query = $db->getQuery(true);
+
+			$where = $extension . "." . $extView . "." . $extTask . "." . $remoteTask;
+
+			// Create the base update statement.
+			$query->update($db->qn('#__ijoomeradv_menu'))
+				->set($db->qn('menuoptions') . ' = ' . $db->q($options))
+				->where($db->qn('views') . ' = ' . $db->q($where))
+				->where($db->qn('id') . ' = ' . $db->q($data['id']));
+
+			// Set the query and execute the update.
+			$db->setQuery($query);
+
+			$db->execute();
 		}
 	}
 

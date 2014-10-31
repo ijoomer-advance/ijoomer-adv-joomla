@@ -39,11 +39,25 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function getApplicationConfig()
 	{
-		$query = "SELECT `name`,`value`
-				FROM #__ijoomeradv_config";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('name, value')
+			->from($this->db->qn('#__ijoomeradv_config'));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
 
-		return $this->db->loadObjectList();
+		try
+		{
+			$result = $this->db->loadObjectList();
+
+			return $result;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -53,13 +67,26 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function getExtensions()
 	{
-		$query = 'SELECT *
-				  FROM #__ijoomeradv_extensions
-				  WHERE published=1';
-		$this->db->setQuery($query);
-		$components = $this->db->loadObjectList();
+		$query = $this->db->getQuery(true);
 
-		return $components;
+		// Create the base select statement.
+		$query->select('name, value')
+			->from($this->db->qn('#__ijoomeradv_extensions'))
+			->where($this->db->qn('published') . ' = ' . $this->db->q('1'));
+
+		// Set the query and load the result.
+		$this->db->setQuery($query);
+
+		try
+		{
+			$components = $this->db->loadObjectList();
+
+			return $components;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -145,11 +172,16 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 
-		$query = 'SELECT *
-				  FROM #__ijoomeradv_menu_types';
+		$query = $this->db->getQuery(true);
 
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_menu_types'));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
-		$menus = $this->db->loadObjectList();
+
+		$menus = $db->loadObjectList();
 
 		$i = 0;
 
@@ -190,14 +222,19 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 					// Add IF condition for if menuitem for specific device avail or not
 					// if global selected then check avaibility in menu
-					$query = "SELECT *
-							FROM #__ijoomeradv_menu
-							WHERE menutype=$value->id
-							AND published=1
-							AND access IN ($groups)
-							ORDER BY ordering";
+					$query = $this->db->getQuery(true);
 
+					// Create the base select statement.
+					$query->select('*')
+						->from($this->db->qn('#__ijoomeradv_menu'))
+						->where($this->db->qn('menutype') . ' = ' . $this->db->q($value->id))
+						->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+						->where($this->db->qn('access') . ' IN ( ' . $groups . ')')
+						->order($this->db->qn('ordering') . ' ASC');
+
+					// Set the query and load the result.
 					$this->db->setQuery($query);
+
 					$menuitems = $this->db->loadObjectList();
 
 					$k = 0;
@@ -259,10 +296,16 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	{
 		$mainframe = JFactory::getApplication();
 
-		$query = "SELECT *
-				FROM #__ijoomeradv_menu
-				WHERE id=" . $menuid;
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_menu'))
+			->where($this->db->qn('id') . ' = ' . $this->db->q($menuid));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
+
 		$menuobject = $this->db->loadObject();
 
 		if ($menuobject)
@@ -294,12 +337,26 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function getExtensionConfig($extName)
 	{
-		$query = "SELECT `name`,`value`
-				FROM #__ijoomeradv_{$extName}_config";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('name, value')
+			->from($this->db->qn('#__ijoomeradv_' . $extName . '_config'));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
 
-		// Return config list
-		return $this->db->loadObjectList();
+		try
+		{
+			$result = $this->db->loadObjectList();
+
+			// return config list
+			return $result;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -309,14 +366,27 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function getCustomView()
 	{
-		$query = "SELECT *
-				  FROM #__ijoomeradv_menu
-				  WHERE published=1
-				  AND type='Custom'";
-		$this->db->setQuery($query);
-		$customView = $this->db->loadObjectList();
+		$query = $this->db->getQuery(true);
 
-		return $customView;
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_menu'))
+			->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+			->where($this->db->qn('type') . ' = ' . $this->db->q('Custom'));
+
+		// Set the query and load the result.
+		$this->db->setQuery($query);
+
+		try
+		{
+			$customView = $this->db->loadObjectList();
+
+			return $customView;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -326,13 +396,27 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function getHomeMenu()
 	{
-		$query = "SELECT *
-				  FROM #__ijoomeradv_menu
-				  WHERE published=1
-				  AND home=1";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_menu'))
+			->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+			->where($this->db->qn('home') . ' = ' . $this->db->q('1'));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
 
-		return $this->db->loadObject();
+		try
+		{
+			$result = $this->db->loadObjectList();
+
+			return $result;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -344,13 +428,16 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function checkIJExtension($extName)
 	{
-		$query = "SELECT `option`
-				FROM `#__ijoomeradv_extensions`
-				WHERE `classname`='{$extName}'";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('option')
+			->from($this->db->qn('#__ijoomeradv_extensions'))
+			->where($this->db->qn('classname') . ' = ' . $this->db->q($extName));
+
 		$this->db->setQuery($query);
 
-		// Get component name from the extension name
-		$option = $this->db->loadResult();
+		$option = $this->db->loadResult(); // get component name from the extension name
 
 		if (!$option)
 		{
@@ -392,26 +479,50 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		// @TODO : extension levels default params
 		$defaultParams = '{"pushnotif_profile_activity_add_comment":"1","pushnotif_profile_activity_reply_comment":"1","pushnotif_profile_status_update":"1","pushnotif_profile_like":"1","pushnotif_profile_stream_like":"1","pushnotif_friends_request_connection":"1","pushnotif_friends_create_connection":"1","pushnotif_inbox_create_message":"1","pushnotif_groups_invite":"1","pushnotif_groups_discussion_reply":"1","pushnotif_groups_wall_create":"1","pushnotif_groups_create_discussion":"1","pushnotif_groups_create_news":"1","pushnotif_groups_create_album":"1","pushnotif_groups_create_video":"1","pushnotif_groups_create_event":"1","pushnotif_groups_sendmail":"1","pushnotif_groups_member_approved":"1","pushnotif_groups_member_join":"1","pushnotif_groups_notify_creator":"1","pushnotif_groups_discussion_newfile":"1","pushnotif_events_invite":"1","pushnotif_events_invitation_approved":"1","pushnotif_events_sendmail":"1","pushnotif_event_notify_creator":"1","pushnotif_event_join_request":"1","pushnotif_videos_submit_wall":"1","pushnotif_videos_reply_wall":"1","pushnotif_videos_tagging":"1","pushnotif_videos_like":"1","pushnotif_photos_submit_wall":"1","pushnotif_photos_reply_wall":"1","pushnotif_photos_tagging":"1","pushnotif_photos_like":"1"}';
 
-		$query = "SELECT count(1)
-				FROM `#__ijoomeradv_users`
-				WHERE `userid`='{$my->id}'";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('count(1)')
+			->from($this->db->qn('#__ijoomeradv_users'))
+			->where($this->db->qn('userid') . ' = ' . $this->db->q($my->id));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
+
 		$user = $this->db->loadResult();
+
+		$query = $this->db->getQuery(true);
 
 		if ($user)
 		{
-			$query = "UPDATE `#__ijoomeradv_users`
-					SET `device_token`='{$data['device_token']}', `device_type`='{$data['device_type']}'
-					WHERE `userid`={$my->id}";
+			// Create the base update statement.
+			$query->update($this->db->qn('#__ijoomeradv_users'))
+				->set($this->db->qn('device_token') . ' = ' . $this->db->q($data['device_token']))
+				->set($this->db->qn('device_type') . ' = ' . $this->db->q($data['device_type']))
+				->where($this->db->qn('userid') . ' = ' . $this->db->q($my->id));
 		}
 		else
 		{
-			$query = "INSERT INTO `#__ijoomeradv_users` (`userid`,`jomsocial_params`,`device_token`,`device_type`)
-					VALUES ('{$my->id}','{$defaultParams}','{$data['device_token']}','{$data['device_type']}')";
+			// Create the base insert statement.
+			$query->insert($this->db->qn('#__ijoomeradv_users'))
+				->columns(
+					array(
+						$this->db->qn('userid'),
+						$this->db->qn('jomsocial_params'),
+						$this->db->qn('device_token'),
+						$this->db->qn('device_type')
+						)
+					)
+				->values(
+					$this->db->q($my->id) . ', ' .
+					$this->db->q($defaultParams) . ', ' .
+					$this->db->q($data['device_token']) . ', ' .
+					$this->db->q($data['device_type'])
+					);
 		}
 
 		$this->db->setQuery($query);
-		$this->db->query();
+		$this->db->execute();
 
 		$jsonarray['code'] = 200;
 		$jsonarray['profile'] = IJOOMER_GC_REGISTRATION;
@@ -423,11 +534,16 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			// Update jomsocial latitude & longitude if not 0
 			if ($data['latitude'] != 0 && $data['longitude'] != 0)
 			{
-				$query = "UPDATE #__community_users
-						SET `latitude`='{$data['latitude']}',`longitude`='{$data['longitude']}'
-						WHERE `userid`='{$my->id}'";
+				$query = $this->db->getQuery(true);
+
+				// Create the base update statement.
+				$query->update($this->db->qn('#__community_users'))
+					->set($this->db->qn('latitude') . ' = ' . $this->db->q($data['latitude']))
+					->set($this->db->qn('longitude') . ' = ' . $this->db->q($data['longitude']))
+					->where($this->db->qn('userid') . ' = ' . $this->db->q($my->id));
+
 				$this->db->setQuery($query);
-				$this->db->Query();
+				$this->db->execute();
 			}
 		}
 
@@ -480,12 +596,18 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 		if ($reg_opt === 0)
 		{
-			// First check if fbuser in db logged in
-			$query = "SELECT u.id,u.username
-					FROM #__users AS u,#__community_connect_users AS cu
-					WHERE u.id = cu.userid
-					AND cu.`connectid`='{$password_set}'";
+			// first check if fbuser in db logged in
+			$query = $this->db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('u.id,u.username')
+				->from($this->db->qn('#__users AS u, #__community_connect_users AS cu'))
+				->where($this->db->qn('u.id') . ' = ' . $this->db->q('cu.userid'))
+				->where($this->db->qn('cu.connectid') . ' = ' . $this->db->q($password_set));
+
+			// Set the query and load the result.
 			$this->db->setQuery($query);
+
 			$userinfo = $this->db->loadObject();
 
 			if (isset($userinfo->id) && $userinfo->id > 0)
@@ -494,11 +616,17 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				$crypt = JUserHelper::getCryptedPassword($password_set . $time, $salt);
 				$data['password'] = $crypt . ':' . $salt;
 
-				$query = "UPDATE #__users
-						SET `password`='{$data['password']}'
-						WHERE `id`='{$userinfo->id}'";
+				$query = $this->db->getQuery(true);
+
+				// Create the base update statement.
+				$query->update($this->db->qn('#__users'))
+					->set($this->db->qn('password') . ' = ' . $this->db->q($data['password']))
+					->where($this->db->qn('id') . ' = ' . $this->db->q($userinfo->id));
+
+				// Set the query and execute the update.
 				$this->db->setQuery($query);
-				$this->db->Query();
+
+				$this->db->execute();
 
 				$usersipass['username'] = $userinfo->username;
 				$usersipass['password'] = $password_set . $time;
@@ -540,20 +668,43 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				if (strtolower(IJOOMER_GC_REGISTRATION) === 'community' && file_exists(JPATH_ROOT . '/components/com_community/libraries/core.php'))
 				{
 					require_once JPATH_ROOT . '/components/com_community/libraries/core.php';
-					$query = "INSERT INTO #__community_connect_users
-							SET userid='{$user->id}',connectid='{$fbid}',type='facebook'";
+
+					$query = $this->db->getQuery(true);
+
+					// Create the base insert statement.
+					$query->insert($this->db->qn('#__community_connect_users'))
+						->columns(
+							array(
+								$this->db->qn('userid'),
+								$this->db->qn('connectid'),
+								$this->db->qn('type'))
+							)
+						->values(
+							$this->db->q($user->id) . ', ' .
+							$this->db->q($fbid) . ', ' .
+							$this->db->q('facebook')
+							);
+
+					// Set the query and execute the insert.
 					$this->db->setQuery($query);
-					$this->db->Query();
+
+					$this->db->execute();
 
 					$salt = JUserHelper::genRandomPassword(32);
 					$crypt = JUserHelper::getCryptedPassword($password_set . $time, $salt);
 					$data['password'] = $crypt . ':' . $salt;
 
-					$query = "UPDATE #__users
-							SET `password`='{$data['password']}'
-							WHERE `id`='{$user->id}'";
+					$query = $this->db->getQuery(true);
+
+					// Create the base update statement.
+					$query->update($this->db->qn('#__users'))
+						->set($this->db->qn('password') . ' = ' . $this->db->q($data['password']))
+						->where($this->db->qn('id') . ' = ' . $this->db->q($user->id));
+
+					// Set the query and execute the update.
 					$this->db->setQuery($query);
-					$this->db->Query();
+
+					$this->db->execute();
 
 					// Store user image...
 					CFactory::load('libraries', 'facebook');
@@ -578,19 +729,30 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		}
 		else
 		{
-			$query = "SELECT u.id
-					FROM #__users AS u
-					WHERE u.`email`='{$data['email']}'";
+			$query = $this->db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('u.id')
+				->from($this->db->qn('#__users', 'u'))
+				->where($this->db->qn('u.email') . ' = ' . $this->db->q($data['email']));
+
+			// Set the query and load the result.
 			$this->db->setQuery($query);
+
 			$uid = $this->db->loadResult();
 
 			if ($uid > 0)
 			{
-				// If user exists with email address send email id already exists
-				$query = "SELECT u.id
-						FROM #__users AS u,#__community_connect_users AS cu
-						WHERE u.id = cu.userid AND u.`email`='{$data['email']}'
-						AND cu.`connectid`='{$password_set}'";
+				// if user exists with email address send email id already exists
+				$query = $this->db->getQuery(true);
+
+				// Create the base select statement.
+				$query->select('u.id')
+					->from($this->db->qn('#__users AS u, #__community_connect_users AS cu'))
+					->where($this->db->qn('u.id') . ' = ' . $this->db->q('cu.userid'))
+					->where($this->db->qn('u.email') . ' = ' . $this->db->q($data['email']))
+					->where($this->db->qn('cu.connectid') . ' = ' . $this->db->q($password_set));
+
 				$this->db->setQuery($query);
 				$uid = $this->db->loadResult();
 
@@ -603,9 +765,13 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				}
 			}
 
-			$query = "SELECT id
-					FROM #__users
-					WHERE `username`='" . $data['user_nm'] . "'";
+			$query = $this->db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('id')
+				->from($this->db->qn('#__users'))
+				->where($this->db->qn('username') . ' = ' . $this->db->q($data['user_nm']));
+
 			$this->db->setQuery($query);
 			$uid = $this->db->loadResult();
 
@@ -639,19 +805,46 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 				$aclval = $user->id;
 
-				// Store usegroup for user...
-				$query = "INSERT INTO #__user_usergroup_map
-						SET group_id='2',user_id='{$aclval}'";
+				$query = $this->db->getQuery(true);
+
+				// store usegroup for user...
+				$query->insert($this->db->qn('#__user_usergroup_map'))
+					->columns(
+						array(
+							$this->db->qn('group_id'),
+							$this->db->qn('user_id')
+							)
+						)
+					->values(
+						$this->db->q('2') . ', ' .
+						$this->db->q($aclval)
+						);
+
 				$this->db->setQuery($query);
-				$this->db->Query();
+				$this->db->execute();
 
 				if (strtolower(IJOOMER_GC_REGISTRATION) === 'jomsocial' && file_exists(JPATH_ROOT . '/components/com_community/libraries/core.php'))
 				{
 					require_once JPATH_ROOT . '/components/com_community/libraries/core.php';
-					$query = "INSERT INTO #__community_connect_users
-							SET userid='{$aclval}',connectid='{$password_set}',type='facebook'";
+
+					$query = $this->db->getQuery(true);
+
+					// Create the base insert statement.
+					$query->insert($this->db->qn('#__community_connect_users'))
+						->columns(
+							array(
+								$this->db->qn('userid'),
+								$this->db->qn('connectid'),
+								$this->db->qn('type'))
+							)
+						->values(
+							$this->db->q($aclval) . ', ' .
+							$this->db->q($password_set) . ', ' .
+							$this->db->q('facebook')
+							);
+
 					$this->db->setQuery($query);
-					$this->db->Query();
+					$this->db->execute();
 
 					$config = CFactory::getConfig();
 
@@ -671,11 +864,17 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				$crypt = JUserHelper::getCryptedPassword($password_set . $time, $salt);
 				$data['password'] = $crypt . ':' . $salt;
 
-				$query = "UPDATE #__users
-						SET `password`='{$data['password']}'
-						WHERE `id`='{$aclval}'";
+				$query = $this->db->getQuery(true);
+
+				// Create the base update statement.
+				$query->update($this->db->qn('#__users'))
+					->set($this->db->qn('password') . ' = ' . $this->db->q($data['password']))
+					->where($this->db->qn('id') . ' = ' . $this->db->q($aclval));
+
+				// Set the query and execute the update.
 				$this->db->setQuery($query);
-				$this->db->Query();
+
+				$this->db->execute();
 
 				$usersipass['username'] = trim(str_replace("\n", "", $data['user_nm']));
 				$usersipass['password'] = trim(str_replace("\n", "", $password_set . $time));
@@ -762,43 +961,76 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 		foreach ($fieldConnection as $key => $value)
 		{
-			$query = "SELECT value
-					FROM #__ijoomeradv_jomsocial_config
-					WHERE name='{$key}'";
+			$query = $this->db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('value')
+				->from($this->db->qn('#__ijoomeradv_jomsocial_config'))
+				->where($this->db->qn('name') . ' = ' . $this->db->q($key));
+
+			// Set the query and load the result.
 			$this->db->setQuery($query);
+
 			$fieldid = $this->db->loadResult();
 
 			if ($fieldid)
 			{
-				$query = "SELECT id
-						FROM #__community_fields_values
-						WHERE user_id={$userid}
-						AND field_id={$fieldid}";
+				$query = $this->db->getQuery(true);
+
+				// Create the base select statement.
+				$query->select('id')
+					->from($this->db->qn('#__community_fields_values'))
+					->where($this->db->qn('user_id') . ' = ' . $this->db->q($userid))
+					->where($this->db->qn('field_id') . ' = ' . $this->db->q($fieldid));
+
 				$this->db->setQuery($query);
 				$field = $this->db->loadResult();
 
+				$query = $this->db->getQuery(true);
+
 				if ($field)
 				{
-					$query = "UPDATE `#__community_fields_values`
-							SET `value`={$value}
-							WHERE `id`={$field}";
+					// Create the base update statement.
+					$query->update($this->db->qn('#__community_fields_values'))
+						->set($this->db->qn('value') . ' = ' . $this->db->q($value))
+						->where($this->db->qn('id') . ' = ' . $this->db->q($field));
 				}
 				else
 				{
-					$query = "INSERT INTO `#__community_fields_values` (`id`,`user_id`,`field_id`,`value`,`access`)
-							VALUES (null, '{$userid}', '{$fieldid}', '{$value}', 0)";
+					// Create the base insert statement.
+					$query->insert($this->db->qn('#__community_fields_values'))
+						->columns(
+							array(
+								$this->db->qn('user_id'),
+								$this->db->qn('field_id'),
+								$this->db->qn('value'),
+								$this->db->qn('access')
+								)
+							)
+						->values(
+							$this->db->q($userid) . ', ' .
+							$this->db->q($fieldid) . ', ' .
+							$this->db->q($value) . ', ' .
+							$this->db->q(0)
+							);
+
 				}
 
 				$this->db->setQuery($query);
-				$this->db->Query();
+				$this->db->execute();
+
 			}
 		}
 
-		$query = "UPDATE #__community_users
-				SET `status`='{$fieldConnection['FB_STATUS']}'
-				WHERE `userid`={$userid}";
+		$query = $this->db->getQuery(true);
+
+		// Create the base update statement.
+		$query->update($this->db->qn('#__community_users'))
+			->set($this->db->qn('status') . ' = ' . $this->db->q($fieldConnection['FB_STATUS']))
+			->where($this->db->qn('userid') . ' = ' . $this->db->q($userid));
+
 		$this->db->setQuery($query);
-		$this->db->Query();
+		$this->db->execute();
 	}
 
 	/**
@@ -839,9 +1071,15 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			return false;
 		}
 
-		$query = "SELECT id
-				FROM `#__users`
-				WHERE username='" . str_replace("\n", "", trim($post['username'])) . "'";
+		$query = $this->db->getQuery(true);
+
+		$username = str_replace("\n", "", trim($post['username']));
+
+		// Create the base select statement.
+		$query->select('id')
+			->from($this->db->qn('#__users'))
+			->where($this->db->qn('username') . ' = ' . $this->db->q($username));
+
 		$this->db->setQuery($query);
 
 		if ( $this->db->loadResult() > 0)
@@ -853,9 +1091,15 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			return false;
 		}
 
-		$query = "SELECT id
-				FROM `#__users`
-				WHERE email='" . str_replace("\n", "", trim($post['email'])) . "'";
+		$query = $this->db->getQuery(true);
+
+		$emails = str_replace("\n", "", trim($post['email']));
+
+		// Create the base select statement.
+		$query->select('id')
+			->from($this->db->qn('#__users'))
+			->where($this->db->qn('email') . ' = ' . $this->db->q($emails));
+
 		$this->db->setQuery($query);
 
 		if ($this->db->loadResult() > 0)
@@ -872,23 +1116,29 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			// Include jomsocial core file from library
 			require_once JPATH_ROOT . '/components/com_community/libraries/' . 'core.php';
 
+			$query = $this->db->getQuery(true);
+
 			if ($post['type'] > 0)
 			{
-				$query = "SELECT cp.id,cp.name,cf.fieldcode,cf.options,cpf.parent,cpf.field_id,cf.id as id,cf.type,cf.name,cf.required,cf.registration,cf.published,cf.tips
-	 					FROM `#__community_profiles` AS cp,`#__community_profiles_fields` AS cpf,`#__community_fields` AS cf
-	 					WHERE cp.id=cpf.parent
-	 					AND cp.id={$post['type']}
-	 					AND cf.registration=1
-	 					AND cf.published=1
-	 					AND cpf.field_id=cf.id
-	 					order by cf.`ordering`,cpf.field_id";
+				// Create the base select statement.
+				$query->select('cp.id,cp.name,cf.fieldcode,cf.options,cpf.parent,cpf.field_id,cf.id as id,cf.type,cf.name,cf.required,cf.registration,cf.published,cf.tips')
+					->from($this->db->qn('#__community_profiles AS cp, #__community_profiles_fields AS cpf, #__community_fields AS cf'))
+					->where($this->db->qn('cp.id') . ' = ' . $this->db->q('cpf.parent'))
+					->where($this->db->qn('cp.id') . ' = ' . $this->db->q($post['type']))
+					->where($this->db->qn('cf.registration') . ' = ' . $this->db->q('1'))
+					->where($this->db->qn('cf.published') . ' = ' . $this->db->q('1'))
+					->where($this->db->qn('cpf.field_id') . ' = ' . $this->db->q('cf.id'))
+					->order('cf.ordering, cpf.field_id');
+
 			}
 			else
 			{
-				$query = "SELECT *
-						FROM `#__community_fields`
-						WHERE published=1 and registration=1
-						order by `ordering`";
+				// Create the base select statement.
+				$query->select('*')
+					->from($this->db->qn('#__community_fields'))
+					->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+					->where($this->db->qn('registration') . ' = ' . $this->db->q('1'))
+					->order('ordering');
 			}
 
 			$this->db->setQuery($query);
@@ -1155,11 +1405,14 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		// Check for an error.
 		if ($return !== true)
 		{
+			$query = $this->db->getQuery(true);
+
 			// Send a system message to administrators receiving system mails
-			$query = "SELECT id
-					FROM #__users
-					WHERE block = 0
-					AND sendEmail = 1";
+			$query->select('id')
+				->from($this->db->qn('#__users'))
+				->where($this->db->qn('block') . ' = ' . $this->db->q('0'))
+				->where($this->db->qn('sendEmail') . ' = ' . $this->db->q('1'));
+
 			$this->db->setQuery($query);
 			$sendEmail = $this->db->loadColumn();
 
@@ -1167,8 +1420,8 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			{
 				$jdate = new JDate;
 
-				// Build the query to add the messages
-				$query = "INSERT INTO {$this->db->quoteName('#__messages')} ({$this->db->quoteName('user_id_from')}, {$this->db->quoteName('user_id_to')}, {$this->db->quoteName('date_time')}, {$this->db->quoteName('subject')}, {$this->db->quoteName('message')}) VALUES ";
+				$query = $this->db->getQuery(true);
+
 				$messages = array();
 
 				foreach ($sendEmail as $userid)
@@ -1176,9 +1429,23 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 					$messages[] = "({$userid}, {$userid}, '{$jdate->toSql()}', '" . JText::_('COM_USERS_MAIL_SEND_FAILURE_SUBJECT') . "', '" . JText::sprintf('COM_USERS_MAIL_SEND_FAILURE_BODY', $return, $data['username']) . "')";
 				}
 
-				$query .= implode(',', $messages);
+				// Build the query to add the messages
+				$query->insert($this->db->qn('#__messages'))
+					->columns(
+						array(
+							$this->db->qn('user_id_from'),
+							$this->db->qn('user_id_to'),
+							$this->db->qn('date_time'),
+							$this->db->qn('subject'),
+							$this->db->qn('message')
+							)
+						)
+					->values(implode(',', $messages));
+
+				//$query .= implode(',', $messages);
+
 				$this->db->setQuery($query);
-				$this->db->query();
+				$this->db->execute();
 			}
 
 			IJReq::setResponseCode(500);
@@ -1274,20 +1541,24 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 					$my->set('_thumb', $thumbnail);
 				}
 
+				$query = $this->db->getQuery(true);
+
 				if (isset($post['type']) && ($post['type']) > 0)
 				{
-					$query = "SELECT cf.fieldcode,cfd.field_id AS id
-							FROM #__community_profiles_fields as cfd
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id
-					     	WHERE cf.type != 'group'
-					     	AND cfd.parent=" . $post['type'];
+					// Create the base select statement.
+					$query->select('cf.fieldcode,cfd.field_id AS id')
+						->from($this->db->qn('#__community_profiles_fields', 'cfd'))
+						->where($this->db->qn('cf.type') . ' != ' . $this->db->q('group'))
+						->where($this->db->qn('cfd.parent') . ' = ' . $this->db->q($post['type']))
+						->join('LEFT', '#__community_fields as cf ON cf.id = cfd.field_id');
 				}
 				else
 				{
-					$query = "SELECT fieldcode,id
-							FROM `#__community_fields`
-							WHERE published=1
-							AND registration=1";
+					// Create the base select statement.
+					$query->select('fieldcode,id')
+						->from($this->db->qn('#__community_fields'))
+						->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+						->where($this->db->qn('registration') . ' = ' . $this->db->q('1'));
 				}
 
 				$this->db->setQuery($query);
@@ -1297,10 +1568,26 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				{
 					$fid = $field->id;
 					$fvalue = IJReq::getTaskData('f' . $fid, '');
-					$query = "INSERT INTO #__community_fields_values
-							SET user_id='{$userid}', field_id='{$fid}', value='" . addslashes($fvalue) . "'";
+
+					$query = $this->db->getQuery(true);
+
+					// Create the base insert statement.
+					$query->insert($this->db->qn('#__community_fields_values'))
+						->columns(
+							array(
+								$this->db->qn('user_id'),
+								$this->db->qn('field_id'),
+								$this->db->qn('value')
+							)
+						)
+						->values(
+							$this->db->q($userid) . ', ' .
+							$this->db->q($fid) . ', ' .
+							$this->db->q(addslashes($fvalue))
+							);
+
 					$this->db->setQuery($query);
-					$this->db->query();
+					$this->db->execute();
 				}
 			}
 
@@ -1411,20 +1698,27 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 					$my->set('_thumb', $thumbnail);
 				}
 
+				$query = $this->db->getQuery(true);
+
 				if (isset($post['type']) && ($post['type']) > 0)
 				{
-					$query = "SELECT cf.fieldcode,cfd.field_id AS id
-							FROM #__community_profiles_fields as cfd
-							LEFT JOIN #__community_fields as cf ON cf.id = cfd.field_id
-					     	WHERE cf.type != 'group'
-					     	AND cfd.parent=" . $post['type'];
+					// Create the base select statement.
+					$query->select('cf.fieldcode,cfd.field_id AS id')
+						->from($this->db->qn('#__community_profiles_fields', 'cfd'))
+						->where($this->db->qn('cf.type') . ' != ' . $this->db->q('group'))
+						->where($this->db->qn('cfd.parent') . ' = ' . $this->db->q($post['type']))
+						->join('LEFT', '#__community_fields as cf ON cf.id = cfd.field_id');
+
+
 				}
 				else
 				{
-					$query = "SELECT fieldcode,id
-							FROM `#__community_fields`
-							WHERE published=1
-							AND registration=1";
+					// Create the base select statement.
+					$query->select('fieldcode,id')
+						->from($this->db->qn('#__community_fields'))
+						->where($this->db->qn('published') . ' = ' . $this->db->q('1'))
+						->where($this->db->qn('registration') . ' = ' . $this->db->q('1'));
+
 				}
 
 				$this->db->setQuery($query);
@@ -1434,10 +1728,28 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				{
 					$fid = $field->id;
 					$fvalue = IJReq::getTaskData('f' . $fid, '');
-					$query = "INSERT INTO #__community_fields_values
-							SET user_id='{$userid}', field_id='{$fid}', value='" . addslashes($fvalue[0]) . "', access='{$fvalue[1]}'";
+
+					$query = $this->db->getQuery(true);
+
+					// Create the base insert statement.
+					$query->insert($this->db->qn('#__community_fields_values'))
+						->columns(
+							array(
+								$this->db->qn('user_id'),
+								$this->db->qn('field_id'),
+								$this->db->qn('value'),
+								$this->db->qn('access')
+							)
+						)
+						->values(
+							$this->db->q($userid) . ', ' .
+							$this->db->q($fid) . ', ' .
+							$this->db->q(addslashes($fvalue[0])) . ', ' .
+							$this->db->q($fvalue[1])
+							);
+
 					$this->db->setQuery($query);
-					$this->db->query();
+					$this->db->execute();
 				}
 			}
 		}
@@ -1475,10 +1787,23 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				}
 			}
 
-			$query = "INSERT INTO #__kunena_users
-					SET userid='{$aclval}', avatar='{$filename}'";
+			$query = $this->db->getQuery(true);
+
+			// Create the base insert statement.
+			$query->insert($this->db->qn('#__kunena_users'))
+				->columns(
+					array(
+						$this->db->qn('userid'),
+						$this->db->qn('avatar')
+					)
+				)
+				->values(
+					$this->db->q($aclval) . ', ' .
+					$this->db->q($filename)
+				);
+
 			$this->db->setQuery($query);
-			$this->db->query();
+			$this->db->execute();
 		}
 
 		$jsonarray['code'] = 200;
@@ -1508,9 +1833,14 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		}
 
 		// Build a query to find the user
-		$query = "SELECT id FROM #__users
-				WHERE email={$this->db->Quote($email)}
-				AND block=0";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('id')
+			->from($this->db->qn('#__users'))
+			->where($this->db->qn('email') . ' = ' . $this->db->q($email))
+			->where($this->db->qn('block') . ' = ' . $this->db->q('0'));
+
 		$this->db->setQuery($query);
 
 		if (!($id = $this->db->loadResult()))
@@ -1536,9 +1866,14 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			$hashedToken = md5($token . $salt) . ':' . $salt;
 		}
 
-		$query = "UPDATE #__users
-				SET activation={$this->db->Quote($hashedToken)}
-				WHERE id={$id} AND block = 0";
+		$query = $this->db->getQuery(true);
+
+		// Create the base update statement.
+		$query->update($this->db->qn('#__users'))
+			->set($this->db->qn('activation') . ' = ' . $this->db->q($hashedToken))
+			->where($this->db->qn('id') . ' = ' . $this->db->q($id))
+			->where($this->db->qn('block') . ' = ' . $this->db->q('0'));
+
 		$this->db->setQuery($query);
 
 		if (!$this->db->query())
@@ -1582,10 +1917,14 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 			return false;
 		}
 
-		$query = 'SELECT id, activation
-				FROM #__users
-				WHERE block = 0
-				AND username = ' . $this->db->Quote($username);
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('id, activation')
+			->from($this->db->qn('#__users'))
+			->where($this->db->qn('username') . ' = ' . $this->db->q($username))
+			->where($this->db->qn('block') . ' = ' . $this->db->q('0'));
+
 		$this->db->setQuery($query);
 
 		if (!($row = $this->db->loadObject()))
@@ -1664,14 +2003,20 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		$dispatcher = JDispatcher::getInstance();
 		$dispatcher->trigger('onBeforeStoreUser', array($user->getProperties(), false));
 
-		$query = "UPDATE #__users
-				SET password={$this->db->Quote($password)}, activation=''
-				WHERE id={$userid}
-				AND activation={$this->db->Quote($token)}
-				AND block = 0";
+		$query = $this->db->getQuery(true);
+
+		// Create the base update statement.
+		$query->update($this->db->qn('#__users'))
+			->set($this->db->qn('password') . ' = ' . $this->db->q($password))
+			->set($this->db->qn('activation') . ' = ' . $this->db->q(''))
+			->where($this->db->qn('id') . ' = ' . $this->db->q($userid))
+			->where($this->db->qn('activation') . ' = ' . $this->db->q($token))
+			->where($this->db->qn('block') . ' = ' . $this->db->q('0'));
+
+
 		$this->db->setQuery($query);
 
-		if ( !$result = $this->db->query())
+		if (!$result = $this->db->execute())
 		{
 			// Save the password
 			IJReq::setResponseCode(500);
@@ -1732,10 +2077,15 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		}
 
 		// Build a query to find the user
-		$query = "SELECT *
-				FROM #__users
-				WHERE email={$this->db->Quote($email)}
-				AND block = 0";
+		$query = $this->db->getQuery(true);
+
+		// Build a query to find the user.
+		$query->select('*')
+			->from($this->db->qn('#__users'))
+			->where($this->db->qn('email') . ' = ' . $this->db->q($email))
+			->where($this->db->qn('block') . ' = ' . $this->db->q('0'));
+
+		// Set the query and load the result.
 		$this->db->setQuery($query);
 		$user = $this->db->loadObject();
 
