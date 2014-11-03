@@ -19,17 +19,17 @@ defined('_JEXEC') or die;
 
 class TablePushnotif extends JTable
 {
-	var $id = null;
+	var $id          = null;
 
 	var $device_type = null;
 
-	var $to_user = null;
+	var $to_user     = null;
 
-	var $to_all = null;
+	var $to_all      = null;
 
-	var $message = null;
+	var $message     = null;
 
-	var $time = null;
+	var $time        = null;
 
 	/**
 	 * The Function For The TablePush Not If

@@ -39,17 +39,10 @@ class IjoomeradvModelconfig extends JModelLegacy
 	 */
 	public function getConfig($filter = null)
 	{
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('*')
-			->from($this->db->qn('#__ijoomeradv_config'));
-
-		if ($filter)
-		{
-			$query->where($this->db->qn('group') . ' = ' . $this->db->q($filter));
-		}
-
+		$where = ($filter) ? "WHERE `group`= '" . $filter . "'" : '';
+		$query = "SELECT *
+				FROM #__ijoomeradv_config
+				{$where}";
 		$this->db->setQuery($query);
 
 		return $this->db->loadObjectList('name');
@@ -63,7 +56,7 @@ class IjoomeradvModelconfig extends JModelLegacy
 	public function store()
 	{
 		$config = $this->getConfig();
-		$post = JRequest::get('post');
+		$post   = JRequest::get('post');
 
 		foreach ($config as $key => $value)
 		{
@@ -71,32 +64,24 @@ class IjoomeradvModelconfig extends JModelLegacy
 
 			if ( $value->type === 'select' && $this->checkOptionAvail($post[$value->name], $value->options))
 			{
-				$query = $this->db->getQuery(true);
-
-				// Create the base update statement.
-				$query->update($this->db->qn('#__ijoomeradv_config'))
-					->set($this->db->qn('value') . ' = ' . $this->db->q($setvalue))
-					->where($this->db->qn('name') . ' = ' . $this->db->q($value->name));
-
+				$query = "UPDATE `#__ijoomeradv_config`
+						SET `value` = '{$setvalue}'
+						WHERE `name` = '{$value->name}'";
 				$this->db->setQuery($query);
 
-				if(!$this->db->execute())
+				if ( !$this->db->Query())
 				{
 					return false;
 				}
 			}
 			elseif ($value->type != 'button')
 			{
-				$query = $this->db->getQuery(true);
-
-				// Create the base update statement.
-				$query->update($this->db->qn('#__ijoomeradv_config'))
-					->set($this->db->qn('value') . ' = ' . $this->db->q($setvalue))
-					->where($this->db->qn('name') . ' = ' . $this->db->q($value->name));
-
+				$query = "UPDATE `#__ijoomeradv_config`
+						SET `value` = '{$setvalue}'
+						WHERE `name` = '{$value->name}'";
 				$this->db->setQuery($query);
 
-				if(!$this->db->execute())
+				if (!$this->db->Query())
 				{
 					return false;
 				}

@@ -143,20 +143,21 @@ class IjoomeradvControllerItem extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app = JFactory::getApplication();
-		$model = $this->getModel('Item', '', array());
-		$post = $app->input->getArray('post', array());
-		$data = $post['jform'];
-		$task = $this->getTask();
-		$context = 'com_ijoomeradv.edit.item';
-		$recordId = $app->input->getInt('id', 0);
-		$itemimagedata = $app->input->files->get('jform');
-		$position = $model->getMenuPostion($data['menutype']);
+		$app           = JFactory::getApplication();
+		$model         = $this->getModel('Item', '', array());
+		$data          = $app->input->get('jform', array(), 'array');
+		$task          = $this->getTask();
+		$context       = 'com_ijoomeradv.edit.item';
+		$recordId      = $app->input->getInt('id', 0);
+		$itemimagedata = $app->input->files->get('jform', array(), 'array');
+		$position      = $model->getMenuPostion($data['menutype']);
 
-		if ($itemimagedata['name']['imageicon'] or $itemimagedata['name']['imagetab'] or $itemimagedata['name']['imagetabactive'])
+		if ($itemimagedata['imageicon']['name'] or $itemimagedata['imagetab']['name'] or $itemimagedata['imagetabactive']['name'])
 		{
 			$dirpath = JPATH_ADMINISTRATOR . '/components/com_ijoomeradv/theme/custom';
-			shell_exec('chmod 777 ' . $dirpath . ' -R');
+
+			/* @TODO: Review this code not good for security reasons
+			shell_exec('chmod 777 ' . $dirpath . ' -R');*/
 
 			$form = $model->getForm($data);
 
@@ -175,35 +176,41 @@ class IjoomeradvControllerItem extends JControllerForm
 			$imagename_tab = $imagename . '_tab.png';
 			$imagename_tab_active = $imagename . '_tab_active.png';
 		}
+
 		else
 		{
 			$imagename = null;
 		}
 
-		if ($position == 1 or $position == 2)
+		if ($position == 1 or $position == 2 )
 		{
-			if ( $itemimagedata['name']['imageicon'] && $itemimagedata['error']['imageicon'] <= 0 && $itemimagedata['size']['imageicon'] > 0)
+			if ( $itemimagedata['imageicon']['name'] && $itemimagedata['imageicon']['error'] <= 0 && $itemimagedata['imageicon']['size'] > 0)
 			{
-				$imagetype = $itemimagedata['type']['imageicon'];
+				$imagetype = $itemimagedata['imageicon']['type'];
 
-				if ( $imagetype == 'image/jpg' || $imagetype == 'image/jpeg')
+				if ( $imagetype == 'image/jpg')
 				{
-					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
+					$image = imagecreatefromjpeg($itemimagedata['imageicon']['tmp_name']);
+				}
+				elseif ( $imagetype == 'image/jpeg')
+				{
+					$image = imagecreatefromjpeg($itemimagedata['imageicon']['tmp_name']);
 				}
 				elseif ( $imagetype == 'image/png')
 				{
-					$image = imagecreatefrompng($itemimagedata['tmp_name']['imageicon']);
+					$image = imagecreatefrompng($itemimagedata['imageicon']['tmp_name']);
 				}
 				elseif ( $imagetype == 'image/gif')
 				{
-					$image = imagecreatefromgif($itemimagedata['tmp_name']['imageicon']);
+					$image = imagecreatefromgif($itemimagedata['imageicon']['tmp_name']);
 				}
 				else
 				{
-					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imageicon']);
+					$image = imagecreatefromjpeg($itemimagedata['imageicon']['tmp_name']);
 				}
 
-				$devicetypearray = array('xhdpi' => 96,
+				$devicetypearray = array('xxhdpi' => 144,
+					'xhdpi' => 96,
 					'hdpi' => 72,
 					'mdpi' => 48,
 					'ldpi' => 36,
@@ -234,7 +241,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue, $dvalue, imagesx($image), imagesy($image));
 
-					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_home);
 					}
@@ -249,28 +256,33 @@ class IjoomeradvControllerItem extends JControllerForm
 		}
 		else
 		{
-			if ($itemimagedata['name']['imagetab'] && $itemimagedata['error']['imagetab'] <= 0 && $itemimagedata['size']['imagetab'] > 0)
+			if ($itemimagedata['imagetab']['name'] && $itemimagedata['imagetab']['error'] <= 0 && $itemimagedata['imagetab']['size'] > 0)
 			{
-				$imagetype = $itemimagedata['type']['imagetab'];
+				$imagetype = $itemimagedata['imagetab']['type'];
 
-				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
+				if ($imagetype == "image/jpg")
 				{
-					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetab']);
+					$image = imagecreatefromjpeg($itemimagedata['imagetab']['tmp_name']);
+				}
+				elseif ($imagetype == "image/jpeg")
+				{
+					$image = imagecreatefromjpeg($itemimagedata['imagetab']['tmp_name']);
 				}
 				elseif ($imagetype == "image/png")
 				{
-					$image = imagecreatefrompng($itemimagedata['tmp_name']['imagetab']);
+					$image = imagecreatefrompng($itemimagedata['imagetab']['tmp_name']);
 				}
 				elseif ($imagetype == 'image/gif')
 				{
-					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetab']);
+					$image = imagecreatefromgif($itemimagedata['imagetab']['tmp_name']);
 				}
 				else
 				{
-					$image = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetab']);
+					$image = imagecreatefromjpeg($itemimagedata['imagetab']['tmp_name']);
 				}
 
-				$devicetypearray = array('xhdpi' => array('height' => 64, 'width' => 64),
+				$devicetypearray = array('xxhdpi' => array('height' => 96, 'width' => 96),
+					'xhdpi' => array('height' => 64, 'width' => 64),
 					'hdpi' => array('height' => 48, 'width' => 48),
 					'mdpi' => array('height' => 32, 'width' => 32),
 					'ldpi' => array('height' => 24, 'width' => 24),
@@ -301,7 +313,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
 
-					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab);
 					}
@@ -314,28 +326,33 @@ class IjoomeradvControllerItem extends JControllerForm
 				imagedestroy($image);
 			}
 
-			if ($itemimagedata['name']['imagetabactive'] && $itemimagedata['error']['imagetabactive'] <= 0 && $itemimagedata['size']['imagetabactive'] > 0)
+			if ($itemimagedata['imagetabactive']['name'] && $itemimagedata['imagetabactive']['error'] <= 0 && $itemimagedata['imagetabactive']['size'] > 0)
 			{
-				$imagetype = $itemimagedata['type']['imagetabactive'];
+				$imagetype = $itemimagedata['imagetabactive']['type'];
 
-				if ($imagetype == "image/jpg" || $imagetype == "image/jpeg")
+				if ($imagetype == "image/jpg")
 				{
-					$image1 = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetabactive']);
+					$image1 = imagecreatefromjpeg($itemimagedata['imagetabactive']['tmp_name']);
+				}
+				elseif ($imagetype == "image/jpeg")
+				{
+					$image1 = imagecreatefromjpeg($itemimagedata['imagetabactive']['tmp_name']);
 				}
 				elseif ($imagetype == "image/png")
 				{
-					$image1 = imagecreatefrompng($itemimagedata['tmp_name']['imagetabactive']);
+					$image1 = imagecreatefrompng($itemimagedata['imagetabactive']['tmp_name']);
 				}
 				elseif ($imagetype == 'image/gif')
 				{
-					$image = imagecreatefromgif($itemimagedata['tmp_name']['imagetabactive']);
+					$image = imagecreatefromgif($itemimagedata['imagetabactive']['tmp_name']);
 				}
 				else
 				{
-					$image1 = imagecreatefromjpeg($itemimagedata['tmp_name']['imagetabactive']);
+					$image1 = imagecreatefromjpeg($itemimagedata['imagetabactive']['tmp_name']);
 				}
 
-				$devicetypearray = array('xhdpi' => array('height' => 64, 'width' => 64),
+				$devicetypearray = array('xxhdpi' => array('height' => 96, 'width' => 96),
+					'xhdpi' => array('height' => 64, 'width' => 64),
 					'hdpi' => array('height' => 48, 'width' => 48),
 					'mdpi' => array('height' => 32, 'width' => 32),
 					'ldpi' => array('height' => 24, 'width' => 24),
@@ -366,7 +383,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image1, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image1), imagesy($image1));
 
-					if ($dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab_active);
 					}
@@ -399,9 +416,9 @@ class IjoomeradvControllerItem extends JControllerForm
 			}
 
 			// Reset the ID and then treat the request as for Apply.
-			$data['id'] = 0;
+			$data['id']           = 0;
 			$data['associations'] = array();
-			$task = 'apply';
+			$task                 = 'apply';
 		}
 
 		// Validate the posted data.
@@ -417,14 +434,14 @@ class IjoomeradvControllerItem extends JControllerForm
 		}
 
 		$menuoptions = (isset($data['request'])) ? $data['request'] : null;
-		$data = $model->validate($form, $data);
+		$data        = $model->validate($form, $data);
 
 		// Changes for custom menu type
 		$chcustom = explode('.', $data['views']);
 
 		if ($chcustom[2] == 'custom')
 		{
-			$chcustom[3] = $menuoptions['actname'];
+			$chcustom[3]   = $menuoptions['actname'];
 			$data['views'] = implode('.', $chcustom);
 			unset($menuoptions['actname']);
 		}
@@ -592,8 +609,8 @@ class IjoomeradvControllerItem extends JControllerForm
 		$data = array();
 
 		// Get the posted values from the request.
-		$post = $app->input->getArray('post', array());
-		$data = $post['jform'];
+		$data = $app->input->get('jform', array(), 'array');
+
 		$recordId = $app->input->getInt('id', 0);
 
 		// Get the type.

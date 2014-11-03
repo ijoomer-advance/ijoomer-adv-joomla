@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset>
 		<field
 			name="id"
 			type="text"
@@ -10,6 +9,17 @@
 			default="0"
 			filter="int"
 			readonly="true"/>
+
+	<fieldset name="menus">
+		<fields>
+		<field
+			name="type"
+			type="menutype"
+			label="COM_IJOOMERADV_ITEM_FIELD_TYPE_LABEL"
+			description="COM_IJOOMERADV_ITEM_FIELD_TYPE_DESC"
+			class="inputbox"
+			required="true"
+			size="40" />
 
 		<field
 			name="title"
@@ -21,22 +31,14 @@
 			required="true"/>
 
 		<field
-			name="note"
-			type="text"
-			label="JFIELD_NOTE_LABEL"
-			description="COM_IJOOMERADV_ITEM_FIELD_NOTE_DESC"
-			class="inputbox"
-			size="40"/>
+            name="menutype"
+            type="getmenu"
+            class="inputbox"
+           	label="COM_IJOOMERADV_ITEM_MENUTYPE"
+			description="COM_IJOOMERADV_ITEM_MENUTYPE_DESC"
+            required="true"
+            onchange="changeimage()"/>
 
-		<field
-			name="type"
-			type="menutype"
-			label="COM_IJOOMERADV_ITEM_FIELD_TYPE_LABEL"
-			description="COM_IJOOMERADV_ITEM_FIELD_TYPE_DESC"
-			class="inputbox"
-			required="true"
-			size="40" />
-			
 		<field
 			id="menudevice"
 			name="menudevice"
@@ -55,16 +57,15 @@
 			<option value="4">
 				COM_IJOOMERADV_DEVICE_BOTH</option>
 		</field>
-			
+
+
 		<field
-			name="menutype"
-			type="list"
-			id="menutype"
+			name="note"
+			type="text"
+			label="JFIELD_NOTE_LABEL"
+			description="COM_IJOOMERADV_ITEM_FIELD_NOTE_DESC"
 			class="inputbox"
-			label="COM_IJOOMERADV_ITEM_MENUTYPE"
-			description="COM_IJOOMERADV_ITEM_MENUTYPE_DESC"
-			size="1"
-			default="1" />
+			size="40"/>
 
 		<field
 			name="published"
@@ -97,25 +98,7 @@
 			description="JFIELD_ACCESS_DESC"
 			default="1"
 			filter="integer"/>
-			
-		<field
-			name="ordering"
-			type="hidden"
-			label="COM_IJOOMERADV_ITEM_FIELD_ORDERING_LABEL"
-			description="COM_IJOOMERADV_ITEM_FIELD_ORDERING_DESC"
-			class="hidden"
-			size="40"
-			required="false"/>
-			
-		<field
-			name="views"
-			type="hidden"
-			label="COM_IJOOMERADV_ITEM_FIELD_VIEWS_LABEL"
-			description="COM_IJOOMERADV_ITEM_FIELD_VIEWS_DESC"
-			class="hidden"
-			size="40"
-			required="true"/>
-			
+
 		<field
 			name="home"
 			type="radio"
@@ -129,7 +112,27 @@
 			<option
 				value="1">JYES</option>
 		</field>
-		
+		</fields>
+	</fieldset>
+
+		<field
+			name="ordering"
+			type="hidden"
+			label="COM_IJOOMERADV_ITEM_FIELD_ORDERING_LABEL"
+			description="COM_IJOOMERADV_ITEM_FIELD_ORDERING_DESC"
+			class="hidden"
+			size="40"
+			required="false"/>
+
+		<field
+			name="views"
+			type="hidden"
+			label="COM_IJOOMERADV_ITEM_FIELD_VIEWS_LABEL"
+			description="COM_IJOOMERADV_ITEM_FIELD_VIEWS_DESC"
+			class="hidden"
+			size="40"
+			required="false"/>
+
 		<field
 			name="requiredField"
 			type="hidden"
@@ -137,7 +140,7 @@
 			description="COM_IJOOMERADV_ITEM_FIELD_REQUIRED_DESC"
 			class="hidden"
 			size="40"
-			required="true"/>	
+			required="false"/>
 
 		<field
 			name="menuoptions"
@@ -147,16 +150,11 @@
 			class="hidden"
 			size="40"
 			required="false"/>
-			
+
 		<field
 			name="itemimage"
 			type="file"
 			label="COM_IJOOMER_ITEM_FIELD_IMAGE_LABEL"
 			description="COM_IJOOMER_ITEM_FIELD_IMAGE_DESC"
-			required="false"/>	
-			
-	</fieldset>
-
-	<fields name="params">
-	</fields>
+			required="false"/>
 </form>

@@ -136,24 +136,9 @@ class IjoomeradvHelper
 	public static function getMenuTypes()
 	{
 		$db = JFactory::getDbo();
+		$db->setQuery('SELECT a.menutype FROM #__ijoomeradv_menu_types AS a');
 
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('a.menutype')
-			->from($db->qn('#__ijoomeradv_menu_types', 'a'));
-
-		// Set the query and load the result.
-		$db->setQuery($query);
-
-		try
-		{
-			return $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $db->loadColumn();
 	}
 
 	/**
@@ -174,12 +159,12 @@ class IjoomeradvHelper
 
 		$query->select('a.id AS value, a.title AS text, a.level, a.menutype, a.type, a.template_style_id, a.checked_out');
 		$query->from('#__ijoomeradv_menu AS a');
-		$query->join('LEFT', $db->qn('#__ijoomeradv_menu') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
+		$query->join('LEFT', $db->quoteName('#__ijoomeradv_menu') . ' AS b ON a.lft > b.lft AND a.rgt < b.rgt');
 
 		// Filter by the type
 		if ($menuType)
 		{
-			$query->where('(a.menutype = ' . $db->q($menuType) . ' OR a.parent_id = 0)');
+			$query->where('(a.menutype = ' . $db->quote($menuType) . ' OR a.parent_id = 0)');
 		}
 
 		if ($parentId)
@@ -196,7 +181,7 @@ class IjoomeradvHelper
 		{
 			if (is_array($languages))
 			{
-				$languages = '(' . implode(',', array_map(array($db, 'q'), $languages)) . ')';
+				$languages = '(' . implode(',', array_map(array($db, 'quote'), $languages)) . ')';
 			}
 
 			$query->where('a.language IN ' . $languages);
@@ -241,7 +226,7 @@ class IjoomeradvHelper
 			$query->clear();
 			$query->select('*');
 			$query->from('#__ijoomeradv_menu_types');
-			$query->where('menutype <> ' . $db->q(''));
+			$query->where('menutype <> ' . $db->quote(''));
 			$query->order('title, menutype');
 			$db->setQuery($query);
 
@@ -297,7 +282,7 @@ class IjoomeradvHelper
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->from('#__ijoomeradv_menu as m');
-		$query->innerJoin('#__associations as a ON a.id=m.id AND a.context=' . $db->q('com_ijoomeradv.item'));
+		$query->innerJoin('#__associations as a ON a.id=m.id AND a.context=' . $db->quote('com_ijoomeradv.item'));
 		$query->innerJoin('#__associations as a2 ON a.key=a2.key');
 		$query->innerJoin('#__ijoomeradv_menu as m2 ON a2.id=m2.id');
 		$query->where('m.id=' . (int) $pk);

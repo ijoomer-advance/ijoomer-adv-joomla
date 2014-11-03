@@ -16,32 +16,32 @@ defined('_JEXEC') or die;
 			<div class="menucontainer">
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=extensions">
-						<img src="components/com_ijoomeradv/assets/images/extensions.png" alt="Extensions">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/extensions.png';?>" alt="Extensions">
 					</a>
 				</div>
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=extensions&layout=manage">
-						<img src="components/com_ijoomeradv/assets/images/extensionmanager.png" alt="Extension Manager">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/extensionmanager.png';?>" alt="Extension Manager">
 					</a>
 				</div>
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=config">
-						<img src="components/com_ijoomeradv/assets/images/configuration.png" alt="Global Configuration">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/configuration.png';?>" alt="Global Configuration">
 					</a>
 				</div>
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=menus">
-						<img src="components/com_ijoomeradv/assets/images/menumanager.png" alt="Manu Manager">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/menumanager.png';?>" alt="Manu Manager">
 					</a>
 				</div>
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=pushnotif">
-						<img src="components/com_ijoomeradv/assets/images/pushnotification.png" alt="Push Notification">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/pushnotification.png';?>" alt="Push Notification">
 					</a>
 				</div>
 				<div id="frontmenuitem">
 					<a href="index.php?option=com_ijoomeradv&view=report">
-						<img src="components/com_ijoomeradv/assets/images/report.png" alt="Reports">
+						<img src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/report.png';?>" alt="Reports">
 					</a>
 				</div>
 			</div>
@@ -65,7 +65,7 @@ defined('_JEXEC') or die;
 									and assign it to any of the above three positions. Now, select the screen(s) where
 									you want this menu to be display (remember the position, it will display on that
 									position).<br/><img
-										src="./components/com_ijoomeradv/assets/images/menuitmes_img.jpg"
+										src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/menuitmes_img.jpg'?>"
 										style="width:100%"/></li>
 								<li>items (similar to Joomla). 'Select Menu Type' will list up all the menu types
 									available in the iJoomer app. Once you select the menu type, param in accordance

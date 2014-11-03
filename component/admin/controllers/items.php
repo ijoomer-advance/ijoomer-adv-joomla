@@ -71,7 +71,7 @@ class IjoomeradvControllerItems extends JControllerAdmin
 	public function edit()
 	{
 		$app = JFactory::getApplication();
-		$id = $app->input->getArray('cid', array());
+		$id  = $app->input->getArray('cid', array());
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=item&layout=edit&id=' . $id[0], null);
 	}
 
@@ -129,9 +129,9 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get the arrays from the Request
-		$app = JFactory::getApplication();
-		$post = $app->input->getArray('post', array());
-		$order = $post['order'];
+		$app           = JFactory::getApplication();
+		$post          = $app->input->getArray('post', array());
+		$order         = $post['order'];
 		$originalOrder = explode(',', JRequest::getString('original_order_values'));
 
 		// Make sure something has changed
@@ -161,10 +161,10 @@ class IjoomeradvControllerItems extends JControllerAdmin
 		JSession::checkToken('request') or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to publish from the request.
-		$app = JFactory::getApplication();
-		$cid = $app->input->getArray('cid', array());
-		$data = array('setDefault' => 1, 'unsetDefault' => 0);
-		$task = $this->getTask();
+		$app   = JFactory::getApplication();
+		$cid   = $app->input->getArray('cid', array());
+		$data  = array('setDefault' => 1, 'unsetDefault' => 0);
+		$task  = $this->getTask();
 		$value = JArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid))

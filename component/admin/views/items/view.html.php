@@ -12,7 +12,6 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 
-
 /**
  * The Class For IJoomeradvViewItems which will Extends JViewLegacy
  *
@@ -35,21 +34,22 @@ class IjoomeradvViewItems extends JViewLegacy
 	protected $menuOptions;
 
 	/**
-	 * The Display Function
+	 * Execute and display a template script.
 	 *
-	 * @param   [type]  $tpl  $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return  void
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since   12.2
 	 */
 	public function display($tpl = null)
 	{
-		$lang = JFactory::getLanguage();
-		$this->items = $this->get('Items');
-		$this->menus = $this->get('Menus');
+		$lang             = JFactory::getLanguage();
+		$this->items      = $this->get('Items');
+		$this->menus      = $this->get('Menus');
 		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
-
-		$this->ordering = array();
+		$this->state      = $this->get('State');
+		$this->ordering   = array();
 
 		// Preprocess the list of items to find ordering divisions.
 		foreach ($this->items as $item)
@@ -68,7 +68,7 @@ class IjoomeradvViewItems extends JViewLegacy
 		$this->menuOptions = $menuOptionsList;
 
 		// Levels filter.
-		$options = array();
+		$options   = array();
 		$options[] = JHtml::_('select.option', '1', JText::_('J1'));
 		$options[] = JHtml::_('select.option', '2', JText::_('J2'));
 		$options[] = JHtml::_('select.option', '3', JText::_('J3'));

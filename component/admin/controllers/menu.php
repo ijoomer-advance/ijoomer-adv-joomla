@@ -46,11 +46,11 @@ class IjoomeradvControllerMenu extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$app = JFactory::getApplication();
-		$post = $app->input->getArray('post', array());
-		$data = $post['jform'];
-		$context = 'com_ijoomeradv.edit.menu';
-		$task = $this->getTask();
+		$app  = JFactory::getApplication();
+		$data = $app->input->get('jform', array(), 'array');
+
+		$context  = 'com_ijoomeradv.edit.menu';
+		$task     = $this->getTask();
 		$recordId = $app->input->getInt('id', 0);
 
 		// Make sure we are not trying to modify an administrator menu.
@@ -69,7 +69,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 
 		// Get the model and attempt to validate the posted data.
 		$model = $this->getModel('Menu');
-		$form = $model->getForm();
+		$form  = $model->getForm();
 
 		if (!$form)
 		{
@@ -102,7 +102,7 @@ class IjoomeradvControllerMenu extends JControllerForm
 			$app->setUserState('com_ijoomeradv.edit.menu.data', $data);
 
 			// Redirect back to the edit screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit', false));
+			$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit', true));
 
 			return false;
 		}
@@ -163,24 +163,23 @@ class IjoomeradvControllerMenu extends JControllerForm
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
-		$id = $app->input->getInt('id', 0);
+		$id  = $app->input->getInt('id', 0);
 
 		// Get the posted values from the request.
-		$post = $app->input->getArray('post', array());
-		$data = $post['jform'];
+		$data  = $app->input->get('jform', array(), 'array');
 		$reqid = '';
 
 		if ($id)
 		{
 			$data['id'] = $id;
-			$reqid = '&id=' . $id;
+			$reqid      = '&id=' . $id;
 		}
 
 		$data['screen'] = json_decode($data['screen'])->result[0];
 
 		foreach ($data['screen'] as $key => $value)
 		{
-			$views = explode('.', $value);
+			$views             = explode('.', $value);
 			$view[$views[0]][] = $views[1] . '.' . $views[2] . '.' . $views[3];
 		}
 

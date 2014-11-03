@@ -36,16 +36,15 @@ class IjoomeradvViewItem extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+		$this->form    = $this->get('Form');
+		$this->item    = $this->get('Item');
 		$this->modules = $this->get('Modules');
-		$this->state = $this->get('State');
-		$this->menutypes = $this->get('Menutypes');
+		$this->state   = $this->get('State');
 
 		$extention = explode('.', $this->form->getValue('views'));
 		$extention = $extention[0];
 
-		$lang = JFactory::getLanguage();
+		$lang     = JFactory::getLanguage();
 		$base_dir = JPATH_COMPONENT_SITE . '/' . "extensions" . '/' . $extention;
 		$lang->load($extention, $base_dir, null, true);
 
@@ -64,7 +63,7 @@ class IjoomeradvViewItem extends JViewLegacy
 	{
 		JRequest::setVar('hidemainmenu', true);
 
-		$user = JFactory::getUser();
+		$user  = JFactory::getUser();
 		$isNew = ($this->item->id == 0);
 
 		JToolBarHelper::title(JText::_($isNew ? 'COM_IJOOMERADV_VIEW_NEW_ITEM_TITLE' : 'COM_IJOOMERADV_VIEW_EDIT_ITEM_TITLE'), 'menu-add');

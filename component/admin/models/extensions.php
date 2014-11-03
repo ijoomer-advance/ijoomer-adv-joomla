@@ -73,28 +73,16 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 */
 	public function getExtensionData()
 	{
-		$extId = JRequest::getVar('cid',array(0),'','array');
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$extId = JRequest::getVar('cid', array(0), '', 'array');
+		$query = "SELECT *
+				  FROM {$this->_table_prefix}extensions
+				  WHERE id=$extId[0]";
 
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn($this->_table_prefix . 'extensions'))
-			->where($db->qn('id') . ' = ' . $db->q($extId[0]));
-
-		// Set the query and load the result.
+		$db = JFactory::getDbo();
 		$db->setQuery($query);
+		$this->_data = $db->loadObject();
 
-		try
-		{
-			$this->_data = $db->loadObject();
-
-			return $this->_data;
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $this->_data;
 	}
 
 	/**
@@ -104,22 +92,13 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 */
 	public function getExtGroups()
 	{
-		$db = JFactory::getDbo();
-
-		// Create the base select statement.
-		$query->select('DISTINCT group')
-			->from($db->qn('#__ijoomeradv_' . $this->_data->classname . '_config'));
+		$db = JFactory::getDBO();
+		$query = "SELECT DISTINCT `group`
+				FROM #__ijoomeradv_" . $this->_data->classname . "_config";
 
 		$db->setQuery($query);
 
-		try
-		{
-			return $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $db->loadColumn();
 	}
 
 	/**
@@ -131,26 +110,14 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 */
 	public function getExtConfig($group)
 	{
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$db = JFactory::getDBO();
+		$query = "SELECT *
+				FROM #__ijoomeradv_" . $this->_data->classname . "_config
+				WHERE `group`='$group'";
 
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_' . $this->_data->classname . '_config'))
-			->where($db->qn('group') . ' = ' . $db->quote($group));
-
-		// Set the query and load the result.
 		$db->setQuery($query);
 
-		try
-		{
-			return $db->loadObjectlist('name');
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $db->loadObjectlist('name');
 	}
 
 	/**
@@ -220,15 +187,11 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 */
 	public function _buildQuery()
 	{
-		// Initialiase variables.
 		$orderby = $this->_buildContentOrderBy();
-		$db      = JFactory::getDbo();
-		$query   = $db->getQuery(true);
-
-		$query->select('p.*')
-			->from($db->qn($this->_table_prefix . 'extensions', 'p'))
-			->where($db->qn('p.classname') . ' = ' . $db->quote('iuser'))
-			->order($orderby);
+		$query = "SELECT p.*
+				FROM {$this->_table_prefix}extensions AS p
+				WHERE p.classname!='iuser'
+				{$orderby}";
 
 		return $query;
 	}
@@ -371,27 +334,16 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	{
 		if (count($cid))
 		{
-			$cids = implode( ',', $cid );
+			$cids = implode(',', $cid);
+			$query = 'UPDATE ' . $this->_table_prefix . 'extensions'
+				. ' SET published = ' . intval($publish)
+				. ' WHERE  `id` 	 IN ( ' . $cids . ' )';
+			$this->_db->setQuery($query);
 
-			// Initialiase variables.
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
-
-			// Create the base update statement.
-			$query->update($db->qn($this->_table_prefix . 'extensions'))
-				->set($db->qn('published') . ' = ' . $db->q(intval($publish)))
-				->where($db->qn('id') . ' IN ( ' . $db->q($cids) . ' )');
-
-			// Set the query and execute the update.
-			$db->setQuery($query);
-
-			try
+			if (!$this->_db->query())
 			{
-				$db->execute();
-			}
-			catch (RuntimeException $e)
-			{
-				$this->setError($e->getMessage());
+				$this->setError($this->_db->getErrorMsg());
+
 				return false;
 			}
 		}

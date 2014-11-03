@@ -43,15 +43,12 @@ class Com_IjoomeradvInstallerScript
 	 */
 	public function install(JAdapterInstance $adapter)
 	{
-		$db = JFactory::getDbo();
+		$db = JFactory::getDBO();
 
 		// Set default menu items if no menu present
-		$query->select('count(*)')
-			->from($db->qn('#__ijoomeradv_menu'));
-
-		// Set the query and load the result.
+		$query = "SELECT count(*)
+				FROM #__ijoomeradv_menu";
 		$db->setQuery($query);
-
 		$result = $db->loadResult();
 
 		if ($result <= 0)
@@ -72,15 +69,9 @@ class Com_IjoomeradvInstallerScript
 		}
 
 		// Set default menu types if not installed
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('count(*)')
-			->from($db->qn('#__ijoomeradv_menu_types'));
-
-		// Set the query and load the result.
+		$query = "SELECT count(*)
+				FROM #__ijoomeradv_menu_types";
 		$db->setQuery($query);
-
 		$result = $db->loadResult();
 
 		if ($result <= 0)
@@ -141,7 +132,8 @@ class Com_IjoomeradvInstallerScript
 				<td colspan="2">
 					<div style="text-align:center;">
 						<h1>Thank you for choosing,</h1>
-						<img src="components/com_ijoomeradv/assets/images/ijoomeradv_logo.png" align="center">
+						<?php $imgsrc = JURI::root() . 'media/com_ijoomeradv/images/ijoomeradv_logo.png'; ?>
+						<img src="<?php $imgsrc; ?>" align="center">
 						<br><font color="#105A8D" size="2"><b>Version 1.5</b></font></br>
 					</div>
 				</td>
@@ -222,17 +214,12 @@ class Com_IjoomeradvInstallerScript
 	 */
 	public function uninstall(JAdapterInstance $adapter)
 	{
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$db = JFactory::getDBO();
 
 		// Delete plugin config
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_extensions'));
-
-		// Set the query and load the result.
+		$query = "SELECT *
+				FROM #__ijoomeradv_extensions";
 		$db->setQuery($query);
-
 		$rows = $db->loadObjectlist();
 
 		for ($i = 0, $cnt = count($rows); $i < $cnt; $i++)

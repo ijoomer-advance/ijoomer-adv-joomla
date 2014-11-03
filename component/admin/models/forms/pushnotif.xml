@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+  <fieldset name="notification">
+    <fields>
+     <field
+          name="device_type"
+          type="radio"
+          class="btn-group"
+          label="Devicetype"
+          required="true">
+          <option value="android">Android</option>
+        <option value="iphone">iPhone</option>
+        <option value="both">Both</option>
+      </field>
+      <field
+          id="customs"
+          name="to_all"
+          type="radio"
+          class="btn-group btn-group-yesno"
+          label="Send To"
+          required="true">
+          <option value="1">All Users</option>
+          <option value="0">Custom</option>
+      </field>
+    </fields>
+  </fieldset>
+
+  <fieldset name="message">
+    <fields>
+      <field
+        id='to_user'
+        name="Username"
+        type="text"
+        class="div"
+        display="none"
+      />
+      <field
+          name="message"
+          type="textarea"
+          rows="10"
+          label="Message"
+          required="true"/>
+      <field
+        name="link"
+        type="text"
+        label="Link"/>
+    </fields>
+  </fieldset>
+</form>

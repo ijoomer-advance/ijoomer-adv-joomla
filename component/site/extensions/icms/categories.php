@@ -195,14 +195,9 @@ class Categories
 					$categoryArray['categories'][$inc]['hits'] = $value->hits;
 					$categoryArray['categories'][$inc]['totalarticles'] = ($value->numitems) ? $value->numitems : 0;
 
-					$query = $this->db->getQuery(true);
-
-					// Create the base select statement.
-					$query->select('count(id)')
-						->from($this->db->qn('#__categories'))
-						->where($this->db->qn('parent_id') . ' = ' . $this->db->q($value->id))
-						->where($this->db->qn('published') . ' = ' . $this->db->q('1'));
-
+					$query = 'SELECT count(id)
+				  			  FROM #__categories
+				  			  WHERE parent_id=' . $value->id . ' AND published = 1';
 					$this->db->setQuery($query);
 					$categoryArray['categories'][$inc]['totalcategories'] = $this->db->loadResult();
 

@@ -15,7 +15,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 // Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-
+$fieldsets = $this->form->getFieldset('menudetail');
 ?>
 
 <script type="text/javascript">
@@ -25,33 +25,23 @@ JHtml::_('behavior.formvalidation');
 		}
 	}
 </script>
-
 <form
 	action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=menu&layout=edit&id=' . (int) $this->item->id); ?>"
 	method="post" name="adminForm" id="item-form">
-	<div class="width-100 span12">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_IJOOMERADV_MENU_DETAILS'); ?></legend>
-			<table class="table table-striped">
-				<tr>
-					<td><?php echo $this->form->getLabel('title'); ?></td>
-					<td><?php echo $this->form->getInput('title'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('description'); ?></td>
-					<td><?php echo $this->form->getInput('description'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('position'); ?></td>
-					<td><?php echo $this->form->getInput('position'); ?></td>
-				</tr>
-				<tr>
-					<td><?php echo $this->form->getLabel('screen'); ?></td>
-					<td><?php echo $this->form->getInput('screen'); ?></td>
-				</tr>
-			</table>
-		</fieldset>
-
+	<div class="span12">
+		<div class="form-horizontal">
+			<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_IJOOMERADV_MENU_DETAILS'); ?></legend>
+				<div>
+					<?php foreach ($fieldsets as $field) : ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $field->label; ?></div>
+							<div class="controls"><?php echo $field->input; ?></div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</fieldset>
+		</div>
 		<input type="hidden" name="task" value=""/>
 		<?php echo JHtml::_('form.token'); ?>
 	</div>

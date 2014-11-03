@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 					</td>
 					<td align="center" width="50px">
 						<img
-							src="<?php echo JURI::base() . 'components/com_ijoomeradv/assets/images/' . $value->classname . '_48.png'; ?>"
+							src="<?php echo JURI::root() . 'media/com_ijoomeradv/images/' . $value->classname . '_48.png'; ?>"
 							alt="<?php echo $value->name; ?>"/>
 					</td>
 					<td align="center">

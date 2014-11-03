@@ -26,7 +26,7 @@ class IjoomeradvAdminHelper
 	 */
 	public function __construct()
 	{
-		$this->db = JFactory::getDbo();
+		$this->db = JFactory::getDBO();
 	}
 
 	/**
@@ -40,21 +40,14 @@ class IjoomeradvAdminHelper
 	{
 		$version = new JVersion;
 
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('e.extension_id AS id, e.element AS option, e.params, e.enabled')
-			->from($this->db->qn('#__extensions', 'e'))
-			->where($this->db->qn('e.type') . ' = ' . $this->db->q('component'))
-			->where($this->db->qn('e.element') . ' = ' . $this->db->q($option));
-
-		// Set the query and load the result.
+		$query = "SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled
+				FROM #__extensions as e
+				WHERE e.type='component'
+				AND e.element = '{$option}'";
 		$this->db->setQuery($query);
-
-
 		$components = $this->db->loadObject();
 
-		if (count($components)>0 && $components->enabled == 1)
+		if (count($components) > 0 && $components->enabled == 1)
 		{
 			return true;
 		}
@@ -71,15 +64,10 @@ class IjoomeradvAdminHelper
 	 */
 	public function getPlugin($option)
 	{
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('count(*)')
-			->from($this->db->qn('#__ijoomeradv_extensions'))
-			->where($this->db->qn('option') . ' = ' . $this->db->q($option));
-
+		$query = "SELECT count(*)
+				FROM #__ijoomeradv_extensions
+				WHERE `option` = '{$option}' ";
 		$this->db->setQuery($query);
-
 		$plugins = $this->db->loadResult();
 
 		return ($plugins) ? 1 : 0;
@@ -119,12 +107,8 @@ class IjoomeradvAdminHelper
 	 */
 	public function getglobalconfig()
 	{
-		$query = $this->db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('*')
-			->from($this->db->qn('#__ijoomeradv_config'));
-
+		$query = "SELECT *
+				FROM #__ijoomeradv_config";
 		$this->db->setQuery($query);
 		$rows = $this->db->loadObjectlist();
 

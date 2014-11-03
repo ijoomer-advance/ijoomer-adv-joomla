@@ -52,42 +52,35 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		jimport('joomla.filesystem.file');
 
 		// Initialise variables.
-		// Initialise variables.
-		$id       = JRequest::getInt('recordId');
-		$layout   = JRequest::getVar('layout');
-		$lang     = JFactory::getLanguage();
-		$db       = JFactory::getDbo();
-		$list     = array();
+		$id = JRequest::getInt('recordId');
+		$layout = JRequest::getVar('layout');
+		$lang = JFactory::getLanguage();
+		$list = array();
 		$defaults = array();
 
+		// Get the list of components.
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_extensions'))
-			->where($db->qn('published') . ' = ' . $db->q('1'));
+		$query = 'SELECT *
+				  FROM #__ijoomeradv_extensions
+				  WHERE published=1';
 
-		// Set the query and load the result.
 		$db->setQuery($query);
-
 		$components = $db->loadObjectList();
 
 		if ($layout == 'select')
 		{
-			$query = $db->getQuery(true);
-
-			// Create the base select statement.
-			$query->select('screen')
-				->from($db->qn('#__ijoomeradv_menu_types'))
-				->where($db->qn('id') . ' = ' . $db->q($id));
+			$query = 'SELECT screen
+				  FROM #__ijoomeradv_menu_types
+				  WHERE id=' . $id;
 
 			$db->setQuery($query);
-
 			$default = json_decode($db->loadResult());
 
 			if ($default)
 			{
-				foreach ($default as $key=>$value)
+				foreach ($default as $key => $value)
 				{
 					$keys = $key;
 
@@ -142,28 +135,19 @@ class IjoomeradvModelMenutypes extends JModelLegacy
 		$id = JRequest::getInt('recordId');
 		$db = JFactory::getDbo();
 
-		$query = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published')
-			->from($db->qn('#__ijoomeradv_menu', 'm'))
-			->where($db->qn('m.published') . ' = ' . $db->q('1'));
+		$query = 'SELECT m.id as itemid,m.title as itemtitle,m.type as itemtype,m.published
+				  FROM #__ijoomeradv_menu as m
+				  WHERE m.published=1';
 
 		$db->setQuery($query);
-
 		$result = $db->loadObjectList();
 
-		$query  = $db->getQuery(true);
-
-		// Create the base select statement.
-		$query->select('menuitem')
-			->from($db->qn('#__ijoomeradv_menu_types'))
-			->where($db->qn('id') . ' = ' . $db->q($id));
+		$query = 'SELECT menuitem
+				  FROM #__ijoomeradv_menu_types
+				  WHERE id=' . $id;
 
 		$db->setQuery($query);
-
 		$default = explode(',', $db->loadResult());
-
 		$result1 = array();
 
 		foreach ($result as $key => $value)
