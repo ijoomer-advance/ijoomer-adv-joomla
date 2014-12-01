@@ -86,13 +86,26 @@ class IjoomeradvTableMenu extends JTable
 	 */
 	public function getNextOrder($where = '')
 	{
-		$sql = 'SELECT max(ordering)
-				FROM #__ijoomeradv_menu
-				WHERE menutype=' . $this->menutype;
-		$this->_db->setQuery($sql);
-		$maxvalue = $this->_db->loadResult();
+		$query = $this->_db->getQuery(true);
 
-		return $maxvalue + 1;
+		// Create the base select statement.
+		$query->select('max(ordering)')
+			->from($this->_db->quoteName('#__ijoomeradv_menu'))
+			->where($this->_db->quoteName('menutype') . ' = ' . $this->_db->quote($this->menutype));
+
+		// Set the query and load the result.
+		$this->_db->setQuery($query);
+
+		try
+		{
+			$maxvalue = $this->_db->loadResult();
+
+			return $maxvalue + 1;
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 	}
 
 	/**
@@ -111,9 +124,11 @@ class IjoomeradvTableMenu extends JTable
 			{
 				// Do an update to change the lft values in the table for each id
 				$query = $this->_db->getQuery(true);
-				$query->update($this->_tbl);
-				$query->where($this->_tbl_key . ' = ' . (int) $idArray[$i]);
-				$query->set('ordering = ' . (int) $lft_array[$i]);
+
+				$query->update($this->_tbl)
+					->where($this->_tbl_key . ' = ' . (int) $idArray[$i])
+					->set('ordering = ' . (int) $lft_array[$i]);
+
 				$this->_db->setQuery($query);
 
 				// Check for a database error.

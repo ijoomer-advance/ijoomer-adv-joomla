@@ -247,8 +247,9 @@ class IjoomeradvModelItem extends JModelAdmin
 		$parents = array();
 
 		// Calculate the emergency stop count as a precaution against a runaway loop bug
-		$query->select('COUNT(id)');
-		$query->from($db->quoteName('#__ijoomeradv_menu'));
+		$query->select('COUNT(id)')
+			->from($db->qn('#__ijoomeradv_menu'));
+
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -286,11 +287,12 @@ class IjoomeradvModelItem extends JModelAdmin
 			}
 
 			// Copy is a bit tricky, because we also need to copy the children
-			$query->clear();
-			$query->select('id');
-			$query->from($db->quoteName('#__ijoomeradv_menu'));
-			$query->where('lft > ' . (int) $table->lft);
-			$query->where('rgt < ' . (int) $table->rgt);
+			$query->clear()
+				->select('id')
+				->from($db->qn('#__ijoomeradv_menu'))
+				->where('lft > ' . (int) $table->lft)
+				->where('rgt < ' . (int) $table->rgt);
+
 			$db->setQuery($query);
 			$childIds = $db->loadColumn();
 
@@ -475,9 +477,10 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				// Add the child node ids to the children array.
 				$query->clear();
-				$query->select($db->quoteName('id'));
-				$query->from($db->quoteName('#__ijoomeradv_menu'));
-				$query->where($db->quoteName('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
+				$query->select($db->qn('id'))
+					->from($db->qn('#__ijoomeradv_menu'))
+					->where($db->qn('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
+
 				$db->setQuery($query);
 				$children = array_merge($children, (array) $db->loadColumn());
 			}
@@ -516,9 +519,10 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Update the menutype field in all nodes where necessary.
 			$query->clear();
-			$query->update($db->quoteName('#__ijoomeradv_menu'));
-			$query->set($db->quoteName('menutype') . ' = ' . $db->quote($menuType));
-			$query->where($db->quoteName('id') . ' IN (' . implode(',', $children) . ')');
+			$query->update($db->qn('#__ijoomeradv_menu'))
+				->set($db->qn('menutype') . ' = ' . $db->q($menuType))
+				->where($db->qn('id') . ' IN (' . implode(',', $children) . ')');
+
 			$db->setQuery($query);
 			$db->query();
 
@@ -783,7 +787,7 @@ class IjoomeradvModelItem extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		// 'menutype = ' . $this->_db->Quote($table->menutype);
+		// 'menutype = ' . $this->_db->q($table->menutype);
 		return '';
 	}
 
@@ -1324,7 +1328,7 @@ class IjoomeradvModelItem extends JModelAdmin
 
 				foreach ($associations as $tag => $id)
 				{
-					$query->values($id . ',' . $db->quote('com_ijoomeradv.item') . ',' . $db->quote($key));
+					$query->values($id . ',' . $db->q('com_ijoomeradv.item') . ',' . $db->q($key));
 				}
 
 				$db->setQuery($query);

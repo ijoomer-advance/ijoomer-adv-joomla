@@ -61,8 +61,16 @@ class MCrypt
 	 */
 	public function encrypt($input)
 	{
-		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
+		$query = $this->_db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('value')
+			->from($this->_db->qn('#__ijoomeradv_config'))
+			->where($this->_db->qn('name') . ' = ' . $this->_db->q('IJOOMER_ENC_KEY'));
+
+		// Set the query and load the result.
 		$this->_db->setQuery($query);
+
 		$key = $this->_db->loadResult();
 
 		$size = mcrypt_get_block_size('rijndael-128', 'cbc');
@@ -90,8 +98,16 @@ class MCrypt
 	 */
 	public function decrypt($code)
 	{
-		$query = "SELECT `value` FROM #__ijoomeradv_config WHERE `name`='IJOOMER_ENC_KEY' ";
+		$query = $this->_db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('value')
+			->from($this->_db->qn('#__ijoomeradv_config'))
+			->where($this->_db->qn('name') . ' = ' . $this->_db->q('IJOOMER_ENC_KEY'));
+
+		// Set the query and load the result.
 		$this->_db->setQuery($query);
+
 		$key = $this->_db->loadResult();
 
 		$code = base64_decode($code);

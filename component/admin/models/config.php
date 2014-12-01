@@ -39,10 +39,17 @@ class IjoomeradvModelconfig extends JModelLegacy
 	 */
 	public function getConfig($filter = null)
 	{
-		$where = ($filter) ? "WHERE `group`= '" . $filter . "'" : '';
-		$query = "SELECT *
-				FROM #__ijoomeradv_config
-				{$where}";
+		$query = $this->db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('*')
+			->from($this->db->qn('#__ijoomeradv_config'));
+
+		if ($filter)
+		{
+			$query->where($this->db->qn('group') . ' = ' . $this->db->q($filter));
+		}
+
 		$this->db->setQuery($query);
 
 		return $this->db->loadObjectList('name');
@@ -64,24 +71,32 @@ class IjoomeradvModelconfig extends JModelLegacy
 
 			if ( $value->type === 'select' && $this->checkOptionAvail($post[$value->name], $value->options))
 			{
-				$query = "UPDATE `#__ijoomeradv_config`
-						SET `value` = '{$setvalue}'
-						WHERE `name` = '{$value->name}'";
+				$query = $this->db->getQuery(true);
+
+				// Create the base update statement.
+				$query->update($this->db->qn('#__ijoomeradv_config'))
+					->set($this->db->qn('value') . ' = ' . $this->db->q($setvalue))
+					->where($this->db->qn('name') . ' = ' . $this->db->q($value->name));
+
 				$this->db->setQuery($query);
 
-				if ( !$this->db->Query())
+				if(!$this->db->execute())
 				{
 					return false;
 				}
 			}
 			elseif ($value->type != 'button')
 			{
-				$query = "UPDATE `#__ijoomeradv_config`
-						SET `value` = '{$setvalue}'
-						WHERE `name` = '{$value->name}'";
+				$query = $this->db->getQuery(true);
+
+				// Create the base update statement.
+				$query->update($this->db->qn('#__ijoomeradv_config'))
+					->set($this->db->qn('value') . ' = ' . $this->db->q($setvalue))
+					->where($this->db->qn('name') . ' = ' . $this->db->q($value->name));
+
 				$this->db->setQuery($query);
 
-				if (!$this->db->Query())
+				if(!$this->db->execute())
 				{
 					return false;
 				}

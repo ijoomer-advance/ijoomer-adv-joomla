@@ -38,22 +38,31 @@ class JFormFieldMenutypeitems extends JFormFieldList
 	protected function getInput()
 	{
 		// Initialise variables.
-		$html = array();
+		$html     = array();
 		$recordId = (int) $this->form->getValue('id');
-		$size = ($v = $this->element['size']) ? ' size="' . $v . '"' : '';
-		$class = ($v = $this->element['class']) ? ' class="' . $v . '"' : 'class="text_area"';
+		$size     = ($v = $this->element['size']) ? ' size="'.$v.'"' : '';
+		$class    = ($v = $this->element['class']) ? ' class="'.$v.'"' : 'class="text_area"';
+		$db       = JFactory::getDbo();
+		$query    = $db->getQuery(true);
 
-		// Load the javascript and css
-		JHtml::_('behavior.framework');
-		JHtml::_('behavior.modal');
+		// Create the base select statement.
+		$query->select('title')
+			->from($db->quoteName('#__ijoomeradv_menu'))
+			->where($db->quoteName('id') . ' = ' . $db->quote($this->value));
 
-		$db = JFactory::getDBO();
-		$sql = "SELECT title
-				FROM #__ijoomeradv_menu
-				WHERE id IN ($this->value)";
+		// Set the query and load the result.
+		$db->setQuery($query);
 
-		$db->setQuery($sql);
-		$menuitem_list = implode(',', $db->loadResultArray());
+		try
+		{
+			$result = $db->loadResultArray();
+
+			$menuitem_list = implode(',', $result);
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
 
 		$html[] = '<input type="text" value="' . $menuitem_list . '"' . $size . $class . ' />';
 		$html[] = '<input type="button" value="' . JText::_('JSELECT') . '" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 600, y: 450}, url:\'' . JRoute::_('index.php?option=com_ijoomeradv&view=menutypes&layout=items&tmpl=component&recordId=' . $recordId) . '\'})" />';
