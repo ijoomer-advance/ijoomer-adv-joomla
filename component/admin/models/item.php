@@ -247,14 +247,9 @@ class IjoomeradvModelItem extends JModelAdmin
 		$parents = array();
 
 		// Calculate the emergency stop count as a precaution against a runaway loop bug
-<<<<<<< HEAD
-		$query->select('COUNT(id)');
-		$query->from($db->quoteName('#__ijoomeradv_menu'));
-=======
 		$query->select('COUNT(id)')
 			->from($db->qn('#__ijoomeradv_menu'));
 
->>>>>>> d381429... Query updated.
 		$db->setQuery($query);
 		$count = $db->loadResult();
 
@@ -292,20 +287,12 @@ class IjoomeradvModelItem extends JModelAdmin
 			}
 
 			// Copy is a bit tricky, because we also need to copy the children
-			$query->clear();
-<<<<<<< HEAD
-			$query->select('id');
-			$query->from($db->quoteName('#__ijoomeradv_menu'));
-			$query->where('lft > ' . (int) $table->lft);
-			$query->where('rgt < ' . (int) $table->rgt);
-=======
-
-			$query->select('id')
+			$query->clear()
+				->select('id')
 				->from($db->qn('#__ijoomeradv_menu'))
 				->where('lft > ' . (int) $table->lft)
 				->where('rgt < ' . (int) $table->rgt);
 
->>>>>>> d381429... Query updated.
 			$db->setQuery($query);
 			$childIds = $db->loadColumn();
 
@@ -490,17 +477,10 @@ class IjoomeradvModelItem extends JModelAdmin
 			{
 				// Add the child node ids to the children array.
 				$query->clear();
-<<<<<<< HEAD
-				$query->select($db->quoteName('id'));
-				$query->from($db->quoteName('#__ijoomeradv_menu'));
-				$query->where($db->quoteName('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
-=======
-
 				$query->select($db->qn('id'))
 					->from($db->qn('#__ijoomeradv_menu'))
 					->where($db->qn('lft') . ' BETWEEN ' . (int) $table->lft . ' AND ' . (int) $table->rgt);
 
->>>>>>> d381429... Query updated.
 				$db->setQuery($query);
 				$children = array_merge($children, (array) $db->loadColumn());
 			}
@@ -539,16 +519,10 @@ class IjoomeradvModelItem extends JModelAdmin
 
 			// Update the menutype field in all nodes where necessary.
 			$query->clear();
-<<<<<<< HEAD
-			$query->update($db->quoteName('#__ijoomeradv_menu'));
-			$query->set($db->quoteName('menutype') . ' = ' . $db->quote($menuType));
-			$query->where($db->quoteName('id') . ' IN (' . implode(',', $children) . ')');
-=======
 			$query->update($db->qn('#__ijoomeradv_menu'))
 				->set($db->qn('menutype') . ' = ' . $db->q($menuType))
 				->where($db->qn('id') . ' IN (' . implode(',', $children) . ')');
 
->>>>>>> d381429... Query updated.
 			$db->setQuery($query);
 			$db->query();
 

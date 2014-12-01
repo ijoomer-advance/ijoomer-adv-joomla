@@ -40,13 +40,8 @@ class JFormFieldMenuParent extends JFormFieldList
 		$db      = JFactory::getDbo();
 		$query   = $db->getQuery(true);
 
-<<<<<<< HEAD
 		$query->select('a.id AS value, a.title AS text')
 			->from('#__ijoomeradv_menu', 'a');
-=======
-		$query->select('a.id AS value, a.title AS text')
-			->from('#__ijoomeradv_menu', 'a');
->>>>>>> d381429... Query updated.
 
 		if ($menuType = $this->form->getValue('menutype'))
 		{

@@ -134,16 +134,9 @@ class IjoomeradvModelMenus extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select all fields from the table.
-<<<<<<< HEAD
-		$query->select($this->getState('list.select', 'a.*'));
-		$query->from($db->quoteName('#__ijoomeradv_menu_types') . ' AS a');
-
-		$query->group('a.id, a.title, a.description');
-=======
 		$query->select($this->getState('list.select', 'a.*'))
 			->from($db->quoteName('#__ijoomeradv_menu_types', 'a'))
 			->group('a.id, a.title, a.description');
->>>>>>> d381429... Query updated.
 
 		// Add the list ordering clause.
 		$query->order($db->escape($this->getState('list.ordering', 'a.id')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
