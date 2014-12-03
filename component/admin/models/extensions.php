@@ -227,7 +227,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 
 		$query->select('p.*')
 			->from($db->qn($this->_table_prefix . 'extensions', 'p'))
-			->where($db->qn('p.classname') . ' = ' . $db->quote('iuser'))
+			->where($db->qn('p.classname') . ' != ' . $db->quote('iuser'))
 			->order($orderby);
 
 		return $query;
@@ -244,7 +244,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$mainframe = JFactory::getApplication();
 		$filter_order = $mainframe->getUserStateFromRequest($context . 'filter_order', 'filter_order', 'id');
 		$filter_order_Dir = $mainframe->getUserStateFromRequest($context . 'filter_order_Dir', 'filter_order_Dir', '');
-		$orderby = ' ORDER BY p.' . $filter_order . ' ' . $filter_order_Dir;
+		$orderby = ' p.' . $filter_order . ' ' . $filter_order_Dir;
 
 		return $orderby;
 	}
