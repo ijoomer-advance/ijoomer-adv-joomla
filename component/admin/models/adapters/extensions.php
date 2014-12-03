@@ -256,7 +256,6 @@ class JInstallerExtensions extends JObject
 		$query->select('id')
 			->from($db->qn($this->tbl_prefix . 'extensions'))
 			->where($db->qn('classname') . ' = ' . $db->q($extension_classname));
-			//->order($db->qn('ordering') . ' ASC');
 
 		// Set the query and load the result.
 		$db->setQuery($query);
