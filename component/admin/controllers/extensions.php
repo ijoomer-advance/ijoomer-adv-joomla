@@ -129,6 +129,60 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 
 	public function uninstall()
 	{
+		//$app = JFactory::getApplication();
+
+		$jinput = JFactory::getApplication()->input;
+		$cid = $jinput->getArray(array('cid' => ''));
+
+		$catid = $cid['cid'];
+		//$cid = $cid['cid'][0];
+
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+
+		foreach ($catid as $key => $value)
+		{
+
+			$query = $db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('classname')
+				->from($db->quoteName('#__ijoomeradv_extensions'))
+				->where($db->quoteName('id') . ' = ' . $db->quote($value));
+
+			// Set the query and load the result.
+			$db->setQuery($query);
+
+			$result = $db->loadObject();
+
+			$query1 = $db->getQuery(true);
+
+			// Create the base delete statement.
+			$query1->delete()
+				->from($db->quoteName('#__ijoomeradv_extensions'))
+				->where($db->quoteName('id') . ' = ' . $db->quote($value));
+
+			$db->setQuery($query1);
+
+			$db->execute();
+
+			$query2 = $db->getQuery(true);
+
+			// Create the base delete statement.
+			$query2->delete()
+				->from($db->quoteName('#__menu'))
+				->where($db->quoteName('menutype') . ' = ' . $db->quote($result->classname));
+
+			// Set the query and execute the delete.
+			$db->setQuery($query2);
+
+			$db->execute();
+
+		}
+
+		$this->setMessage(JText::_('Extension Uninstalled SuccessFully'));
+		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions&layout=manage');
+
 	}
 
 	/**
@@ -151,9 +205,11 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 */
 	public function publish()
 	{
-		$app = JFactory::getApplication();
-		$post = $app->input->getArray('post', array());
-		$cid = $post['cid'];
+		$app    = JFactory::getApplication();
+		$jinput = JFactory::getApplication()->input;
+		$cid    = $jinput->getArray(array('cid' => ''));
+
+		$cid    = $cid['cid'];
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{
@@ -179,9 +235,11 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	 */
 	public function unpublish()
 	{
-		$app = JFactory::getApplication();
-		$post = $app->input->getArray('post', array());
-		$cid = $post['cid'];
+		$app    = JFactory::getApplication();
+		$jinput = JFactory::getApplication()->input;
+		$cid    = $jinput->getArray(array('cid' => ''));
+
+		$cid    = $cid['cid'];
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{

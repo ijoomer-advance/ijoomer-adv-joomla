@@ -179,6 +179,31 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		jimport( 'joomla.form.form' );
+		$input      = JFactory::getApplication()->input;
+		$formData = $input->get('jform',array(),'array');
+
+		//$username=explode(',', $formData['Username']);
+		$unm=$formData['Username'];
+		/*echo "<pre>";
+		print_r($unm);
+		echo "</pre>";exit;*/
+
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base update statement.
+		$query->update($db->quoteName('#__ijoomeradv_push_notification'))
+			->set($db->quoteName('to_user') . ' = ' . $db->quote($unm))
+			->where($db->quoteName('to_user') . ' = ' . $db->quote(''));
+
+
+		// Set the query and execute the update.
+		$db->setQuery($query);
+
+		$db->execute();
+
 		$dispatcher = JEventDispatcher::getInstance();
 		$table      = $this->getTable();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');

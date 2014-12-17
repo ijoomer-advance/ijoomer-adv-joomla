@@ -27,23 +27,34 @@
 
   <fieldset name="message">
     <fields>
-      <field
-        id='to_user'
-        name="Username"
-        type="text"
-        class="div"
-        display="none"
-      />
-      <field
-          name="message"
-          type="textarea"
-          rows="10"
-          label="Message"
-          required="true"/>
-      <field
-        name="link"
-        type="text"
-        label="Link"/>
-    </fields>
+
+   <field
+     id='to_user'
+     name="Username"
+     type="text"
+     class="div"
+     display="none"
+
+   />
+     <!--  <field
+        name="to_user"
+        type="UserEdit"
+        label="JFIELD_ACCESS_LABEL"
+        description="JFIELD_ACCESS_DESC"
+        multiple="true"
+       /> -->
+
+    <field
+        name="message"
+        type="textarea"
+        rows="10"
+        label="Message"
+        required="true"/>
+    <field
+      name="link"
+      type="text"
+      label="Link"/>
+  </fields>
+
   </fieldset>
 </form>

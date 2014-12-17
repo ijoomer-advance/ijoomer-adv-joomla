@@ -104,22 +104,12 @@ class IjoomeradvModelExtensions extends JModelLegacy
 	 */
 	public function getExtGroups()
 	{
-		$db = JFactory::getDbo();
-
-		// Create the base select statement.
-		$query->select('DISTINCT group')
-			->from($db->qn('#__ijoomeradv_' . $this->_data->classname . '_config'));
+		$db = JFactory :: getDBO();
+		$query="SELECT DISTINCT `group`
+				FROM #__ijoomeradv_".$this->_data->classname."_config";
 
 		$db->setQuery($query);
-
-		try
-		{
-			return $db->loadColumn();
-		}
-		catch (RuntimeException $e)
-		{
-			throw new RuntimeException($e->getMessage(), $e->getCode());
-		}
+		return $db->loadColumn();
 	}
 
 	/**

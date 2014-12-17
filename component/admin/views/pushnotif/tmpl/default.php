@@ -65,16 +65,26 @@ $msgfieldsets = $this->form->getFieldset('message');
 </script>
 
 <script language="javascript" type="text/javascript">
-	function changeVal() {
-		if (document.adminForm.send_to_username.value == "") {
+	function changeVal()
+	{
+		if (document.adminForm.send_to_username.value == "")
+		{
 			alert("Please select User Name");
-		} else {
-			if (document.getElementById("jform_to_user").value == "") {
+		}
+		else
+		{
+			if (document.getElementById("jform_to_user").value == "")
+			{
 				document.getElementById("jform_to_user").value = document.adminForm.send_to_username.value;
-			} else {
-				if (document.getElementById("jform_to_user").value.indexOf(document.adminForm.send_to_username.value) != -1) {
+			}
+			else
+			{
+				if (document.getElementById("jform_to_user").value.indexOf(document.adminForm.send_to_username.value) != -1)
+				{
 					alert("User already Exists");
-				} else {
+				}
+				 else
+				{
 					document.getElementById("jform_to_user").value += "," + document.adminForm.send_to_username.value;
 				}
 			}
@@ -117,8 +127,8 @@ $msgfieldsets = $this->form->getFieldset('message');
 						<th ><?php echo JHtml::_('grid.checkall'); ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_ID') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE') ?></th>
-						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TO_USER') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS') ?></th>
 						<th><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME') ?></th>
 					</tr>
@@ -127,6 +137,10 @@ $msgfieldsets = $this->form->getFieldset('message');
 					<?php
 					$k = 0;
 
+					/*echo "<pre>";
+					print_r($this->pushNotifications);
+					echo "</pre>";
+					exit;*/
 					if (!empty($this->pushNotifications))
 					{
 						foreach ($this->pushNotifications as $key => $value):?>

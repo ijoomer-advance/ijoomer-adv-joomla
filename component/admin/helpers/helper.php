@@ -40,19 +40,24 @@ class IjoomeradvAdminHelper
 	{
 		$version = new JVersion;
 
+		$this->db    = JFactory::getDbo();
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('e.extension_id AS id, e.element AS option, e.params, e.enabled')
-			->from($this->db->qn('#__extensions', 'e'))
+		$query->select('e.extension_id as id, e.element as option1, e.params, e.enabled')
+			->from($this->db->qn('#__extensions') . 'AS e')
 			->where($this->db->qn('e.type') . ' = ' . $this->db->q('component'))
 			->where($this->db->qn('e.element') . ' = ' . $this->db->q($option));
 
 		// Set the query and load the result.
 		$this->db->setQuery($query);
 
+		//echo $query->dump();exit;
+
 
 		$components = $this->db->loadObject();
+
+
 
 		if (count($components)>0 && $components->enabled == 1)
 		{
@@ -60,6 +65,21 @@ class IjoomeradvAdminHelper
 		}
 
 		return false;
+
+		/*$version = new JVersion();
+
+		$query="SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled
+				FROM #__extensions as e
+				WHERE e.type='component'
+				AND e.element = '{$option}'";
+		$this->db->setQuery($query);
+		$components = $this->db->loadObject();
+
+		if(count($components)>0 && $components->enabled == 1){
+			return true;
+		}
+		return false;*/
+
 	}
 
 	/**
