@@ -11,17 +11,15 @@ defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
 
-$document = JFactory::getdocument();
+$document     = JFactory::getdocument();
 $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.js');
 $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.autocomplete.js');
 $document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/jquery.autocomplete.css');
 $document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/ijoomeradv.css');
+
 $fieldsets    = $this->form->getFieldset('notification');
 $msgfieldsets = $this->form->getFieldset('message');
-
 ?>
-
-
 <script language="javascript" type="text/javascript">
 
 jQuery(document).ready(function() {
@@ -44,28 +42,22 @@ jQuery(document).ready(function() {
       enctype="multipart/form-data">
      <div class="form-horizontal">
 			<div class="span5">
-					<div>
-						<?php foreach ($fieldsets as $field) : ?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $field->label; ?></div>
-								<div class="controls"><?php echo $field->input; ?></div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<!-- <div style="margin-left: 180px; display:none;" id="userid" class="control-group">
-						<input type="text" name="send_to_username" id="send_to_username" value="" class="control-group"/>
-						<input type="button" name="add_uid" id="add_uid" value="Add User"
-						       onClick="changeVal()"/>&nbsp;&nbsp;
-					</div> -->
-					<div>
-						<?php foreach ($msgfieldsets as $fields) : ?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $fields->label; ?></div>
-								<div class="controls"><?php echo $fields->input; ?></div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-
+				<div>
+					<?php foreach ($fieldsets as $field) : ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $field->label; ?></div>
+							<div class="controls"><?php echo $field->input; ?></div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<div>
+					<?php foreach ($msgfieldsets as $fields) : ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $fields->label; ?></div>
+							<div class="controls"><?php echo $fields->input; ?></div>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			</div>
 			<div class="span7">
 				<table class="adminlist table table-striped" width="100%">
@@ -84,10 +76,6 @@ jQuery(document).ready(function() {
 					<?php
 					$k = 0;
 
-					/*echo "<pre>";
-					print_r($this->pushNotifications);
-					echo "</pre>";
-					exit;*/
 					if (!empty($this->pushNotifications))
 					{
 						foreach ($this->pushNotifications as $key => $value):?>
