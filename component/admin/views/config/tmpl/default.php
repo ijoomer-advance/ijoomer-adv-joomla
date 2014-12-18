@@ -152,9 +152,6 @@ $options = array(
 							<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE'); ?></legend>
 							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
 								<?php
-									/*echo "<pre>";
-									print_r($this->pushConfigIphone);
-									echo "</pre>";exit();*/
 								foreach ($this->pushConfigIphone as $key => $value):
 									?>
 									<tr>

@@ -86,14 +86,14 @@ class IjoomeradvHelper
 	 *
 	 * @param   type  $option  $option
 	 *
-	 * @return  it will returns count($components)
+	 * @return  boolean   Return true on component found
 	 */
 	public function getComponent($option)
 	{
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('extension_id AS id, element AS option, params, enabled')
+		$query->select('enabled')
 			->from($this->db->qn('#__extensions'))
 			->where($this->db->qn('type') . ' = ' . $this->db->q('component'))
 			->where($this->db->qn('element') . ' = ' . $this->db->q($option));
