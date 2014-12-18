@@ -66,20 +66,6 @@ class IjoomeradvAdminHelper
 
 		return false;
 
-		/*$version = new JVersion();
-
-		$query="SELECT e.extension_id AS 'id', e.element AS 'option', e.params, e.enabled
-				FROM #__extensions as e
-				WHERE e.type='component'
-				AND e.element = '{$option}'";
-		$this->db->setQuery($query);
-		$components = $this->db->loadObject();
-
-		if(count($components)>0 && $components->enabled == 1){
-			return true;
-		}
-		return false;*/
-
 	}
 
 	/**

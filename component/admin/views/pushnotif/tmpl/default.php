@@ -11,7 +11,6 @@ defined('_JEXEC') or die;
 
 JHTML::_('behavior.tooltip');
 
-
 $document = JFactory::getdocument();
 $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.js');
 $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.autocomplete.js');
@@ -21,76 +20,24 @@ $fieldsets    = $this->form->getFieldset('notification');
 $msgfieldsets = $this->form->getFieldset('message');
 
 ?>
-<script>
-	$().ready(function () {
-		//$.noConflict();
-		$('#jform_to_user').hide();
-		$('#jform_to_user-lbl').hide();
 
-		$('#jform_customs1').click(function () {
-			$('#userid').show();
-			$('#jform_to_user').show();
-			$('#jform_to_user-lbl').show();
-		});
-
-		$('#jform_customs0').click(function () {
-			$('#userid').hide();
-			$('#jform_to_user').hide();
-			$('#jform_to_user-lbl').hide();
-		});
-
-		$('#customs').click(function () {
-			$('#disp_btn').show()
-		});
-
-		var months = [
-			<?php for ($i = 0; $i < count($this->users); $i++):?>
-				'<?php echo $this->users[$i]; ?>',
-			<?php endfor; ?>
-		];
-
-		$("#send_to_username").autocomplete(months, {
-			minChars: 0,
-			max: 12,
-			autoFill: true,
-			mustMatch: true,
-			matchContains: false,
-			scrollHeight: 220,
-			formatItem: function (data, i, total) {
-				return data[0];
-			}
-		});
-
-	});
-</script>
 
 <script language="javascript" type="text/javascript">
-	function changeVal()
-	{
-		if (document.adminForm.send_to_username.value == "")
-		{
-			alert("Please select User Name");
-		}
-		else
-		{
-			if (document.getElementById("jform_to_user").value == "")
-			{
-				document.getElementById("jform_to_user").value = document.adminForm.send_to_username.value;
-			}
-			else
-			{
-				if (document.getElementById("jform_to_user").value.indexOf(document.adminForm.send_to_username.value) != -1)
-				{
-					alert("User already Exists");
-				}
-				 else
-				{
-					document.getElementById("jform_to_user").value += "," + document.adminForm.send_to_username.value;
-				}
-			}
-		}
-		document.adminForm.send_to_username.value = "";
-	}
+
+jQuery(document).ready(function() {
+	jQuery('#jform_customsuser_chzn').css('display', 'none');
+	jQuery('#jform_customsuser-lbl').css('display', 'none');
+
+	jQuery('#jform_customs0').click(function(event) {
+		jQuery('#jform_customsuser_chzn').css('display', 'none');
+		jQuery('#jform_customsuser-lbl').css('display', 'none');
+	});
+	jQuery('#jform_customs1').click(function(event) {
+		jQuery('#jform_customsuser_chzn').css('display', 'block');
+		jQuery('#jform_customsuser-lbl').css('display', 'block');
+	});
+});
+
 </script>
 
 <form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm"
@@ -105,11 +52,11 @@ $msgfieldsets = $this->form->getFieldset('message');
 							</div>
 						<?php endforeach; ?>
 					</div>
-					<div style="margin-left: 180px; display:none;" id="userid" class="control-group">
+					<!-- <div style="margin-left: 180px; display:none;" id="userid" class="control-group">
 						<input type="text" name="send_to_username" id="send_to_username" value="" class="control-group"/>
 						<input type="button" name="add_uid" id="add_uid" value="Add User"
 						       onClick="changeVal()"/>&nbsp;&nbsp;
-					</div>
+					</div> -->
 					<div>
 						<?php foreach ($msgfieldsets as $fields) : ?>
 							<div class="control-group">

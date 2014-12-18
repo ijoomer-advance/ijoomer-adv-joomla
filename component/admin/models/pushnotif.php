@@ -183,19 +183,50 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		$input      = JFactory::getApplication()->input;
 		$formData = $input->get('jform',array(),'array');
 
-		//$username=explode(',', $formData['Username']);
-		$unm=$formData['Username'];
-		/*echo "<pre>";
-		print_r($unm);
-		echo "</pre>";exit;*/
+		$usernm=$formData['ijoomeradv'];
 
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
+
+		foreach ($usernm as $key => $value)
+		{
+			$query = $db->getQuery(true);
+
+			// Create the base select statement.
+			$query->select('name')
+				->from($db->quoteName('#__users'))
+				->where($db->quoteName('id') . ' = ' . $db->quote($value));
+
+			// Set the query and load the result.
+			$db->setQuery($query);
+
+			$result = $db->loadObjectList();
+			$user[]= $result;
+
+		}
+
+   		foreach ($user as $key => $value)
+   		{
+   			foreach ($value as $key1 => $unm)
+   			{
+
+   				$a[]=$unm;
+
+   			}
+   		}
+
+   		foreach ($a as $key => $value)
+   		{
+   			$c[]=$value->name;
+   		}
+
+   		$usernm=implode(',',$c);
+
 		$query = $db->getQuery(true);
 
 		// Create the base update statement.
 		$query->update($db->quoteName('#__ijoomeradv_push_notification'))
-			->set($db->quoteName('to_user') . ' = ' . $db->quote($unm))
+			->set($db->quoteName('to_user') . ' = ' . $db->quote($usernm))
 			->where($db->quoteName('to_user') . ' = ' . $db->quote(''));
 
 
@@ -289,5 +320,57 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		}
 		// Close connection
 		curl_close($ch);
+	}
+
+
+	public static function searchParent($filters = array())
+	{
+		$input = JFactory::getApplication()->input;
+		$id = $input->getInt('id');
+
+		$db = JFactory::getDbo();
+		$filters['like'] = str_replace("-", " ", $filters['like']);
+
+		$query = $db->getQuery(true)
+			->select('a.id AS value, a.name AS text')
+			->from($db->qn('#__users') . ' AS a')
+			->join('LEFT', '#__ijoomeradv_users AS b ON b.userid = a.id');
+
+		if ($id != 0)
+		{
+			$query->join('LEFT', $db->quoteName('#__users') . ' AS p ON p.id = ' . (int) $id);
+		}
+
+		// Search in title or path
+		if (!empty($filters['like']))
+		{
+			$query->where('(' . $db->quoteName('a.name') . ' LIKE ' . $db->quote('%' . $filters['like'] . '%') . ')');
+		}
+
+		// Filter title
+		if (!empty($filters['name']))
+		{
+			$query->where($db->quoteName('a.name') . ' = ' . $db->quote($filters['name']));
+		}
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$results = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			return false;
+		}
+
+
+		for ($i = 0;$i < count($results);$i++)
+		{
+			$results[$i]->text = $results[$i]->text;
+		}
+
+		return $results;
 	}
 }

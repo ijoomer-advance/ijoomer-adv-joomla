@@ -45,6 +45,35 @@ class IjoomeradvControllerPushnotif extends JControllerForm
 	}
 
 	/**
+	 * [searchAjax description]
+	 *
+	 * @return  void
+	 */
+	public function searchAjax()
+	{
+		// Required objects
+		$app   = JFactory::getApplication();
+		$model = $this->getModel('Pushnotif', ' IjoomeradvModel');
+		$input = JFactory::getApplication()->input;
+		$like  = $input->get('like', null, 'word');
+		$like  = str_replace(" ", "-", $like);
+
+		// Receive request data
+		$filters = array(
+			'like'     => $like,
+			'name'     => trim($app->input->get('name', null))
+		);
+
+		if ($categories = $model->searchParent($filters))
+		{
+			// Output a JSON object
+			echo json_encode($categories);
+		}
+
+		$app->close();
+	}
+
+	/**
 	 * Get Model Function
 	 *
 	 * @param   string  $name    contains Name

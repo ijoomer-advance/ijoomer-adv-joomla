@@ -2,6 +2,11 @@
 <form>
   <fieldset name="notification">
     <fields>
+
+      <field
+              name="id"
+              type="hidden"
+      />
      <field
           name="device_type"
           type="radio"
@@ -28,21 +33,24 @@
   <fieldset name="message">
     <fields>
 
-   <field
+   <!-- <field
      id='to_user'
      name="Username"
      type="text"
      class="div"
      display="none"
 
-   />
-     <!--  <field
-        name="to_user"
-        type="UserEdit"
-        label="JFIELD_ACCESS_LABEL"
-        description="JFIELD_ACCESS_DESC"
-        multiple="true"
-       /> -->
+   /> -->
+
+   <field
+    id="customsuser"
+     name="ijoomeradv"
+     class="customsuser"
+     type="Pushnotif"
+     label="Send To User"
+     description="Send To User"
+     multiple="true"
+    />
 
     <field
         name="message"

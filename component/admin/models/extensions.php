@@ -109,7 +109,16 @@ class IjoomeradvModelExtensions extends JModelLegacy
 				FROM #__ijoomeradv_".$this->_data->classname."_config";
 
 		$db->setQuery($query);
-		return $db->loadColumn();
+
+		try
+		{
+			return $db->loadColumn();
+		}
+		catch (RuntimeException $e)
+		{
+			throw new RuntimeException($e->getMessage(), $e->getCode());
+		}
+
 	}
 
 	/**

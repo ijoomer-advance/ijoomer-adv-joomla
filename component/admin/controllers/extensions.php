@@ -135,7 +135,6 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 		$cid = $jinput->getArray(array('cid' => ''));
 
 		$catid = $cid['cid'];
-		//$cid = $cid['cid'][0];
 
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
