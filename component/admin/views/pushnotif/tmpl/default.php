@@ -19,7 +19,6 @@ $document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/ijoomeradv.css
 
 $fieldsets    = $this->form->getFieldset('notification');
 $msgfieldsets = $this->form->getFieldset('message');
-
 ?>
 <script language="javascript" type="text/javascript">
 
@@ -43,23 +42,22 @@ jQuery(document).ready(function() {
       enctype="multipart/form-data">
      <div class="form-horizontal">
 			<div class="span5">
-					<div>
-						<?php foreach ($fieldsets as $field) : ?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $field->label; ?></div>
-								<div class="controls"><?php echo $field->input; ?></div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-					<div>
-						<?php foreach ($msgfieldsets as $fields) : ?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $fields->label; ?></div>
-								<div class="controls"><?php echo $fields->input; ?></div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-
+				<div>
+					<?php foreach ($fieldsets as $field) : ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $field->label; ?></div>
+							<div class="controls"><?php echo $field->input; ?></div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+				<div>
+					<?php foreach ($msgfieldsets as $fields) : ?>
+						<div class="control-group">
+							<div class="control-label"><?php echo $fields->label; ?></div>
+							<div class="controls"><?php echo $fields->input; ?></div>
+						</div>
+					<?php endforeach; ?>
+				</div>
 			</div>
 			<div class="span7">
 				<table class="adminlist table table-striped" width="100%">
@@ -77,6 +75,7 @@ jQuery(document).ready(function() {
 					<tbody>
 					<?php
 					$k = 0;
+
 					if (!empty($this->pushNotifications))
 					{
 						foreach ($this->pushNotifications as $key => $value):?>
