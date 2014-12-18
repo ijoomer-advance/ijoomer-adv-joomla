@@ -94,6 +94,28 @@ class Com_IjoomeradvInstallerScript
 			$db->Query();
 		}
 
+		$this->displayMessage();
+	}
+
+	/**
+	 * Called on update
+	 *
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
+	 */
+	public function update(JAdapterInstance $adapter)
+	{
+		$this->displayMessage();
+	}
+
+	/**
+	 * Display iJoomer installation message
+	 *
+	 * @return  void
+	 */
+	public function displayMessage()
+	{
 		ob_start();
 		?>
 		<style type="text/css">
@@ -143,7 +165,7 @@ class Com_IjoomeradvInstallerScript
 					<div style="text-align:center;">
 						<h1>Thank you for choosing,</h1>
 						<?php $imgsrc = JURI::root() . 'media/com_ijoomeradv/images/ijoomeradv_logo.png'; ?>
-						<img src="<?php $imgsrc; ?>" align="center">
+						<img src="<?php echo $imgsrc; ?>" align="center">
 						<br><font color="#105A8D" size="2"><b>Version 1.5</b></font></br>
 					</div>
 				</td>
@@ -202,17 +224,6 @@ class Com_IjoomeradvInstallerScript
 		$html = ob_get_contents();
 		@ob_end_clean();
 		echo $html;
-	}
-
-	/**
-	 * Called on update
-	 *
-	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
-	 *
-	 * @return  boolean  True on success
-	 */
-	public function update(JAdapterInstance $adapter)
-	{
 	}
 
 	/**
