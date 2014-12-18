@@ -35,6 +35,47 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 	 */
 	public function save()
 	{
+		// Move uploaded file
+		jimport('joomla.filesystem.file');
+		jimport('joomla.utilities.utility');
+		jimport('joomla.filesystem.folder');
+
+		foreach($_FILES as $key=>$value)
+		{
+
+		}
+
+		$sandFilenm    = $_FILES['SandBox']['name'];
+		$sandFiletype  = $_FILES['SandBox']['type'];
+		$sandFiletmpnm = $_FILES['SandBox']['tmp_name'];
+
+		$liveFilenm    = $_FILES['live']['name'];
+		$liveFiletype  = $_FILES['live']['type'];
+		$liveFiletmpnm = $_FILES['live']['tmp_name'];
+
+		if(key($_FILES) == "SandBox" && !empty($sandFilenm) && $sandFiletype=="application/x-x509-ca-cert")
+		{
+			$file1 = 'dev_'.$sandFilenm;
+			$dest1 = JPATH_SITE ."/components/com_ijoomeradv/certificates/".$file1;
+
+			JFile::upload($sandFiletmpnm, $dest1);
+			chmod ($dest1, 0777);
+		}
+		elseif ($key == "live" && !empty($liveFilenm) && $liveFiletype=="application/x-x509-ca-cert")
+		{
+			$file = 'pro_'.$liveFilenm;
+			$dest = JPATH_SITE ."/components/com_ijoomeradv/certificates/$file";
+
+			JFile::upload($liveFiletmpnm, $dest);
+			chmod ($dest, 0777);
+		}
+		else
+		{
+			JLog::add(JText::_($this->text_prefix . 'Invalid File '), JLog::WARNING, 'jerror');
+			JLog::add(JText::_($this->text_prefix . 'File Is Not Upload '), JLog::WARNING, 'jerror');
+
+		}
+
 		$model  = $this->getModel('config');
 		$config = $model->store();
 		$this->setRedirect(JRoute::_('index.php?option=com_ijoomeradv', true));

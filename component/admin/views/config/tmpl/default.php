@@ -28,6 +28,7 @@ $options = array(
 	'useCookie' => true,
 );
 ?>
+
 <script type="text/javascript">
 	function randomString() {
 			var	gencode = document.getElementById('IJOOMER_ENC_KEY'),
@@ -54,9 +55,36 @@ $options = array(
 	window.addEventListener('load', function load() {
 		document.getElementById('generate').addEventListener('click', randomString);
 	});
+
+
+	jQuery(document).ready(function()
+	{
+		jQuery("#SandBox").show();
+		jQuery("#Live").hide();
+
+		jQuery("#IJOOMER_PUSH_DEPLOYMENT_IPHONE").change(function(event) {
+			jQuery("#SandBox").hide();
+			jQuery("#Live").hide();
+			var selectedValue = jQuery("#IJOOMER_PUSH_DEPLOYMENT_IPHONE").val();
+
+		if (selectedValue == '0') {
+			jQuery("#SandBox").show();
+			jQuery("#Live").hide();
+		};
+
+		if (selectedValue == '1') {
+			jQuery("#SandBox").hide();
+			jQuery("#Live").show();
+		};
+
+	});
+});
+
+
 </script>
-<form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm">
-	<div class="span12">
+<form action="<?php echo JRoute::_($this->request_url) ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+
+	<div class="span12" >
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="#page-GLOBAL"
 			                      data-toggle="tab"><?php echo JText::_('COM_IJOOMERADV_GLOBAL_CONFIG'); ?></a></li>
@@ -124,6 +152,9 @@ $options = array(
 							<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE'); ?></legend>
 							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
 								<?php
+									/*echo "<pre>";
+									print_r($this->pushConfigIphone);
+									echo "</pre>";exit();*/
 								foreach ($this->pushConfigIphone as $key => $value):
 									?>
 									<tr>
@@ -140,6 +171,42 @@ $options = array(
 								endforeach;
 								?>
 							</table>
+
+								<div class="row" id="SandBox" style="margin-left:2px;margin-top:8px;">
+
+										<div class="span3">
+											Upload File For SandBox
+										</div>
+
+										<div class="span3" width="40%">
+											<input type="file" name="SandBox" id="sandbox">
+										</div>
+										<div class="span3" width="40%">
+											<?
+											if(file_exists(JPATH_SITE ."/components/com_ijoomeradv/certificates/dev_certificates.pem"))
+											{
+													echo '<a href="../administrator/components/com_ijoomeradv/views/config/tmpl/downloadsandbox.php">Download File</a>';
+											}
+											?>
+										</div>
+								</div>
+								<div class="row" id="Live" style="margin-left:2px;margin-top:8px;">
+									<div class="span3">
+											Upload File For Live
+									</div>
+
+									<div class="span3">
+										<input type="file" name="live">
+									</div>
+									<div class="span3" width="40%">
+											<?
+											if(file_exists(JPATH_SITE ."/components/com_ijoomeradv/certificates/pro_certificates.pem"))
+											{
+													echo '<a href="../administrator/components/com_ijoomeradv/views/config/tmpl/downloadlive.php">Download File</a>';
+											}
+											?>
+									</div>
+								</div>
 						</fieldset>
 						<br/>
 						<fieldset class="adminform">

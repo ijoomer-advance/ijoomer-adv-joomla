@@ -2,6 +2,11 @@
 <form>
   <fieldset name="notification">
     <fields>
+
+      <field
+              name="id"
+              type="hidden"
+      />
      <field
           name="device_type"
           type="radio"
@@ -27,23 +32,37 @@
 
   <fieldset name="message">
     <fields>
-      <field
-        id='to_user'
-        name="Username"
-        type="text"
-        class="div"
-        display="none"
-      />
-      <field
-          name="message"
-          type="textarea"
-          rows="10"
-          label="Message"
-          required="true"/>
-      <field
-        name="link"
-        type="text"
-        label="Link"/>
-    </fields>
+
+   <!-- <field
+     id='to_user'
+     name="Username"
+     type="text"
+     class="div"
+     display="none"
+
+   /> -->
+
+   <field
+    id="customsuser"
+     name="ijoomeradv"
+     class="customsuser"
+     type="Pushnotif"
+     label="Send To User"
+     description="Send To User"
+     multiple="true"
+    />
+
+    <field
+        name="message"
+        type="textarea"
+        rows="10"
+        label="Message"
+        required="true"/>
+    <field
+      name="link"
+      type="text"
+      label="Link"/>
+  </fields>
+
   </fieldset>
 </form>
