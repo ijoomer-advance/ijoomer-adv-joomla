@@ -55,6 +55,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 
 		if(key($_FILES) == "SandBox" && !empty($sandFilenm) && $sandFiletype=="application/x-x509-ca-cert")
 		{
+			$sandFilenm = preg_replace("/^[^_]*_\s*/", "", $sandFilenm);
 			$file1 = 'dev_'.$sandFilenm;
 			$dest1 = JPATH_SITE ."/components/com_ijoomeradv/certificates/".$file1;
 
@@ -63,6 +64,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 		}
 		elseif ($key == "live" && !empty($liveFilenm) && $liveFiletype=="application/x-x509-ca-cert")
 		{
+			$liveFilenm = preg_replace("/^[^_]*_\s*/", "", $liveFilenm);
 			$file = 'pro_'.$liveFilenm;
 			$dest = JPATH_SITE ."/components/com_ijoomeradv/certificates/$file";
 

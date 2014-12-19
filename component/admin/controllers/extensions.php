@@ -129,19 +129,30 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 
 	public function uninstall()
 	{
-		//$app = JFactory::getApplication();
-
 		$jinput = JFactory::getApplication()->input;
-		$cid = $jinput->getArray(array('cid' => ''));
-
-		$catid = $cid['cid'];
+		$cid    = $jinput->getArray(array('cid' => ''));
 
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
 
+		$query2 = $db->getQuery(true);
+
+			// Create the base select statement.
+			$query2->select('options')
+				->from($db->qn('#__ijoomeradv_config'))
+				->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
+
+			// Set the query and load the result.
+			$db->setQuery($query2);
+
+			$options = $db->loadResult();
+			$cfgoptions = explode(';;', $options);
+
+
+		$catid  = $cid['cid'];
+
 		foreach ($catid as $key => $value)
 		{
-
 			$query = $db->getQuery(true);
 
 			// Create the base select statement.
@@ -152,34 +163,51 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 			// Set the query and load the result.
 			$db->setQuery($query);
 
-			$result = $db->loadObject();
+			$results = $db->loadObjectList();
 
-			$query1 = $db->getQuery(true);
+			foreach ($results as $key1 => $value1)
+			{
+				$extname = $value1->classname;
+				$matches = array_filter($cfgoptions, function($var) use ($extname) { return preg_match("/\b$extname\b/i", $var); });
 
-			// Create the base delete statement.
-			$query1->delete()
-				->from($db->quoteName('#__ijoomeradv_extensions'))
-				->where($db->quoteName('id') . ' = ' . $db->quote($value));
+				if($value1->classname != "icms")
+				{
+					$rmkey = key($matches);
+					unset($cfgoptions[$rmkey]);
+					$cfgvalue = implode(';;',$cfgoptions);
 
-			$db->setQuery($query1);
+					$querycfg = $db->getQuery(true);
 
-			$db->execute();
+					// Create the base update statement.
+					$querycfg->update($db->quoteName('#__ijoomeradv_config'))
+						->set($db->quoteName('options') . ' = ' . $db->quote($cfgvalue))
+						->where($db->quoteName('name') . ' = ' . $db->quote('IJOOMER_GC_REGISTRATION'));
 
-			$query2 = $db->getQuery(true);
+					// Set the query and execute the update.
+					$db->setQuery($querycfg);
 
-			// Create the base delete statement.
-			$query2->delete()
-				->from($db->quoteName('#__menu'))
-				->where($db->quoteName('menutype') . ' = ' . $db->quote($result->classname));
+					$db->execute();
 
-			// Set the query and execute the delete.
-			$db->setQuery($query2);
+					$query1 = $db->getQuery(true);
 
-			$db->execute();
+					// Create the base delete statement.
+					$query1->delete()
+						->from($db->quoteName('#__ijoomeradv_extensions'))
+						->where($db->quoteName('id') . ' = ' . $db->quote($value));
 
+					$db->setQuery($query1);
+
+					$db->execute();
+
+					$this->setMessage(JText::_('Extension Uninstalled SuccessFully'));
+				}
+				else
+				{
+					JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('Default Extension Does Not Uninstall'));
+				}
+			}
 		}
 
-		$this->setMessage(JText::_('Extension Uninstalled SuccessFully'));
 		$this->setRedirect('index.php?option=com_ijoomeradv&view=extensions&layout=manage');
 
 	}

@@ -159,10 +159,9 @@ if (JRequest::getVar('ajax'))
 										echo "<img src='" . $dirpath . $home . "'>";
 									}
 									else
-									{
-										$dirpath = JURI::root() . "administrator/components/com_ijoomeradv/theme/no-image.jpeg";
-										echo "<img src='" . $dirpath . "'>";
-									}
+									{?>
+										<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
+									<?}
 
 
 									?>
@@ -181,10 +180,9 @@ if (JRequest::getVar('ajax'))
 										echo "<img src='" . $dirpath . $tab_img . "'>";
 									}
 									else
-									{
-										$dirpath = JURI::root() . "administrator/components/com_ijoomeradv/theme/no-image.jpeg";
-										echo "<img src='" . $dirpath . "'>";
-									}
+									{?>
+										<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
+									<?}
 
 									?>
 									</div>
@@ -200,10 +198,9 @@ if (JRequest::getVar('ajax'))
 												echo "<img src='" . $dirpath . $active_tab_img . "'>";
 											}
 											else
-											{
-												$dirpath = JURI::root() . "administrator/components/com_ijoomeradv/theme/no-image.jpeg";
-												echo "<img src='" . $dirpath . "'>";
-											}
+											{?>
+												<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
+											<?}
 											?>
 								</div>
 

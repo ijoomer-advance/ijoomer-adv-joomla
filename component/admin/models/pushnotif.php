@@ -332,9 +332,8 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		$filters['like'] = str_replace("-", " ", $filters['like']);
 
 		$query = $db->getQuery(true)
-			->select('a.id AS value, a.name AS text')
-			->from($db->qn('#__users') . ' AS a')
-			->join('LEFT', '#__ijoomeradv_users AS b ON b.userid = a.id');
+			->select('a.id AS value, a.name AS text,a.block')
+			->from($db->qn('#__users') . ' AS a');
 
 		if ($id != 0)
 		{
@@ -345,6 +344,8 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		if (!empty($filters['like']))
 		{
 			$query->where('(' . $db->quoteName('a.name') . ' LIKE ' . $db->quote('%' . $filters['like'] . '%') . ')');
+			$query->where($db->quoteName('a.block') . ' != ' . $db->quote('0'));
+			$query->join('', '#__ijoomeradv_users AS b ON b.userid = a.id');
 		}
 
 		// Filter title
