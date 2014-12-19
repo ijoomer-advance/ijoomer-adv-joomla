@@ -30,3 +30,6 @@ Desktop.ini
 !.gitignore
 !index.html
 !index.php
+
+# Ignore PHING property file
+build.properties
