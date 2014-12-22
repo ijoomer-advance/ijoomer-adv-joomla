@@ -152,6 +152,7 @@ $options = array(
 							<legend><?php echo JText::_('COM_IJOOMERADV_IPHONE'); ?></legend>
 							<table class="paramlist admintable" width="50%" cellspacing="0" cellpadding="0">
 								<?php
+
 								foreach ($this->pushConfigIphone as $key => $value):
 									?>
 									<tr>
@@ -176,13 +177,15 @@ $options = array(
 										</div>
 
 										<div class="span3" width="40%">
-											<input type="file" name="SandBox" id="sandbox">
+													<input type="file" name="SandBox" id="sandbox">
 										</div>
-										<div class="span3" width="40%">
+
+										<div class="span4" width="80%">
 											<?
 											if(file_exists(JPATH_SITE ."/components/com_ijoomeradv/certificates/dev_certificates.pem"))
 											{
-													echo '<a href="../administrator/components/com_ijoomeradv/views/config/tmpl/downloadsandbox.php">Download File</a>';
+													echo '<b style="margin-right:20px;">dev_certificates.pem</b>';
+													echo '<a href="../components/com_ijoomeradv/certificates/dev_certificates.pem" target="_blank">View File</a>';
 											}
 											?>
 										</div>
@@ -193,13 +196,16 @@ $options = array(
 									</div>
 
 									<div class="span3">
-										<input type="file" name="live">
+											<input type="file" name="live">
 									</div>
-									<div class="span3" width="40%">
+
+
+									<div class="span4" width="80%">
 											<?
 											if(file_exists(JPATH_SITE ."/components/com_ijoomeradv/certificates/pro_certificates.pem"))
 											{
-													echo '<a href="../administrator/components/com_ijoomeradv/views/config/tmpl/downloadlive.php">Download File</a>';
+													echo '<b style="margin-right:20px;">pro_certificates.pem</b>';
+													echo '<a href="../components/com_ijoomeradv/certificates/pro_certificates.pem" target="_blank">View File</a>';
 											}
 											?>
 									</div>

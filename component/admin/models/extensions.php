@@ -273,7 +273,6 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION_ERROR', JText::_($package['type']), JText::_('COM_IJOOMERADV_ERROR'));
 			$result = false;
 		}
-
 		else
 		{
 			$msg = JText::sprintf('COM_IJOOMERADV_INSTALL_EXTESION', JText::_($package['type']), JText::_('COM_IJOOMERADV_SUCCESS'));
