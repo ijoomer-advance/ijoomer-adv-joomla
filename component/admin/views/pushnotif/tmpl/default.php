@@ -52,6 +52,11 @@ jQuery(document).ready(function() {
 							</div>
 						<?php endforeach; ?>
 					</div>
+					<!-- <div style="margin-left: 180px; display:none;" id="userid" class="control-group">
+						<input type="text" name="send_to_username" id="send_to_username" value="" class="control-group"/>
+						<input type="button" name="add_uid" id="add_uid" value="Add User"
+						       onClick="changeVal()"/>&nbsp;&nbsp;
+					</div> -->
 					<div>
 						<?php foreach ($msgfieldsets as $fields) : ?>
 							<div class="control-group">
@@ -78,7 +83,6 @@ jQuery(document).ready(function() {
 					<tbody>
 					<?php
 					$k = 0;
-
 					if (!empty($this->pushNotifications))
 					{
 						foreach ($this->pushNotifications as $key => $value):?>
@@ -86,7 +90,33 @@ jQuery(document).ready(function() {
 								<td><?php echo JHtml::_('grid.id', $key, $value['id']); ?></td>
 								<td><?php echo $value['id']; ?></td>
 								<td><?php echo $value['device_type']; ?></td>
-								<td><?php echo $value['to_user']; ?></td>
+								<td> <?php
+								$users_array = explode(",", $value['to_user']);
+								$model = $this->getModel('pushnotif');
+								$end_user = end($users_array);
+
+								foreach ($users_array as $user)
+								{
+									$userid = $model->getUserId($user);
+
+									if($userid != '')
+									{
+										if($end_user == $user)
+										{ ?>
+										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $user; ?></a>
+										<?php
+										}
+										else
+										{
+										?>
+										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $user; ?></a>,
+										<?php
+										}
+									?>
+							  <?php }
+								}
+								 ?>
+								</td>
 								<td><?php echo $value['to_all']; ?></td>
 								<td><?php echo $value['message']; ?></td>
 								<td><?php echo $value['time']; ?></td>

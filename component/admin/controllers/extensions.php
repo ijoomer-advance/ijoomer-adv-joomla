@@ -135,15 +135,15 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
 
-		$query2 = $db->getQuery(true);
+		$option = $db->getQuery(true);
 
 			// Create the base select statement.
-			$query2->select('options')
+			$option->select('options')
 				->from($db->qn('#__ijoomeradv_config'))
 				->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
 
 			// Set the query and load the result.
-			$db->setQuery($query2);
+			$db->setQuery($option);
 
 			$options = $db->loadResult();
 			$cfgoptions = explode(';;', $options);
