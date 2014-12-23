@@ -52,11 +52,7 @@ jQuery(document).ready(function() {
 							</div>
 						<?php endforeach; ?>
 					</div>
-					<!-- <div style="margin-left: 180px; display:none;" id="userid" class="control-group">
-						<input type="text" name="send_to_username" id="send_to_username" value="" class="control-group"/>
-						<input type="button" name="add_uid" id="add_uid" value="Add User"
-						       onClick="changeVal()"/>&nbsp;&nbsp;
-					</div> -->
+
 					<div>
 						<?php foreach ($msgfieldsets as $fields) : ?>
 							<div class="control-group">

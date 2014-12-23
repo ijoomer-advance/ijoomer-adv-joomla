@@ -151,9 +151,7 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		// Create the base select statement.
 		$query->select('a.*,b.id as userid')
 			->from($db->quoteName('#__ijoomeradv_push_notification').'AS a')
-			//->where($db->quoteName('a.to_user') . ' = ' . $db->quote('b.name'))
 			->join('LEFT', '#__users AS b ON b.name=a.to_user');
-			//->order($db->quoteName('id') . 'DESC');
 
 		// Set the query and load the result.
 		$db->setQuery($query);
@@ -166,9 +164,6 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		{
 			throw new RuntimeException($e->getMessage(), $e->getCode());
 		}
-		/*echo "<pre>";
-		print_r($pushNotifications);
-		echo "</pre>";exit;*/
 
 		return $pushNotifications;
 	}
