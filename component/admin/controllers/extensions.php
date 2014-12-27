@@ -88,10 +88,6 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		/*echo "<pre>";
-		print_r($app->input->getArray());
-		echo "</pre>";
-		die();*/
 		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
