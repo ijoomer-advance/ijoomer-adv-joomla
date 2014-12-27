@@ -70,7 +70,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('name, value')
+		$query->select('*')
 			->from($this->db->qn('#__ijoomeradv_extensions'))
 			->where($this->db->qn('published') . ' = ' . $this->db->q('1'));
 
@@ -181,7 +181,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		// Set the query and load the result.
 		$this->db->setQuery($query);
 
-		$menus = $db->loadObjectList();
+		$menus = $this->db->loadObjectList();
 
 		$i = 0;
 
@@ -431,7 +431,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('option')
+		$query->select('*')
 			->from($this->db->qn('#__ijoomeradv_extensions'))
 			->where($this->db->qn('classname') . ' = ' . $this->db->q($extName));
 

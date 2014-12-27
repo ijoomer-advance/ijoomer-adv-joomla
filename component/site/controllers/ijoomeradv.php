@@ -344,6 +344,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 */
 	public function display()
 	{
+
 		// Get ijoomeradv model object
 		$model = $this->getModel('ijoomeradv');
 
@@ -469,6 +470,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 	 */
 	public function applicationConfig()
 	{
+
 		$model = $this->getModel('ijoomeradv');
 
 		// Get application config
@@ -536,23 +538,25 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 		$jsonarray['configuration']['globalconfig']['offset'] = (date_offset_get(new DateTime) / 3600);
 		$jsonarray['configuration']['globalconfig']['offsetLocation'] = date_default_timezone_get();
 
-		$homeMenu = $model->getHomeMenu();
+		$homeMenus = $model->getHomeMenu();
 
-		if ($homeMenu)
+		if ($homeMenus)
 		{
-			$homeMenuobj = new stdClass;
-			$homeMenuobj->itemid = $homeMenu->id;
-			$homeMenuobj->itemcaption = $homeMenu->title;
-			$viewname = explode('.', $homeMenu->views);
-			$homeMenuobj->itemview = $viewname[3];
+			foreach ($homeMenus as $key => $homeMenu)
+			{
+				$homeMenuobj = new stdClass;
+				$homeMenuobj->itemid = $homeMenu->id;
+				$homeMenuobj->itemcaption = $homeMenu->title;
+				$viewname = explode('.', $homeMenu->views);
+				$homeMenuobj->itemview = $viewname[3];
 
-			$remotedata = json_decode($homeMenu->menuoptions);
-			$remotedata = ($remotedata) ? $remotedata->remoteUse : '';
+				$remotedata = json_decode($homeMenu->menuoptions);
+				$remotedata = ($remotedata) ? $remotedata->remoteUse : '';
 
-			$homeMenuobj->itemdata = $remotedata;
-			$jsonarray['configuration']['globalconfig']['default_landing_screen'] = $homeMenuobj;
+				$homeMenuobj->itemdata = $remotedata;
+				$jsonarray['configuration']['globalconfig']['default_landing_screen'] = $homeMenuobj;
+			}
 		}
-
 		else
 		{
 			$jsonarray['configuration']['globalconfig']['default_landing_screen'] = '';
@@ -575,6 +579,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 		$jsonarray['configuration']['menus'] = $model->getMenus();
 
 		// Send data array to create jason string and output
+
 		$this->outputJSON($jsonarray);
 	}
 
@@ -605,8 +610,10 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 		{
 			foreach ($value as $ky => $val)
 			{
+				//@todo remaining task for images xxhdpi and xxhdpi
 				$themearray['theme'][$i]['viewname'] = $val;
 				$themearray['theme'][$i]['icon'] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/' . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+				//$themearray['theme'][$i]['icon'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
 				$themearray['theme'][$i]['tab'] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/' . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
 				$themearray['theme'][$i]['tab_active'] = JURI::base() . 'administrator/components/com_ijoomeradv/theme/' . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
 				$i++;

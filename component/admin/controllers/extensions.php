@@ -63,11 +63,11 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	public function save()
 	{
 		$app = JFactory::getApplication();
-		$post = $app->input->get('post');
+		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
-		if ($model->setExtConfig($post))
+		if ($model->setExtConfig($_REQUEST))
 		{
 			$msg = JText::_('COM_IJOOMERADV_CONFIG_SAVED');
 		}
@@ -87,7 +87,12 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	public function apply()
 	{
 		$app = JFactory::getApplication();
-		$post = $app->input->get('post');
+
+		/*echo "<pre>";
+		print_r($app->input->getArray());
+		echo "</pre>";
+		die();*/
+		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
@@ -135,15 +140,15 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
 
-		$option = $db->getQuery(true);
+		$query2 = $db->getQuery(true);
 
 			// Create the base select statement.
-			$option->select('options')
+			$query2->select('options')
 				->from($db->qn('#__ijoomeradv_config'))
 				->where($db->qn('name') . ' = ' . $db->q('IJOOMER_GC_REGISTRATION'));
 
 			// Set the query and load the result.
-			$db->setQuery($option);
+			$db->setQuery($query2);
 
 			$options = $db->loadResult();
 			$cfgoptions = explode(';;', $options);

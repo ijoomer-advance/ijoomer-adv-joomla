@@ -46,18 +46,16 @@ class Icms
 	 */
 	public function write_configuration(&$d)
 	{
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-		$query = $db->getQuery(true);
+		$db =JFactory::getDbo();
 
-		// Create the base select statement.
-		$query->select('*')
-			->from($db->qn('#__ijoomeradv_icms_config'));
-
+		$query = 'SELECT *
+				  FROM #__ijoomeradv_icms_config';
+		$db->setQuery($query);
 		$my_config_array = $db->loadObjectList();
 
 		foreach ($my_config_array as $ke => $val)
 		{
+
 			if (isset($d[$val->name]))
 			{
 				// Initialiase variables.

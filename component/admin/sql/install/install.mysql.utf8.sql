@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `#__ijoomeradv_config` (
 
 INSERT INTO `#__ijoomeradv_config` (`id`, `caption`, `description`, `name`, `value`, `options`, `type`, `group`, `server`) VALUES
 (1, 'COM_IJOOMERADV_GC_LOGIN_REQUIRED', 'COM_IJOOMERADV_GC_LOGIN_REQUIRED_EXPLAIN', 'IJOOMER_GC_LOGIN_REQUIRED', '0', '0::No;;1::Yes', 'select', 'global', 0),
-(2, 'COM_IJOOMERADV_GC_REGISTRATION', 'COM_IJOOMERADV_GC_REGISTRATION_EXPLAIN', 'IJOOMER_GC_REGISTRATION', 'jomsocial', 'none::None;;joomla::Joomla', 'select', 'global', 0),
+(2, 'COM_IJOOMERADV_GC_REGISTRATION', 'COM_IJOOMERADV_GC_REGISTRATION_EXPLAIN', 'IJOOMER_GC_REGISTRATION', 'none', 'none::None;;joomla::Joomla', 'select', 'global', 0),
 (3, 'COM_IJOOMERADV_THM_ENABLE_THEME', 'COM_IJOOMERADV_THM_ENABLE_THEME_EXPLAIN', 'IJOOMER_THM_ENABLE_THEME', '0', '0::No;;1::Yes', 'select', 'theme', 0),
 (4, 'COM_IJOOMERADV_THM_SELECTED_THEME', 'COM_IJOOMERADV_THM_SELECTED_THEME_EXPLAIN', 'IJOOMER_THM_SELECTED_THEME', 'leather', 'leather::leather', 'select', 'theme', 0),
 (5, 'COM_IJOOMERADV_PUSH_ENABLE', 'COM_IJOOMERADV_PUSH_ENABLE_EXPLAIN', 'IJOOMER_PUSH_ENABLE_IPHONE', '0', '0::No;;1::Yes', 'select', 'push>>iphone', 1),
