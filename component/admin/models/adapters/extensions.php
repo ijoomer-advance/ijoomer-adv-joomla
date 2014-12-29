@@ -167,7 +167,7 @@ class JInstallerExtensions extends JObject
 			foreach ($images as $image)
 			{
 				$sorc = IJ_SITE . '/' . "extensions" . '/' . $ename . '/' . $image;
-				$dest = IJ_ASSET . '/' . "images" . '/' . $image;
+				$dest = "../media/com_ijoomeradv/images/". $image;
 
 				if (file_exists($sorc))
 				{

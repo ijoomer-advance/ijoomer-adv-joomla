@@ -64,8 +64,11 @@ class IjoomeradvHelper
 	{
 		$encryption = $this->getencryption_config();
 
+
+
 		if (JRequest::get('post'))
 		{
+
 			if ($encryption == 1)
 			{
 				require_once IJ_SITE . '/encryption/MCrypt.php';
@@ -76,9 +79,12 @@ class IjoomeradvHelper
 			}
 			else
 			{
+
 				$this->mainframe->IJObject->reqObject = json_decode(JRequest::getVar('reqObject'));
 			}
 		}
+
+
 	}
 
 	/**
@@ -86,14 +92,14 @@ class IjoomeradvHelper
 	 *
 	 * @param   type  $option  $option
 	 *
-	 * @return  boolean   Return true on component found
+	 * @return  it will returns count($components)
 	 */
 	public function getComponent($option)
 	{
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('enabled')
+		$query->select('extension_id AS id, element AS option, params, enabled')
 			->from($this->db->qn('#__extensions'))
 			->where($this->db->qn('type') . ' = ' . $this->db->q('component'))
 			->where($this->db->qn('element') . ' = ' . $this->db->q($option));
@@ -150,6 +156,7 @@ class IJReq
 	public static function getTask($default = null)
 	{
 		$mainframe = JFactory::getApplication();
+
 
 		return (isset($mainframe->IJObject->reqObject->task) && $mainframe->IJObject->reqObject->task) ? $mainframe->IJObject->reqObject->task : $default;
 	}
@@ -369,7 +376,16 @@ class IJPushNotif
 	public static function sendIphonePushNotification($options)
 	{
 		$server = ($options['live']) ? 'ssl://gateway.push.apple.com:2195' : 'ssl://gateway.sandbox.push.apple.com:2195';
-		$keyCertFilePath = JPATH_SITE . '/components/com_ijoomeradv/certificates/certificates.pem';
+
+		if($options['live'])
+		{
+			$keyCertFilePath = JPATH_SITE . '/components/com_ijoomeradv/certificates/pro_certificates.pem';
+		}
+		else
+		{
+			$keyCertFilePath = JPATH_SITE . '/components/com_ijoomeradv/certificates/dev_certificates.pem';
+		}
+
 
 		// Construct the notification payload
 		$body = array();

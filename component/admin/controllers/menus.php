@@ -92,11 +92,6 @@ class IjoomeradvControllerMenus extends JControllerLegacy
 			jimport('joomla.utilities.arrayhelper');
 			JArrayHelper::toInteger($cid);
 
-			echo "<pre>";
-			print_r($model->delete());
-			echo "</pre>";
-			die();
-
 			// Remove the items.
 			if (!$model->delete($cid))
 			{

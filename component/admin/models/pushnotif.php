@@ -149,9 +149,9 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('*')
-			->from($db->quoteName('#__ijoomeradv_push_notification'))
-			->order($db->quoteName('id') . 'DESC');
+		$query->select('a.*,b.id as userid')
+			->from($db->quoteName('#__ijoomeradv_push_notification').'AS a')
+			->join('LEFT', '#__users AS b ON b.name=a.to_user');
 
 		// Set the query and load the result.
 		$db->setQuery($query);
@@ -241,6 +241,25 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		$isNew      = true;
 
 		return parent::save($data);
+	}
+
+	public function getUserId($name)
+	{
+		// Initialiase variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('id')
+			->from($db->quoteName('#__users'))
+			->where($db->quoteName('name') . ' = "'. $name.'"');
+
+		// Set the query and load the result.
+		$db->setQuery($query);
+
+		$user = $db->loadResult();
+
+		return $user;
 	}
 
 	/**
@@ -344,7 +363,7 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		if (!empty($filters['like']))
 		{
 			$query->where('(' . $db->quoteName('a.name') . ' LIKE ' . $db->quote('%' . $filters['like'] . '%') . ')');
-			$query->where($db->quoteName('a.block') . ' != ' . $db->quote('0'));
+			$query->where($db->quoteName('a.block') . ' != ' . $db->quote('1'));
 			$query->join('', '#__ijoomeradv_users AS b ON b.userid = a.id');
 		}
 

@@ -53,7 +53,10 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 		$liveFiletype  = $_FILES['live']['type'];
 		$liveFiletmpnm = $_FILES['live']['tmp_name'];
 
-		if(key($_FILES) == "SandBox" && !empty($sandFilenm) && $sandFiletype=="application/x-x509-ca-cert")
+		$sandext = JFile::getExt($sandFilenm);
+		$liveext = JFile::getExt($liveFilenm);
+
+		if(key($_FILES) == "SandBox" && !empty($sandFilenm) && $sandFiletype=="application/x-x509-ca-cert" && $sandext == "pem")
 		{
 			$sandFilenm = preg_replace("/^[^_]*_\s*/", "", $sandFilenm);
 			$file1 = 'dev_'.$sandFilenm;
@@ -62,7 +65,7 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 			JFile::upload($sandFiletmpnm, $dest1);
 			chmod ($dest1, 0777);
 		}
-		elseif ($key == "live" && !empty($liveFilenm) && $liveFiletype=="application/x-x509-ca-cert")
+		elseif ($key == "live" && !empty($liveFilenm) && $liveFiletype=="application/x-x509-ca-cert" && $liveext == "pem")
 		{
 			$liveFilenm = preg_replace("/^[^_]*_\s*/", "", $liveFilenm);
 			$file = 'pro_'.$liveFilenm;
@@ -70,12 +73,6 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 
 			JFile::upload($liveFiletmpnm, $dest);
 			chmod ($dest, 0777);
-		}
-		else
-		{
-			JLog::add(JText::_($this->text_prefix . 'Invalid File '), JLog::WARNING, 'jerror');
-			JLog::add(JText::_($this->text_prefix . 'File Is Not Upload '), JLog::WARNING, 'jerror');
-
 		}
 
 		$model  = $this->getModel('config');

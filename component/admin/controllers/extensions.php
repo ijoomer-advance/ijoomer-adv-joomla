@@ -63,11 +63,11 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	public function save()
 	{
 		$app = JFactory::getApplication();
-		$post = $app->input->get('post');
+		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
-		if ($model->setExtConfig($post))
+		if ($model->setExtConfig($_REQUEST))
 		{
 			$msg = JText::_('COM_IJOOMERADV_CONFIG_SAVED');
 		}
@@ -87,7 +87,8 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	public function apply()
 	{
 		$app = JFactory::getApplication();
-		$post = $app->input->get('post');
+
+		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 

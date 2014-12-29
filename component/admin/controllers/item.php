@@ -209,7 +209,8 @@ class IjoomeradvControllerItem extends JControllerForm
 					$image = imagecreatefromjpeg($itemimagedata['imageicon']['tmp_name']);
 				}
 
-				$devicetypearray = array('xxhdpi' => 144,
+				$devicetypearray = array('xxxhdpi' => 192,
+					'xxhdpi' => 144,
 					'xhdpi' => 96,
 					'hdpi' => 72,
 					'mdpi' => 48,
@@ -241,7 +242,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue, $dvalue, imagesx($image), imagesy($image));
 
-					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxxhdpi' or $dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_home);
 					}
@@ -281,7 +282,8 @@ class IjoomeradvControllerItem extends JControllerForm
 					$image = imagecreatefromjpeg($itemimagedata['imagetab']['tmp_name']);
 				}
 
-				$devicetypearray = array('xxhdpi' => array('height' => 96, 'width' => 96),
+				$devicetypearray = array('xxxhdpi' => array('height' => 128, 'width' => 128),
+					'xxhdpi' => array('height' => 96, 'width' => 96),
 					'xhdpi' => array('height' => 64, 'width' => 64),
 					'hdpi' => array('height' => 48, 'width' => 48),
 					'mdpi' => array('height' => 32, 'width' => 32),
@@ -313,7 +315,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image), imagesy($image));
 
-					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxxhdpi' or $dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab);
 					}
@@ -351,7 +353,8 @@ class IjoomeradvControllerItem extends JControllerForm
 					$image1 = imagecreatefromjpeg($itemimagedata['imagetabactive']['tmp_name']);
 				}
 
-				$devicetypearray = array('xxhdpi' => array('height' => 96, 'width' => 96),
+				$devicetypearray = array('xxxhdpi' => array('height' => 128, 'width' => 128),
+					'xxhdpi' => array('height' => 96, 'width' => 96),
 					'xhdpi' => array('height' => 64, 'width' => 64),
 					'hdpi' => array('height' => 48, 'width' => 48),
 					'mdpi' => array('height' => 32, 'width' => 32),
@@ -383,7 +386,7 @@ class IjoomeradvControllerItem extends JControllerForm
 
 					imagecopyresampled($imageResized, $image1, 0, 0, 0, 0, $dvalue['width'], $dvalue['height'], imagesx($image1), imagesy($image1));
 
-					if ($dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
+					if ($dkey == 'xxxhdpi' or $dkey == 'xxhdpi' or $dkey == 'xhdpi' or $dkey == 'hdpi' or $dkey == 'mdpi' or $dkey == 'ldpi')
 					{
 						imagepng($imageResized, $dirpath . '/android/' . $dkey . '/' . $imagename_tab_active);
 					}
