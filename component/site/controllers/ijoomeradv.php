@@ -610,7 +610,6 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 		{
 			foreach ($value as $ky => $val)
 			{
-				//@todo remaining task for images xxhdpi and xxhdpi
 				$themearray['theme'][$i]['viewname'] = $val;
 				$themearray['theme'][$i]['icon'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
 				$themearray['theme'][$i]['tab'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
