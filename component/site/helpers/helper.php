@@ -959,7 +959,7 @@ class IjoomeradvError
 	 *
 	 * @return  boolean it will return a value in true or false
 	 */
-	public function ijErrorHandler($errno, $errstr, $errfile, $errline)
+	public static function ijErrorHandler($errno, $errstr, $errfile, $errline)
 	{
 		if (!(error_reporting() & $errno))
 		{
