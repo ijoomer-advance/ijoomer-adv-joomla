@@ -90,12 +90,13 @@ class Default_Menu
 				$query = $db->getQuery(true);
 
 				// Create the base select statement.
-				$query->select('c.name')
-					->from($db->qn('#__contact_details','c'))
-					->where($db->qn('c.id') . ' = ' . $db->q($ID));
+				$query->select('name')
+					->from($db->qn('#__contact_details'))
+					->where($db->qn('id') . ' = ' . $db->q($ID));
 
-				$db->setQuery($sql);
+				$db->setQuery($query);
 				$contactName = $db->loadResult();
+
 				$script = array();
 
 				$script[] = '	function jSelectChart_jform_request_id(id, name, object) {';

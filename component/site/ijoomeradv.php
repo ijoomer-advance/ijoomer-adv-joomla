@@ -25,7 +25,7 @@
 
 defined('_JEXEC') or die;
 
-define('IJADV_VERSION', 1.4);
+define('IJADV_VERSION', '1.5.1');
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 
 // Get document object
