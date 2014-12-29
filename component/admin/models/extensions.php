@@ -165,6 +165,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$row->load($data['extid']);
 
 		include_once JPATH_COMPONENT_SITE . '/extensions/' . $row->classname . '/' . $row->classname . '.php';
+
 		$class_obj = new $row->classname;
 
 		if (method_exists($class_obj, 'write_configuration'))
@@ -378,7 +379,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 			// Create the base update statement.
 			$query->update($db->qn($this->_table_prefix . 'extensions'))
 				->set($db->qn('published') . ' = ' . $db->q(intval($publish)))
-				->where($db->qn('id') . ' IN ( ' . $db->q($cids) . ' )');
+				->where($db->qn('id') . ' IN ( ' . $cids . ' )');
 
 			// Set the query and execute the update.
 			$db->setQuery($query);
