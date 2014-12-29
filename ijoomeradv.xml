@@ -57,7 +57,7 @@
         <!-- Note the folder attribute: This attribute describes the folder
              to copy FROM in the package to install therefore files copied
              in this section are copied from /admin/ in the package -->
-		<files folder="admin">
+		<files folder="component/admin">
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
 			<filename>ijoomeradv.php</filename>
@@ -79,7 +79,7 @@
 			<folder>theme</folder>
 		</files>
 
-		<languages folder="admin/languages">
+		<languages folder="component/admin/languages">
 			<language tag="en-GB">en-GB.com_ijoomeradv.ini</language>
 			<language tag="en-GB">en-GB.com_ijoomeradv.sys.ini</language>
 		</languages>
@@ -90,7 +90,7 @@
       <!-- Note the folder attribute: This attribute describes the folder
         to copy FROM in the package to install therefore files copied
         in this section are copied from /site/ in the package -->
-       <files folder="site">
+       <files folder="component/site">
        		<filename>index.html</filename>
 			<filename>ijoomeradv.php</filename>
             <folder>controllers</folder>
@@ -101,7 +101,7 @@
 			<folder>views</folder>
 			<folder>certificates</folder>
        </files>
-	<languages folder="site/languages">
+	<languages folder="component/site/languages">
 			<language tag="en-GB">en-GB.com_ijoomeradv.ini</language>
 	</languages>
 </extension>
