@@ -166,7 +166,7 @@ class Com_IjoomeradvInstallerScript
 						<h1>Thank you for choosing,</h1>
 						<?php $imgsrc = JURI::root() . 'media/com_ijoomeradv/images/ijoomeradv_logo.png'; ?>
 						<img src="<?php echo $imgsrc; ?>" align="center">
-						<br><font color="#105A8D" size="2"><b>Version 1.5</b></font></br>
+						<br><font color="#105A8D" size="2"><b>Version 1.5.1</b></font></br>
 					</div>
 				</td>
 			</tr>

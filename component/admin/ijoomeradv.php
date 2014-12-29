@@ -26,7 +26,7 @@
 defined('_JEXEC') or die;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-define('IJADV_VERSION', 1.5);
+define('IJADV_VERSION', '1.5.1');
 
 jimport('joomla.version');
 $version = new JVersion;
