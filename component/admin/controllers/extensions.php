@@ -200,11 +200,11 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 
 					$db->execute();
 
-					$this->setMessage(JText::_('Extension Uninstalled SuccessFully'));
+					$this->setMessage(JText::_('COM_IJOOMERADV_UNINSTALL_EXTESION'));
 				}
 				else
 				{
-					JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('Default Extension Does Not Uninstall'));
+					JError::raiseWarning('COM_IJOOMERADV_SOME_ERROR_CODE', JText::_('COM_IJOOMERADV_UNINSTALL_DEFAULT_EXTESION'));
 				}
 			}
 		}
@@ -241,7 +241,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{
-			throw new RuntimeException(JText::_('COM_IJOOMERADV_SELECT_EXTENSION_TO_PUBLISH'), 500);
+			JError::raiseWarning(500, JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));
 		}
 
 		$model = $this->getModel('extensions');
@@ -271,7 +271,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 
 		if (!is_array($cid) || count($cid) < 1 || $cid[0] === 0)
 		{
-			throw new RuntimeException(JText::_('COM_IJOOMERADV_SELECT_EXTENSION_TO_UNPUBLISH'), 500);
+			JError::raiseWarning(500, JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'));
 		}
 
 		$model = $this->getModel('extensions');
