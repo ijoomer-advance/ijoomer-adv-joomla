@@ -99,7 +99,7 @@ class IjoomeradvHelper
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('extension_id AS id, element AS option, params, enabled')
+		$query->select($this->db->qn('extension_id') . ' AS ' . $this->db->qn('id').','. $this->db->qn('element') . ' AS ' . $this->db->qn('option').','.$this->db->qn('params').','.$this->db->qn('enabled'))
 			->from($this->db->qn('#__extensions'))
 			->where($this->db->qn('type') . ' = ' . $this->db->q('component'))
 			->where($this->db->qn('element') . ' = ' . $this->db->q($option));

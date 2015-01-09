@@ -119,6 +119,7 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
+
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
@@ -179,80 +180,25 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		jimport( 'joomla.form.form' );
-		$input      = JFactory::getApplication()->input;
-		$formData = $input->get('jform',array(),'array');
-
-		$usernm=$formData['ijoomeradv'];
-
-		// Initialiase variables.
-		$db    = JFactory::getDbo();
-
-		foreach ($usernm as $key => $value)
-		{
-			$query = $db->getQuery(true);
-
-			// Create the base select statement.
-			$query->select('name')
-				->from($db->quoteName('#__users'))
-				->where($db->quoteName('id') . ' = ' . $db->quote($value));
-
-			// Set the query and load the result.
-			$db->setQuery($query);
-
-			$result = $db->loadObjectList();
-			$user[]= $result;
-
-		}
-
-   		foreach ($user as $key => $value)
-   		{
-   			foreach ($value as $key1 => $unm)
-   			{
-
-   				$a[]=$unm;
-
-   			}
-   		}
-
-   		foreach ($a as $key => $value)
-   		{
-   			$c[]=$value->name;
-   		}
-
-   		$usernm=implode(',',$c);
-
-		$query = $db->getQuery(true);
-
-		// Create the base update statement.
-		$query->update($db->quoteName('#__ijoomeradv_push_notification'))
-			->set($db->quoteName('to_user') . ' = ' . $db->quote($usernm))
-			->where($db->quoteName('to_user') . ' = ' . $db->quote(''));
-
-
-		// Set the query and execute the update.
-		$db->setQuery($query);
-
-		$db->execute();
-
 		$dispatcher = JEventDispatcher::getInstance();
 		$table      = $this->getTable();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 		$isNew      = true;
 
+
 		return parent::save($data);
 	}
 
-	public function getUserId($name)
+	public function getUserName($id)
 	{
 		// Initialiase variables.
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('id')
+		$query->select('name')
 			->from($db->quoteName('#__users'))
-			->where($db->quoteName('name') . ' = "'. $name.'"');
+			->where($db->quoteName('id') . ' = "'. $id.'"');
 
 		// Set the query and load the result.
 		$db->setQuery($query);

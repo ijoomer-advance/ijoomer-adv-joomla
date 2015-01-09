@@ -45,6 +45,67 @@ class IjoomeradvControllerPushnotif extends JControllerForm
 	}
 
 	/**
+	 * The Add Function
+	 *
+	 * @return boolean  returns the value in true or false
+	 */
+	public function save()
+	{
+		 // Check for request forgeries
+        JSession::checkToken('post') or jexit(JText::_('COM_COMMUNITY_INVALID_TOKEN'));
+
+		$mainframe  = JFactory::getApplication();
+		$jinput     = $mainframe->input;
+		$document   = JFactory::getDocument();
+		$viewType   = $document->getType();
+		$formData   = $jinput->get('jform',array(),'array');
+
+		if(empty($formData['device_type']))
+		{
+			$mainframe->enqueueMessage(JText::_('Required Field : Device Type'),'warning');
+			$mainframe->redirect('index.php?option=com_ijoomeradv&view=pushnotif', false);
+			return false;
+
+		}
+		elseif(empty($formData['message']))
+		{
+			$mainframe->enqueueMessage(JText::_('Required Field : Message'),'warning');
+			$mainframe->redirect('index.php?option=com_ijoomeradv&view=pushnotif', false);
+			return false;
+
+		}
+		elseif(empty($formData['to_all']) AND empty($formData['ijoomeradv']))
+		{
+			$mainframe->enqueueMessage(JText::_('Required Field : Sent To'),'warning');
+			$mainframe->redirect('index.php?option=com_ijoomeradv&view=pushnotif', false);
+			return false;
+
+		}
+
+		$toAll      = $formData['to_all'];
+		$message    = $formData['message'];
+		$usrArray   = $formData['ijoomeradv'];
+		$link       = $formData['link'];
+		$deviceType = $formData['device_type'];
+
+
+        $pushnotifModel = $this->getModel('pushnotif');
+        $pushnotifTable = JTable::getInstance('Pushnotif', 'Table');
+
+		$pushnotifTable->to_all      = $toAll;
+		$pushnotifTable->device_type = $deviceType;
+		$pushnotifTable->message     = $message;
+		$pushnotifTable->link        = $link;
+		$pushnotifTable->to_user     = implode(',', $usrArray);
+
+		if($pushnotifTable->store())
+		{
+			$mainframe->enqueueMessage(JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SAVED'));
+            $mainframe->redirect('index.php?option=com_ijoomeradv&view=pushnotif', false);
+		}
+	}
+
+	/**
 	 * [searchAjax description]
 	 *
 	 * @return  void
@@ -268,6 +329,7 @@ class IjoomeradvControllerPushnotif extends JControllerForm
 			}
 		}
 
+
 		if ($validData['Username'])
 		{
 			$users      = explode(",", $validData['Username']);
@@ -352,23 +414,19 @@ class IjoomeradvControllerPushnotif extends JControllerForm
 
 				case 'both':
 				default:
-					/*$query = "SELECT `device_token`,`device_type` FROM #__ijoomeradv_users
-							AND `userid` IN ({$comma_separated})
-							ORDER BY `userid`";
 
-							echo $query;exit;*/
-				$db    = JFactory::getDbo();
-				$query = $db->getQuery(true);
+					$db    = JFactory::getDbo();
+					$query = $db->getQuery(true);
 
-				// Create the base select statement.
-				$query->select('device_token, device_type')
-					->from($db->quoteName('#__ijoomeradv_users'))
-					->where('userid IN (' . $comma_separated . ')')
-					->order($db->quoteName('userid') . ' ASC');
+					// Create the base select statement.
+					$query->select('device_token, device_type')
+						->from($db->quoteName('#__ijoomeradv_users'))
+						->where('userid IN (' . $comma_separated . ')')
+						->order($db->quoteName('userid') . ' ASC');
 
-				$db->setQuery($query);
-				$users = $db->loadobjectList();
-				$dtoken = array();
+					$db->setQuery($query);
+					$users = $db->loadobjectList();
+					$dtoken = array();
 
 					foreach ($users as $user)
 					{

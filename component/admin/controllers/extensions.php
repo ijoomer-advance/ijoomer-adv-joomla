@@ -63,11 +63,12 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	public function save()
 	{
 		$app = JFactory::getApplication();
-		$post = $app->input->getArray();
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
-		if ($model->setExtConfig($_REQUEST))
+		$post = JRequest::get ('post');
+
+		if ($model->setExtConfig($post))
 		{
 			$msg = JText::_('COM_IJOOMERADV_CONFIG_SAVED');
 		}
@@ -88,7 +89,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 	{
 		$app = JFactory::getApplication();
 
-		$post = $app->input->getArray();
+		$post = JRequest::get('post');
 		$task = $app->input->get('task');
 		$model = $this->getModel('extensions');
 
@@ -182,6 +183,7 @@ class IjoomeradvControllerExtensions extends JControllerLegacy
 					// Create the base update statement.
 					$querycfg->update($db->quoteName('#__ijoomeradv_config'))
 						->set($db->quoteName('options') . ' = ' . $db->quote($cfgvalue))
+						->set($db->quoteName('value') . ' = ' . $db->quote('none'))
 						->where($db->quoteName('name') . ' = ' . $db->quote('IJOOMER_GC_REGISTRATION'));
 
 					// Set the query and execute the update.
