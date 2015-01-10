@@ -119,7 +119,6 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-
 		// The folder and element vars are passed when saving the form.
 		if (empty($data))
 		{
@@ -184,7 +183,6 @@ class IjoomeradvModelPushnotif extends JModelAdmin
 		$table      = $this->getTable();
 		$pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
 		$isNew      = true;
-
 
 		return parent::save($data);
 	}
