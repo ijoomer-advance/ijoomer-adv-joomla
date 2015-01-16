@@ -611,9 +611,44 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			foreach ($value as $ky => $val)
 			{
 				$themearray['theme'][$i]['viewname'] = $val;
-				$themearray['theme'][$i]['icon'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
-				$themearray['theme'][$i]['tab'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
-				$themearray['theme'][$i]['tab_active'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+
+				$file = JUri::base() .'administrator/components/com_ijoomeradv/theme/'. $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+				$file1 = JUri::base() .'administrator/components/com_ijoomeradv/theme/'. $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
+				$file2 = JUri::base() .'administrator/components/com_ijoomeradv/theme/'. $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+
+				$AgetHeaders = @get_headers($file);
+
+				if (preg_match("|200|", $AgetHeaders[0]))
+				{
+			   		$themearray['theme'][$i]['icon'] = $file;
+				}
+				else
+				{
+				   $themearray['theme'][$i]['icon'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+				}
+
+				$AgetHeaders1 = @get_headers($file1);
+
+				if (preg_match("|200|", $AgetHeaders1[0]))
+				{
+			   		$themearray['theme'][$i]['tab'] = $file1;
+				}
+				else
+				{
+				   $themearray['theme'][$i]['tab'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
+				}
+
+				$AgetHeaders2 = @get_headers($file2);
+
+				if (preg_match("|200|", $AgetHeaders2[0]))
+				{
+			   		$themearray['theme'][$i]['tab_active'] = $file2;
+				}
+				else
+				{
+				   $themearray['theme'][$i]['tab_active'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+				}
+
 				$i++;
 			}
 		}
