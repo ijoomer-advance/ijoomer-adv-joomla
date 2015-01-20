@@ -618,20 +618,21 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 
 				$AgetHeaders = @get_headers($file);
 
-                if ($AgetHeaders[0] == 'HTTP/1.1 404 Not Found')
+                 if ($AgetHeaders[0] == 'HTTP/1.1 404 Not Found')
 				{
-			   		$themearray['theme'][$i]['icon']  = JUri::base() .'administrator/components/com_ijoomeradv/theme/'. $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+			   		$themearray['theme'][$i]['icon']  = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
 				}
 				else
 				{
 				   $themearray['theme'][$i]['icon'] = $file;
 				}
 
+
 				$AgetHeaders1 = @get_headers($file1);
 
 				if ($AgetHeaders1[0] == 'HTTP/1.1 404 Not Found')
 				{
-			   		$themearray['theme'][$i]['tab'] = JUri::base() .'administrator/components/com_ijoomeradv/theme/'. $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
+			   		$themearray['theme'][$i]['tab'] = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
 				}
 				else
 				{
@@ -642,7 +643,7 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 
 				if ($AgetHeaders2[0] == 'HTTP/1.1 404 Not Found')
 				{
-			   		$themearray['theme'][$i]['tab_active'] = JUri::base() .'administrator/components/com_ijoomeradv/theme/' . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+			   		$themearray['theme'][$i]['tab_active'] = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
 				}
 				else
 				{
