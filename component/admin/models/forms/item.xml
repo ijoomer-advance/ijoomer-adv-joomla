@@ -150,11 +150,4 @@
 			class="hidden"
 			size="40"
 			required="false"/>
-
-		<!-- <field
-			name="itemimage"
-			type="file"
-			label="COM_IJOOMER_ITEM_FIELD_IMAGE_LABEL"
-			description="COM_IJOOMER_ITEM_FIELD_IMAGE_DESC"
-			required="false"/> -->
 </form>

@@ -62,8 +62,11 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 
 			$defName = 'certificates';
 
-			$splitName = explode(".", $sandFilenm); //split the file name by the dot
-			$fileExt = end($splitName); //get the file extension
+			// Split the file name by the dot
+			$splitName = explode(".", $sandFilenm);
+
+			// Get the file extension
+			$fileExt = end($splitName);
 			$newFileName  = strtolower($defName.'.'.$fileExt);
 
 			$file1 = 'dev_'.$newFileName;
@@ -79,8 +82,11 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 
 			$defName = 'certificates';
 
-			$splitName = explode(".", $liveFilenm); //split the file name by the dot
-			$fileExt = end($splitName); //get the file extension
+			// Split the file name by the dot
+			$splitName = explode(".", $liveFilenm);
+
+			// Get the file extension
+			$fileExt = end($splitName);
 			$newFileName  = strtolower($defName.'.'.$fileExt);
 
 			$file = 'pro_'.$newFileName;
