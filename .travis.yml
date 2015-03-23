@@ -10,4 +10,6 @@ before_script:
   - phpenv rehash
 
 script:
-  - phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla .
+  #- phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla .
+  - phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla plugins/
+  - phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla component/
