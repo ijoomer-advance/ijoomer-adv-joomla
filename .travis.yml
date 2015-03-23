@@ -5,6 +5,8 @@ php:
 
 before_script:
   - pear install PHP_CodeSniffer-1.5.3
+  - phpenv config-add .travis.ini
+  - phpenv rehash
 
 script:
   - phpcs --report=full --extensions=php -p -w --standard=.build/phpcs/Joomla --ignore=extensions,.build .
