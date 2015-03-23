@@ -14,4 +14,4 @@ before_script:
  #- phpenv rehash
 
 script:
- - sh -c "libraries/vendor/bin/phpcs --report=full --extensions=php -p --standard=.build/phpcs/Joomla ."
+ - sh -c "libraries/vendor/bin/phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla ."
