@@ -7,4 +7,4 @@ before_script:
   - pear install PHP_CodeSniffer-1.5.3
 
 script:
-  - phpcs --report=full --extensions=php --ignore=.build -p --standard=.build/phpcs/Joomla .
+  - phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla .
