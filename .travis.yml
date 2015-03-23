@@ -12,4 +12,4 @@ before_script:
 
 script:
   - find ./ -name '*.php' -exec php -l {} \;
-  - phing -f .travis.xml
+  - phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla .
