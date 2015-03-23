@@ -1,0 +1,14 @@
+{
+	"name": "ijoomer-advance/ijoomer-adv-joomla",
+	"type": "project",
+	"description": "iJoomer Advance Joomla Application",
+	"keywords": ["joomla", "cms", "plugin", "iphone", "android"],
+	"homepage": "https://github.com/ijoomer-advance/ijoomer-adv-joomla",
+	"license": "GPL-2.0+",
+	"config": {
+		"vendor-dir": "libraries/vendor"
+	},
+	"require": {
+		"php": ">=5.3.10"
+	}
+}

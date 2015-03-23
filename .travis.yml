@@ -1,12 +1,18 @@
 language: php
-
 php:
-  - 5.3
+	- 5.3
+	- 5.4
+	- 5.5
+	- 5.6
 
 before_script:
-  - pear install PHP_CodeSniffer-1.5.3
-  - phpenv config-add .travis.ini
-  - phpenv rehash
+	# - composer update
+	# Install PHPCS to validate code standards
+	- composer require squizlabs/php_codesniffer 1.5.6
+	#- pear install PHP_CodeSniffer-1.5.3
+	#- phpenv config-add .travis.ini
+	#- phpenv rehash
 
 script:
-  - phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla .
+  #- phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla .
+  - sh -c "libraries/vendor/bin/phpcs --report=full --extensions=php -p --standard=.build/phpcs/Joomla ."
