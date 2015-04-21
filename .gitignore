@@ -33,3 +33,5 @@ Desktop.ini
 
 # Ignore PHING property file
 build.properties
+
+tests/_output/*
