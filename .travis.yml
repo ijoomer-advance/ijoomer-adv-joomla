@@ -4,11 +4,16 @@ php:
   - 5.3
 
 before_script:
-  - pyrus install pear/PHP_CodeSniffer-1.5.3
-  #- pear channel-discover pear.phing.info
-  #- pear install phing/phing
+  #- pyrus install pear/PHP_CodeSniffer-1.5.3
   - phpenv rehash
+  - sudo apt-get update -qq
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
+  - composer install --prefer-source --no-interaction --dev
+
 
 script:
-  - phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
-  - phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
+  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  - composer self-update
+  - php libraries/vendor/bin/codecept build
+  - php libraries/vendor/bin/codecept run acceptance WelcomeCept.php
