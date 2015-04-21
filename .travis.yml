@@ -15,5 +15,5 @@ script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
   - composer self-update
-  - php libraries/vendor/bin/codecept build
-  - php libraries/vendor/bin/codecept run acceptance WelcomeCept.php
+  - php vendor/bin/codecept build
+  - php vendor/bin/codecept run acceptance WelcomeCept.php

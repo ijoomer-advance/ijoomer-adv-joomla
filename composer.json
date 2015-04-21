@@ -6,7 +6,7 @@
 	"homepage": "https://github.com/ijoomer-advance/ijoomer-adv-joomla",
 	"license": "GPL-2.0+",
 	"config": {
-		"vendor-dir": "libraries/vendor"
+		"vendor-dir": "vendor"
 	},
 	"require": {
 		"php": ">=5.3.10",
