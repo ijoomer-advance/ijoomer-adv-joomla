@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="acceptance" tests="1" assertions="0" failures="0" errors="0" time="0.083989">
+    <testcase name="User" file="/var/www/html/iJoomer/tests/acceptance/UserCept.php" feature="Signup and check i get signed in automaticly" assertions="0" time="0.083989"/>
+  </testsuite>
+</testsuites>

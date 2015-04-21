@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+
+	<meta charset="utf-8" />
+	<title>JomSocial Web Installer</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="JomSocial Web Installer" name="description" />
+	<link media="screen" href="http://192.168.5.70/Joomla_3.4.0//administrator/components/com_community/installer/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<!-- <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" media="screen" /> -->
+	<link media="screen" href="http://192.168.5.70/Joomla_3.4.0//administrator/components/com_community/installer/css/style.css" type="text/css" rel="stylesheet" />
+	<!-- <link rel="shortcut icon" type="images/ico" href="" /> -->
+    <!--[if IE]>
+    	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://192.168.5.70/Joomla_3.4.0//administrator/components/com_community/installer/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+	<div class="container">
+		<div id="js-installer">
+			<div class="js-header">
+				<h1>JomSocial</h1>
+			</div>
+			<div class="tabbable tabs-left">
+
+				<ul class="nav nav-tabs">
+					<li><a data-toggle="tab" href="#step-one">Welcome</a></li>
+					<li><a data-toggle="tab" href="#step-three">Unpacking files</a></li>
+					<li><a data-toggle="tab" href="#step-seven">Preparing Database</a></li>
+					<li><a data-toggle="tab" href="#step-nine">Installing Plugins</a></li>
+					<li class="active"><a data-toggle="tab" href="#step-ten">Installing Modules</a></li>
+					<li><a data-toggle="tab" href="#step-evelen">Done!</a></li>
+				</ul>
+
+				<div class="tab-content">
+					<div id="step-nine" class="tab-pane active">
+						<div class="js-title clearfix">
+							<h2 class="pull-left">Installing JomSocial Plugins</h2>
+							<div class="pull-right">
+								<a class="btn disabled" href="#" id="btn-next">Next »</a>
+							</div>
+						</div>
+						<div class="well">
+							<div class="tabular-data loosemargin">
+								<div class="progress progress-striped active">
+									<div style="width: 100%;" class="bar"></div>
+								</div>
+
+								<table class="table">
+									<tbody>
+										<tr>
+											<td>Installing modules</td>
+											<td> </td>
+											<td id="step1" class="right"><span class="badge badge-success">Done</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+		    install_modules();
+		});
+
+
+		function install_modules(){
+			$.ajax({
+				url: 'index.php?option=com_community&amp;view=installer&amp;task=modules',
+			}).done(function() {
+				$('#step1').html('&lt;span class="badge badge-success"&gt;Done&lt;/span&gt;');
+				$('.bar').css('width', '100%');
+
+				setTimeout(plugin_done, 1000);
+			});
+		}
+
+		function plugin_done() {
+			var gotoURL, next, progress;
+
+			gotoURL = function gotoURL() {
+				window.location.href = "index.php?option=com_community&amp;view=installer&amp;task=done";
+			};
+
+			next = $('#btn-next');
+			progress = $('.progress');
+
+			next.addClass('btn-primary');
+			next.removeClass('disabled');
+			next.on('click', function (e) {
+				e.preventDefault();
+				gotoURL();
+				return false;
+			});
+
+			progress.removeClass('progress-striped');
+			progress.addClass('progress-success');
+
+			next.click();
+		}
+	</script>
+
+
+
+
+
+</body><canvas id="fxdriver-screenshot-canvas" style="display: none;" width="1024" height="596"></canvas></html>
