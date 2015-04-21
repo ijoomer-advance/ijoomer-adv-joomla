@@ -15,6 +15,7 @@ script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
   - composer self-update
+  - sudo chmod 777 -R /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   - php vendor/bin/codecept build
   - php vendor/bin/codecept run
    
