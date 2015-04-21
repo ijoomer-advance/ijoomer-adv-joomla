@@ -25,6 +25,8 @@ before_script:
 script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  - sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
+  - sudo /etc/init.d/apache2 restart
   - sudo chmod 777 -R /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   - php vendor/bin/codecept build
   - php vendor/bin/codecept run
