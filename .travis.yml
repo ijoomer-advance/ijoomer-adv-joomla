@@ -14,6 +14,12 @@ before_script:
   # XVFB
   - "export DISPLAY=:99.0"
   - "Xvfb :99.0 -extension RANDR > /dev/null &"
+  
+    # Window manager
+  - echo "c10"
+  - "sudo apt-get install fluxbox -y --force-yes"
+  - echo "c11"
+  - "fluxbox &"
 
 
 script:
