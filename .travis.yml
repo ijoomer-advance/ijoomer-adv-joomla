@@ -12,16 +12,10 @@ before_script:
   - composer install --prefer-source --no-interaction --dev
   
   # XVFB
-  - "export DISPLAY=:99.0"
-  - "Xvfb :99.0 -extension RANDR > /dev/null &"
+  - export DISPLAY=:99.0
+  #- "Xvfb :99.0 -extension RANDR > /dev/null &"
+  - sh -e /etc/init.d/xvfb start
   
-    # Window manager
-  - echo "c10"
-  - "sudo apt-get install fluxbox -y --force-yes"
-  - echo "c11"
-  - "fluxbox &"
-
-
 script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
