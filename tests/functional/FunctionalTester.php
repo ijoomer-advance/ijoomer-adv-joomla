@@ -7,7 +7,7 @@
 
 use Codeception\Module\Filesystem;
 use Codeception\Module\FunctionalHelper;
-
+use Codeception\Module\WebDriver;
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -30,7 +30,7 @@ class FunctionalTester extends \Codeception\Actor
      * [!] Method is generated. Documentation taken from corresponding module.
      *
      * Enters a directory In local filesystem.
-     * Project root directory is used by default
+     * Project root directory is used by default`
      *
      * @param $path
      * @see \Codeception\Module\Filesystem::amInPath()
