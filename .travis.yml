@@ -16,4 +16,5 @@ script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
   - composer self-update
   - php vendor/bin/codecept build
-  - php vendor/bin/codecept run acceptance SigninCept.php
+  - php vendor/bin/codecept run
+   
