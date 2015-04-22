@@ -35,4 +35,7 @@ Desktop.ini
 build.properties
 
 # Ignore Composer Library
-libraries/vendor
+vendor
+#composer.lock
+
+tests/_output/*
