@@ -1,14 +1,38 @@
 language: php
 
 php:
-  - 5.3
+  - 5.4
 
 before_script:
-  - pyrus install pear/PHP_CodeSniffer-1.5.3
-  #- pear channel-discover pear.phing.info
-  #- pear install phing/phing
-  - phpenv rehash
+  #- pyrus install pear/PHP_CodeSniffer-1.5.3
+  #- phpenv rehash
+  - sudo apt-get update -qq
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
+  - composer self-update
+  - composer install --prefer-source --no-interaction
+  
+  # XVFB
+  - "export DISPLAY=:99.0"
+  - "Xvfb :99.0 -extension RANDR > /dev/null &"
+
+  # Window manager
+  - echo "c10"
+  - "sudo apt-get install fluxbox -y --force-yes"
+  - echo "c11"
+  - "fluxbox &"
+
+  # Selenium server
+  - wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O selenium-server-standalone.jar
+  - "java -jar selenium-server-standalone.jar > /dev/null 2>/dev/null &"
+  - .travis/wait4selenium.sh
+
 
 script:
-  - phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
-  - phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
+  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  #- sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
+  #- sudo /etc/init.d/apache2 restart
+  #- sudo chmod 777 -R /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
+  - php vendor/bin/codecept build
+  - php vendor/bin/codecept run
+

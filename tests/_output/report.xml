@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="acceptance" tests="1" assertions="1" failures="0" errors="1" time="0.340835">
+    <testcase name="Signin" file="/var/www/html/iJoomer/tests/acceptance/SigninCept.php" feature="log in as regular user" assertions="1" time="0.340835">
+      <error type="PHPUnit_Framework_ExceptionWrapper">log in as regular user (SigninCept)
+RuntimeException: Call to undefined method AcceptanceTester::wait
+
+/var/www/html/iJoomer/tests/acceptance/SigninCept.php:9
+/var/www/html/iJoomer/tests/acceptance/SigninCept.php:9
+</error>
+    </testcase>
+  </testsuite>
+</testsuites>
