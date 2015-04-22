@@ -34,5 +34,5 @@ script:
   #- sudo /etc/init.d/apache2 restart
   #- sudo chmod 777 -R /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   - php vendor/bin/codecept build
-  - php vendor/bin/codecept run
+  - php vendor/bin/codecept run acceptance SigninCept.php --steps
 
