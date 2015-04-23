@@ -11,22 +11,22 @@
 # perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
-#class_name: AcceptanceTester
-#modules:
- #   enabled:
-  #      - WebDriver
-   # config:
-    #    WebDriver:
-     #       url: 'http://192.168.5.49/jcms3.4/'
-      #      browser: 'firefox'
-       #     window_size: 1024x1024
-       
-
 class_name: AcceptanceTester
 modules:
     enabled:
-        - PhpBrowser
-        - AcceptanceHelper
+        - WebDriver
     config:
-        PhpBrowser:
+        WebDriver:
             url: 'http://localhost/jcms3.4/'
+            browser: 'firefox'
+            window_size: 1024x1024
+       
+
+#class_name: AcceptanceTester
+#modules:
+ #   enabled:
+  #      - PhpBrowser
+   #     - AcceptanceHelper
+    #config:
+     #   PhpBrowser:
+      #      url: 'http://localhost/jcms3.4/'
