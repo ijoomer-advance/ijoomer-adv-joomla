@@ -11,5 +11,8 @@
 	"require": {
 		"php": ">=5.3.10",
 		"codeception/codeception": "*"
+		"joomla/application": "~1.0",
+        "joomla/filesystem": "~1.0",
+        "joomla/github": "1.*@dev"
 	}
 }
