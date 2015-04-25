@@ -36,6 +36,6 @@ script:
   #- sudo /etc/init.d/apache2 restart
   - php vendor/phing/phing/bin/phing -f tests/getjoomla.xml # Get Joomla CMS for System Tests
   #- php tests/getjoomla.php
-  - sudo chmod 777 -R /home/travis/build/Testselenium/
+  #- sudo chmod 777 -R /home/travis/build/Testselenium/
   - php vendor/bin/codecept build
   - php vendor/bin/codecept run   --steps
