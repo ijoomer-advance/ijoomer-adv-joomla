@@ -10,6 +10,7 @@
 	},
 	"require": {
 		"php": ">=5.3.10",
-		"codeception/codeception": "*"
+		"codeception/codeception": "*",
+		"phing/phing": "2.9.*@dev"
 	}
 }
