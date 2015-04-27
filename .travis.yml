@@ -33,6 +33,9 @@ script:
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
 
+  # Create travis system tests config file
+  - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
+
   # Get Joomla CMS for System Tests
   - php vendor/phing/phing/bin/phing -f tests/getjoomla.xml
 
