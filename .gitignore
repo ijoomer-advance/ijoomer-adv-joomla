@@ -42,3 +42,4 @@ vendor
 /tests/system/webdriver/tests/logs/
 /tests/acceptance.suite.yml
 tests/_output/*
+tests/acceptance/AcceptanceTester.php
