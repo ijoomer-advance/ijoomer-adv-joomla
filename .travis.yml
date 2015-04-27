@@ -5,11 +5,9 @@ php:
 
 before_script:
   #- pyrus install pear/PHP_CodeSniffer-1.5.3
-  - phpenv rehash
+  #- phpenv rehash
   - sudo apt-get update -qq
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
-  #- composer self-update
-  #- composer install --prefer-source --no-interaction
 
   # XVFB
   - "export DISPLAY=:99.0"
@@ -27,15 +25,17 @@ before_script:
   - sh .travis/wait4selenium.sh
 
   # Composer
+  - composer self-update
   - composer update
 
 script:
+  # PHP Code Sniffer for code style verification
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
-  #- sudo sed -i -e "s,AllowOverride[ ]None,AllowOverride All,g" /etc/apache2/sites-available/default
-  #- sudo /etc/init.d/apache2 restart
-  - php vendor/phing/phing/bin/phing -f tests/getjoomla.xml # Get Joomla CMS for System Tests
-  #- php tests/getjoomla.php
-  #- sudo chmod 777 -R /home/travis/build/Testselenium/
+
+  # Get Joomla CMS for System Tests
+  - php vendor/phing/phing/bin/phing -f tests/getjoomla.xml
+
+  # Execure codeception suits
   - php vendor/bin/codecept build
-  - php vendor/bin/codecept run   --steps
+  - php vendor/bin/codecept run --steps
