@@ -29,12 +29,12 @@ before_script:
   - composer update
 
   # Joomla Console Installation
-  - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
-  - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
-  - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
-  - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
+  - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/ijoomer-advance/joomla-console/bin/joomla
+  - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/ijoomer-advance/joomla-console/bin/joomla /usr/bin/joomla
+  - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/ijoomer-advance/joomla-console/bin:/usr/local/bin"
+  - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/ijoomer-advance/joomla-console/bin/joomla
   #- which joomla
-  - cd vendor/joomlatools/joomla-console
+  - cd vendor/ijoomer-advance/joomla-console
   - composer install
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   #- joomla --list
@@ -42,7 +42,7 @@ before_script:
 script:
 
   # Install Joomla site
-  - sudo joomla site:create jcms3.4 --mysql="root:"
+  - sudo joomla site:create jcms3.4
 
   # PHP Code Sniffer for code style verification
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
@@ -52,7 +52,7 @@ script:
   - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 
   # Get Joomla CMS for System Tests
-  - php vendor/phing/phing/bin/phing -f tests/getjoomla.xml
+  #- php vendor/phing/phing/bin/phing -f tests/getjoomla.xml
 
   # Execure codeception suits
   - php vendor/bin/codecept build

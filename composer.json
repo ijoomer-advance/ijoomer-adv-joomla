@@ -12,6 +12,6 @@
 		"php": ">=5.3.10",
 		"codeception/codeception": "*",
 		"phing/phing": "2.9.*@dev",
-		"joomlatools/joomla-console" : "*"
+		"ijoomer-advance/joomla-console" : "*"
 	}
 }
