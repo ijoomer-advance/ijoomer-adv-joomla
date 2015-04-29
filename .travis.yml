@@ -42,7 +42,7 @@ before_script:
 script:
 
   # Install Joomla site
-  - sudo joomla site:create testsite
+  - sudo joomla site:create jcms3.4 --mysql="root:"
 
   # PHP Code Sniffer for code style verification
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
