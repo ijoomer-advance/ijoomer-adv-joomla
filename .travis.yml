@@ -36,7 +36,7 @@ before_script:
   - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomla-console/bin:/usr/local/bin"
   - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla
   #- which joomla
-  - cd vendor/joomla-console
+  - cd joomla-console
   - composer install
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   #- joomla --list
