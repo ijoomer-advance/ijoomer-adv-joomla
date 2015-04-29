@@ -33,16 +33,16 @@ before_script:
   - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
   - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
   - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
-  - which joomla
+  #- which joomla
   - cd vendor/joomlatools/joomla-console
   - composer install
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
-  - joomla --list
+  #- joomla --list
 
 script:
 
   # Install Joomla site
-  - joomla site:create testsite
+  - sudo joomla site:create testsite
 
   # PHP Code Sniffer for code style verification
   #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
