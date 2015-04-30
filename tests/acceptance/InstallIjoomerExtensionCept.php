@@ -2,6 +2,7 @@
 $I = new AcceptanceTester($scenario);
 $I->wantTo('log in as regular user');
 $I->amOnPage('/administrator/index.php');
+$I->wait(10);
 $I->fillField('username','admin');
 $I->fillField('passwd','admin');
 $I->click('Log in');
