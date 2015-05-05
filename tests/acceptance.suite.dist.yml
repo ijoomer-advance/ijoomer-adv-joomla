@@ -17,7 +17,7 @@ modules:
         - WebDriver
     config:
         WebDriver:
-            url: 'http://localhost/jcms3.4/'
+            url: 'http://localhost/jcms34/'
             browser: 'firefox'
             window_size: 1024x1024
 
