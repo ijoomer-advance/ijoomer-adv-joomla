@@ -31,7 +31,7 @@ before_script:
   # Joomla Console Installation
   - cd vendor/
   - git clone https://github.com/ijoomer-advance/joomla-console.git
-  - sudo chmod u+x /home/travis/build/dsmewra/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla
+  - sudo chmod u+x /home/travis/build/dsmewara/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla
   - sudo ln -s /home/travis/build/dsmewara/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla /usr/bin/joomla
   - export PATH="$PATH:/home/travis/build/dsmewara/ijoomer-adv-joomla/vendor/joomla-console/bin:/usr/local/bin"
   - alias joomla=/home/travis/build/dsmewara/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla
