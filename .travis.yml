@@ -40,7 +40,7 @@ before_script:
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
 
   # Install Joomla site
-  - sudo joomla site:create jcms3.4
+  - sudo joomla site:create jcms34
 
 script:
 
@@ -56,4 +56,4 @@ script:
   - php vendor/bin/codecept run --steps
 
   # Remove installed joomla site
-  - sudo joomla site:delete jcms3.4
+  - sudo joomla site:delete jcms34
