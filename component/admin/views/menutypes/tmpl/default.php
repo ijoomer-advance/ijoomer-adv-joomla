@@ -3,7 +3,7 @@
  * @package     IJoomer.Backend
  * @subpackage  com_ijoomeradv.views
  *
- * @copyright   Copyright (C) 2010 - 2014 Tailored Solutions PVT. Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2015 Tailored Solutions PVT. Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
