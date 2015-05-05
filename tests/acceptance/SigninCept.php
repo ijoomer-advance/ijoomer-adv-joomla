@@ -8,7 +8,7 @@ $I->click('//*[@id=\'form-login\']/fieldset/div[3]/div/div/button');
 $I->see('Users');
 $I->wait(1);
 $I->see('Extensions');
-$I->wait(1);
+/*$I->wait(1);
 $I->click('//*[@id=\'menu\']/li[5]/a/span');	
 $I->moveMouseOver('//*[@id=\'menu\']/li[5]/ul/li[3]/a', 0, 0);
 $I->click('//*[@id=\'menu-com-ijoomeradv\']/li[1]/a'); 
@@ -34,4 +34,4 @@ $I->click('.//*[@id=\'submenu\']/li[6]/a');
 $I->wait(1);
 $I->see('Reports');
 $I->moveback();
-$I->wait(5);
+$I->wait(5);/*
