@@ -1,7 +1,7 @@
 <?php
 $I = new AcceptanceTester($scenario);
 $I->wantTo('log in as regular user');
-$path = '/var/www/html/ijoomer-adv-joomla/';
+$path = '/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/';
 $I->amOnPage('/administrator/index.php');
 $I->fillField('username','admin');
 $I->fillField('passwd','admin');
