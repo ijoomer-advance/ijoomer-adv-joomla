@@ -12,6 +12,7 @@ $I->waitForText('Extension Manager: Install',5);
 $I->click('Install from Directory');
 $I->fillField('//*[@id=\'install_directory\']','/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/');
 $I->Click('Install');
-$I->waitForText('Installing component was successful.',60);
+$I->wait(50);
+$I->see('Installing component was successful.');
 $I->wait(15);
 ?>
