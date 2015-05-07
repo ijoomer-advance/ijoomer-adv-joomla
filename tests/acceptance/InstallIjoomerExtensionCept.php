@@ -12,7 +12,7 @@ $I->waitForText('Extension Manager: Install',5);
 $I->click('Install from Directory');
 $I->fillField('//*[@id=\'install_directory\']','/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/');
 $I->Click('//input[contains(@onclick,\'Joomla.submitbutton3()\')]');
-$I->wait(50);
+$I->wait(60);
 $I->see('Users');
 $I->see('Extensions');
 $I->click('Components');
@@ -21,4 +21,3 @@ $I->moveMouseOver('//a[text()=\'iJoomer Advance\']');
 $I->wait(1);
 $I->click('//a[text()=\'Extensions\']');
 $I->wait(10);
-?>
