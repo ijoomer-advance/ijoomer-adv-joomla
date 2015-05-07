@@ -12,7 +12,7 @@ $I->click('//*[@id=\'menu\']/li[6]/ul/li[1]/a');
 $I->waitForText('Extension Manager: Install',5);
 $I->click('Install from Directory');
 $I->fillField('//*[@id=\'install_directory\']',$path);
-$I->Click('//input[contains(@onclick,\'Joomla.submitbutton3()\')]');
+$I->Click('//*[@id=\'directory\']/fieldset/div[2]/input');
 $I->waitForText('Installing component was successful.',60);
 $I->see('Users');
 $I->see('Extensions');
