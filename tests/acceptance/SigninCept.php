@@ -9,6 +9,8 @@ $I->click('Log in');
 $I->see('Users');
 $I->see('Extensions');
 $I->click('Components');
+$I->wait(1);
 $I->moveMouseOver('//a[text()=\'iJoomer Advance\']');
+$I->wait(1);
 $I->click('//a[text()=\'Extensions\']');
 $I->wait(10);
