@@ -53,7 +53,7 @@ script:
 
   # Execure codeception suits
   - php vendor/bin/codecept build
-  - php vendor/bin/codecept run --steps
+  - php vendor/bin/codecept run acceptance -g Joomla3 --env joomla3 --steps
 
   # Remove installed joomla site
   - sudo joomla site:delete jcms34
