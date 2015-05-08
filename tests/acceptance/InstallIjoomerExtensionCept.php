@@ -13,6 +13,7 @@ $I->waitForText('Extension Manager: Install',5);
 $I->click('Install from Directory');
 $I->fillField('//*[@id=\'install_directory\']',$path);
 $I->Click('//*[@id=\'directory\']/fieldset/div[2]/input');
+$I->wait(50);
 $text='Installing component was successful.';
 $I->see($text);
 $I->see('Users');
