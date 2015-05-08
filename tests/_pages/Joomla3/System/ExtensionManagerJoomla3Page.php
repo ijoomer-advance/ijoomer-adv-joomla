@@ -18,9 +18,11 @@ class ExtensionManagerJoomla3Page
 	// Include url of current page
 	public static $URL = '/administrator/index.php?option=com_installer';
 
-	public static $extensionDirectoryPath = "#install_directory";
+	public static $extensionDirectoryPath = "install_directory";
 
 	public static $installButton = "//*[@id='directory']/fieldset/div[2]/input";
+	
+	public static $installSuccessMessageJ3="//p[contains(text(),'successful')]";
 
 	public static $installSuccessMessage = "Installing component was successful.";
 
@@ -38,7 +40,7 @@ class ExtensionManagerJoomla3Page
 
 	public static $extensionName = "//a[contains(text(),'Name')]";
 
-	public static $extensionTable = '//form[@id=\'adminForm\']/div/table/tbody/tr[1]/td[2]/label/span';
+	public static $extensionTable = "//form[@id='adminForm']/div/table/tbody/tr[1]/td[2]/label/span";
 
 	public static $extensionTableJ2 = "//form[@id='adminForm']/table/tbody/tr[1]/td[2]/span";
 
