@@ -18,9 +18,9 @@ class LoginManagerJoomla3Page
 	// Include url of current page
 	public static $URL = '/administrator/index.php';
 
-	public static $userName = "username";
+	public static $userName = "//*[@id='mod-login-username']";
 
-	public static $password = "passwd";
+	public static $password = "//*[@id='mod-login-password']";
 
 	public static $loginSuccessCheck = "//a//span[text() = 'Category Manager']";
 	//public static $loginSuccessCheck1 = "//a[text()='Extensions']";
