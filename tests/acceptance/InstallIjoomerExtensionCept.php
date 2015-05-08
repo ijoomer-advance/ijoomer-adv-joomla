@@ -1,7 +1,7 @@
 <?php
 $I = new AcceptanceTester($scenario);
 $I->wantTo('log in as regular user');
-$path = '/home/travis/builds/ijoomer-advance/ijoomer-adv-joomla/';
+$path = '/var/www/html/ijoomer-adv-joomla/';
 $I->amOnPage('/administrator/index.php');
 $I->fillField('username','admin');
 $I->fillField('passwd','admin');
@@ -14,7 +14,7 @@ $I->click('Install from Directory');
 $I->fillField('//*[@id=\'install_directory\']',$path);
 $I->Click('//*[@id=\'directory\']/fieldset/div[2]/input');
 $text='Installing component was successful.';
-$I->waitForText($text,60);
+$I->see($text);
 $I->see('Users');
 $I->see('Extensions');
 $I->click('Components');

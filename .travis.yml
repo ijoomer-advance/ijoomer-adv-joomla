@@ -37,7 +37,6 @@ before_script:
   - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomla-console/bin/joomla
   - cd joomla-console
   - composer install
-  - sudo chmod 777 -R /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
 
   # Install Joomla site
