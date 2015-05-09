@@ -18,7 +18,7 @@ class ExtensionManagerJoomla3Page
 	// Include url of current page
 	public static $URL = '/administrator/index.php?option=com_installer';
 
-	public static $extensionDirectoryPath = "install_directory";
+	public static $extensionDirectoryPath = "//*[@id='install_directory']";
 
 	public static $installButton = "//*[@id='directory']/fieldset/div[2]/input";
 	
