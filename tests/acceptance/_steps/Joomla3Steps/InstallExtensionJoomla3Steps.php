@@ -37,7 +37,7 @@ class InstallExtensionJoomla3Steps extends \AcceptanceTester
 		//$I->waitForText(\ExtensionManagerJoomla3Page::$installSuccessMessage, 60);
 		//$I->see(\ExtensionManagerJoomla3Page::$installSuccessMessage);
 		
-		//$I->seeElement(\ExtensionManagerJoomla3Page::$installSuccessMessageJ3);
+		$I->seeElement(\ExtensionManagerJoomla3Page::$installSuccessMessageJ3);
 	}
 
 	/**

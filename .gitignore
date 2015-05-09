@@ -36,10 +36,13 @@ build.properties
 
 # Ignore Composer Library
 vendor
-composer.lock
+#composer.lock
 
 # Test related files
-/tests/system/webdriver/tests/logs/
-/tests/acceptance.suite.yml
+#/tests/system/webdriver/tests/logs/
+#/tests/acceptance.suite.yml
+#tests/_output/*
+#tests/acceptance/AcceptanceTester.php
+
 tests/_output/*
-tests/acceptance/AcceptanceTester.php
+acceptance.suite.yml
