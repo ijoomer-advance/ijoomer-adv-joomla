@@ -72,7 +72,7 @@ env:
                     site_name: 'Joomla'                    # Name of the Site
                     admin_email: 'admin@mydomain.com'      # email Id of the Admin
                     language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
-                    folder: '/home/travis/build/dsmewara/ijoomer-adv-joomla/' # Path to the Extension to be installed via Install from folder
+                    folder: '/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/' # Path to the Extension to be installed via Install from folder
                     host: 'http://localhost/jcms34'   # Host Address of the Application
                     extension_name: 'ijoomeradv'              # Name of the extension which is to be installed
                     install_extension_demo_data: 'No'     # Demo Data to be installed for Extension

@@ -22,7 +22,7 @@ class ExtensionManagerJoomla3Page
 
 	public static $installButton = "//*[@id='directory']/fieldset/div[2]/input";
 	
-	public static $installSuccessMessageJ3="//p[contains(text(),'successful')]";
+	public static $installSuccessMessageJ3="//p[contains(text(),'package')]";
 
 	public static $installSuccessMessage = "Installing component was successful.";
 
