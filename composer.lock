@@ -1,10 +1,17 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
+<<<<<<< HEAD
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "c2eb8453cf16306e8429b4ca6745c63d",
+=======
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "c12b94ddffef5fccb66df7ecdc97ae87",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
     "packages": [
         {
             "name": "codeception/codeception",
@@ -341,6 +348,7 @@
             "time": "2014-10-12 19:18:40"
         },
         {
+<<<<<<< HEAD
             "name": "pdepend/pdepend",
             "version": "2.0.6",
             "source": {
@@ -467,6 +475,52 @@
                 "tool"
             ],
             "time": "2014-12-03 09:18:46"
+=======
+            "name": "joomlatools/joomla-console",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/joomlatools/joomla-console.git",
+                "reference": "b9e0c0a2139f5bdebbca9f778780a5b0f38174e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/joomlatools/joomla-console/zipball/b9e0c0a2139f5bdebbca9f778780a5b0f38174e3",
+                "reference": "b9e0c0a2139f5bdebbca9f778780a5b0f38174e3",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "2.4.*"
+            },
+            "bin": [
+                "bin/joomla"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-0": {
+                    "Joomlatools\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MPLv2"
+            ],
+            "authors": [
+                {
+                    "name": "Joomlatools",
+                    "email": "info@joomlatools.com",
+                    "homepage": "https://www.joomlatools.com"
+                }
+            ],
+            "description": "This command-line script helps to ease the management of Joomla sites in your development environment.",
+            "homepage": "https://github.com/joomlatools/joomla-console",
+            "keywords": [
+                "console",
+                "joomla",
+                "tools"
+            ],
+            "time": "2015-05-07 08:36:56"
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -518,6 +572,7 @@
             "time": "2015-02-03 12:10:50"
         },
         {
+<<<<<<< HEAD
             "name": "phpmd/phpmd",
             "version": "2.2.2",
             "source": {
@@ -580,6 +635,8 @@
             "time": "2015-03-26 07:47:05"
         },
         {
+=======
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "name": "phpspec/prophecy",
             "version": "v1.4.1",
             "source": {
@@ -1429,17 +1486,30 @@
         },
         {
             "name": "symfony/browser-kit",
+<<<<<<< HEAD
             "version": "v2.6.7",
+=======
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/BrowserKit",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/BrowserKit.git",
+<<<<<<< HEAD
                 "reference": "cf950c42947ea2f29c36a1f443202b6134f5c303"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/cf950c42947ea2f29c36a1f443202b6134f5c303",
                 "reference": "cf950c42947ea2f29c36a1f443202b6134f5c303",
+=======
+                "reference": "f21189b0eccbe56528515858ca1d5089a741692f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/f21189b0eccbe56528515858ca1d5089a741692f",
+                "reference": "f21189b0eccbe56528515858ca1d5089a741692f",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1471,6 +1541,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1537,22 +1608,49 @@
         {
             "name": "symfony/console",
             "version": "v2.6.7",
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony BrowserKit Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-30 15:54:10"
+        },
+        {
+            "name": "symfony/console",
+            "version": "v2.4.10",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
+<<<<<<< HEAD
                 "reference": "ebc5679854aa24ed7d65062e9e3ab0b18a917272"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Console/zipball/ebc5679854aa24ed7d65062e9e3ab0b18a917272",
                 "reference": "ebc5679854aa24ed7d65062e9e3ab0b18a917272",
+=======
+                "reference": "39dd1c85ffdfc3c5fb008019dd027af05f64ec36"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/39dd1c85ffdfc3c5fb008019dd027af05f64ec36",
+                "reference": "39dd1c85ffdfc3c5fb008019dd027af05f64ec36",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
+<<<<<<< HEAD
                 "psr/log": "~1.0",
                 "symfony/event-dispatcher": "~2.1",
                 "symfony/phpunit-bridge": "~2.7",
@@ -1562,11 +1660,21 @@
                 "psr/log": "For using the console logger",
                 "symfony/event-dispatcher": "",
                 "symfony/process": ""
+=======
+                "symfony/event-dispatcher": "~2.1"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": ""
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "2.6-dev"
+=======
+                    "dev-master": "2.4-dev"
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 }
             },
             "autoload": {
@@ -1580,6 +1688,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1595,16 +1704,42 @@
         {
             "name": "symfony/css-selector",
             "version": "v2.6.7",
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony Console Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-09-22 08:51:05"
+        },
+        {
+            "name": "symfony/css-selector",
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/CssSelector",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/CssSelector.git",
+<<<<<<< HEAD
                 "reference": "189cf0f7f56d7c4be3b778df15a7f16a29f3680d"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/CssSelector/zipball/189cf0f7f56d7c4be3b778df15a7f16a29f3680d",
                 "reference": "189cf0f7f56d7c4be3b778df15a7f16a29f3680d",
+=======
+                "reference": "db2c48df9658423a8c168d89f7b971b73d3d74a4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/db2c48df9658423a8c168d89f7b971b73d3d74a4",
+                "reference": "db2c48df9658423a8c168d89f7b971b73d3d74a4",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1630,12 +1765,20 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                     "name": "Jean-François Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+<<<<<<< HEAD
                 },
                 {
                     "name": "Symfony Community",
@@ -1710,16 +1853,36 @@
         {
             "name": "symfony/dom-crawler",
             "version": "v2.6.7",
+=======
+                }
+            ],
+            "description": "Symfony CssSelector Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-22 16:55:57"
+        },
+        {
+            "name": "symfony/dom-crawler",
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/DomCrawler",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/DomCrawler.git",
+<<<<<<< HEAD
                 "reference": "adef13fb8d305d95e1fb8324d6b5895c8e79d332"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/adef13fb8d305d95e1fb8324d6b5895c8e79d332",
                 "reference": "adef13fb8d305d95e1fb8324d6b5895c8e79d332",
+=======
+                "reference": "8897ebf39c7dfb752a5494fa301845a3fbb9e53d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/8897ebf39c7dfb752a5494fa301845a3fbb9e53d",
+                "reference": "8897ebf39c7dfb752a5494fa301845a3fbb9e53d",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1749,6 +1912,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1764,16 +1928,42 @@
         {
             "name": "symfony/event-dispatcher",
             "version": "v2.6.7",
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony DomCrawler Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-30 15:54:10"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
+<<<<<<< HEAD
                 "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/672593bc4b0043a0acf91903bb75a1c82d8f2e02",
                 "reference": "672593bc4b0043a0acf91903bb75a1c82d8f2e02",
+=======
+                "reference": "70f7c8478739ad21e3deef0d977b38c77f1fb284"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/70f7c8478739ad21e3deef0d977b38c77f1fb284",
+                "reference": "70f7c8478739ad21e3deef0d977b38c77f1fb284",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1808,6 +1998,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1873,16 +2064,42 @@
         {
             "name": "symfony/finder",
             "version": "v2.6.7",
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-13 17:37:22"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
+<<<<<<< HEAD
                 "reference": "704c64c8b12c8882640d5c0330a8414b1e06dc99"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Finder/zipball/704c64c8b12c8882640d5c0330a8414b1e06dc99",
                 "reference": "704c64c8b12c8882640d5c0330a8414b1e06dc99",
+=======
+                "reference": "5dbe2e73a580618f5b4880fda93406eed25de251"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/5dbe2e73a580618f5b4880fda93406eed25de251",
+                "reference": "5dbe2e73a580618f5b4880fda93406eed25de251",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1908,6 +2125,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1923,16 +2141,42 @@
         {
             "name": "symfony/yaml",
             "version": "v2.6.7",
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-30 15:54:10"
+        },
+        {
+            "name": "symfony/yaml",
+            "version": "v2.6.6",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
+<<<<<<< HEAD
                 "reference": "f157ab074e453ecd4c0fa775f721f6e67a99d9e2"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/Yaml/zipball/f157ab074e453ecd4c0fa775f721f6e67a99d9e2",
                 "reference": "f157ab074e453ecd4c0fa775f721f6e67a99d9e2",
+=======
+                "reference": "174f009ed36379a801109955fc5a71a49fe62dd4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/174f009ed36379a801109955fc5a71a49fe62dd4",
+                "reference": "174f009ed36379a801109955fc5a71a49fe62dd4",
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
                 "shasum": ""
             },
             "require": {
@@ -1958,6 +2202,7 @@
             ],
             "authors": [
                 {
+<<<<<<< HEAD
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
                 },
@@ -1969,14 +2214,31 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2015-05-02 15:18:45"
+=======
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony Yaml Component",
+            "homepage": "http://symfony.com",
+            "time": "2015-03-30 15:54:10"
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
+<<<<<<< HEAD
     "stability-flags": {
         "phing/phing": 20
     },
+=======
+    "stability-flags": [],
+>>>>>>> 6f6d6791d282eeff962629da0772eb4e32fd56cd
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
