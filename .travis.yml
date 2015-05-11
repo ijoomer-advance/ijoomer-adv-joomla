@@ -3,9 +3,6 @@ language: php
 php:
   - 5.4
 
-env:
- - GROUP=Joomla3 ENV=joomla3 
-
 before_script:
   #- pyrus install pear/PHP_CodeSniffer-1.5.3
   #- phpenv rehash
