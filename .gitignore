@@ -34,10 +34,9 @@ Desktop.ini
 # Ignore PHING property file
 build.properties
 
-
 # Ignore Composer Library
 vendor
-#composer.lock
+composer.lock
 
 # Test related files
 /tests/system/webdriver/tests/logs/

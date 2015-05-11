@@ -10,7 +10,8 @@
 	},
 	"require": {
 		"php": ">=5.3.10",
+		"phpmd/phpmd": "*",
 		"codeception/codeception": "*",
-		"joomlatools/joomla-console": "*"
+		"phing/phing": "2.9.*@dev"
 	}
 }
