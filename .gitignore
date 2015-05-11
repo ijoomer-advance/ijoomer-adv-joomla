@@ -34,15 +34,13 @@ Desktop.ini
 # Ignore PHING property file
 build.properties
 
+
 # Ignore Composer Library
 vendor
 #composer.lock
 
 # Test related files
-#/tests/system/webdriver/tests/logs/
-#/tests/acceptance.suite.yml
-#tests/_output/*
-#tests/acceptance/AcceptanceTester.php
-
+/tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
 tests/_output/*
-acceptance.suite.yml
+tests/acceptance/AcceptanceTester.php
