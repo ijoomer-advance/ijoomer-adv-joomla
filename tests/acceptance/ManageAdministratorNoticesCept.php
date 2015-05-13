@@ -5,11 +5,8 @@
  * @copyright   Copyright (C) 2008 - 2015 ijoomer.com. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-/*echo getcwd();
-error_reporting(E_ALL | E_STRICT);
-ini_set("display_errors",1);*/
-//include_once('../_pages/Joomla3/Administrator/AdminManagerPage.php');
-$scenario->group('Joomla2');
+
+
 $scenario->group('Joomla3');
 
 // Load the Step Object Page

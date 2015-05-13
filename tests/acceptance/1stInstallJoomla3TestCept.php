@@ -17,7 +17,6 @@ $config = $I->getConfig();
 $className = 'AcceptanceTester\Login' . $config['env'] . 'Steps';
 $I = new $className($scenario);
 
-//$I = new AcceptanceTester\GlobalConfigurationManagerJoomla3Steps($scenario);
 
 $I->wantTo('Set Error Reporting Level');
 $I->doAdminLogin();
