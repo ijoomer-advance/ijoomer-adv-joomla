@@ -53,7 +53,7 @@ env:
                 - AcceptanceHelper
             config:
                 WebDriver:
-                    url: 'http://localhost/jcms34'     # the url that points to the joomla installation at /tests/system/joomla-cms
+                    url: 'http://localhost/jtest34'     # the url that points to the joomla installation at /tests/system/joomla-cms
                     browser: 'firefox'
                     window_size: 1024x768
                     capabilities:
@@ -73,7 +73,7 @@ env:
                     admin_email: 'admin@mydomain.com'      # email Id of the Admin
                     language: 'English (United Kingdom)'   # Language in which you want the Application to be Installed
                     folder: '/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/' # Path to the Extension to be installed via Install from folder
-                    host: 'http://localhost/jcms34'   # Host Address of the Application
+                    host: 'http://localhost/jtest34'   # Host Address of the Application
                     extension_name: 'ijoomeradv'              # Name of the extension which is to be installed
                     install_extension_demo_data: 'No'     # Demo Data to be installed for Extension
                     env: 'Joomla3'                         # Name of the Environment that has been loaded
