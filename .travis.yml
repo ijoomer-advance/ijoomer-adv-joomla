@@ -29,7 +29,8 @@ before_script:
   - composer update
 
   # Joomla Console Installation
-  - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla  - cd vendor/
+  - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla  
+  - cd vendor/
   - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
   - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
   - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
