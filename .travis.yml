@@ -40,13 +40,13 @@ before_script:
   - sudo chmod -R 777 /var/www/jtest34
 
   # Cloning Joomla Coding standards
-  - git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
+  #- git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
 
 script:
 
   # PHP Code Sniffer for code style verification
   #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla plugins/
-  - vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
 
   # Create travis system tests config file
   - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
