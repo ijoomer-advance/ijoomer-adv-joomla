@@ -17,7 +17,7 @@
 class ExtensionManagerJ3Page
 {
 	// Include url of current page
-	public static $URL = 'administrator/index.php?option=com_ijoomeradv&view=extensions&layout=manage';
+	public static $URL = '/administrator/index.php?option=com_ijoomeradv&view=extensions&layout=manage';
 
 	public static $ExtensionName = "//*[@id='editcell']/table/thead/tr/th[4]";
 

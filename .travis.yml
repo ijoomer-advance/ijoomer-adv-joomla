@@ -4,8 +4,6 @@ php:
   - 5.4
 
 before_script:
-  #- pyrus install pear/PHP_CodeSniffer-1.5.3
-  #- phpenv rehash
   - sudo apt-get update -qq
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
 
@@ -22,13 +20,13 @@ before_script:
   # Selenium server
   - wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O selenium-server-standalone.jar
   - "java -jar selenium-server-standalone.jar > /dev/null 2>/dev/null &"
-  - sh .travis/wait4selenium.sh
 
   # Composer
   - composer self-update
   - composer update
 
   # Joomla Console Installation
+<<<<<<< HEAD
   - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
   - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
   - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
@@ -36,16 +34,31 @@ before_script:
   - cd vendor/joomlatools/joomla-console
   - composer install
   - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
+=======
+  - sudo chmod u+x $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla
+  - sudo ln -s $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
+  - export PATH="$PATH:$TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
+  - alias joomla=$TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla
+  - cd vendor/joomlatools/joomla-console
+  - composer install
+  - cd $TRAVIS_BUILD_DIR
+>>>>>>> e805cc7637fba241bdc247fa9d38f106c29100a6
 
   # Install Joomla site
   - sudo joomla site:create jtest34 --mysql="root:"
   - sudo chmod -R 777 /var/www/jtest34
 
+<<<<<<< HEAD
+=======
+  # Cloning Joomla Coding standards
+  #- git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
+
+>>>>>>> e805cc7637fba241bdc247fa9d38f106c29100a6
 script:
 
   # PHP Code Sniffer for code style verification
-  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
-  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla plugins/
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
 
   # Create travis system tests config file
   - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
