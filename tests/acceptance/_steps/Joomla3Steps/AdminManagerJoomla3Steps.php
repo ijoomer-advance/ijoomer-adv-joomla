@@ -27,7 +27,7 @@ class AdminManagerJoomla3Steps extends \AcceptanceTester
 			{
 				$haystack = strip_tags($webdriver->getPageSource());
 
-				return (bool) (stripos($haystack, "Notice:") || stripos($haystack, "Warning:") || stripos($haystack, "Parse error:"));
+				return (bool) (stripos($haystack, "Notice:") || stripos($haystack, "Warning:") || stripos($haystack, "Parse error:") || stripos($haystack, "fatal error:"));
 
 			}
 		);
