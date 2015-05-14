@@ -27,7 +27,7 @@ class AdminManagerJoomla3Steps extends \AcceptanceTester
 			{
 				$haystack = strip_tags($webdriver->getPageSource());
 
-				return (bool) (stripos($haystack, "Notice:") || stripos($haystack, "Warning:") || stripos($haystack, "Parse error:"));
+				return (bool) (stripos($haystack, "Notice:") || stripos($haystack, "Warning:") || stripos($haystack, "Parse error:") || stripos($haystack, "fatal error:"));
 
 			}
 		);
@@ -43,6 +43,20 @@ class AdminManagerJoomla3Steps extends \AcceptanceTester
 	public function CheckAllLinks()
 	{
 		$I = $this;
+
+		foreach (\AdminManagerPage::$allExtensionPages as $page => $url)
+		{
+			$I->amOnPage($url);
+			$I->verifyNotices(false, $this->checkForNotices(), $page);
+			$I->click('New');
+			$I->verifyNotices(false, $this->checkForNotices(), $page . ' New');
+			$I->click('Cancel');
+		}
+
+	}
+	public function CheckAllLinks1()
+	{
+		$I = $this; 	
 
 		foreach (\AdminManagerPage::$allExtensionPages as $page => $url)
 		{

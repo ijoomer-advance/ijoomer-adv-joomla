@@ -26,6 +26,15 @@ before_script:
   - composer update
 
   # Joomla Console Installation
+<<<<<<< HEAD
+  - sudo chmod u+x /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
+  - sudo ln -s /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
+  - export PATH="$PATH:/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
+  - alias joomla=/home/travis/build/ijoomer-advance/ijoomer-adv-joomla/vendor/joomlatools/joomla-console/bin/joomla
+  - cd vendor/joomlatools/joomla-console
+  - composer install
+  - cd /home/travis/build/ijoomer-advance/ijoomer-adv-joomla/
+=======
   - sudo chmod u+x $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla
   - sudo ln -s $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
   - export PATH="$PATH:$TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
@@ -33,14 +42,18 @@ before_script:
   - cd vendor/joomlatools/joomla-console
   - composer install
   - cd $TRAVIS_BUILD_DIR
+>>>>>>> e805cc7637fba241bdc247fa9d38f106c29100a6
 
   # Install Joomla site
   - sudo joomla site:create jtest34 --mysql="root:"
   - sudo chmod -R 777 /var/www/jtest34
 
+<<<<<<< HEAD
+=======
   # Cloning Joomla Coding standards
   #- git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
 
+>>>>>>> e805cc7637fba241bdc247fa9d38f106c29100a6
 script:
 
   # PHP Code Sniffer for code style verification

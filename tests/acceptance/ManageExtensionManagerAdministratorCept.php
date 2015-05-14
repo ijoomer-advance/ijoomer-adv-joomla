@@ -14,7 +14,7 @@ $config = $I->getConfig();
 $className = 'AcceptanceTester\Login' . $config['env'] . 'Steps';
 $I = new $className($scenario);
 
-$I->wantTo('Test Extension Manager in Administrator');
+$I->wantTo('Test Extension Manager in Administrator and Test Presence of Notices, Warnings on Administrator');
 $I->doAdminLogin();
 $config = $I->getConfig();
 $className = 'AcceptanceTester\ExtensionManager' . $config['env'] . 'Steps';
