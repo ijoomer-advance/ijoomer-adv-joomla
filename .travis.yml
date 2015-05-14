@@ -4,8 +4,6 @@ php:
   - 5.4
 
 before_script:
-  #- pyrus install pear/PHP_CodeSniffer-1.5.3
-  #- phpenv rehash
   - sudo apt-get update -qq
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
 
@@ -41,11 +39,14 @@ before_script:
   - sudo joomla site:create jtest34 --mysql="root:"
   - sudo chmod -R 777 /var/www/jtest34
 
+  # Cloning Joomla Coding standards
+  - git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
+
 script:
 
   # PHP Code Sniffer for code style verification
-  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla plugins/
-  #- phpcs --report=summary --extensions=php -p -n --standard=.build/phpcs/Joomla component/
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla plugins/
+  - vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
 
   # Create travis system tests config file
   - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml

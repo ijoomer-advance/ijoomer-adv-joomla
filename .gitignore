@@ -1,3 +1,6 @@
+# Build
+.build
+
 # OSX
 .DS_Store
 ._*
