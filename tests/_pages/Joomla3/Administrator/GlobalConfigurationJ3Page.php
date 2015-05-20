@@ -26,6 +26,7 @@ class GlobalConfigurationJ3Page
 	public static $PushNotificationConfigLink = "//a[text()='Push Notification Config']";
 
 	public static $EncryptionLink = "//a[text()='Encryption']";
-	
+
+
 
 }
