@@ -88,25 +88,6 @@ class PushNotificationJoomla3Steps extends AdminManagerJoomla3Steps
 	}
 
 
-	public function searchCategory($categoryName, $functionName = 'Search')
-	{
-		$I = $this;
-		$I->amOnPage(\PushNotificationJ3Page::$URL);
-		$I->click(\PushNotificationJ3Page::$AndroidLink);
-		$I->click(\PushNotificationJ3Page::$CustomLink);
-
-		$I->fillField(\PushNotificationJ3Page::$SelectSomeOption, $categoryName);
-
-		if ($functionName == 'Search')
-		{
-			$I->see($categoryName, \PushNotificationJ3Page::$SelectSomeOption);
-		}
-		else
-		{
-			$I->dontSee($categoryName, \PushNotificationJ3Page::$SelectSomeOption);
-		}
-	}
-
 
 	public function deleteCategory()
 	{
