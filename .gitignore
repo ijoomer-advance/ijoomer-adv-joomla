@@ -1,6 +1,10 @@
 # Build
 .build
 
+# Gulp Biild
+gulp-config.json
+node_modules/
+
 # OSX
 .DS_Store
 ._*

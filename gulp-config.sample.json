@@ -1,0 +1,5 @@
+{
+    "repoDir": "/var/www/git/extensions/src",
+    "packageDir" : "/var/www/packages",
+    "version" : "1.5.1"
+}
