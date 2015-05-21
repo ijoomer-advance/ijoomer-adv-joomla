@@ -6,20 +6,24 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+
 $scenario->group('Joomla3');
 
 // Load the Step Object Page
+
 $I = new AcceptanceTester($scenario);
 $config = $I->getConfig();
 $className = 'AcceptanceTester\Login' . $config['env'] . 'Steps';
 $I = new $className($scenario);
 
-$I->wantTo('Test Extension Manager in Administrator and Test Presence of Notices, Warnings on Administrator');
+$I->wantTo('Test  Push Notification in Administrator and Test Presence of Notices, Warnings 
+	and fatal error on Administrator');
 $I->doAdminLogin();
 $config = $I->getConfig();
-$className = 'AcceptanceTester\ExtensionManager' . $config['env'] . 'Steps';
+$className = 'AcceptanceTester\PushNotification' . $config['env'] . 'Steps';
 $I = new $className($scenario);
-$I->wantTo('Change the status of an existing Extension');
-$I->changeState('unpublish');
-$I->changeState1('publish');
-
+$I->addCategoryForAndroid();
+$I->addCategoryForIphone();
+$I->addCategoryForBoth();
+$I->searchForSelectToUser();
+$I->deleteCategory();

@@ -6,20 +6,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+
 $scenario->group('Joomla3');
 
 // Load the Step Object Page
+
 $I = new AcceptanceTester($scenario);
 $config = $I->getConfig();
 $className = 'AcceptanceTester\Login' . $config['env'] . 'Steps';
 $I = new $className($scenario);
 
-$I->wantTo('Test Extension Manager in Administrator and Test Presence of Notices, Warnings on Administrator');
+$I->wantTo('Test Global Configuration in Administrator and Test Presence of Notices, Warnings on Administrator');
 $I->doAdminLogin();
 $config = $I->getConfig();
-$className = 'AcceptanceTester\ExtensionManager' . $config['env'] . 'Steps';
+$className = 'AcceptanceTester\GlobalConfiguration' . $config['env'] . 'Steps';
 $I = new $className($scenario);
-$I->wantTo('Change the status of an existing Extension');
-$I->changeState('unpublish');
-$I->changeState1('publish');
-
+$I->addCategory();
