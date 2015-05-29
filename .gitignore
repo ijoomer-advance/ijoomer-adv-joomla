@@ -1,3 +1,10 @@
+# Build
+.build
+
+# Gulp Biild
+gulp-config.json
+node_modules/
+
 # OSX
 .DS_Store
 ._*
@@ -33,3 +40,13 @@ Desktop.ini
 
 # Ignore PHING property file
 build.properties
+
+# Ignore Composer Library
+vendor
+#composer.lock
+
+# Test related files
+/tests/system/webdriver/tests/logs/
+/tests/acceptance.suite.yml
+tests/_output/*
+tests/acceptance/AcceptanceTester.php

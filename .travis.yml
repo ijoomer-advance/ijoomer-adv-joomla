@@ -1,12 +1,62 @@
 language: php
 
 php:
-  - 5.3
+  - 5.4
 
 before_script:
-  - pear install PHP_CodeSniffer-1.5.3
-  - phpenv config-add .travis.ini
-  - phpenv rehash
+  - sudo apt-get update -qq
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl php5-gd > /dev/null
+
+  # XVFB
+  - "export DISPLAY=:99.0"
+  - "Xvfb :99.0 -extension RANDR > /dev/null &"
+
+  # Window manager
+  - echo "c10"
+  - "sudo apt-get install fluxbox -y --force-yes"
+  - echo "c11"
+  - "fluxbox &"
+
+  # Selenium server
+  - wget http://selenium-release.storage.googleapis.com/2.44/selenium-server-standalone-2.44.0.jar -O selenium-server-standalone.jar
+  - "java -jar selenium-server-standalone.jar > /dev/null 2>/dev/null &"
+
+  # Composer
+  - composer self-update
+  - composer update
+
+  # Joomla Console Installation
+  - sudo chmod u+x $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla
+  - sudo ln -s $TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla /usr/bin/joomla
+  - export PATH="$PATH:$TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin:/usr/local/bin"
+  - alias joomla=$TRAVIS_BUILD_DIR/vendor/joomlatools/joomla-console/bin/joomla
+  - cd vendor/joomlatools/joomla-console
+  - composer install
+  - cd $TRAVIS_BUILD_DIR
+
+  # Install Joomla site
+  - sudo joomla site:create jtest34 --mysql="root:"
+  - sudo chmod -R 777 /var/www/jtest34
+
+  # Cloning Joomla Coding standards
+  #- git clone https://github.com/joomla/coding-standards.git .tmp/Joomla/
 
 script:
-  - phpcs --report=full --extensions=php --ignore=extensions,.build -p --standard=.build/phpcs/Joomla .
+
+  # PHP Code Sniffer for code style verification
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla plugins/
+  #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
+
+  # Find duplicate copy/paste code
+  - vendor/bin/phpcpd ./component/ ./plugins/ ./extensions/src
+  - vendor/bin/phpcpd ./tests
+
+  # Create travis system tests config file
+  - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
+
+  # Execure codeception suits
+  - php vendor/bin/codecept build
+  - php vendor/bin/codecept run acceptance -g Joomla3 --env joomla3 --steps
+
+  # Remove installed joomla site
+  - sudo joomla site:delete jtest34
