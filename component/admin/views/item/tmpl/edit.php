@@ -3,7 +3,7 @@
  * @package     IJoomer.Backend
  * @subpackage  com_ijoomeradv.views
  *
- * @copyright   Copyright (C) 2010 - 2014 Tailored Solutions PVT. Ltd. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2015 Tailored Solutions PVT. Ltd. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
@@ -25,7 +25,7 @@ $dirpath        = JURI::root() . "administrator/components/com_ijoomeradv/theme/
 $home           = $data . "_icon.png";
 $tab_img        = $data . "_tab.png";
 $active_tab_img = $data . "_tab_active.png";
-$fieldsets      = $this->form->getFieldset('menus');
+$fieldsets      = $this->form->getFieldset();
 
 if (JRequest::getVar('ajax'))
 {
@@ -40,11 +40,11 @@ if (JRequest::getVar('ajax'))
 
 	if ($position == 1 or $position == 2)
 	{
-		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">114x114 px</font>';
+		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">192x192 px</font>';
 	}
 	else
 	{
-		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">64x64 px</font>';
+		$text = '<span style="font-weight: bold"><font color="red">Note:</font></span><br/>Please make sure the image size should be <font color="green">128x128 px</font>';
 	}
 
 	$response['text'] = $text;
@@ -114,108 +114,45 @@ if (JRequest::getVar('ajax'))
 
 </script>
 
-<form
-	action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=item&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo JRoute::_('index.php?option=com_ijoomeradv&view=item&layout=edit&id=' . (int) $this->item->id); ?>"
 	method="post" enctype="multipart/form-data" name="adminForm" id="item-form" class="form-validate">
 
 	<div class="fltlft span12">
 		<div class="form-horizontal">
+
 		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('Menu', true)); ?>
-			<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_IJOOMERADV_ITEM_DETAILS'); ?></legend>
 
-				<div class="span9">
+			<div class="row">
+				<div class="span6" style="margin-left:30px;">
+
+				<fieldset class="adminform">
+				<legend><?php echo JText::_('COM_IJOOMERADV_ITEM_DETAILS'); ?></legend>
+
 					<?php foreach ($fieldsets as $field) : ?>
-					<div class="control-group">
-						<div class="control-label"><?php echo $field->label; ?></div>
-						<div class="controls"><?php echo $field->input; ?></div>
-					</div>
+						<div class="control-group">
+							<div class="control-label"><?php echo $field->label; ?></div>
+							<div class="controls"><?php echo $field->input; ?></div>
+						</div>
 					<?php endforeach; ?>
-							<?php
-								if ( $this->item->type == 'url')
-								{
-									$this->form->setFieldAttribute('link', 'readonly', 'false');
-									echo $this->form->getLabel('link');
-									echo $this->form->getInput('link');
-								}
-							?>
-							</div>
-							<?php echo JHtml::_('bootstrap.endTab'); ?>
+					<?php
+						if ( $this->item->type == 'url')
+						{
+							$this->form->setFieldAttribute('link', 'readonly', 'false');
+							echo $this->form->getLabel('link');
+							echo $this->form->getInput('link');
+						}
+					?>
+				</div>
 
-							<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'image', JText::_('Images', true)); ?>
-
-							<div class="span10">
-								<div class="Icon-Image" id="imageicon">
-								<label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl"
-								           aria-invalid="false">Icon Image</label>
-								<input type="file" value="" id="jform_image_icon" name="jform[imageicon]" class=""
-								           aria-invalid="false">
-
-									<?php
-
-									if ($data)
-									{
-										echo "<img src='" . $dirpath . $home . "'>";
-									}
-									else
-									{?>
-										<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
-									<?}
-
-
-									?>
-								</div>
-
-								<div class="Tab-Image" id="imagetab">
-								<label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl"
-								           aria-invalid="false">Tab Image</label>
-								<input type="file" value="" id="jform_image_tab" name="jform[imagetab]" class=""
-								           aria-invalid="false">
-
-									<?php
-
-									if ($data)
-									{
-										echo "<img src='" . $dirpath . $tab_img . "'>";
-									}
-									else
-									{?>
-										<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
-									<?}
-
-									?>
-									</div>
-
-								<div class = "Tab-Active-Image" id="imagetabactive">
-								<label title="" class="hasTip" for="jform_image_tab_active"
-								           id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label>
-								<input type="file" value="" id="jform_image_tab_active" name="jform[imagetabactive]"
-								           class="" aria-invalid="false">
-											<?php
-											if ($data)
-											{
-												echo "<img src='" . $dirpath . $active_tab_img . "'>";
-											}
-											else
-											{?>
-												<img src="../media/com_ijoomeradv/images/no-image.png" height="90px" width="90px">
-											<?}
-											?>
-								</div>
-
-											<div class="notice" id="imagedescnote">
-											<span style="font-weight: bold"><font
-											color="red">Note:</font></span><br/>Please make sure the image size should
-									be <font color="green">114x114 px</font></div>
-
+				<div class="span5" style="margin-left:100px;">
 						<?php if ($this->form->getValue('requiredField') == 1): ?>
 							<div class="">
 								<?php echo JHtml::_('sliders.start', 'menu-sliders-' . $this->item->id); ?>
+								<?php echo JHtml::_('sliders.panel', JText::_('COM_IJOOMERADV_ITEM_EXTRA_PARAMS_ASSIGNMENT'), 'module-options'); ?>
 
 								<div class="clr"></div>
 
-								<?php echo JHtml::_('sliders.panel', JText::_('COM_IJOOMERADV_ITEM_EXTRA_PARAMS_ASSIGNMENT'), 'module-options'); ?>
 								<fieldset>
 									<?php
 									if ($this->form->getValue('views'))
@@ -255,11 +192,76 @@ if (JRequest::getVar('ajax'))
 								<?php echo JHtml::_('sliders.end'); ?>
 							</div>
 						<?php endif; ?>
-		</fieldset>
-		</div>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
+				</div>
+				</div>
+
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'image', JText::_('Images', true)); ?>
+
+				<div class="span10">
+					<div class="Icon-Image" id="imageicon">
+						<label title="" class="hasTip" for="jform_image_icon" id="jform_image_icon-lbl"
+						           aria-invalid="false">Icon Image</label>
+						<input type="file" value="" id="jform_image_icon" name="jform[imageicon]" class="" aria-invalid="false">
+
+							<?php if ($data) : ?>
+								<img src="<?php echo $dirpath . $home; ?>">
+							<?php else: ?>
+								<img
+									src="../media/com_ijoomeradv/images/no-image.png"
+									height="90px"
+									width="90px"
+								/>
+							<?php endif; ?>
+					</div>
+
+					<div class="Tab-Image" id="imagetab">
+						<label title="" class="hasTip" for="jform_image_tab" id="jform_image_tab-lbl"
+						           aria-invalid="false">Tab Image</label>
+						<input type="file" value="" id="jform_image_tab" name="jform[imagetab]" class aria-invalid="false">
+							<?php if ($data) : ?>
+								<img src="<?php echo $dirpath . $tab_img; ?>">
+							<?php else: ?>
+								<img
+									src="../media/com_ijoomeradv/images/no-image.png"
+									height="90px"
+									width="90px"
+								>
+							<?php endif;?>
+					</div>
+
+					<div class = "Tab-Active-Image" id="imagetabactive">
+						<label title="" class="hasTip" for="jform_image_tab_active"
+						           id="jform_image_tab_active-lbl" aria-invalid="false">Tab Active Image</label>
+						<input type="file" value="" id="jform_image_tab_active" name="jform[imagetabactive]"
+						           class="" aria-invalid="false">
+							<?php if ($data) : ?>
+								<img src="<?php echo $dirpath . $active_tab_img; ?>">
+							<?php else: ?>
+								<img
+									src="../media/com_ijoomeradv/images/no-image.png"
+									height="90px"
+									width="90px"
+								>
+							<?php endif;?>
+					</div>
+
+					<div class="notice" id="imagedescnote">
+						<span style="font-weight: bold">
+							<font color="red">Note:</font>
+						</span><br/>
+						Please make sure the image size should be
+						<font color="green">114x114 px </font>
+					</div>
+				</div>
+			</fieldset>
+
+
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 	</div>
+
 	<div class="width-40 fltrt">
 		<input type="hidden" name="task" value=""/>
 		<?php echo $this->form->getInput('component_id'); ?>
