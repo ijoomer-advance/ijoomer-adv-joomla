@@ -75,10 +75,10 @@ class PushNotificationJoomla3Steps extends AdminManagerJoomla3Steps
 		$I->verifyNotices(false, $this->checkForNotices(), 'Push Notification Page');
 		$I->click(\PushNotificationJ3Page::$AndroidLink);
 		$I->click(\PushNotificationJ3Page::$CustomLink);
-		$I->wait(2);
-		$I->fillField(\PushNotificationJ3Page::$SelectSomeOption, 'Test');
-		$I->wait(2);
-		$I->see($categoryName, \PushNotificationJ3Page::$SelectSomeOption);
+		//$I->wait(2);
+		//$I->fillField(\PushNotificationJ3Page::$SelectSomeOption, 'Test');
+		//$I->wait(2);
+		//$I->see($categoryName, \PushNotificationJ3Page::$SelectSomeOption);
 		$I->fillField(\PushNotificationJ3Page::$TextMessage, 'Testing1');
 		$I->fillField(\PushNotificationJ3Page::$TextLink, 'Test Link');
 		$I->click("Send");
