@@ -27,6 +27,8 @@ class GlobalConfigurationJ3Page
 
 	public static $EncryptionLink = "//a[text()='Encryption']";
 
+	public static $Errormessage="; echo 'View File'; } ?>";
+
 
 
 
