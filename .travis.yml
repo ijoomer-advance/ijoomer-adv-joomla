@@ -47,6 +47,10 @@ script:
   #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla plugins/
   #- vendor/bin/phpcs --report=summary --extensions=php -p -n --standard=.tmp/Joomla component/
 
+  # Find duplicate copy/paste code
+  - vendor/bin/phpcpd ./component/ ./plugins/ ./extensions/src
+  - vendor/bin/phpcpd ./tests
+
   # Create travis system tests config file
   - mv tests/acceptance.suite.dist.yml tests/acceptance.suite.yml
 
