@@ -350,7 +350,7 @@ class IjoomeradvModelExtensions extends JModelLegacy
 		$tmp_src = $userfile['tmp_name'];
 
 		// Move uploaded file
-		$uploaded = JFile::upload($tmp_src, $tmp_dest);
+		$uploaded = JFile::upload($tmp_src, $tmp_dest, false, false, array('php_tag_in_content' => false, 'shorttag_in_content' => false, 'fobidden_ext_in_content' => false));
 
 		// Unpack the downloaded package file
 		$package = JInstallerHelper::unpack($tmp_dest);
