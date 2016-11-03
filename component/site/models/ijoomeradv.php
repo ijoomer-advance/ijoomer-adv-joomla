@@ -431,7 +431,7 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 		$query = $this->db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('*')
+		$query->select($this->db->qn('option'))
 			->from($this->db->qn('#__ijoomeradv_extensions'))
 			->where($this->db->qn('classname') . ' = ' . $this->db->q($extName));
 
@@ -587,12 +587,12 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 
 		$data['relname'] = IJReq::getTaskData('name');
 		$data['user_nm'] = IJReq::getTaskData('username');
-		$data['email'] = IJReq::getTaskData('email');
+		$data['email']   = IJReq::getTaskData('email');
 		$data['pic_big'] = IJReq::getTaskData('bigpic');
-		$password_set = IJReq::getTaskData('password');
-		$reg_opt = IJReq::getTaskData('regopt', 0, 'int');
-		$fbid = IJReq::getTaskData('fbid');
-		$time = time();
+		$password_set    = IJReq::getTaskData('password');
+		$reg_opt         = IJReq::getTaskData('regopt', 0, 'int');
+		$fbid            = IJReq::getTaskData('fbid');
+		$time            = time();
 
 		if ($reg_opt === 0)
 		{
@@ -787,10 +787,10 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 				jimport('joomla.user.helper');
 				$user = new JUser;
 				$fbData = IJReq::getTaskData('fb');
-				$data['name'] = $fbData->name;
+				$data['name'] = $data['relname'];
 				$data['username'] = trim(str_replace("\n", "", $data['user_nm']));
 				$data['password1'] = $data['password2'] = trim(str_replace("\n", "", $password_set . $time));
-				$data['email1'] = $data['email2'] = trim(str_replace("\n", "", $fbData->email));
+				$data['email1'] = $data['email2'] = trim(str_replace("\n", "", $data['relname']));
 				$data['latitude'] = IJReq::getTaskData('lat');
 				$data['longitude'] = IJReq::getTaskData('long');
 
@@ -1053,13 +1053,13 @@ class IjoomeradvModelijoomeradv extends JModelLegacy
 	 */
 	public function registration()
 	{
-		$post['relname'] = IJReq::getTaskData('name');
+		$post['relname']  = IJReq::getTaskData('name');
 		$post['username'] = IJReq::getTaskData('username');
 		$post['password'] = IJReq::getTaskData('password');
-		$post['email'] = IJReq::getTaskData('email');
-		$post['type'] = IJReq::getTaskData('type', 0, 'int');
-		$Full_flag = IJReq::getTaskData('full', 0, 'int');
-		$lang = JFactory::getLanguage();
+		$post['email']    = IJReq::getTaskData('email');
+		$post['type']     = IJReq::getTaskData('type', 0, 'int');
+		$Full_flag        = IJReq::getTaskData('full', 0, 'int');
+		$lang             = JFactory::getLanguage();
 		$lang->load('com_users');
 
 		if (strtolower(IJOOMER_GC_REGISTRATION) === 'no')

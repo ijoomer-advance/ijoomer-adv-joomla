@@ -59,7 +59,18 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 		if(key($_FILES) == "SandBox" && !empty($sandFilenm) && $sandFiletype=="application/x-x509-ca-cert" && $sandext == "pem")
 		{
 			$sandFilenm = preg_replace("/^[^_]*_\s*/", "", $sandFilenm);
-			$file1 = 'dev_'.$sandFilenm;
+
+			$defName = 'certificates';
+
+			// Split the file name by the dot
+			$splitName = explode(".", $sandFilenm);
+
+			// Get the file extension
+			$fileExt = end($splitName);
+			$newFileName  = strtolower($defName.'.'.$fileExt);
+
+			$file1 = 'dev_'.$newFileName;
+
 			$dest1 = JPATH_SITE ."/components/com_ijoomeradv/certificates/".$file1;
 
 			JFile::upload($sandFiletmpnm, $dest1);
@@ -68,7 +79,17 @@ class IjoomeradvControllerconfig extends JControllerLegacy
 		elseif ($key == "live" && !empty($liveFilenm) && $liveFiletype=="application/x-x509-ca-cert" && $liveext == "pem")
 		{
 			$liveFilenm = preg_replace("/^[^_]*_\s*/", "", $liveFilenm);
-			$file = 'pro_'.$liveFilenm;
+
+			$defName = 'certificates';
+
+			// Split the file name by the dot
+			$splitName = explode(".", $liveFilenm);
+
+			// Get the file extension
+			$fileExt = end($splitName);
+			$newFileName  = strtolower($defName.'.'.$fileExt);
+
+			$file = 'pro_'.$newFileName;
 			$dest = JPATH_SITE ."/components/com_ijoomeradv/certificates/$file";
 
 			JFile::upload($liveFiletmpnm, $dest);

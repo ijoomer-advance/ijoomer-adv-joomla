@@ -611,9 +611,45 @@ class IjoomeradvControllerijoomeradv extends JControllerLegacy
 			foreach ($value as $ky => $val)
 			{
 				$themearray['theme'][$i]['viewname'] = $val;
-				$themearray['theme'][$i]['icon'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
-				$themearray['theme'][$i]['tab'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
-				$themearray['theme'][$i]['tab_active'] = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+
+				$file  = "http://www.ijoomer.com/"  . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+				$file1 = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
+				$file2 = "http://www.ijoomer.com/" . $theme . '/' . $key . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+
+				$AgetHeaders = @get_headers($file);
+
+                 if ($AgetHeaders[0] == 'HTTP/1.1 404 Not Found')
+				{
+			   		$themearray['theme'][$i]['icon']  = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_icon.png';
+				}
+				else
+				{
+				   $themearray['theme'][$i]['icon'] = $file;
+				}
+
+
+				$AgetHeaders1 = @get_headers($file1);
+
+				if ($AgetHeaders1[0] == 'HTTP/1.1 404 Not Found')
+				{
+			   		$themearray['theme'][$i]['tab'] = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_tab.png';
+				}
+				else
+				{
+				   $themearray['theme'][$i]['tab'] = $file1;
+				}
+
+				$AgetHeaders2 = @get_headers($file2);
+
+				if ($AgetHeaders2[0] == 'HTTP/1.1 404 Not Found')
+				{
+			   		$themearray['theme'][$i]['tab_active'] = JUri::base() .'components/com_ijoomeradv/extensions/'. $key .'/theme/'. $theme . '/' . $device . '/' . $device_type . '/' . $val . '_tab_active.png';
+				}
+				else
+				{
+				   $themearray['theme'][$i]['tab_active'] = $file2;
+				}
+
 				$i++;
 			}
 		}

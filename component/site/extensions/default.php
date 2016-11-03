@@ -297,7 +297,11 @@ class Default_Menu
 				break;
 		}
 
-		return $html;
+		if(!empty($html))
+		{
+			return $html;
+		}
+
 	}
 
 	/**

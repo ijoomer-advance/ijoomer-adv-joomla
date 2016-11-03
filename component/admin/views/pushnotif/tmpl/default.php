@@ -16,11 +16,9 @@ $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.js');
 $document->addscript(JURI::root() . 'media/com_ijoomeradv/js/jquery.autocomplete.js');
 $document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/jquery.autocomplete.css');
 $document->addstyleSheet(JURI::root() . 'media/com_ijoomeradv/css/ijoomeradv.css');
-$fieldsets    = $this->form->getFieldset('notification');
-$msgfieldsets = $this->form->getFieldset('message');
 
+$fieldsets    = $this->form->getFieldset();
 ?>
-
 
 <script language="javascript" type="text/javascript">
 
@@ -52,33 +50,26 @@ jQuery(document).ready(function() {
 							</div>
 						<?php endforeach; ?>
 					</div>
-
-					<div>
-						<?php foreach ($msgfieldsets as $fields) : ?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $fields->label; ?></div>
-								<div class="controls"><?php echo $fields->input; ?></div>
-							</div>
-						<?php endforeach; ?>
-					</div>
-
 			</div>
 			<div class="span7">
 				<table class="adminlist table table-striped" width="100%">
 					<thead>
 					<tr>
-						<th ><?php echo JHtml::_('grid.checkall'); ?></th>
+						<th width="1%" class="nowrap center">
+							<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+						</th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_ID') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_DEVICE_TYPE') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TO_USER') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_SEND_NOTIFICATION_TO_ALL_USERS') ?></th>
-						<th><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT') ?></th>
+						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_NOTIFICATION_TEXT') ?></th>
 						<th ><?php echo JText::_('COM_IJOOMERADV_PUSH_NOTIFICATION_TIME') ?></th>
 					</tr>
 					</thead>
 					<tbody>
 					<?php
 					$k = 0;
+
 					if (!empty($this->pushNotifications))
 					{
 						foreach ($this->pushNotifications as $key => $value):?>
@@ -87,25 +78,26 @@ jQuery(document).ready(function() {
 								<td><?php echo $value['id']; ?></td>
 								<td><?php echo $value['device_type']; ?></td>
 								<td> <?php
-								$users_array = explode(",", $value['to_user']);
+								$id_array = explode(",", $value['to_user']);
+
 								$model = $this->getModel('pushnotif');
-								$end_user = end($users_array);
+								$end_id = end($id_array);
 
-								foreach ($users_array as $user)
+								foreach ($id_array as $userid)
 								{
-									$userid = $model->getUserId($user);
+									$userName = $model->getUserName($userid);
 
-									if($userid != '')
+									if($userName != '')
 									{
-										if($end_user == $user)
+										if($end_id == $userid)
 										{ ?>
-										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $user; ?></a>
+										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $userName; ?></a>
 										<?php
 										}
 										else
 										{
 										?>
-										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $user; ?></a>,
+										<a href="index.php?option=com_users&task=user.edit&id=<?php echo $userid; ?>"><?php echo $userName; ?></a>,
 										<?php
 										}
 									?>
