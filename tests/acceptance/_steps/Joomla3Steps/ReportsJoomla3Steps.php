@@ -32,6 +32,7 @@ class ReportsJoomla3Steps extends AdminManagerJoomla3Steps
 		$I = $this;
 		$I->amOnPage(\ReportsJ3Page::$URL);
 		$I->verifyNotices(false, $this->checkForNotices(), 'Reports Page');
+		
 	}
 	
 }
